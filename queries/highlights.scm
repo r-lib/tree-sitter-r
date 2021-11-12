@@ -1,8 +1,17 @@
 ; highlights.scm
 
 (call function: (identifier) @function)
+(call arguments:
+ (arguments
+  name: (identifier) @parameter ))
+
 (namespace_get function: (identifier) @function.method)
 (namespace_get_internal function: (identifier) @function.method)
+
+(namespace_get namespace: (identifier) @namespace
+ "::" @operator)
+(namespace_get_internal namespace: (identifier) @namespace
+ ":::" @operator)
 
 ; Literals
 
@@ -66,6 +75,12 @@
  "{"
  "}"
 ] @punctuation.bracket
+
+(dollar "$" @operator)
+
+(subset2
+  "[[" @punctuation.bracket
+  "]]" @punctuation.bracket)
 
 [
  "while"
