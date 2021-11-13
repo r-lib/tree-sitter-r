@@ -5,8 +5,10 @@
  (arguments
   name: (identifier) @parameter ))
 
-(namespace_get function: (identifier) @function.method)
-(namespace_get_internal function: (identifier) @function.method)
+(lambda_function "\\" @operator)
+
+(namespace_get function: (identifier) @method)
+(namespace_get_internal function: (identifier) @method)
 
 (namespace_get namespace: (identifier) @namespace
  "::" @operator)
@@ -17,7 +19,7 @@
 
 (integer) @number
 
-(float) @number
+(float) @float
 
 (complex) @number
 
@@ -83,20 +85,33 @@
   "]]" @punctuation.bracket)
 
 [
- "while"
- "if"
- "else"
- "function"
- "repeat"
- "for"
  "in"
  (dots)
- (true)
- (false)
  (break)
  (next)
  (inf)
- (nan)
- (na)
- (null)
 ] @keyword
+
+[
+  (nan)
+  (na)
+  (null)
+] @type.builtin
+
+[
+  "if"
+  "else"
+] @conditional
+
+[
+  "while"
+  "repeat"
+  "for"
+] @repeat
+
+[
+  (true)
+  (false)
+] @boolean
+
+"function" @keyword.function
