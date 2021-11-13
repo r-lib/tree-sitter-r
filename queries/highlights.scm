@@ -27,7 +27,7 @@
 
 (comment) @comment
 
-(formal_parameters (identifier) @variable.parameter)
+(formal_parameters (identifier) @parameter)
 
 (identifier) @variable
 
