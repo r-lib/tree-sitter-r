@@ -115,3 +115,6 @@
 ] @boolean
 
 "function" @keyword.function
+
+; Error
+(ERROR) @error
