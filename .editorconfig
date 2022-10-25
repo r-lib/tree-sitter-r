@@ -2,6 +2,10 @@
 indent_style = space
 indent_size = 2
 
+[src/scanner.cc]
+indent_style = space
+indent_size = 2
+
 [binding.gyp]
 indent_style = space
 indent_size = 2
