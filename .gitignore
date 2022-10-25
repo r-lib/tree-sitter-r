@@ -1,5 +1,10 @@
-node_modules
 build
+node_modules
+target
+
 *.log
 *.wasm
-target
+
+src/parser.c
+src/grammar.json
+
