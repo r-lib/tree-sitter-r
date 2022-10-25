@@ -571,12 +571,15 @@ foo@bar
 Namespace get
 ============================================
 
+foo::
 foo::bar
 foo::bar(1)
 
 ---
 
 (program
+  (namespace_get
+    namespace: (identifier))
   (namespace_get
     namespace: (identifier)
     function: (identifier))
