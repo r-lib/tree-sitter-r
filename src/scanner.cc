@@ -1,15 +1,172 @@
 
 #include <tree_sitter/parser.h>
 
+#include <cwctype>
+#include <sstream>
+#include <vector>
+
 namespace {
 
 enum TokenType {
+  NEWLINE,
+  SEMICOLON,
+  OPEN_PAREN,
+  CLOSE_PAREN,
+  OPEN_BRACE,
+  CLOSE_BRACE,
+  OPEN_BRACKET,
+  CLOSE_BRACKET,
+  OPEN_BRACKET2,
+  CLOSE_BRACKET2,
   RAW_STRING_LITERAL,
 };
 
 struct Scanner {
 
+  void push(TokenType token) {
+    tokens_.push_back(token);
+  }
+
+  void pop(TokenType token) {
+
+    if (tokens_.empty()) {
+      return;
+    }
+
+    auto back = tokens_.back();
+    if (token != back) {
+      return;
+    }
+
+    tokens_.pop_back();
+
+  }
+
+  TokenType peek() {
+    return tokens_.back();
+  }
+
+  unsigned serialize(char* buffer) {
+
+    int n = tokens_.size() - 1;
+    for (int i = 0; i < n; i++) {
+      buffer[i] = (char) tokens_[i+ 1];
+    }
+
+    return n;
+
+  }
+
+  void deserialize(const char* buffer, unsigned n) {
+
+    tokens_.clear();
+    tokens_.push_back((TokenType) 0);
+    for (unsigned i = 0; i < n; i++) {
+      tokens_.push_back((TokenType) buffer[i]);
+    }
+
+  }
+
   bool scan(TSLexer* lexer, const bool* valid_symbols) {
+
+    // scan whitespace
+    if (scan_whitespace(lexer, valid_symbols)) {
+      return true;
+    }
+
+    // check for semi-colons
+    if (lexer->lookahead == ';') {
+      lexer->advance(lexer, false);
+      lexer->result_symbol = SEMICOLON;
+      return true;
+    }
+
+    // check for a raw string literal
+    if (scan_raw_string_literal(lexer, valid_symbols)) {
+      return true;
+    }
+
+    // check for an open bracket
+    if (lexer->lookahead == '(') {
+      lexer->advance(lexer, false);
+      lexer->result_symbol = OPEN_PAREN;
+      push(OPEN_PAREN);
+      return true;
+    }
+
+    if (lexer->lookahead == ')') {
+      lexer->advance(lexer, false);
+      lexer->result_symbol = CLOSE_PAREN;
+      pop(OPEN_PAREN);
+      return true;
+    }
+
+    if (lexer->lookahead == '{') {
+      lexer->advance(lexer, false);
+      lexer->result_symbol = OPEN_BRACE;
+      push(OPEN_BRACE);
+      return true;
+    }
+
+    if (lexer->lookahead == '}') {
+      lexer->advance(lexer, false);
+      lexer->result_symbol = CLOSE_BRACE;
+      pop(OPEN_BRACE);
+      return true;
+    }
+
+
+    if (lexer->lookahead == '[') {
+
+      lexer->advance(lexer, false);
+      if (lexer->lookahead == '[') {
+        lexer->advance(lexer, false);
+        lexer->result_symbol = OPEN_BRACKET2;
+        push(OPEN_BRACKET2);
+      } else {
+        lexer->result_symbol = OPEN_BRACKET;
+        push(OPEN_BRACKET);
+      }
+
+      return true;
+    }
+
+    if (lexer->lookahead == ']') {
+
+      lexer->advance(lexer, false);
+      if (lexer->lookahead == ']' && peek() == OPEN_BRACKET2) {
+        lexer->advance(lexer, false);
+        lexer->result_symbol = CLOSE_BRACKET2;
+        pop(OPEN_BRACKET2);
+      } else {
+        lexer->result_symbol = CLOSE_BRACKET;
+        pop(OPEN_BRACKET);
+      }
+
+      return true;
+    }
+
+    return false;
+
+  }
+
+  bool scan_whitespace(TSLexer* lexer, const bool* valid_symbols) {
+
+    // skip whitespace
+    while (std::iswspace(lexer->lookahead)) {
+      if (lexer->lookahead == '\n' && peek() != OPEN_PAREN) {
+        lexer->advance(lexer, true);
+        lexer->result_symbol = NEWLINE;
+        return true;
+      }
+      lexer->advance(lexer, true);
+    }
+
+    return false;
+
+  }
+
+  bool scan_raw_string_literal(TSLexer* lexer, const bool* valid_symbols) {
 
     // scan a raw string literal; see R source code for implementation:
     // https://github.com/wch/r-source/blob/52b730f217c12ba3d95dee0cd1f330d1977b5ea3/src/main/gram.y#L3102
@@ -94,6 +251,9 @@ struct Scanner {
 
   }
 
+  private:
+    std::vector<TokenType> tokens_;
+
 };
 
 } // end anonymous namespace
@@ -101,22 +261,27 @@ struct Scanner {
 extern "C" {
 
 void *tree_sitter_r_external_scanner_create() {
-  return new Scanner();
+  Scanner* scanner = new Scanner();
+  scanner->deserialize(nullptr, 0);
+  return scanner;
 }
 
 bool tree_sitter_r_external_scanner_scan(void *payload,
-                                           TSLexer *lexer,
-                                           const bool *valid_symbols)
+                                         TSLexer *lexer,
+                                         const bool *valid_symbols)
 {
   Scanner* scanner = static_cast<Scanner*>(payload);
   return scanner->scan(lexer, valid_symbols);
 }
 
 unsigned tree_sitter_r_external_scanner_serialize(void *payload, char *buffer) {
-  return 0;
+  Scanner* scanner = static_cast<Scanner*>(payload);
+  return scanner->serialize(buffer);
 }
 
 void tree_sitter_r_external_scanner_deserialize(void *payload, const char *buffer, unsigned length) {
+  Scanner* scanner = static_cast<Scanner*>(payload);
+  scanner->deserialize(buffer, length);
 }
 
 void tree_sitter_r_external_scanner_destroy(void *payload) {

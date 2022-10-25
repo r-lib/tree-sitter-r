@@ -103,8 +103,8 @@ function operator($, rule) {
   }
 
   // Build the operator rules.
-  const unaryRule = seq(rule, repeat("\n"), optional($._expression));
-  const binaryRule = seq($._expression, rule, repeat("\n"), optional($._expression));
+  const unaryRule = seq(rule, optional($._expression));
+  const binaryRule = seq($._expression, rule, optional($._expression));
 
   // If we don't have a unary operator rule, return this one as-is.
   if (unaryPrecedence == null) {
@@ -127,6 +127,16 @@ module.exports = grammar({
   ],
 
   externals: $ => [
+    $._newline,
+    $._semicolon,
+    $._open_paren,
+    $._close_paren,
+    $._open_brace,
+    $._close_brace,
+    $._open_bracket,
+    $._close_bracket,
+    $._open_bracket2,
+    $._close_bracket2,
     $._raw_string_literal
   ],
 
@@ -135,7 +145,7 @@ module.exports = grammar({
   rules: {
 
     // Top-level rules.
-    program: $ => repeat(seq($._expression, optional(choice(";", "\n")))),
+    program: $ => repeat(choice($._expression, $._semicolon, $._newline)),
 
     // Function definitions.
     function_definition: $ => prec.right(seq(
@@ -189,16 +199,16 @@ module.exports = grammar({
 
     // Blocks.
     "{": $ => prec.right(seq(
-      "{",
-      repeat(choice($._expression, ";", "\n")),
-      optional("}"),
+      $._open_brace,
+      repeat(choice($._expression, $._semicolon, $._newline)),
+      optional($._close_brace),
     )),
 
     // Parenthetical blocks.
     "(": $ => prec.right(seq(
-      "(",
-      repeat(choice($._expression, ";", "\n")),
-      optional(")")
+      $._open_paren,
+      repeat(choice($._expression, $._newline)),
+      optional($._close_paren)
     )),
 
     // Call and subset operators. Special handling as they can receive
@@ -211,9 +221,9 @@ module.exports = grammar({
     arguments: $ => $._expression,
 
     // The actual matching rules for arguments in each of the above.
-    _call_arguments:    $ => prec.right(seq("(",  repeat(choice(",", $.argument)), optional(")"))),
-    _subset_arguments:  $ => prec.right(seq("[",  repeat(choice(",", $.argument)), optional("]"))),
-    _subset2_arguments: $ => prec.right(seq("[[", repeat(choice(",", $.argument)), optional("]]"))),
+    _call_arguments:    $ => prec.right(seq($._open_paren,    repeat(choice(",", $.argument)), optional($._close_paren))),
+    _subset_arguments:  $ => prec.right(seq($._open_bracket,  repeat(choice(",", $.argument)), optional($._open_bracket))),
+    _subset2_arguments: $ => prec.right(seq($._open_bracket2, repeat(choice(",", $.argument)), optional($._open_bracket2))),
 
     // An argument; either named or unnamed.
     argument: $ => prec.right(choice(
