@@ -1,0 +1,23 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+            "label": "Test Grammar",
+            "type": "shell",
+            "command": "tree-sitter generate && tree-sitter test",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "osx": {
+                "options": {
+                    "env": {
+                        "PATH": "/opt/homebrew/bin:${PATH}",
+                        "CC": "/usr/bin/clang",
+                        "CXX": "/usr/bin/clang++"
+                    }
+                }
+            }
+		}
+	]
+}

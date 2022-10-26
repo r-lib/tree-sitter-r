@@ -126,6 +126,7 @@ struct Scanner {
           lexer->result_symbol = OPEN_BRACKET;
           push(OPEN_BRACKET);
         }
+        return true;
       }
     }
 
