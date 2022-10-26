@@ -60,7 +60,7 @@ struct Scanner {
   void deserialize(const char* buffer, unsigned n) {
 
     tokens_.clear();
-    tokens_.push_back((TokenType) 0);
+    tokens_.push_back(OPEN_BRACE);
     for (unsigned i = 0; i < n; i++) {
       tokens_.push_back((TokenType) buffer[i]);
     }
@@ -154,7 +154,7 @@ struct Scanner {
 
     // skip whitespace
     while (std::iswspace(lexer->lookahead)) {
-      if (lexer->lookahead == '\n' && peek() != OPEN_PAREN) {
+      if (lexer->lookahead == '\n' && peek() == OPEN_BRACE) {
         lexer->advance(lexer, true);
         lexer->result_symbol = NEWLINE;
         return true;

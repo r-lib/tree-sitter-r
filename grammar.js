@@ -41,51 +41,55 @@
 
 // Precedence table for unary operators.
 const UNARY_OPERATORS = {
-  "?": 10,
-  "~": 50,
-  "!": 80,
-  "+": 140,
-  "-": 140
+  "?": 1,
+  "~": 5,
+  "!": 8,
+  "+": 14,
+  "-": 14
 };
 
 // Precedence table for binary operators.
 const BINARY_OPERATORS = {
-  "?":   10,
-  ":=":  20,
-  "=":   30,
-  "<-":  30,
-  "<<-": 30,
-  "->":  40,
-  "->>": 40,
-  "~":   50,
-  "|>":  60,
-  "=>":  60,
-  "||":  70,
-  "|":   70,
-  "&&":  80,
-  "&":   80,
-  "<":   90,
-  "<=":  90,
-  ">":   90,
-  ">=":  90,
-  "==":  90,
-  "!=":  90,
-  "+":   100,
-  "-":   100,
-  "*":   110,
-  "/":   110,
-  "%%":  120,
-  ":":   130,
-  "**":  150,
-  "^":   150,
-  "(":   170,
-  "[":   170,
-  "[[":  170,
-  "$":   180,
-  "@":   180,
-  "::":  190,
-  ":::": 190
+  "?":   1,
+  ":=":  2,
+  "=":   3,
+  "<-":  3,
+  "<<-": 3,
+  "->":  4,
+  "->>": 4,
+  "~":   5,
+  "|>":  6,
+  "=>":  6,
+  "||":  7,
+  "|":   7,
+  "&&":  8,
+  "&":   8,
+  "<":   9,
+  "<=":  9,
+  ">":   9,
+  ">=":  9,
+  "==":  9,
+  "!=":  9,
+  "+":   10,
+  "-":   10,
+  "*":   11,
+  "/":   11,
+  "%%":  12,
+  ":":   13,
+  "**":  15,
+  "^":   15,
+  "$":   18,
+  "@":   18,
+  "::":  19,
+  ":::": 19
 };
+
+// NOTE: We only include keywords which aren't included as part of special forms.
+// In other words, no keywords used in special control-flow constructions.
+const KEYWORDS = [
+  "next", "break", "TRUE", "FALSE", "NULL", "Inf", "NaN", "...",
+  "NA", "NA_integer_", "NA_real_", "NA_complex_", "NA_character_",
+];
 
 function commaSep1(rule) {
   return seq(rule, repeat(seq(",", rule)));
@@ -104,7 +108,7 @@ function operator($, rule) {
 
   // Build the operator rules.
   const unaryRule = seq(rule, optional($._expression));
-  const binaryRule = seq($._expression, rule, optional($._expression));
+  const binaryRule = seq($._expression, rule, repeat($._newline), optional($._expression));
 
   // If we don't have a unary operator rule, return this one as-is.
   if (unaryPrecedence == null) {
@@ -117,9 +121,35 @@ function operator($, rule) {
   }
 }
 
+function generateKeywordRules($) {
+  return KEYWORDS.reduce((object, item) => {
+    object[item] = $ => item;
+    return object;
+  }, {});
+}
+
+function keywordRules($) {
+  return KEYWORDS.map((value) => $[value]);
+}
+
+function generateOperatorRules($) {
+  return Object.keys(BINARY_OPERATORS).reduce((result, key) => {
+    result[key] = $ => operator($, key);
+    return result;
+  }, {});
+}
+
+function operatorRules($) {
+  return Object.keys(BINARY_OPERATORS).map((key) => { return $[key] });
+}
+
 module.exports = grammar({
 
   name: "r",
+
+  conflicts: $ => [
+    [$._expression, $._callable]
+  ],
 
   extras: $ => [
     $.comment,
@@ -157,38 +187,38 @@ module.exports = grammar({
     // NOTE: We include "(" and ")" as part of the rule here to allow
     // tree-sitter to create a "parameters" node in the AST even when
     // no parameters are declared for a function.
-    parameters: $ => seq("(", optional(commaSep1($.parameter)), ")"),
+    parameters: $ => seq($._open_paren, optional(commaSep1($.parameter)), $._close_paren),
 
     parameter: $ => choice(
       seq(field("name", $.identifier), "=", field("default", $._expression)),
-      field("name", choice($.identifier, $.dots)),
+      field("name", choice($.identifier, $["..."])),
     ),
 
     // Control flow.
     if: $ => prec.right(seq(
       "if",
-      "(",
+      $._open_paren,
       field("condition", $._expression),
-      ")",
+      $._close_paren,
       field("consequence", optional($._expression)),
       field("alternative", optional(seq("else", $._expression)))
     )),
 
     for: $ => prec.right(seq(
       "for",
-      "(",
+      $._open_paren,
       field("variable", $.identifier),
       "in",
       field("sequence", $._expression),
-      ")",
+      $._close_paren,
       field("body", optional($._expression))
     )),
 
     while: $ => prec.right(seq(
       "while",
-      "(",
+      $._open_paren,
       field("condition", $._expression),
-      ")",
+      $._close_paren,
       field("body", optional($._expression))
     )),
 
@@ -211,85 +241,32 @@ module.exports = grammar({
       optional($._close_paren)
     )),
 
-    // Call and subset operators. Special handling as they can receive
-    // multiple arguments separated by commas.
-    call:    $ => prec.right(BINARY_OPERATORS["("],  seq($._expression, alias($._call_arguments, $.arguments))),
-    subset:  $ => prec.right(BINARY_OPERATORS["["],  seq($._expression, alias($._subset_arguments, $.arguments))),
-    subset2: $ => prec.right(BINARY_OPERATORS["[["], seq($._expression, alias($._subset2_arguments, $.arguments))),
+    // Function calls.
+    call: $ => prec.right(seq($._callable, alias($._call_arguments, $.arguments), optional($._newline))),
+    subset:  $ => prec.right(seq($._callable, alias($._subset_arguments, $.arguments))),
+    subset2: $ => prec.right(seq($._callable, alias($._subset2_arguments, $.arguments))),
 
     // Dummy rule; used for aliasing so we can easily search the AST.
     arguments: $ => $._expression,
 
     // The actual matching rules for arguments in each of the above.
-    _call_arguments:    $ => prec.right(seq($._open_paren,    repeat(choice(",", $.argument)), optional($._close_paren))),
-    _subset_arguments:  $ => prec.right(seq($._open_bracket,  repeat(choice(",", $.argument)), optional($._open_bracket))),
-    _subset2_arguments: $ => prec.right(seq($._open_bracket2, repeat(choice(",", $.argument)), optional($._open_bracket2))),
+    _call_arguments:    $ => prec.right(seq($._open_paren,    repeat(choice($.comma, $.argument)), optional($._close_paren))),
+    _subset_arguments:  $ => prec.right(seq($._open_bracket,  repeat(choice($.comma, $.argument)), optional($._close_bracket))),
+    _subset2_arguments: $ => prec.right(seq($._open_bracket2, repeat(choice($.comma, $.argument)), optional($._close_bracket2))),
 
     // An argument; either named or unnamed.
     argument: $ => prec.right(choice(
-      seq(field("name", $.identifier), "=", optional(field("value", $._expression))),
-      field("value", $._expression)
+      seq(field("name", $.identifier), "=", optional(field("value", choice($._expression, $._newline)))),
+      field("value", choice($._expression, $._newline))
     )),
 
     // Operators.
-    "$":   $ => operator($, "$"),
-    ":=":  $ => operator($, ":="),
-    "=":   $ => operator($, "="),
-    "?":   $ => operator($, "?"),
-    ":=":  $ => operator($, ":="),
-    "=":   $ => operator($, "="),
-    "<-":  $ => operator($, "<-"),
-    "<<-": $ => operator($, "<<-"),
-    "->":  $ => operator($, "->"),
-    "->>": $ => operator($, "->>"),
-    "~":   $ => operator($, "~"),
-    "|>":  $ => operator($, "|>"),
-    "=>":  $ => operator($, "=>"),
-    "||":  $ => operator($, "||"),
-    "|":   $ => operator($, "|"),
-    "&&":  $ => operator($, "&&"),
-    "&":   $ => operator($, "&"),
-    "<":   $ => operator($, "<"),
-    "<=":  $ => operator($, "<="),
-    ">":   $ => operator($, ">"),
-    ">=":  $ => operator($, ">="),
-    "==":  $ => operator($, "=="),
-    "!=":  $ => operator($, "!="),
-    "+":   $ => operator($, "+"),
-    "-":   $ => operator($, "-"),
-    "*":   $ => operator($, "*"),
-    "/":   $ => operator($, "/"),
-    "%%":  $ => operator($, "%%"),
-    ":":   $ => operator($, ":"),
-    "**":  $ => operator($, "**"),
-    "^":   $ => operator($, "^"),
-    "$":   $ => operator($, "$"),
-    "@":   $ => operator($, "@"),
-    "::":  $ => operator($, "::"),
-    ":::": $ => operator($, ":::"),
+    ...generateOperatorRules(),
 
-    dots: $ => "...",
+    // Keywords.
+    ...generateKeywordRules(),
 
-    placeholder: $ => "_",
-
-    break: $ => "break",
-
-    next: $ => "next",
-
-    true: $ => "TRUE",
-    false: $ => "FALSE",
-    null: $ => "NULL",
-    inf: $ => "Inf",
-    nan: $ => "NaN",
-
-    na: $ => choice(
-      "NA",
-      "NA_character_",
-      "NA_complex_",
-      "NA_integer_",
-      "NA_real_"
-    ),
-
+    // A general R expression.
     _expression: $ => prec.right(choice(
 
       // Function definitions.
@@ -305,17 +282,27 @@ module.exports = grammar({
       $["{"], $["("],
 
       // Binary operators.
-      $["$"], $[":="], $["="], $["?"], $[":="], $["="], $["<-"], $["<<-"], $["->"], $["->>"],
-      $["~"], $["|>"], $["=>"], $["||"], $["|"], $["&&"], $["&"],
-      $["<"], $["<="], $[">"], $[">="], $["=="], $["!="],
-      $["+"], $["-"], $["*"], $["/"], $["%%"], $[":"], $["**"], $["^"],
-      $["$"], $["@"], $["::"], $[":::"],
+      ...operatorRules($),
 
-      // Keywords or special symbols.
-      $.true, $.false, $.null, $.inf, $.nan, $.na, $.dots,
+      // Keywords.
+      ...keywordRules($),
 
       // Literals.
-      $.identifier, $.integer, $.float, $.complex, $.string,
+      prec.left($.identifier), $.integer, $.float, $.complex, $.string,
+
+    )),
+
+    // Callable expressions.
+    _callable: $ => prec.right(choice(
+
+      // Calls and subsets.
+      $.call, $.subset, $.subset2,
+
+      // Blocks.
+      $["{"], $["("],
+
+      // Literals.
+      prec.left($.identifier), $.string,
 
     )),
 
@@ -332,6 +319,7 @@ module.exports = grammar({
     complex: $ => seq($._float, "i"),
 
     comment: $ => /#.*/,
+    comma: $ => ",",
 
     string: $ => choice(
       $._raw_string_literal,
