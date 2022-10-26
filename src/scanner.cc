@@ -77,6 +77,7 @@ struct Scanner {
     // check for semi-colons
     if (valid_symbols[SEMICOLON] && lexer->lookahead == ';') {
       lexer->advance(lexer, false);
+      lexer->mark_end(lexer);
       lexer->result_symbol = SEMICOLON;
       return true;
     }
@@ -89,6 +90,7 @@ struct Scanner {
     // check for an open bracket
     if (valid_symbols[OPEN_PAREN] && lexer->lookahead == '(') {
       lexer->advance(lexer, false);
+      lexer->mark_end(lexer);
       lexer->result_symbol = OPEN_PAREN;
       push(OPEN_PAREN);
       return true;
@@ -96,6 +98,7 @@ struct Scanner {
 
     if (valid_symbols[CLOSE_PAREN] && lexer->lookahead == ')') {
       lexer->advance(lexer, false);
+      lexer->mark_end(lexer);
       lexer->result_symbol = CLOSE_PAREN;
       pop(OPEN_PAREN);
       return true;
@@ -103,6 +106,7 @@ struct Scanner {
 
     if (valid_symbols[OPEN_BRACE] && lexer->lookahead == '{') {
       lexer->advance(lexer, false);
+      lexer->mark_end(lexer);
       lexer->result_symbol = OPEN_BRACE;
       push(OPEN_BRACE);
       return true;
@@ -110,6 +114,7 @@ struct Scanner {
 
     if (valid_symbols[CLOSE_BRACE] && lexer->lookahead == '}') {
       lexer->advance(lexer, false);
+      lexer->mark_end(lexer);
       lexer->result_symbol = CLOSE_BRACE;
       pop(OPEN_BRACE);
       return true;
@@ -120,9 +125,11 @@ struct Scanner {
         lexer->advance(lexer, false);
         if (lexer->lookahead == '[') {
           lexer->advance(lexer, false);
+          lexer->mark_end(lexer);
           lexer->result_symbol = OPEN_BRACKET2;
           push(OPEN_BRACKET2);
         } else {
+          lexer->mark_end(lexer);
           lexer->result_symbol = OPEN_BRACKET;
           push(OPEN_BRACKET);
         }
@@ -135,9 +142,11 @@ struct Scanner {
         lexer->advance(lexer, false);
         if (lexer->lookahead == ']' && peek() == OPEN_BRACKET2) {
           lexer->advance(lexer, false);
+          lexer->mark_end(lexer);
           lexer->result_symbol = CLOSE_BRACKET2;
           pop(OPEN_BRACKET2);
         } else {
+          lexer->mark_end(lexer);
           lexer->result_symbol = CLOSE_BRACKET;
           pop(OPEN_BRACKET);
         }
@@ -151,10 +160,10 @@ struct Scanner {
 
   bool scan_whitespace(TSLexer* lexer, const bool* valid_symbols) {
 
-    // skip whitespace
     while (std::iswspace(lexer->lookahead)) {
       if (lexer->lookahead == '\n' && peek() == OPEN_BRACE) {
         lexer->advance(lexer, true);
+        lexer->mark_end(lexer);
         lexer->result_symbol = NEWLINE;
         return true;
       }
@@ -171,6 +180,7 @@ struct Scanner {
     // https://github.com/wch/r-source/blob/52b730f217c12ba3d95dee0cd1f330d1977b5ea3/src/main/gram.y#L3102
 
     // raw string literals can start with either 'r' or 'R'
+    lexer->mark_end(lexer);
     char prefix = lexer->lookahead;
     if (prefix != 'r' && prefix != 'R') {
       return false;
@@ -239,6 +249,7 @@ struct Scanner {
       lexer->advance(lexer, false);
 
       // success!
+      lexer->mark_end(lexer);
       lexer->result_symbol = RAW_STRING_LITERAL;
       return true;
 
