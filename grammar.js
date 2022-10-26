@@ -84,6 +84,12 @@ const BINARY_OPERATORS = {
   ":::": 19
 };
 
+// All operators.
+let OPERATORS = [...new Set([
+  ...Object.keys(UNARY_OPERATORS),
+  ...Object.keys(BINARY_OPERATORS)
+])];
+
 // NOTE: We only include keywords which aren't included as part of special forms.
 // In other words, no keywords used in special control-flow constructions.
 const KEYWORDS = [
@@ -98,7 +104,7 @@ function commaSep1($, rule) {
 function operator($, rule) {
 
   // Get the precedence values.
-  const unaryPrecedence = UNARY_OPERATORS[rule];
+  const unaryPrecedence  = UNARY_OPERATORS[rule];
   const binaryPrecedence = BINARY_OPERATORS[rule];
 
   // Special handling for '%%'.
@@ -107,12 +113,14 @@ function operator($, rule) {
   }
 
   // Build the operator rules.
-  const unaryRule = seq(rule, optional($._expression));
+  const unaryRule  = seq(rule, optional($._expression));
   const binaryRule = seq($._expression, rule, repeat($._newline), optional($._expression));
 
   // If we don't have a unary operator rule, return this one as-is.
   if (unaryPrecedence == null) {
     return prec.right(binaryPrecedence, binaryRule);
+  } else if (binaryPrecedence == null) {
+    return prec.right(unaryPrecedence, unaryRule);
   } else {
     return choice(
       prec.right(unaryPrecedence, unaryRule),
@@ -133,14 +141,16 @@ function keywordRules($) {
 }
 
 function generateOperatorRules($) {
-  return Object.keys(BINARY_OPERATORS).reduce((result, key) => {
-    result[key] = $ => operator($, key);
-    return result;
+  return OPERATORS.reduce((rules, key) => {
+    rules[key] = $ => operator($, key);
+    return rules;
   }, {});
 }
 
 function operatorRules($) {
-  return Object.keys(BINARY_OPERATORS).map((key) => { return $[key] });
+  return OPERATORS.map((key) => {
+    return $[key];
+  });
 }
 
 module.exports = grammar({
@@ -190,40 +200,48 @@ module.exports = grammar({
     parameters: $ => seq($._open_paren, optional(commaSep1($, $.parameter)), $._close_paren),
 
     parameter: $ => choice(
-      seq(field("name", $.identifier), "=", field("default", $._expression)),
+      seq(field("name", $.identifier), "=", field("default", optional($._expression))),
       field("name", choice($.identifier, $["..."])),
     ),
 
     // Control flow.
     if: $ => prec.right(seq(
       "if",
+      repeat($._newline),
       $._open_paren,
       field("condition", $._expression),
       $._close_paren,
-      field("consequence", optional($._expression)),
+      repeat($._newline),
+      field("consequence", $._expression),
+      repeat($._newline),
       field("alternative", optional(seq("else", $._expression)))
     )),
 
     for: $ => prec.right(seq(
       "for",
+      repeat($._newline),
       $._open_paren,
       field("variable", $.identifier),
       "in",
       field("sequence", $._expression),
       $._close_paren,
+      repeat($._newline),
       field("body", optional($._expression))
     )),
 
     while: $ => prec.right(seq(
       "while",
+      repeat($._newline),
       $._open_paren,
       field("condition", $._expression),
       $._close_paren,
+      repeat($._newline),
       field("body", optional($._expression))
     )),
 
     repeat: $ => prec.right(seq(
       "repeat",
+      repeat($._newline),
       field("body", optional($._expression))
     )),
 
@@ -242,7 +260,7 @@ module.exports = grammar({
     )),
 
     // Function calls.
-    call: $ => prec.right(20, seq($._callable, alias($._call_arguments, $.arguments))),
+    call:    $ => prec.right(20, seq($._callable, alias($._call_arguments, $.arguments))),
     subset:  $ => prec.right(20, seq($._callable, alias($._subset_arguments, $.arguments))),
     subset2: $ => prec.right(20, seq($._callable, alias($._subset2_arguments, $.arguments))),
 
@@ -256,8 +274,8 @@ module.exports = grammar({
 
     // An argument; either named or unnamed.
     argument: $ => prec.right(choice(
-      seq(field("name", $.identifier), "=", optional(field("value", choice($._expression, $._newline)))),
-      field("value", choice($._expression, $._newline))
+      prec(1, seq(field("name", $.identifier), "=", optional(field("value", choice($._expression, $._newline))))),
+      prec(2, field("value", choice($._expression, $._newline)))
     )),
 
     // Operators.
