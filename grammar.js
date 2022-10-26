@@ -113,8 +113,11 @@ function operator($, rule) {
   }
 
   // Build the operator rules.
+  // Note: newlines aren't permitted following a '::' or ':::'.
   const unaryRule  = seq(rule, optional($._expression));
-  const binaryRule = seq($._expression, rule, repeat($._newline), optional($._expression));
+  const binaryRule = (rule === "::" || rule === ":::")
+    ? seq($._expression, rule, optional($._expression))
+    : seq($._expression, rule, repeat($._newline), optional($._expression));
 
   // If we don't have a unary operator rule, return this one as-is.
   if (unaryPrecedence == null) {
@@ -280,6 +283,8 @@ module.exports = grammar({
     // Keywords.
     ...generateKeywordRules(),
 
+    "..i": $ => token(/[.][.]\d+/),
+
     // A general R expression.
     _expression: $ => prec.right(choice(
 
@@ -301,6 +306,9 @@ module.exports = grammar({
       // Keywords.
       ...keywordRules($),
 
+      // E.g. '..1'
+      $["..i"],
+
       // Literals.
       prec.left($.identifier), $.integer, $.float, $.complex, $.string,
 
@@ -308,7 +316,8 @@ module.exports = grammar({
 
     _identifier: $ => /[.]*[\p{XID_Start}][._\p{XID_Continue}]*/,
     _quoted_identifier: $ => /`((?:\\.)|[^`\\])*`/,
-    identifier: $ => choice($._identifier, $._quoted_identifier),
+    _dotted_identifier: $ => /[.]+/,
+    identifier: $ => choice($._identifier, $._quoted_identifier, $._dotted_identifier),
 
     _hex_literal: $ => seq(/0[xX][0-9a-fA-F]+/),
     _number_literal: $ => /(?:(?:\d+(?:\.\d*)?)|(?:\.\d+))(?:[eE][+-]?\d*)?[i]?/,
