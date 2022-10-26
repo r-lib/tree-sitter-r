@@ -70,80 +70,78 @@ struct Scanner {
   bool scan(TSLexer* lexer, const bool* valid_symbols) {
 
     // scan whitespace
-    if (scan_whitespace(lexer, valid_symbols)) {
+    if (valid_symbols[NEWLINE] && scan_whitespace(lexer, valid_symbols)) {
       return true;
     }
 
     // check for semi-colons
-    if (lexer->lookahead == ';') {
+    if (valid_symbols[SEMICOLON] && lexer->lookahead == ';') {
       lexer->advance(lexer, false);
       lexer->result_symbol = SEMICOLON;
       return true;
     }
 
     // check for a raw string literal
-    if (scan_raw_string_literal(lexer, valid_symbols)) {
+    if (valid_symbols[RAW_STRING_LITERAL] && scan_raw_string_literal(lexer, valid_symbols)) {
       return true;
     }
 
     // check for an open bracket
-    if (lexer->lookahead == '(') {
+    if (valid_symbols[OPEN_PAREN] && lexer->lookahead == '(') {
       lexer->advance(lexer, false);
       lexer->result_symbol = OPEN_PAREN;
       push(OPEN_PAREN);
       return true;
     }
 
-    if (lexer->lookahead == ')') {
+    if (valid_symbols[CLOSE_PAREN] && lexer->lookahead == ')') {
       lexer->advance(lexer, false);
       lexer->result_symbol = CLOSE_PAREN;
       pop(OPEN_PAREN);
       return true;
     }
 
-    if (lexer->lookahead == '{') {
+    if (valid_symbols[OPEN_BRACE] && lexer->lookahead == '{') {
       lexer->advance(lexer, false);
       lexer->result_symbol = OPEN_BRACE;
       push(OPEN_BRACE);
       return true;
     }
 
-    if (lexer->lookahead == '}') {
+    if (valid_symbols[CLOSE_BRACE] && lexer->lookahead == '}') {
       lexer->advance(lexer, false);
       lexer->result_symbol = CLOSE_BRACE;
       pop(OPEN_BRACE);
       return true;
     }
 
-
-    if (lexer->lookahead == '[') {
-
-      lexer->advance(lexer, false);
+    if (valid_symbols[OPEN_BRACKET] || valid_symbols[OPEN_BRACKET2]) {
       if (lexer->lookahead == '[') {
         lexer->advance(lexer, false);
-        lexer->result_symbol = OPEN_BRACKET2;
-        push(OPEN_BRACKET2);
-      } else {
-        lexer->result_symbol = OPEN_BRACKET;
-        push(OPEN_BRACKET);
+        if (lexer->lookahead == '[') {
+          lexer->advance(lexer, false);
+          lexer->result_symbol = OPEN_BRACKET2;
+          push(OPEN_BRACKET2);
+        } else {
+          lexer->result_symbol = OPEN_BRACKET;
+          push(OPEN_BRACKET);
+        }
       }
-
-      return true;
     }
 
-    if (lexer->lookahead == ']') {
-
-      lexer->advance(lexer, false);
-      if (lexer->lookahead == ']' && peek() == OPEN_BRACKET2) {
+    if (valid_symbols[CLOSE_BRACKET] || valid_symbols[CLOSE_BRACKET2]) {
+      if (lexer->lookahead == ']') {
         lexer->advance(lexer, false);
-        lexer->result_symbol = CLOSE_BRACKET2;
-        pop(OPEN_BRACKET2);
-      } else {
-        lexer->result_symbol = CLOSE_BRACKET;
-        pop(OPEN_BRACKET);
+        if (lexer->lookahead == ']' && peek() == OPEN_BRACKET2) {
+          lexer->advance(lexer, false);
+          lexer->result_symbol = CLOSE_BRACKET2;
+          pop(OPEN_BRACKET2);
+        } else {
+          lexer->result_symbol = CLOSE_BRACKET;
+          pop(OPEN_BRACKET);
+        }
+        return true;
       }
-
-      return true;
     }
 
     return false;
