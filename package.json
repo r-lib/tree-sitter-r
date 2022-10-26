@@ -7,7 +7,7 @@
     "parser",
     "lexer"
   ],
-  "author": "Max Brunsfeld",
+  "author": "Kevin Ushey",
   "license": "MIT",
   "dependencies": {
     "nan": "^2.14.2"
@@ -17,6 +17,7 @@
     "tree-sitter-cli": "^0.20"
   },
   "scripts": {
+    "build": "tree-sitter build && tree-sitter build-wasm",
     "test": "tree-sitter test"
   },
   "tree-sitter": [

@@ -80,8 +80,8 @@ const BINARY_OPERATORS = {
   "^":   15,
   "$":   18,
   "@":   18,
-  "::":  19,
-  ":::": 19
+  "::":  20,
+  ":::": 20,
 };
 
 // All operators.
@@ -156,10 +156,6 @@ function operatorRules($) {
 module.exports = grammar({
 
   name: "r",
-
-  conflicts: $ => [
-    [$._expression, $._callable]
-  ],
 
   extras: $ => [
     $.comment,
@@ -260,9 +256,9 @@ module.exports = grammar({
     )),
 
     // Function calls.
-    call:    $ => prec.right(20, seq($._callable, alias($._call_arguments, $.arguments))),
-    subset:  $ => prec.right(20, seq($._callable, alias($._subset_arguments, $.arguments))),
-    subset2: $ => prec.right(20, seq($._callable, alias($._subset2_arguments, $.arguments))),
+    call:    $ => prec.right(16, seq($._expression, alias($._call_arguments, $.arguments))),
+    subset:  $ => prec.right(16, seq($._expression, alias($._subset_arguments, $.arguments))),
+    subset2: $ => prec.right(16, seq($._expression, alias($._subset2_arguments, $.arguments))),
 
     // Dummy rule; used for aliasing so we can easily search the AST.
     arguments: $ => $._expression,
@@ -310,34 +306,17 @@ module.exports = grammar({
 
     )),
 
-    // Callable expressions.
-    _callable: $ => prec.right(choice(
-
-      // Calls and subsets.
-      $.call, $.subset, $.subset2,
-
-      // Blocks.
-      $["{"], $["("],
-
-      // Higher-precedence operators.
-      $["$"], $["@"], $["::"], $[":::"],
-
-      // Literals.
-      prec.left($.identifier), $.string,
-
-    )),
-
-    _identifier: $ => /[.\p{XID_Start}][._\p{XID_Continue}]*/,
+    _identifier: $ => /[.]*[\p{XID_Start}][._\p{XID_Continue}]*/,
     _quoted_identifier: $ => /`((?:\\.)|[^`\\])*`/,
     identifier: $ => choice($._identifier, $._quoted_identifier),
 
     _hex_literal: $ => seq(/0[xX][0-9a-fA-F]+/),
     _number_literal: $ => /(?:(?:\d+(?:\.\d*)?)|(?:\.\d+))(?:[eE][+-]?\d*)?[i]?/,
-    _float: $ => choice($._hex_literal, $._number_literal),
+    _float_literal: $ => choice($._hex_literal, $._number_literal),
 
-    float: $ => $._float,
-    integer: $ => seq($._float, "L"),
-    complex: $ => seq($._float, "i"),
+    float: $ => $._float_literal,
+    integer: $ => seq($._float_literal, "L"),
+    complex: $ => seq($._float_literal, "i"),
 
     comment: $ => /#.*/,
     comma: $ => ",",
