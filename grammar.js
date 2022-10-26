@@ -91,8 +91,8 @@ const KEYWORDS = [
   "NA", "NA_integer_", "NA_real_", "NA_complex_", "NA_character_",
 ];
 
-function commaSep1(rule) {
-  return seq(rule, repeat(seq(",", rule)));
+function commaSep1($, rule) {
+  return seq(rule, repeat(seq($.comma, rule)));
 }
 
 function operator($, rule) {
@@ -187,7 +187,7 @@ module.exports = grammar({
     // NOTE: We include "(" and ")" as part of the rule here to allow
     // tree-sitter to create a "parameters" node in the AST even when
     // no parameters are declared for a function.
-    parameters: $ => seq($._open_paren, optional(commaSep1($.parameter)), $._close_paren),
+    parameters: $ => seq($._open_paren, optional(commaSep1($, $.parameter)), $._close_paren),
 
     parameter: $ => choice(
       seq(field("name", $.identifier), "=", field("default", $._expression)),
@@ -242,9 +242,9 @@ module.exports = grammar({
     )),
 
     // Function calls.
-    call: $ => prec.right(seq($._callable, alias($._call_arguments, $.arguments), optional($._newline))),
-    subset:  $ => prec.right(seq($._callable, alias($._subset_arguments, $.arguments))),
-    subset2: $ => prec.right(seq($._callable, alias($._subset2_arguments, $.arguments))),
+    call: $ => prec.right(20, seq($._callable, alias($._call_arguments, $.arguments))),
+    subset:  $ => prec.right(20, seq($._callable, alias($._subset_arguments, $.arguments))),
+    subset2: $ => prec.right(20, seq($._callable, alias($._subset2_arguments, $.arguments))),
 
     // Dummy rule; used for aliasing so we can easily search the AST.
     arguments: $ => $._expression,
@@ -300,6 +300,9 @@ module.exports = grammar({
 
       // Blocks.
       $["{"], $["("],
+
+      // Higher-precedence operators.
+      $["$"], $["@"], $["::"], $[":::"],
 
       // Literals.
       prec.left($.identifier), $.string,
