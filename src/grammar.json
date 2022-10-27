@@ -518,7 +518,7 @@
         ]
       }
     },
-    "subset": {
+    "[": {
       "type": "PREC_RIGHT",
       "value": 16,
       "content": {
@@ -540,7 +540,7 @@
         ]
       }
     },
-    "subset2": {
+    "[[": {
       "type": "PREC_RIGHT",
       "value": 16,
       "content": {
@@ -2062,59 +2062,6 @@
         ]
       }
     },
-    "%%": {
-      "type": "PREC_RIGHT",
-      "value": 12,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "FIELD",
-            "name": "lhs",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_expression"
-            }
-          },
-          {
-            "type": "FIELD",
-            "name": "operator",
-            "content": {
-              "type": "ALIAS",
-              "content": {
-                "type": "PATTERN",
-                "value": "%[^%]*%"
-              },
-              "named": false,
-              "value": "%%"
-            }
-          },
-          {
-            "type": "REPEAT",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_newline"
-            }
-          },
-          {
-            "type": "FIELD",
-            "name": "rhs",
-            "content": {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "_expression"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
     "%<>%": {
       "type": "PREC_RIGHT",
       "value": 12,
@@ -2327,6 +2274,59 @@
             "content": {
               "type": "STRING",
               "value": "%T>%"
+            }
+          },
+          {
+            "type": "REPEAT",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_newline"
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "rhs",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_expression"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "%%": {
+      "type": "PREC_RIGHT",
+      "value": 12,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "lhs",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_expression"
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "operator",
+            "content": {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "%[^%]*%"
+              },
+              "named": false,
+              "value": "%%"
             }
           },
           {
@@ -2831,11 +2831,11 @@
           },
           {
             "type": "SYMBOL",
-            "name": "subset"
+            "name": "["
           },
           {
             "type": "SYMBOL",
-            "name": "subset2"
+            "name": "[["
           },
           {
             "type": "SYMBOL",
@@ -2971,10 +2971,6 @@
           },
           {
             "type": "SYMBOL",
-            "name": "%%"
-          },
-          {
-            "type": "SYMBOL",
             "name": "%<>%"
           },
           {
@@ -2992,6 +2988,10 @@
           {
             "type": "SYMBOL",
             "name": "%T>%"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "%%"
           },
           {
             "type": "SYMBOL",
@@ -3193,14 +3193,6 @@
         }
       ]
     },
-    "comment": {
-      "type": "PATTERN",
-      "value": "#.*"
-    },
-    "comma": {
-      "type": "STRING",
-      "value": ","
-    },
     "string": {
       "type": "CHOICE",
       "members": [
@@ -3217,6 +3209,14 @@
           "value": "\"((?:\\\\.)|[^\"\\\\])*\""
         }
       ]
+    },
+    "comment": {
+      "type": "PATTERN",
+      "value": "#.*"
+    },
+    "comma": {
+      "type": "STRING",
+      "value": ","
     }
   },
   "extras": [

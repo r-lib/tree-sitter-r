@@ -74,12 +74,12 @@ const BINARY_OPERATORS = {
   "-":    10,
   "*":    11,
   "/":    11,
-  "%%":   12,
   "%<>%": 12,
   "%$%":  12,
   "%!>%": 12,
   "%>%":  12,
   "%T>%": 12,
+  "%%":   12,
   ":":    13,
   "**":   15,
   "^":    15,
@@ -271,23 +271,13 @@ module.exports = grammar({
     )),
 
     // Blocks.
-    "{": $ => prec.right(seq(
-      $._open_brace,
-      repeat(choice($._expression, $._semicolon, $._newline)),
-      optional($._close_brace),
-    )),
+    "{": $ => prec.right(seq($._open_brace, repeat(choice($._expression, $._semicolon, $._newline)), optional($._close_brace))),
+    "(": $ => prec.right(seq($._open_paren, repeat(choice($._expression, $._newline)), optional($._close_paren))),
 
-    // Parenthetical blocks.
-    "(": $ => prec.right(seq(
-      $._open_paren,
-      repeat(choice($._expression, $._newline)),
-      optional($._close_paren)
-    )),
-
-    // Function calls.
-    call:    $ => prec.right(16, seq($._expression, alias($._call_arguments, $.arguments))),
-    subset:  $ => prec.right(16, seq($._expression, alias($._subset_arguments, $.arguments))),
-    subset2: $ => prec.right(16, seq($._expression, alias($._subset2_arguments, $.arguments))),
+    // Function calls and subsetting.
+    call: $ => prec.right(16, seq($._expression, alias($._call_arguments, $.arguments))),
+    "[":  $ => prec.right(16, seq($._expression, alias($._subset_arguments, $.arguments))),
+    "[[": $ => prec.right(16, seq($._expression, alias($._subset2_arguments, $.arguments))),
 
     // Dummy rule; used for aliasing so we can easily search the AST.
     arguments: $ => $._expression,
@@ -323,7 +313,7 @@ module.exports = grammar({
       $.function,
 
       // Calls and subsets.
-      $.call, $.subset, $.subset2,
+      $.call, $["["], $["[["],
 
       // Control flow.
       $.if, $.for, $.while, $.repeat, $.break, $.next,
@@ -348,11 +338,13 @@ module.exports = grammar({
 
     )),
 
+    // Identifiers.
     _identifier: $ => /[.]*[\p{XID_Start}][._\p{XID_Continue}]*/,
     _quoted_identifier: $ => /`((?:\\.)|[^`\\])*`/,
     _dotted_identifier: $ => /[.]+/,
     identifier: $ => choice($._identifier, $._quoted_identifier, $._dotted_identifier),
 
+    // Numeric literals.
     _hex_literal: $ => seq(/0[xX][0-9a-fA-F]+/),
     _number_literal: $ => /(?:(?:\d+(?:\.\d*)?)|(?:\.\d+))(?:[eE][+-]?\d*)?[i]?/,
     _float_literal: $ => choice($._hex_literal, $._number_literal),
@@ -361,14 +353,20 @@ module.exports = grammar({
     integer: $ => seq($._float_literal, "L"),
     complex: $ => seq($._float_literal, "i"),
 
-    comment: $ => /#.*/,
-    comma: $ => ",",
-
+    // Strings.
     string: $ => choice(
       $._raw_string_literal,
       /'((?:\\.)|[^'\\])*'/,
       /"((?:\\.)|[^"\\])*"/,
     ),
+
+    // Comments.
+    comment: $ => /#.*/,
+
+    // Commas. We include these in the AST so we can figure out the
+    // argument call position. This is necessary given how R tolerates
+    // missing arguments in function calls.
+    comma: $ => ",",
 
   }
 
