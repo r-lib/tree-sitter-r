@@ -49,12 +49,12 @@ function(arg1, arg2 = 2) {}
         name: (identifier))
       (comma)
       (parameter
-        name: (...)))
+        name: (dots)))
     (call
       (identifier)
       (arguments
         (argument
-          value: (...)))))
+          value: (dots)))))
   (function_definition
     (parameters
       (parameter
@@ -79,15 +79,15 @@ c <- \(fun, ...) fun(...)
 
 (program
   (<-
-    (identifier)
-    (function_definition
+    lhs: (identifier)
+    rhs: (function_definition
       (parameters
         (parameter
           name: (identifier)))
       (identifier)))
   (<-
-    (identifier)
-    (function_definition
+    lhs: (identifier)
+    rhs: (function_definition
       (parameters
         (parameter
           name: (identifier))
@@ -103,25 +103,25 @@ c <- \(fun, ...) fun(...)
           (argument
             value: (identifier))))))
   (<-
-    (identifier)
-    (function_definition
+    lhs: (identifier)
+    rhs: (function_definition
       (parameters
         (parameter
           name: (identifier))
         (comma)
         (parameter
-          name: (...)))
+          name: (dots)))
       (call
         (identifier)
         (arguments
           (argument
-            value: (...))))))
+            value: (dots))))))
   (|>
-    (:
-      (float)
-      (float))
-    (|>
-      (call
+    lhs: (:
+      lhs: (float)
+      rhs: (float))
+    rhs: (|>
+      lhs: (call
         ({
           (function_definition
             (parameters
@@ -132,10 +132,10 @@ c <- \(fun, ...) fun(...)
                 name: (identifier)
                 default: (float)))
             (+
-              (identifier)
-              (identifier))))
+              lhs: (identifier)
+              rhs: (identifier))))
         (arguments))
-      (call
+      rhs: (call
         ({
           (function_definition
             (parameters
@@ -155,14 +155,14 @@ c <- \(fun, ...) fun(...)
             name: (identifier)
             default: (float)))
         (+
-          (identifier)
-          (float))))
+          lhs: (identifier)
+          rhs: (float))))
     (arguments))
   (function_definition
     (parameters)
     (+
-      (float)
-      (float))))
+      lhs: (float)
+      rhs: (float))))
 
 ================================================================================
 Relational
@@ -266,41 +266,41 @@ val <- foo %>% bar(1) %>% baz()
 
 (program
   (&&
-    (<=
-      (identifier)
-      (identifier))
-    (>=
-      (identifier)
-      (identifier)))
+    lhs: (<=
+      lhs: (identifier)
+      rhs: (identifier))
+    rhs: (>=
+      lhs: (identifier)
+      rhs: (identifier)))
   (<-
-    (subset
+    lhs: (subset
       (identifier)
       (arguments
         (argument
           value: (float))))
-    (||
-      (identifier)
-      (identifier)))
+    rhs: (||
+      lhs: (identifier)
+      rhs: (identifier)))
   (&&
-    (identifier)
-    (&&
-      (call
+    lhs: (identifier)
+    rhs: (&&
+      lhs: (call
         (identifier)
         (arguments
           (argument
             value: (identifier))))
-      (identifier)))
+      rhs: (identifier)))
   (<-
-    (identifier)
-    (%%
-      (identifier)
-      (%%
-        (call
+    lhs: (identifier)
+    rhs: (%%
+      lhs: (identifier)
+      rhs: (%%
+        lhs: (call
           (identifier)
           (arguments
             (argument
               value: (float))))
-        (call
+        rhs: (call
           (identifier)
           (arguments))))))
 
@@ -343,26 +343,26 @@ x |> {function(x) x}()
 
 (program
   (|>
-    (identifier)
-    (call
+    lhs: (identifier)
+    rhs: (call
       (identifier)
       (arguments)))
   (|>
-    (identifier)
-    (|>
-      (call
+    lhs: (identifier)
+    rhs: (|>
+      lhs: (call
         (identifier)
         (arguments))
-      (+
-        (call
+      rhs: (+
+        lhs: (call
           (identifier)
           (arguments))
-        (call
+        rhs: (call
           (identifier)
           (arguments)))))
   (|>
-    (identifier)
-    (call
+    lhs: (identifier)
+    rhs: (call
       ({
         (function_definition
           (parameters
@@ -382,8 +382,8 @@ foo |> bar() |> baz(data = _)
 
 (program
   (|>
-    (identifier)
-    (call
+    lhs: (identifier)
+    rhs: (call
       (identifier)
       (arguments
         (argument
@@ -394,12 +394,12 @@ foo |> bar() |> baz(data = _)
         (ERROR
           (UNEXPECTED '_')))))
   (|>
-    (identifier)
-    (|>
-      (call
+    lhs: (identifier)
+    rhs: (|>
+      lhs: (call
         (identifier)
         (arguments))
-      (call
+      rhs: (call
         (identifier)
         (arguments
           (argument
@@ -572,13 +572,13 @@ while(TRUE)
     body: (identifier))
   (while
     condition: (>
-      (identifier)
-      (float))
+      lhs: (identifier)
+      rhs: (float))
     body: (<-
-      (identifier)
-      (-
-        (identifier)
-        (float))))
+      lhs: (identifier)
+      rhs: (-
+        lhs: (identifier)
+        rhs: (float))))
   (while
     condition: (TRUE)
     body: (break))
@@ -624,8 +624,8 @@ switch(foo,
       (comma)
       (argument
         value: (=
-          (string)
-          (float)))
+          lhs: (string)
+          rhs: (float)))
       (comma)
       (argument
         name: (identifier))
@@ -676,14 +676,14 @@ foo::bar(1)
 
 (program
   (::
-    (identifier))
+    lhs: (identifier))
   (::
-    (identifier)
-    (identifier))
+    lhs: (identifier)
+    rhs: (identifier))
   (call
     (::
-      (identifier)
-      (identifier))
+      lhs: (identifier)
+      rhs: (identifier))
     (arguments
       (argument
         value: (float)))))
@@ -699,12 +699,12 @@ foo:::bar(1)
 
 (program
   (:::
-    (identifier)
-    (identifier))
+    lhs: (identifier)
+    rhs: (identifier))
   (call
     (:::
-      (identifier)
-      (identifier))
+      lhs: (identifier)
+      rhs: (identifier))
     (arguments
       (argument
         value: (float)))))
@@ -726,37 +726,37 @@ y(1) -> x
 
 (program
   (<-
-    (identifier)
-    (float))
+    lhs: (identifier)
+    rhs: (float))
   (=
-    (identifier)
-    (float))
+    lhs: (identifier)
+    rhs: (float))
   (:=
-    (identifier)
-    (float))
+    lhs: (identifier)
+    rhs: (float))
   (<<-
-    (identifier)
-    (float))
+    lhs: (identifier)
+    rhs: (float))
   (->>
-    (float)
-    (identifier))
+    lhs: (float)
+    rhs: (identifier))
   (->
-    (float)
-    (identifier))
+    lhs: (float)
+    rhs: (identifier))
   (<-
-    (identifier)
-    (call
+    lhs: (identifier)
+    rhs: (call
       (identifier)
       (arguments
         (argument
           value: (float)))))
   (->
-    (call
+    lhs: (call
       (identifier)
       (arguments
         (argument
           value: (float))))
-    (identifier)))
+    rhs: (identifier)))
 
 ================================================================================
 Calls
@@ -796,15 +796,15 @@ f(,y=)
     (arguments
       (argument
         value: (+
-          (float)
-          (float)))))
+          lhs: (float)
+          rhs: (float)))))
   (call
     (identifier)
     (arguments
       (argument
         value: (~
-          (float)
-          (float)))))
+          lhs: (float)
+          rhs: (float)))))
   (call
     (identifier)
     (arguments
@@ -834,8 +834,8 @@ f(,y=)
       (argument
         name: (identifier)
         value: (+
-          (float)
-          (float)))))
+          lhs: (float)
+          rhs: (float)))))
   (call
     (identifier)
     (arguments
@@ -883,14 +883,14 @@ f(,y=)
     (arguments
       (argument
         value: (=
-          (string)))
+          lhs: (string)))
       (comma)))
   (call
     (identifier)
     (arguments
       (argument
         value: (=
-          (...)))
+          lhs: (dots)))
       (comma)))
   (call
     (identifier)
