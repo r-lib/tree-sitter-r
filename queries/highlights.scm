@@ -1,28 +1,29 @@
 ; highlights.scm
 
+;; Comments
 (comment) @comment
 
-; Numeric literals
+;; Numeric literals
 [
  (integer)
  (float)
  (complex)
 ] @constant.builtin
 
-; Strings
+;; Strings
 (string)  @string
 
-; Parameters
+;; Parameters
 (parameters (parameter name: (identifier) @variable.parameter))
 (arguments  (argument  name: (identifier) @variable.parameter))
 
-; Operators
+;; Operators
 [
   "?" ":=" "=" "<-" "<<-" "->" "->>"
   "~" "|>" "=>" "||" "|" "&&" "&"
   "<" "<=" ">" ">=" "==" "!="
   "+" "-" "*" "/"
-  "::" ":::"
+  "::" ":::" "%%"
   "**" "^"
   "$" "@"
 ] @operator
@@ -33,12 +34,13 @@
   "{"  "}"
   "["  "]"
   "[[" "]]"
-] @operator
+] @punctuation.bracket
+
+(comma) @puntuation.delimiter
 
 ; Keywords
 [
-  (next) (break) (NULL) (Inf) (NaN) (dots)
-  (NA) (NA_integer_) (NA_real_) (NA_complex_) (NA_character_)
+  (return) (next) (break) (NULL)
 ] @keyword
 
 [
@@ -54,8 +56,8 @@
 ] @keyword
 
 [
-  (TRUE)
-  (FALSE)
+  (Inf) (NaN) (dots) (TRUE) (FALSE)
+  (NA) (NA_integer_) (NA_real_) (NA_complex_) (NA_character_)
 ] @constant.builtin
 
 ; Calls

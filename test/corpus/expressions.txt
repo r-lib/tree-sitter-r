@@ -16,13 +16,13 @@ function(arg1, arg2 = 2) {}
 --------------------------------------------------------------------------------
 
 (program
-  (function_definition
+  (function
     (parameters)
     (float))
-  (function_definition
+  (function
     (parameters)
     ({))
-  (function_definition
+  (function
     (parameters
       (parameter
         name: (identifier))
@@ -31,7 +31,7 @@ function(arg1, arg2 = 2) {}
         name: (identifier)))
     ({
       (identifier)))
-  (function_definition
+  (function
     (parameters
       (parameter
         name: (identifier))
@@ -39,11 +39,11 @@ function(arg1, arg2 = 2) {}
       (parameter
         name: (identifier)))
     (call
-      (identifier)
+      (return)
       (arguments
         (argument
           value: (identifier)))))
-  (function_definition
+  (function
     (parameters
       (parameter
         name: (identifier))
@@ -55,7 +55,7 @@ function(arg1, arg2 = 2) {}
       (arguments
         (argument
           value: (dots)))))
-  (function_definition
+  (function
     (parameters
       (parameter
         name: (identifier))
@@ -80,14 +80,14 @@ c <- \(fun, ...) fun(...)
 (program
   (<-
     lhs: (identifier)
-    rhs: (function_definition
+    rhs: (function
       (parameters
         (parameter
           name: (identifier)))
       (identifier)))
   (<-
     lhs: (identifier)
-    rhs: (function_definition
+    rhs: (function
       (parameters
         (parameter
           name: (identifier))
@@ -104,7 +104,7 @@ c <- \(fun, ...) fun(...)
             value: (identifier))))))
   (<-
     lhs: (identifier)
-    rhs: (function_definition
+    rhs: (function
       (parameters
         (parameter
           name: (identifier))
@@ -123,7 +123,7 @@ c <- \(fun, ...) fun(...)
     rhs: (|>
       lhs: (call
         ({
-          (function_definition
+          (function
             (parameters
               (parameter
                 name: (identifier))
@@ -137,7 +137,7 @@ c <- \(fun, ...) fun(...)
         (arguments))
       rhs: (call
         ({
-          (function_definition
+          (function
             (parameters
               (parameter
                 name: (identifier)))
@@ -149,7 +149,7 @@ c <- \(fun, ...) fun(...)
         (arguments))))
   (call
     ({
-      (function_definition
+      (function
         (parameters
           (parameter
             name: (identifier)
@@ -158,7 +158,7 @@ c <- \(fun, ...) fun(...)
           lhs: (identifier)
           rhs: (float))))
     (arguments))
-  (function_definition
+  (function
     (parameters)
     (+
       lhs: (float)
@@ -292,9 +292,9 @@ val <- foo %>% bar(1) %>% baz()
       rhs: (identifier)))
   (<-
     lhs: (identifier)
-    rhs: (%%
+    rhs: (%>%
       lhs: (identifier)
-      rhs: (%%
+      rhs: (%>%
         lhs: (call
           (identifier)
           (arguments
@@ -322,7 +322,7 @@ x %some text% y
   (%%
     (identifier)
     (identifier))
-  (%%
+  (%>%
     (identifier)
     (identifier))
   (%%
@@ -364,7 +364,7 @@ x |> {function(x) x}()
     lhs: (identifier)
     rhs: (call
       ({
-        (function_definition
+        (function
           (parameters
             (parameter
               name: (identifier)))
