@@ -273,7 +273,7 @@ val <- foo %>% bar(1) %>% baz()
       lhs: (identifier)
       rhs: (identifier)))
   (<-
-    lhs: (subset
+    lhs: ([
       (identifier)
       (arguments
         (argument
@@ -419,12 +419,12 @@ foo[]
 --------------------------------------------------------------------------------
 
 (program
-  (subset
+  ([
     (identifier)
     (arguments
       (argument
         (identifier))))
-  (subset
+  ([
     (identifier)
     (arguments
       (argument
@@ -432,13 +432,13 @@ foo[]
       (comma)
       (argument
         (float))))
-  (subset
+  ([
     (identifier)
     (arguments
       (argument
         (float))
       (comma)))
-  (subset
+  ([
     (identifier)
     (arguments)))
 
@@ -453,12 +453,12 @@ foo[[]]
 --------------------------------------------------------------------------------
 
 (program
-  (subset2
+  ([[
     (identifier)
     (arguments
       (argument
         (identifier))))
-  (subset2
+  ([[
     (identifier)
     (arguments
       (argument
@@ -466,7 +466,7 @@ foo[[]]
       (comma)
       (argument
         (identifier))))
-  (subset2
+  ([[
     (identifier)
     (arguments)))
 
@@ -1028,7 +1028,7 @@ TRUE ? FALSE = NA
       (float)
       (NULL)))
   (<-
-    (subset2
+    ([[
       ($
         (::
           (identifier)
