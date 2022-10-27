@@ -33,7 +33,7 @@ struct Scanner {
       return;
     }
 
-    auto back = tokens_.back();
+    TokenType back = tokens_.back();
     if (token != back) {
       return;
     }
