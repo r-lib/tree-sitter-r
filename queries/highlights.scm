@@ -1,102 +1,41 @@
 ; highlights.scm
 
-
-; Literals
-
-(integer) @number
-
-(float) @float
-
-(complex) @number
-
-(string) @string
-(string (escape_sequence) @string.escape)
-
 (comment) @comment
 
-(identifier) @variable
+; Literals
+(integer) @number
+(float) @float
+(complex) @number
+(string) @string
 
-(formal_parameters (identifier) @parameter)
-(formal_parameters (default_parameter (identifier) @parameter))
+;; Identifiers, etc
+(identifier) @variable
+(parameters (parameter name: (identifier) @parameter))
 
 ; Operators
 [
- "="
- "<-"
- "<<-"
- "->>"
- "->"
+  "?" ":=" "=" "<-" "<<-" "->" "->>"
+  "~" "|>" "=>" "||" "|" "&&" "&"
+  "<" "<=" ">" ">=" "==" "!="
+  "+" "-" "*" "/"
+  "::" ":::"
+  "**" "^"
+  "$" "@"
 ] @operator
 
-(unary operator: [
-  "-"
-  "+"
-  "!"
-  "~"
-] @operator)
-
-(binary operator: [
-  "-"
-  "+"
-  "*"
-  "/"
-  "^"
-  "<"
-  ">"
-  "<="
-  ">="
-  "=="
-  "!="
-  "||"
-  "|"
-  "&&"
-  "&"
-  ":"
-  "~"
-] @operator)
-
+; Keywords
 [
-  "|>"
-  (special)
-] @operator
-
-(lambda_function "\\" @operator)
-
-[
- "("
- ")"
- "["
- "]"
- "{"
- "}"
-] @punctuation.bracket
-
-(dollar "$" @operator)
-
-(subset2
- [
-  "[["
-  "]]"
- ] @punctuation.bracket)
-
-[
- "in"
- (dots)
- (break)
- (next)
- (inf)
+  (next) (break) (NULL) (Inf) (NaN) (dots)
+  (NA) (NA_integer_) (NA_real_) (NA_complex_) (NA_character_)
 ] @keyword
 
 [
-  (nan)
-  (na)
-  (null)
-] @type.builtin
+  "function"
+] @keyword.function
 
 [
   "if"
   "else"
-  "switch"
 ] @conditional
 
 [
@@ -106,23 +45,13 @@
 ] @repeat
 
 [
-  (true)
-  (false)
+  (TRUE)
+  (FALSE)
 ] @boolean
 
-"function" @keyword.function
-
-(call function: (identifier) @function)
-(default_argument name: (identifier) @parameter)
-
-
-(namespace_get function: (identifier) @method)
-(namespace_get_internal function: (identifier) @method)
-
-(namespace_get namespace: (identifier) @namespace
- "::" @operator)
-(namespace_get_internal namespace: (identifier) @namespace
- ":::" @operator)
+; Calls
+(call (identifier) @function)
+(call (arguments (argument name: (identifier) @parameter)))
 
 ; Error
 (ERROR) @error

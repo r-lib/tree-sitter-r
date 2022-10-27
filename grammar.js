@@ -93,7 +93,7 @@ let OPERATORS = [...new Set([
 // NOTE: We only include keywords which aren't included as part of special forms.
 // In other words, no keywords used in special control-flow constructions.
 const KEYWORDS = [
-  "next", "break", "TRUE", "FALSE", "NULL", "Inf", "NaN", "...",
+  "next", "break", "TRUE", "FALSE", "NULL", "Inf", "NaN",
   "NA", "NA_integer_", "NA_real_", "NA_complex_", "NA_character_",
 ];
 
@@ -116,8 +116,8 @@ function operator($, rule) {
   // Note: newlines aren't permitted following a '::' or ':::'.
   const unaryRule  = seq(rule, optional($._expression));
   const binaryRule = (rule === "::" || rule === ":::")
-    ? seq($._expression, rule, optional($._expression))
-    : seq($._expression, rule, repeat($._newline), optional($._expression));
+    ? seq(field("lhs", $._expression), rule, field("rhs", optional($._expression)))
+    : seq(field("lhs", $._expression), rule, repeat($._newline), field("rhs", optional($._expression)));
 
   // If we don't have a unary operator rule, return this one as-is.
   if (unaryPrecedence == null) {
@@ -200,7 +200,7 @@ module.exports = grammar({
 
     parameter: $ => choice(
       seq(field("name", $.identifier), "=", field("default", optional($._expression))),
-      field("name", choice($.identifier, $["..."])),
+      field("name", choice($.identifier, $.dots))
     ),
 
     // Control flow.
@@ -284,6 +284,7 @@ module.exports = grammar({
     ...generateKeywordRules(),
 
     "..i": $ => token(/[.][.]\d+/),
+    dots: $ => token("..."),
 
     // A general R expression.
     _expression: $ => prec.right(choice(
@@ -305,6 +306,8 @@ module.exports = grammar({
 
       // Keywords.
       ...keywordRules($),
+
+      $.dots,
 
       // E.g. '..1'
       $["..i"],
