@@ -5,7 +5,3 @@ target
 *.log
 *.wasm
 
-src/node-types.json
-src/parser.c
-src/grammar.json
-
