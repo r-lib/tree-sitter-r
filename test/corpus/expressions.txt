@@ -676,10 +676,10 @@ foo::bar(1)
 
 (program
   (::
+    (identifier))
+  (::
     (identifier)
-    (::
-      (identifier)
-      (identifier)))
+    (identifier))
   (call
     (::
       (identifier)
