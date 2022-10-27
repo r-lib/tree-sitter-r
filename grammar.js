@@ -156,6 +156,28 @@ function operatorRules($) {
   });
 }
 
+// Maps rule names to their associated tokens. Required because
+// an external scanner is used to parse brackets and parentheses,
+// but we need to ensure those brackets are tokenized as anonymous
+// nodes with a particular name in the AST.
+const BRACKETS = {
+    _open_paren:     "(",
+    _close_paren:    ")",
+    _open_brace:     "{",
+    _close_brace:    "}",
+    _open_bracket:   "[",
+    _close_bracket:  "]",
+    _open_bracket2:  "[[",
+    _close_bracket2: "]]",
+}
+
+function generateBracketAliases($) {
+  return Object.keys(BRACKETS).reduce((rules, key) => {
+    rules[key] = $ => alias($["_" + key], BRACKETS[key]);
+    return rules;
+  }, {});
+}
+
 module.exports = grammar({
 
   name: "r",
@@ -168,15 +190,15 @@ module.exports = grammar({
   externals: $ => [
     $._newline,
     $._semicolon,
-    $._open_paren,
-    $._close_paren,
-    $._open_brace,
-    $._close_brace,
-    $._open_bracket,
-    $._close_bracket,
-    $._open_bracket2,
-    $._close_bracket2,
-    $._raw_string_literal
+    $._raw_string_literal,
+    $.__open_paren,
+    $.__close_paren,
+    $.__open_brace,
+    $.__close_brace,
+    $.__open_bracket,
+    $.__close_bracket,
+    $.__open_bracket2,
+    $.__close_bracket2,
   ],
 
   word: $ => $._identifier,
@@ -283,6 +305,10 @@ module.exports = grammar({
     // Keywords.
     ...generateKeywordRules(),
 
+    // Aliases for external routines matching brackets.
+    ...generateBracketAliases(),
+
+    // Miscellaneous.
     "..i": $ => token(/[.][.]\d+/),
     dots: $ => token("..."),
 
@@ -307,6 +333,7 @@ module.exports = grammar({
       // Keywords.
       ...keywordRules($),
 
+      // Dots.
       $.dots,
 
       // E.g. '..1'

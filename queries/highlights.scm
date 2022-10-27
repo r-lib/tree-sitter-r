@@ -2,15 +2,19 @@
 
 (comment) @comment
 
-; Literals
-(integer) @number
-(float) @float
-(complex) @number
-(string) @string
+; Numeric literals
+[
+ (integer)
+ (float)
+ (complex)
+] @constant.builtin
 
-;; Identifiers, etc
-(identifier) @variable
-(parameters (parameter name: (identifier) @parameter))
+; Strings
+(string)  @string
+
+; Parameters
+(parameters (parameter name: (identifier) @variable.parameter))
+(arguments  (argument  name: (identifier) @variable.parameter))
 
 ; Operators
 [
@@ -21,6 +25,14 @@
   "::" ":::"
   "**" "^"
   "$" "@"
+] @operator
+
+; Brackets
+[
+  "("  ")"
+  "{"  "}"
+  "["  "]"
+  "[[" "]]"
 ] @operator
 
 ; Keywords
@@ -36,22 +48,17 @@
 [
   "if"
   "else"
-] @conditional
-
-[
   "while"
   "repeat"
   "for"
-] @repeat
+] @keyword
 
 [
   (TRUE)
   (FALSE)
-] @boolean
+] @constant.builtin
 
 ; Calls
-(call (identifier) @function)
-(call (arguments (argument name: (identifier) @parameter)))
 
 ; Error
 (ERROR) @error

@@ -2,7 +2,8 @@
 
 (function_definition) @local.scope
 
-(parameters (parameter name: (identifier) @local.definition))
+(argument  name: (identifier) @local.definition)
+(parameter name: (identifier) @local.definition)
 
 ("<-" lhs: (identifier) @local.definition)
 ("="  lhs: (identifier) @local.definition)

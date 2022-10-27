@@ -10,6 +10,7 @@ namespace {
 enum TokenType {
   NEWLINE,
   SEMICOLON,
+  RAW_STRING_LITERAL,
   OPEN_PAREN,
   CLOSE_PAREN,
   OPEN_BRACE,
@@ -18,7 +19,6 @@ enum TokenType {
   CLOSE_BRACKET,
   OPEN_BRACKET2,
   CLOSE_BRACKET2,
-  RAW_STRING_LITERAL,
 };
 
 struct Scanner {
