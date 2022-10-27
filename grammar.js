@@ -50,38 +50,43 @@ const UNARY_OPERATORS = {
 
 // Precedence table for binary operators.
 const BINARY_OPERATORS = {
-  "?":   1,
-  ":=":  2,
-  "=":   3,
-  "<-":  3,
-  "<<-": 3,
-  "->":  4,
-  "->>": 4,
-  "~":   5,
-  "|>":  6,
-  "=>":  6,
-  "||":  7,
-  "|":   7,
-  "&&":  8,
-  "&":   8,
-  "<":   9,
-  "<=":  9,
-  ">":   9,
-  ">=":  9,
-  "==":  9,
-  "!=":  9,
-  "+":   10,
-  "-":   10,
-  "*":   11,
-  "/":   11,
-  "%%":  12,
-  ":":   13,
-  "**":  15,
-  "^":   15,
-  "$":   18,
-  "@":   18,
-  "::":  20,
-  ":::": 20,
+  "?":    1,
+  ":=":   2,
+  "=":    3,
+  "<-":   3,
+  "<<-":  3,
+  "->":   4,
+  "->>":  4,
+  "~":    5,
+  "|>":   6,
+  "=>":   6,
+  "||":   7,
+  "|":    7,
+  "&&":   8,
+  "&":    8,
+  "<":    9,
+  "<=":   9,
+  ">":    9,
+  ">=":   9,
+  "==":   9,
+  "!=":   9,
+  "+":    10,
+  "-":    10,
+  "*":    11,
+  "/":    11,
+  "%%":   12,
+  "%<>%": 12,
+  "%$%":  12,
+  "%!>%": 12,
+  "%>%":  12,
+  "%T>%": 12,
+  ":":    13,
+  "**":   15,
+  "^":    15,
+  "$":    18,
+  "@":    18,
+  "::":   20,
+  ":::":  20,
 };
 
 // All operators.
@@ -93,7 +98,7 @@ let OPERATORS = [...new Set([
 // NOTE: We only include keywords which aren't included as part of special forms.
 // In other words, no keywords used in special control-flow constructions.
 const KEYWORDS = [
-  "next", "break", "TRUE", "FALSE", "NULL", "Inf", "NaN",
+  "return", "next", "break", "TRUE", "FALSE", "NULL", "Inf", "NaN",
   "NA", "NA_integer_", "NA_real_", "NA_complex_", "NA_character_",
 ];
 
@@ -108,18 +113,17 @@ function operator($, rule) {
   const binaryPrecedence = BINARY_OPERATORS[rule];
 
   // Special handling for '%%'.
-  if (rule === '%%') {
-    rule = /%[^%]*%/;
+  if (rule === "%%") {
+    rule = alias(/%[^%]*%/, "%%");
   }
 
   // Build the operator rules.
   // Note: newlines aren't permitted following a '::' or ':::'.
   const unaryRule  = seq(rule, optional($._expression));
   const binaryRule = (rule === "::" || rule === ":::")
-    ? seq(field("lhs", $._expression), rule, field("rhs", optional($._expression)))
-    : seq(field("lhs", $._expression), rule, repeat($._newline), field("rhs", optional($._expression)));
+    ? seq(field("lhs", $._expression), field("operator", rule), field("rhs", optional($._expression)))
+    : seq(field("lhs", $._expression), field("operator", rule), repeat($._newline), field("rhs", optional($._expression)));
 
-  // If we don't have a unary operator rule, return this one as-is.
   if (unaryPrecedence == null) {
     return prec.right(binaryPrecedence, binaryRule);
   } else if (binaryPrecedence == null) {
@@ -209,7 +213,7 @@ module.exports = grammar({
     program: $ => repeat(choice($._expression, $._semicolon, $._newline)),
 
     // Function definitions.
-    function_definition: $ => prec.right(seq(
+    function: $ => prec.right(seq(
       choice("\\", "function"),
       $.parameters,
       optional($._expression)
@@ -316,7 +320,7 @@ module.exports = grammar({
     _expression: $ => prec.right(choice(
 
       // Function definitions.
-      $.function_definition,
+      $.function,
 
       // Calls and subsets.
       $.call, $.subset, $.subset2,

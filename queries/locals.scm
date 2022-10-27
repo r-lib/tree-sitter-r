@@ -1,6 +1,6 @@
 ; locals.scm
 
-(function_definition) @local.scope
+(function) @local.scope
 
 (argument  name: (identifier) @local.definition)
 (parameter name: (identifier) @local.definition)
