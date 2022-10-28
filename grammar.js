@@ -222,14 +222,18 @@ module.exports = grammar({
     // Function definitions.
     function: $ => prec.right(seq(
       choice("\\", "function"),
-      $.parameters,
+      field("parameters", $.parameters),
       optional($._expression)
     )),
 
     // NOTE: We include "(" and ")" as part of the rule here to allow
     // tree-sitter to create a "parameters" node in the AST even when
     // no parameters are declared for a function.
-    parameters: $ => seq($._open_paren, optional(commaSep1($, $.parameter)), $._close_paren),
+    parameters: $ => seq(
+      $._open_paren,
+      optional(commaSep1($, field("parameter", $.parameter))),
+      $._close_paren
+    ),
 
     parameter: $ => choice(
       seq(field("name", $.identifier), "=", field("default", optional($._expression))),
@@ -278,25 +282,34 @@ module.exports = grammar({
     )),
 
     // Blocks.
-    "{": $ => prec.right(seq($._open_brace, repeat(choice($._expression, $._semicolon, $._newline)), optional($._close_brace))),
-    "(": $ => prec.right(seq($._open_paren, repeat(choice($._expression, $._newline)), optional($._close_paren))),
+    "{": $ => prec.right(seq(
+      $._open_brace,
+      field("body", repeat(choice($._expression, $._semicolon, $._newline))),
+      optional($._close_brace)
+    )),
+
+    "(": $ => prec.right(seq(
+      $._open_paren,
+      field("body", repeat(choice($._expression, $._newline))),
+      optional($._close_paren)
+    )),
 
     // Function calls and subsetting.
-    call: $ => prec.right(16, seq($._expression, alias($._call_arguments, $.arguments))),
-    "[":  $ => prec.right(16, seq($._expression, alias($._subset_arguments, $.arguments))),
-    "[[": $ => prec.right(16, seq($._expression, alias($._subset2_arguments, $.arguments))),
+    call: $ => prec.right(16, seq($._expression, field("arguments", alias($._call_arguments,    $.arguments)))),
+    "[":  $ => prec.right(16, seq($._expression, field("arguments", alias($._subset_arguments,  $.arguments)))),
+    "[[": $ => prec.right(16, seq($._expression, field("arguments", alias($._subset2_arguments, $.arguments)))),
 
     // Dummy rule; used for aliasing so we can easily search the AST.
     arguments: $ => $._expression,
 
     // The actual matching rules for arguments in each of the above.
-    _call_arguments:    $ => prec.right(seq($._open_paren,    repeat(choice($.comma, $.argument)), optional($._close_paren))),
-    _subset_arguments:  $ => prec.right(seq($._open_bracket,  repeat(choice($.comma, $.argument)), optional($._close_bracket))),
-    _subset2_arguments: $ => prec.right(seq($._open_bracket2, repeat(choice($.comma, $.argument)), optional($._close_bracket2))),
+    _call_arguments:    $ => prec.right(seq($._open_paren,    repeat(choice($.comma, field("argument", $.argument))), optional($._close_paren))),
+    _subset_arguments:  $ => prec.right(seq($._open_bracket,  repeat(choice($.comma, field("argument", $.argument))), optional($._close_bracket))),
+    _subset2_arguments: $ => prec.right(seq($._open_bracket2, repeat(choice($.comma, field("argument", $.argument))), optional($._close_bracket2))),
 
     // An argument; either named or unnamed.
     argument: $ => prec.right(choice(
-      prec(1, seq(field("name", choice($.dots, $.identifier)), "=", optional(field("value", choice($._expression, $._newline))))),
+      prec(1, seq(field("name", choice($.dots, $.identifier, $.string)), "=", optional(field("value", choice($._expression, $._newline))))),
       prec(2, field("value", choice($._expression, $._newline)))
     )),
 
