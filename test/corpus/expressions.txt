@@ -117,11 +117,11 @@ c <- \(fun, ...) fun(...)
           (argument
             value: (dots))))))
   (|>
-    lhs: (:
-      lhs: (float)
-      rhs: (float))
-    rhs: (|>
-      lhs: (call
+    lhs: (|>
+      lhs: (:
+        lhs: (float)
+        rhs: (float))
+      rhs: (call
         ({
           (function
             (parameters
@@ -134,19 +134,19 @@ c <- \(fun, ...) fun(...)
             (+
               lhs: (identifier)
               rhs: (identifier))))
-        (arguments))
-      rhs: (call
-        ({
-          (function
-            (parameters
-              (parameter
-                name: (identifier)))
-            (call
-              (identifier)
-              (arguments
-                (argument
-                  value: (identifier))))))
-        (arguments))))
+        (arguments)))
+    rhs: (call
+      ({
+        (function
+          (parameters
+            (parameter
+              name: (identifier)))
+          (call
+            (identifier)
+            (arguments
+              (argument
+                value: (identifier))))))
+      (arguments)))
   (call
     ({
       (function
@@ -229,13 +229,13 @@ foo(-a, bar)
 
 (program
   (-
-    (identifier))
+    operand: (identifier))
   (call
     (identifier)
     (arguments
       (argument
         value: (-
-          (identifier)))
+          operand: (identifier)))
       (comma)
       (argument
         value: (identifier)))))
@@ -282,27 +282,27 @@ val <- foo %>% bar(1) %>% baz()
       lhs: (identifier)
       rhs: (identifier)))
   (&&
-    lhs: (identifier)
-    rhs: (&&
-      lhs: (call
+    lhs: (&&
+      lhs: (identifier)
+      rhs: (call
         (identifier)
         (arguments
           (argument
-            value: (identifier))))
-      rhs: (identifier)))
+            value: (identifier)))))
+    rhs: (identifier))
   (<-
     lhs: (identifier)
     rhs: (%>%
-      lhs: (identifier)
-      rhs: (%>%
-        lhs: (call
+      lhs: (%>%
+        lhs: (identifier)
+        rhs: (call
           (identifier)
           (arguments
             (argument
-              value: (float))))
-        rhs: (call
-          (identifier)
-          (arguments))))))
+              value: (float)))))
+      rhs: (call
+        (identifier)
+        (arguments)))))
 
 ================================================================================
 Specials
@@ -348,18 +348,18 @@ x |> {function(x) x}()
       (identifier)
       (arguments)))
   (|>
-    lhs: (identifier)
-    rhs: (|>
+    lhs: (|>
+      lhs: (identifier)
+      rhs: (call
+        (identifier)
+        (arguments)))
+    rhs: (+
       lhs: (call
         (identifier)
         (arguments))
-      rhs: (+
-        lhs: (call
-          (identifier)
-          (arguments))
-        rhs: (call
-          (identifier)
-          (arguments)))))
+      rhs: (call
+        (identifier)
+        (arguments))))
   (|>
     lhs: (identifier)
     rhs: (call
@@ -394,18 +394,18 @@ foo |> bar() |> baz(data = _)
         (ERROR
           (UNEXPECTED '_')))))
   (|>
-    lhs: (identifier)
-    rhs: (|>
-      lhs: (call
-        (identifier)
-        (arguments))
+    lhs: (|>
+      lhs: (identifier)
       rhs: (call
         (identifier)
-        (arguments
-          (argument
-            name: (identifier))
-          (ERROR
-            (UNEXPECTED '_')))))))
+        (arguments)))
+    rhs: (call
+      (identifier)
+      (arguments
+        (argument
+          name: (identifier))
+        (ERROR
+          (UNEXPECTED '_'))))))
 
 ================================================================================
 Subset
@@ -676,9 +676,9 @@ foo::bar(1)
 
 (program
   (::
-    lhs: (identifier))
-  (::
-    lhs: (identifier)
+    lhs: (::
+      lhs: (identifier)
+      rhs: (identifier))
     rhs: (identifier))
   (call
     (::
@@ -882,15 +882,15 @@ f(,y=)
     (identifier)
     (arguments
       (argument
-        value: (=
-          lhs: (string)))
+        value: (string))
+      (ERROR)
       (comma)))
   (call
     (identifier)
     (arguments
       (argument
-        value: (=
-          lhs: (dots)))
+        value: (dots))
+      (ERROR)
       (comma)))
   (call
     (identifier)
@@ -1039,14 +1039,14 @@ TRUE ? FALSE = NA
           (identifier))))
     (identifier))
   (?
-    (~
-      (TRUE)
-      (~
-        (FALSE)
-        (NULL)))
     (?
-      (NA)
-      (NaN)))
+      (~
+        (~
+          (TRUE)
+          (FALSE))
+        (NULL))
+      (NA))
+    (NaN))
   (if
     (TRUE)
     (FALSE)

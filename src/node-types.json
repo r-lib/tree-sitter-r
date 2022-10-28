@@ -2,284 +2,295 @@
   {
     "type": "!",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "!",
-          "named": true
-        },
-        {
-          "type": "!=",
-          "named": true
-        },
-        {
-          "type": "$",
-          "named": true
-        },
-        {
-          "type": "%!>%",
-          "named": true
-        },
-        {
-          "type": "%$%",
-          "named": true
-        },
-        {
-          "type": "%%",
-          "named": true
-        },
-        {
-          "type": "%<>%",
-          "named": true
-        },
-        {
-          "type": "%>%",
-          "named": true
-        },
-        {
-          "type": "%T>%",
-          "named": true
-        },
-        {
-          "type": "&",
-          "named": true
-        },
-        {
-          "type": "&&",
-          "named": true
-        },
-        {
-          "type": "(",
-          "named": true
-        },
-        {
-          "type": "*",
-          "named": true
-        },
-        {
-          "type": "**",
-          "named": true
-        },
-        {
-          "type": "+",
-          "named": true
-        },
-        {
-          "type": "-",
-          "named": true
-        },
-        {
-          "type": "->",
-          "named": true
-        },
-        {
-          "type": "->>",
-          "named": true
-        },
-        {
-          "type": "..i",
-          "named": true
-        },
-        {
-          "type": "/",
-          "named": true
-        },
-        {
-          "type": ":",
-          "named": true
-        },
-        {
-          "type": "::",
-          "named": true
-        },
-        {
-          "type": ":::",
-          "named": true
-        },
-        {
-          "type": ":=",
-          "named": true
-        },
-        {
-          "type": "<",
-          "named": true
-        },
-        {
-          "type": "<-",
-          "named": true
-        },
-        {
-          "type": "<<-",
-          "named": true
-        },
-        {
-          "type": "<=",
-          "named": true
-        },
-        {
-          "type": "=",
-          "named": true
-        },
-        {
-          "type": "==",
-          "named": true
-        },
-        {
-          "type": "=>",
-          "named": true
-        },
-        {
-          "type": ">",
-          "named": true
-        },
-        {
-          "type": ">=",
-          "named": true
-        },
-        {
-          "type": "?",
-          "named": true
-        },
-        {
-          "type": "@",
-          "named": true
-        },
-        {
-          "type": "FALSE",
-          "named": true
-        },
-        {
-          "type": "Inf",
-          "named": true
-        },
-        {
-          "type": "NA",
-          "named": true
-        },
-        {
-          "type": "NA_character_",
-          "named": true
-        },
-        {
-          "type": "NA_complex_",
-          "named": true
-        },
-        {
-          "type": "NA_integer_",
-          "named": true
-        },
-        {
-          "type": "NA_real_",
-          "named": true
-        },
-        {
-          "type": "NULL",
-          "named": true
-        },
-        {
-          "type": "NaN",
-          "named": true
-        },
-        {
-          "type": "TRUE",
-          "named": true
-        },
-        {
-          "type": "[",
-          "named": true
-        },
-        {
-          "type": "[[",
-          "named": true
-        },
-        {
-          "type": "^",
-          "named": true
-        },
-        {
-          "type": "break",
-          "named": true
-        },
-        {
-          "type": "call",
-          "named": true
-        },
-        {
-          "type": "complex",
-          "named": true
-        },
-        {
-          "type": "dots",
-          "named": true
-        },
-        {
-          "type": "float",
-          "named": true
-        },
-        {
-          "type": "for",
-          "named": true
-        },
-        {
-          "type": "function",
-          "named": true
-        },
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "if",
-          "named": true
-        },
-        {
-          "type": "integer",
-          "named": true
-        },
-        {
-          "type": "next",
-          "named": true
-        },
-        {
-          "type": "repeat",
-          "named": true
-        },
-        {
-          "type": "return",
-          "named": true
-        },
-        {
-          "type": "string",
-          "named": true
-        },
-        {
-          "type": "while",
-          "named": true
-        },
-        {
-          "type": "{",
-          "named": true
-        },
-        {
-          "type": "|",
-          "named": true
-        },
-        {
-          "type": "|>",
-          "named": true
-        },
-        {
-          "type": "||",
-          "named": true
-        },
-        {
-          "type": "~",
-          "named": true
-        }
-      ]
+    "fields": {
+      "operand": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "!",
+            "named": true
+          },
+          {
+            "type": "!=",
+            "named": true
+          },
+          {
+            "type": "$",
+            "named": true
+          },
+          {
+            "type": "%!>%",
+            "named": true
+          },
+          {
+            "type": "%$%",
+            "named": true
+          },
+          {
+            "type": "%%",
+            "named": true
+          },
+          {
+            "type": "%<>%",
+            "named": true
+          },
+          {
+            "type": "%>%",
+            "named": true
+          },
+          {
+            "type": "%T>%",
+            "named": true
+          },
+          {
+            "type": "&",
+            "named": true
+          },
+          {
+            "type": "&&",
+            "named": true
+          },
+          {
+            "type": "(",
+            "named": true
+          },
+          {
+            "type": "*",
+            "named": true
+          },
+          {
+            "type": "**",
+            "named": true
+          },
+          {
+            "type": "+",
+            "named": true
+          },
+          {
+            "type": "-",
+            "named": true
+          },
+          {
+            "type": "->",
+            "named": true
+          },
+          {
+            "type": "->>",
+            "named": true
+          },
+          {
+            "type": "..i",
+            "named": true
+          },
+          {
+            "type": "/",
+            "named": true
+          },
+          {
+            "type": ":",
+            "named": true
+          },
+          {
+            "type": "::",
+            "named": true
+          },
+          {
+            "type": ":::",
+            "named": true
+          },
+          {
+            "type": ":=",
+            "named": true
+          },
+          {
+            "type": "<",
+            "named": true
+          },
+          {
+            "type": "<-",
+            "named": true
+          },
+          {
+            "type": "<<-",
+            "named": true
+          },
+          {
+            "type": "<=",
+            "named": true
+          },
+          {
+            "type": "=",
+            "named": true
+          },
+          {
+            "type": "==",
+            "named": true
+          },
+          {
+            "type": "=>",
+            "named": true
+          },
+          {
+            "type": ">",
+            "named": true
+          },
+          {
+            "type": ">=",
+            "named": true
+          },
+          {
+            "type": "?",
+            "named": true
+          },
+          {
+            "type": "@",
+            "named": true
+          },
+          {
+            "type": "FALSE",
+            "named": true
+          },
+          {
+            "type": "Inf",
+            "named": true
+          },
+          {
+            "type": "NA",
+            "named": true
+          },
+          {
+            "type": "NA_character_",
+            "named": true
+          },
+          {
+            "type": "NA_complex_",
+            "named": true
+          },
+          {
+            "type": "NA_integer_",
+            "named": true
+          },
+          {
+            "type": "NA_real_",
+            "named": true
+          },
+          {
+            "type": "NULL",
+            "named": true
+          },
+          {
+            "type": "NaN",
+            "named": true
+          },
+          {
+            "type": "TRUE",
+            "named": true
+          },
+          {
+            "type": "[",
+            "named": true
+          },
+          {
+            "type": "[[",
+            "named": true
+          },
+          {
+            "type": "^",
+            "named": true
+          },
+          {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "call",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "dots",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "for",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "if",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "next",
+            "named": true
+          },
+          {
+            "type": "repeat",
+            "named": true
+          },
+          {
+            "type": "return",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "while",
+            "named": true
+          },
+          {
+            "type": "{",
+            "named": true
+          },
+          {
+            "type": "|",
+            "named": true
+          },
+          {
+            "type": "|>",
+            "named": true
+          },
+          {
+            "type": "||",
+            "named": true
+          },
+          {
+            "type": "~",
+            "named": true
+          }
+        ]
+      },
+      "operator": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "!",
+            "named": false
+          }
+        ]
+      }
     }
   },
   {
@@ -576,7 +587,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -1148,7 +1159,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -1720,7 +1731,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -2292,7 +2303,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -2864,7 +2875,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -3436,7 +3447,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -4008,7 +4019,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -4580,7 +4591,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -5152,7 +5163,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -5724,7 +5735,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -6579,7 +6590,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -7151,7 +7162,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -7711,9 +7722,287 @@
           }
         ]
       },
-      "operator": {
+      "operand": {
         "multiple": false,
         "required": false,
+        "types": [
+          {
+            "type": "!",
+            "named": true
+          },
+          {
+            "type": "!=",
+            "named": true
+          },
+          {
+            "type": "$",
+            "named": true
+          },
+          {
+            "type": "%!>%",
+            "named": true
+          },
+          {
+            "type": "%$%",
+            "named": true
+          },
+          {
+            "type": "%%",
+            "named": true
+          },
+          {
+            "type": "%<>%",
+            "named": true
+          },
+          {
+            "type": "%>%",
+            "named": true
+          },
+          {
+            "type": "%T>%",
+            "named": true
+          },
+          {
+            "type": "&",
+            "named": true
+          },
+          {
+            "type": "&&",
+            "named": true
+          },
+          {
+            "type": "(",
+            "named": true
+          },
+          {
+            "type": "*",
+            "named": true
+          },
+          {
+            "type": "**",
+            "named": true
+          },
+          {
+            "type": "+",
+            "named": true
+          },
+          {
+            "type": "-",
+            "named": true
+          },
+          {
+            "type": "->",
+            "named": true
+          },
+          {
+            "type": "->>",
+            "named": true
+          },
+          {
+            "type": "..i",
+            "named": true
+          },
+          {
+            "type": "/",
+            "named": true
+          },
+          {
+            "type": ":",
+            "named": true
+          },
+          {
+            "type": "::",
+            "named": true
+          },
+          {
+            "type": ":::",
+            "named": true
+          },
+          {
+            "type": ":=",
+            "named": true
+          },
+          {
+            "type": "<",
+            "named": true
+          },
+          {
+            "type": "<-",
+            "named": true
+          },
+          {
+            "type": "<<-",
+            "named": true
+          },
+          {
+            "type": "<=",
+            "named": true
+          },
+          {
+            "type": "=",
+            "named": true
+          },
+          {
+            "type": "==",
+            "named": true
+          },
+          {
+            "type": "=>",
+            "named": true
+          },
+          {
+            "type": ">",
+            "named": true
+          },
+          {
+            "type": ">=",
+            "named": true
+          },
+          {
+            "type": "?",
+            "named": true
+          },
+          {
+            "type": "@",
+            "named": true
+          },
+          {
+            "type": "FALSE",
+            "named": true
+          },
+          {
+            "type": "Inf",
+            "named": true
+          },
+          {
+            "type": "NA",
+            "named": true
+          },
+          {
+            "type": "NA_character_",
+            "named": true
+          },
+          {
+            "type": "NA_complex_",
+            "named": true
+          },
+          {
+            "type": "NA_integer_",
+            "named": true
+          },
+          {
+            "type": "NA_real_",
+            "named": true
+          },
+          {
+            "type": "NULL",
+            "named": true
+          },
+          {
+            "type": "NaN",
+            "named": true
+          },
+          {
+            "type": "TRUE",
+            "named": true
+          },
+          {
+            "type": "[",
+            "named": true
+          },
+          {
+            "type": "[[",
+            "named": true
+          },
+          {
+            "type": "^",
+            "named": true
+          },
+          {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "call",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "dots",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "for",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "if",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "next",
+            "named": true
+          },
+          {
+            "type": "repeat",
+            "named": true
+          },
+          {
+            "type": "return",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "while",
+            "named": true
+          },
+          {
+            "type": "{",
+            "named": true
+          },
+          {
+            "type": "|",
+            "named": true
+          },
+          {
+            "type": "|>",
+            "named": true
+          },
+          {
+            "type": "||",
+            "named": true
+          },
+          {
+            "type": "~",
+            "named": true
+          }
+        ]
+      },
+      "operator": {
+        "multiple": false,
+        "required": true,
         "types": [
           {
             "type": "+",
@@ -7999,284 +8288,6 @@
           }
         ]
       }
-    },
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "!",
-          "named": true
-        },
-        {
-          "type": "!=",
-          "named": true
-        },
-        {
-          "type": "$",
-          "named": true
-        },
-        {
-          "type": "%!>%",
-          "named": true
-        },
-        {
-          "type": "%$%",
-          "named": true
-        },
-        {
-          "type": "%%",
-          "named": true
-        },
-        {
-          "type": "%<>%",
-          "named": true
-        },
-        {
-          "type": "%>%",
-          "named": true
-        },
-        {
-          "type": "%T>%",
-          "named": true
-        },
-        {
-          "type": "&",
-          "named": true
-        },
-        {
-          "type": "&&",
-          "named": true
-        },
-        {
-          "type": "(",
-          "named": true
-        },
-        {
-          "type": "*",
-          "named": true
-        },
-        {
-          "type": "**",
-          "named": true
-        },
-        {
-          "type": "+",
-          "named": true
-        },
-        {
-          "type": "-",
-          "named": true
-        },
-        {
-          "type": "->",
-          "named": true
-        },
-        {
-          "type": "->>",
-          "named": true
-        },
-        {
-          "type": "..i",
-          "named": true
-        },
-        {
-          "type": "/",
-          "named": true
-        },
-        {
-          "type": ":",
-          "named": true
-        },
-        {
-          "type": "::",
-          "named": true
-        },
-        {
-          "type": ":::",
-          "named": true
-        },
-        {
-          "type": ":=",
-          "named": true
-        },
-        {
-          "type": "<",
-          "named": true
-        },
-        {
-          "type": "<-",
-          "named": true
-        },
-        {
-          "type": "<<-",
-          "named": true
-        },
-        {
-          "type": "<=",
-          "named": true
-        },
-        {
-          "type": "=",
-          "named": true
-        },
-        {
-          "type": "==",
-          "named": true
-        },
-        {
-          "type": "=>",
-          "named": true
-        },
-        {
-          "type": ">",
-          "named": true
-        },
-        {
-          "type": ">=",
-          "named": true
-        },
-        {
-          "type": "?",
-          "named": true
-        },
-        {
-          "type": "@",
-          "named": true
-        },
-        {
-          "type": "FALSE",
-          "named": true
-        },
-        {
-          "type": "Inf",
-          "named": true
-        },
-        {
-          "type": "NA",
-          "named": true
-        },
-        {
-          "type": "NA_character_",
-          "named": true
-        },
-        {
-          "type": "NA_complex_",
-          "named": true
-        },
-        {
-          "type": "NA_integer_",
-          "named": true
-        },
-        {
-          "type": "NA_real_",
-          "named": true
-        },
-        {
-          "type": "NULL",
-          "named": true
-        },
-        {
-          "type": "NaN",
-          "named": true
-        },
-        {
-          "type": "TRUE",
-          "named": true
-        },
-        {
-          "type": "[",
-          "named": true
-        },
-        {
-          "type": "[[",
-          "named": true
-        },
-        {
-          "type": "^",
-          "named": true
-        },
-        {
-          "type": "break",
-          "named": true
-        },
-        {
-          "type": "call",
-          "named": true
-        },
-        {
-          "type": "complex",
-          "named": true
-        },
-        {
-          "type": "dots",
-          "named": true
-        },
-        {
-          "type": "float",
-          "named": true
-        },
-        {
-          "type": "for",
-          "named": true
-        },
-        {
-          "type": "function",
-          "named": true
-        },
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "if",
-          "named": true
-        },
-        {
-          "type": "integer",
-          "named": true
-        },
-        {
-          "type": "next",
-          "named": true
-        },
-        {
-          "type": "repeat",
-          "named": true
-        },
-        {
-          "type": "return",
-          "named": true
-        },
-        {
-          "type": "string",
-          "named": true
-        },
-        {
-          "type": "while",
-          "named": true
-        },
-        {
-          "type": "{",
-          "named": true
-        },
-        {
-          "type": "|",
-          "named": true
-        },
-        {
-          "type": "|>",
-          "named": true
-        },
-        {
-          "type": "||",
-          "named": true
-        },
-        {
-          "type": "~",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -8561,9 +8572,287 @@
           }
         ]
       },
-      "operator": {
+      "operand": {
         "multiple": false,
         "required": false,
+        "types": [
+          {
+            "type": "!",
+            "named": true
+          },
+          {
+            "type": "!=",
+            "named": true
+          },
+          {
+            "type": "$",
+            "named": true
+          },
+          {
+            "type": "%!>%",
+            "named": true
+          },
+          {
+            "type": "%$%",
+            "named": true
+          },
+          {
+            "type": "%%",
+            "named": true
+          },
+          {
+            "type": "%<>%",
+            "named": true
+          },
+          {
+            "type": "%>%",
+            "named": true
+          },
+          {
+            "type": "%T>%",
+            "named": true
+          },
+          {
+            "type": "&",
+            "named": true
+          },
+          {
+            "type": "&&",
+            "named": true
+          },
+          {
+            "type": "(",
+            "named": true
+          },
+          {
+            "type": "*",
+            "named": true
+          },
+          {
+            "type": "**",
+            "named": true
+          },
+          {
+            "type": "+",
+            "named": true
+          },
+          {
+            "type": "-",
+            "named": true
+          },
+          {
+            "type": "->",
+            "named": true
+          },
+          {
+            "type": "->>",
+            "named": true
+          },
+          {
+            "type": "..i",
+            "named": true
+          },
+          {
+            "type": "/",
+            "named": true
+          },
+          {
+            "type": ":",
+            "named": true
+          },
+          {
+            "type": "::",
+            "named": true
+          },
+          {
+            "type": ":::",
+            "named": true
+          },
+          {
+            "type": ":=",
+            "named": true
+          },
+          {
+            "type": "<",
+            "named": true
+          },
+          {
+            "type": "<-",
+            "named": true
+          },
+          {
+            "type": "<<-",
+            "named": true
+          },
+          {
+            "type": "<=",
+            "named": true
+          },
+          {
+            "type": "=",
+            "named": true
+          },
+          {
+            "type": "==",
+            "named": true
+          },
+          {
+            "type": "=>",
+            "named": true
+          },
+          {
+            "type": ">",
+            "named": true
+          },
+          {
+            "type": ">=",
+            "named": true
+          },
+          {
+            "type": "?",
+            "named": true
+          },
+          {
+            "type": "@",
+            "named": true
+          },
+          {
+            "type": "FALSE",
+            "named": true
+          },
+          {
+            "type": "Inf",
+            "named": true
+          },
+          {
+            "type": "NA",
+            "named": true
+          },
+          {
+            "type": "NA_character_",
+            "named": true
+          },
+          {
+            "type": "NA_complex_",
+            "named": true
+          },
+          {
+            "type": "NA_integer_",
+            "named": true
+          },
+          {
+            "type": "NA_real_",
+            "named": true
+          },
+          {
+            "type": "NULL",
+            "named": true
+          },
+          {
+            "type": "NaN",
+            "named": true
+          },
+          {
+            "type": "TRUE",
+            "named": true
+          },
+          {
+            "type": "[",
+            "named": true
+          },
+          {
+            "type": "[[",
+            "named": true
+          },
+          {
+            "type": "^",
+            "named": true
+          },
+          {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "call",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "dots",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "for",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "if",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "next",
+            "named": true
+          },
+          {
+            "type": "repeat",
+            "named": true
+          },
+          {
+            "type": "return",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "while",
+            "named": true
+          },
+          {
+            "type": "{",
+            "named": true
+          },
+          {
+            "type": "|",
+            "named": true
+          },
+          {
+            "type": "|>",
+            "named": true
+          },
+          {
+            "type": "||",
+            "named": true
+          },
+          {
+            "type": "~",
+            "named": true
+          }
+        ]
+      },
+      "operator": {
+        "multiple": false,
+        "required": true,
         "types": [
           {
             "type": "-",
@@ -8849,284 +9138,6 @@
           }
         ]
       }
-    },
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "!",
-          "named": true
-        },
-        {
-          "type": "!=",
-          "named": true
-        },
-        {
-          "type": "$",
-          "named": true
-        },
-        {
-          "type": "%!>%",
-          "named": true
-        },
-        {
-          "type": "%$%",
-          "named": true
-        },
-        {
-          "type": "%%",
-          "named": true
-        },
-        {
-          "type": "%<>%",
-          "named": true
-        },
-        {
-          "type": "%>%",
-          "named": true
-        },
-        {
-          "type": "%T>%",
-          "named": true
-        },
-        {
-          "type": "&",
-          "named": true
-        },
-        {
-          "type": "&&",
-          "named": true
-        },
-        {
-          "type": "(",
-          "named": true
-        },
-        {
-          "type": "*",
-          "named": true
-        },
-        {
-          "type": "**",
-          "named": true
-        },
-        {
-          "type": "+",
-          "named": true
-        },
-        {
-          "type": "-",
-          "named": true
-        },
-        {
-          "type": "->",
-          "named": true
-        },
-        {
-          "type": "->>",
-          "named": true
-        },
-        {
-          "type": "..i",
-          "named": true
-        },
-        {
-          "type": "/",
-          "named": true
-        },
-        {
-          "type": ":",
-          "named": true
-        },
-        {
-          "type": "::",
-          "named": true
-        },
-        {
-          "type": ":::",
-          "named": true
-        },
-        {
-          "type": ":=",
-          "named": true
-        },
-        {
-          "type": "<",
-          "named": true
-        },
-        {
-          "type": "<-",
-          "named": true
-        },
-        {
-          "type": "<<-",
-          "named": true
-        },
-        {
-          "type": "<=",
-          "named": true
-        },
-        {
-          "type": "=",
-          "named": true
-        },
-        {
-          "type": "==",
-          "named": true
-        },
-        {
-          "type": "=>",
-          "named": true
-        },
-        {
-          "type": ">",
-          "named": true
-        },
-        {
-          "type": ">=",
-          "named": true
-        },
-        {
-          "type": "?",
-          "named": true
-        },
-        {
-          "type": "@",
-          "named": true
-        },
-        {
-          "type": "FALSE",
-          "named": true
-        },
-        {
-          "type": "Inf",
-          "named": true
-        },
-        {
-          "type": "NA",
-          "named": true
-        },
-        {
-          "type": "NA_character_",
-          "named": true
-        },
-        {
-          "type": "NA_complex_",
-          "named": true
-        },
-        {
-          "type": "NA_integer_",
-          "named": true
-        },
-        {
-          "type": "NA_real_",
-          "named": true
-        },
-        {
-          "type": "NULL",
-          "named": true
-        },
-        {
-          "type": "NaN",
-          "named": true
-        },
-        {
-          "type": "TRUE",
-          "named": true
-        },
-        {
-          "type": "[",
-          "named": true
-        },
-        {
-          "type": "[[",
-          "named": true
-        },
-        {
-          "type": "^",
-          "named": true
-        },
-        {
-          "type": "break",
-          "named": true
-        },
-        {
-          "type": "call",
-          "named": true
-        },
-        {
-          "type": "complex",
-          "named": true
-        },
-        {
-          "type": "dots",
-          "named": true
-        },
-        {
-          "type": "float",
-          "named": true
-        },
-        {
-          "type": "for",
-          "named": true
-        },
-        {
-          "type": "function",
-          "named": true
-        },
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "if",
-          "named": true
-        },
-        {
-          "type": "integer",
-          "named": true
-        },
-        {
-          "type": "next",
-          "named": true
-        },
-        {
-          "type": "repeat",
-          "named": true
-        },
-        {
-          "type": "return",
-          "named": true
-        },
-        {
-          "type": "string",
-          "named": true
-        },
-        {
-          "type": "while",
-          "named": true
-        },
-        {
-          "type": "{",
-          "named": true
-        },
-        {
-          "type": "|",
-          "named": true
-        },
-        {
-          "type": "|>",
-          "named": true
-        },
-        {
-          "type": "||",
-          "named": true
-        },
-        {
-          "type": "~",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -9423,7 +9434,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -9995,7 +10006,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -10567,7 +10578,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -11139,7 +11150,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -11711,7 +11722,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -12283,7 +12294,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -12855,7 +12866,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -13427,7 +13438,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -13999,7 +14010,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -14571,7 +14582,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -15143,7 +15154,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -15715,7 +15726,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -16287,7 +16298,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -16859,7 +16870,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -17431,7 +17442,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -18003,7 +18014,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -18563,9 +18574,287 @@
           }
         ]
       },
-      "operator": {
+      "operand": {
         "multiple": false,
         "required": false,
+        "types": [
+          {
+            "type": "!",
+            "named": true
+          },
+          {
+            "type": "!=",
+            "named": true
+          },
+          {
+            "type": "$",
+            "named": true
+          },
+          {
+            "type": "%!>%",
+            "named": true
+          },
+          {
+            "type": "%$%",
+            "named": true
+          },
+          {
+            "type": "%%",
+            "named": true
+          },
+          {
+            "type": "%<>%",
+            "named": true
+          },
+          {
+            "type": "%>%",
+            "named": true
+          },
+          {
+            "type": "%T>%",
+            "named": true
+          },
+          {
+            "type": "&",
+            "named": true
+          },
+          {
+            "type": "&&",
+            "named": true
+          },
+          {
+            "type": "(",
+            "named": true
+          },
+          {
+            "type": "*",
+            "named": true
+          },
+          {
+            "type": "**",
+            "named": true
+          },
+          {
+            "type": "+",
+            "named": true
+          },
+          {
+            "type": "-",
+            "named": true
+          },
+          {
+            "type": "->",
+            "named": true
+          },
+          {
+            "type": "->>",
+            "named": true
+          },
+          {
+            "type": "..i",
+            "named": true
+          },
+          {
+            "type": "/",
+            "named": true
+          },
+          {
+            "type": ":",
+            "named": true
+          },
+          {
+            "type": "::",
+            "named": true
+          },
+          {
+            "type": ":::",
+            "named": true
+          },
+          {
+            "type": ":=",
+            "named": true
+          },
+          {
+            "type": "<",
+            "named": true
+          },
+          {
+            "type": "<-",
+            "named": true
+          },
+          {
+            "type": "<<-",
+            "named": true
+          },
+          {
+            "type": "<=",
+            "named": true
+          },
+          {
+            "type": "=",
+            "named": true
+          },
+          {
+            "type": "==",
+            "named": true
+          },
+          {
+            "type": "=>",
+            "named": true
+          },
+          {
+            "type": ">",
+            "named": true
+          },
+          {
+            "type": ">=",
+            "named": true
+          },
+          {
+            "type": "?",
+            "named": true
+          },
+          {
+            "type": "@",
+            "named": true
+          },
+          {
+            "type": "FALSE",
+            "named": true
+          },
+          {
+            "type": "Inf",
+            "named": true
+          },
+          {
+            "type": "NA",
+            "named": true
+          },
+          {
+            "type": "NA_character_",
+            "named": true
+          },
+          {
+            "type": "NA_complex_",
+            "named": true
+          },
+          {
+            "type": "NA_integer_",
+            "named": true
+          },
+          {
+            "type": "NA_real_",
+            "named": true
+          },
+          {
+            "type": "NULL",
+            "named": true
+          },
+          {
+            "type": "NaN",
+            "named": true
+          },
+          {
+            "type": "TRUE",
+            "named": true
+          },
+          {
+            "type": "[",
+            "named": true
+          },
+          {
+            "type": "[[",
+            "named": true
+          },
+          {
+            "type": "^",
+            "named": true
+          },
+          {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "call",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "dots",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "for",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "if",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "next",
+            "named": true
+          },
+          {
+            "type": "repeat",
+            "named": true
+          },
+          {
+            "type": "return",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "while",
+            "named": true
+          },
+          {
+            "type": "{",
+            "named": true
+          },
+          {
+            "type": "|",
+            "named": true
+          },
+          {
+            "type": "|>",
+            "named": true
+          },
+          {
+            "type": "||",
+            "named": true
+          },
+          {
+            "type": "~",
+            "named": true
+          }
+        ]
+      },
+      "operator": {
+        "multiple": false,
+        "required": true,
         "types": [
           {
             "type": "?",
@@ -18851,284 +19140,6 @@
           }
         ]
       }
-    },
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "!",
-          "named": true
-        },
-        {
-          "type": "!=",
-          "named": true
-        },
-        {
-          "type": "$",
-          "named": true
-        },
-        {
-          "type": "%!>%",
-          "named": true
-        },
-        {
-          "type": "%$%",
-          "named": true
-        },
-        {
-          "type": "%%",
-          "named": true
-        },
-        {
-          "type": "%<>%",
-          "named": true
-        },
-        {
-          "type": "%>%",
-          "named": true
-        },
-        {
-          "type": "%T>%",
-          "named": true
-        },
-        {
-          "type": "&",
-          "named": true
-        },
-        {
-          "type": "&&",
-          "named": true
-        },
-        {
-          "type": "(",
-          "named": true
-        },
-        {
-          "type": "*",
-          "named": true
-        },
-        {
-          "type": "**",
-          "named": true
-        },
-        {
-          "type": "+",
-          "named": true
-        },
-        {
-          "type": "-",
-          "named": true
-        },
-        {
-          "type": "->",
-          "named": true
-        },
-        {
-          "type": "->>",
-          "named": true
-        },
-        {
-          "type": "..i",
-          "named": true
-        },
-        {
-          "type": "/",
-          "named": true
-        },
-        {
-          "type": ":",
-          "named": true
-        },
-        {
-          "type": "::",
-          "named": true
-        },
-        {
-          "type": ":::",
-          "named": true
-        },
-        {
-          "type": ":=",
-          "named": true
-        },
-        {
-          "type": "<",
-          "named": true
-        },
-        {
-          "type": "<-",
-          "named": true
-        },
-        {
-          "type": "<<-",
-          "named": true
-        },
-        {
-          "type": "<=",
-          "named": true
-        },
-        {
-          "type": "=",
-          "named": true
-        },
-        {
-          "type": "==",
-          "named": true
-        },
-        {
-          "type": "=>",
-          "named": true
-        },
-        {
-          "type": ">",
-          "named": true
-        },
-        {
-          "type": ">=",
-          "named": true
-        },
-        {
-          "type": "?",
-          "named": true
-        },
-        {
-          "type": "@",
-          "named": true
-        },
-        {
-          "type": "FALSE",
-          "named": true
-        },
-        {
-          "type": "Inf",
-          "named": true
-        },
-        {
-          "type": "NA",
-          "named": true
-        },
-        {
-          "type": "NA_character_",
-          "named": true
-        },
-        {
-          "type": "NA_complex_",
-          "named": true
-        },
-        {
-          "type": "NA_integer_",
-          "named": true
-        },
-        {
-          "type": "NA_real_",
-          "named": true
-        },
-        {
-          "type": "NULL",
-          "named": true
-        },
-        {
-          "type": "NaN",
-          "named": true
-        },
-        {
-          "type": "TRUE",
-          "named": true
-        },
-        {
-          "type": "[",
-          "named": true
-        },
-        {
-          "type": "[[",
-          "named": true
-        },
-        {
-          "type": "^",
-          "named": true
-        },
-        {
-          "type": "break",
-          "named": true
-        },
-        {
-          "type": "call",
-          "named": true
-        },
-        {
-          "type": "complex",
-          "named": true
-        },
-        {
-          "type": "dots",
-          "named": true
-        },
-        {
-          "type": "float",
-          "named": true
-        },
-        {
-          "type": "for",
-          "named": true
-        },
-        {
-          "type": "function",
-          "named": true
-        },
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "if",
-          "named": true
-        },
-        {
-          "type": "integer",
-          "named": true
-        },
-        {
-          "type": "next",
-          "named": true
-        },
-        {
-          "type": "repeat",
-          "named": true
-        },
-        {
-          "type": "return",
-          "named": true
-        },
-        {
-          "type": "string",
-          "named": true
-        },
-        {
-          "type": "while",
-          "named": true
-        },
-        {
-          "type": "{",
-          "named": true
-        },
-        {
-          "type": "|",
-          "named": true
-        },
-        {
-          "type": "|>",
-          "named": true
-        },
-        {
-          "type": "||",
-          "named": true
-        },
-        {
-          "type": "~",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -19425,7 +19436,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -20571,7 +20582,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -20857,6 +20868,10 @@
         "multiple": false,
         "required": false,
         "types": [
+          {
+            "type": "dots",
+            "named": true
+          },
           {
             "type": "identifier",
             "named": true
@@ -25200,7 +25215,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -25772,7 +25787,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -26344,7 +26359,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!",
@@ -26904,9 +26919,287 @@
           }
         ]
       },
-      "operator": {
+      "operand": {
         "multiple": false,
         "required": false,
+        "types": [
+          {
+            "type": "!",
+            "named": true
+          },
+          {
+            "type": "!=",
+            "named": true
+          },
+          {
+            "type": "$",
+            "named": true
+          },
+          {
+            "type": "%!>%",
+            "named": true
+          },
+          {
+            "type": "%$%",
+            "named": true
+          },
+          {
+            "type": "%%",
+            "named": true
+          },
+          {
+            "type": "%<>%",
+            "named": true
+          },
+          {
+            "type": "%>%",
+            "named": true
+          },
+          {
+            "type": "%T>%",
+            "named": true
+          },
+          {
+            "type": "&",
+            "named": true
+          },
+          {
+            "type": "&&",
+            "named": true
+          },
+          {
+            "type": "(",
+            "named": true
+          },
+          {
+            "type": "*",
+            "named": true
+          },
+          {
+            "type": "**",
+            "named": true
+          },
+          {
+            "type": "+",
+            "named": true
+          },
+          {
+            "type": "-",
+            "named": true
+          },
+          {
+            "type": "->",
+            "named": true
+          },
+          {
+            "type": "->>",
+            "named": true
+          },
+          {
+            "type": "..i",
+            "named": true
+          },
+          {
+            "type": "/",
+            "named": true
+          },
+          {
+            "type": ":",
+            "named": true
+          },
+          {
+            "type": "::",
+            "named": true
+          },
+          {
+            "type": ":::",
+            "named": true
+          },
+          {
+            "type": ":=",
+            "named": true
+          },
+          {
+            "type": "<",
+            "named": true
+          },
+          {
+            "type": "<-",
+            "named": true
+          },
+          {
+            "type": "<<-",
+            "named": true
+          },
+          {
+            "type": "<=",
+            "named": true
+          },
+          {
+            "type": "=",
+            "named": true
+          },
+          {
+            "type": "==",
+            "named": true
+          },
+          {
+            "type": "=>",
+            "named": true
+          },
+          {
+            "type": ">",
+            "named": true
+          },
+          {
+            "type": ">=",
+            "named": true
+          },
+          {
+            "type": "?",
+            "named": true
+          },
+          {
+            "type": "@",
+            "named": true
+          },
+          {
+            "type": "FALSE",
+            "named": true
+          },
+          {
+            "type": "Inf",
+            "named": true
+          },
+          {
+            "type": "NA",
+            "named": true
+          },
+          {
+            "type": "NA_character_",
+            "named": true
+          },
+          {
+            "type": "NA_complex_",
+            "named": true
+          },
+          {
+            "type": "NA_integer_",
+            "named": true
+          },
+          {
+            "type": "NA_real_",
+            "named": true
+          },
+          {
+            "type": "NULL",
+            "named": true
+          },
+          {
+            "type": "NaN",
+            "named": true
+          },
+          {
+            "type": "TRUE",
+            "named": true
+          },
+          {
+            "type": "[",
+            "named": true
+          },
+          {
+            "type": "[[",
+            "named": true
+          },
+          {
+            "type": "^",
+            "named": true
+          },
+          {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "call",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "dots",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "for",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "if",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "next",
+            "named": true
+          },
+          {
+            "type": "repeat",
+            "named": true
+          },
+          {
+            "type": "return",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "while",
+            "named": true
+          },
+          {
+            "type": "{",
+            "named": true
+          },
+          {
+            "type": "|",
+            "named": true
+          },
+          {
+            "type": "|>",
+            "named": true
+          },
+          {
+            "type": "||",
+            "named": true
+          },
+          {
+            "type": "~",
+            "named": true
+          }
+        ]
+      },
+      "operator": {
+        "multiple": false,
+        "required": true,
         "types": [
           {
             "type": "~",
@@ -27192,284 +27485,6 @@
           }
         ]
       }
-    },
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "!",
-          "named": true
-        },
-        {
-          "type": "!=",
-          "named": true
-        },
-        {
-          "type": "$",
-          "named": true
-        },
-        {
-          "type": "%!>%",
-          "named": true
-        },
-        {
-          "type": "%$%",
-          "named": true
-        },
-        {
-          "type": "%%",
-          "named": true
-        },
-        {
-          "type": "%<>%",
-          "named": true
-        },
-        {
-          "type": "%>%",
-          "named": true
-        },
-        {
-          "type": "%T>%",
-          "named": true
-        },
-        {
-          "type": "&",
-          "named": true
-        },
-        {
-          "type": "&&",
-          "named": true
-        },
-        {
-          "type": "(",
-          "named": true
-        },
-        {
-          "type": "*",
-          "named": true
-        },
-        {
-          "type": "**",
-          "named": true
-        },
-        {
-          "type": "+",
-          "named": true
-        },
-        {
-          "type": "-",
-          "named": true
-        },
-        {
-          "type": "->",
-          "named": true
-        },
-        {
-          "type": "->>",
-          "named": true
-        },
-        {
-          "type": "..i",
-          "named": true
-        },
-        {
-          "type": "/",
-          "named": true
-        },
-        {
-          "type": ":",
-          "named": true
-        },
-        {
-          "type": "::",
-          "named": true
-        },
-        {
-          "type": ":::",
-          "named": true
-        },
-        {
-          "type": ":=",
-          "named": true
-        },
-        {
-          "type": "<",
-          "named": true
-        },
-        {
-          "type": "<-",
-          "named": true
-        },
-        {
-          "type": "<<-",
-          "named": true
-        },
-        {
-          "type": "<=",
-          "named": true
-        },
-        {
-          "type": "=",
-          "named": true
-        },
-        {
-          "type": "==",
-          "named": true
-        },
-        {
-          "type": "=>",
-          "named": true
-        },
-        {
-          "type": ">",
-          "named": true
-        },
-        {
-          "type": ">=",
-          "named": true
-        },
-        {
-          "type": "?",
-          "named": true
-        },
-        {
-          "type": "@",
-          "named": true
-        },
-        {
-          "type": "FALSE",
-          "named": true
-        },
-        {
-          "type": "Inf",
-          "named": true
-        },
-        {
-          "type": "NA",
-          "named": true
-        },
-        {
-          "type": "NA_character_",
-          "named": true
-        },
-        {
-          "type": "NA_complex_",
-          "named": true
-        },
-        {
-          "type": "NA_integer_",
-          "named": true
-        },
-        {
-          "type": "NA_real_",
-          "named": true
-        },
-        {
-          "type": "NULL",
-          "named": true
-        },
-        {
-          "type": "NaN",
-          "named": true
-        },
-        {
-          "type": "TRUE",
-          "named": true
-        },
-        {
-          "type": "[",
-          "named": true
-        },
-        {
-          "type": "[[",
-          "named": true
-        },
-        {
-          "type": "^",
-          "named": true
-        },
-        {
-          "type": "break",
-          "named": true
-        },
-        {
-          "type": "call",
-          "named": true
-        },
-        {
-          "type": "complex",
-          "named": true
-        },
-        {
-          "type": "dots",
-          "named": true
-        },
-        {
-          "type": "float",
-          "named": true
-        },
-        {
-          "type": "for",
-          "named": true
-        },
-        {
-          "type": "function",
-          "named": true
-        },
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "if",
-          "named": true
-        },
-        {
-          "type": "integer",
-          "named": true
-        },
-        {
-          "type": "next",
-          "named": true
-        },
-        {
-          "type": "repeat",
-          "named": true
-        },
-        {
-          "type": "return",
-          "named": true
-        },
-        {
-          "type": "string",
-          "named": true
-        },
-        {
-          "type": "while",
-          "named": true
-        },
-        {
-          "type": "{",
-          "named": true
-        },
-        {
-          "type": "|",
-          "named": true
-        },
-        {
-          "type": "|>",
-          "named": true
-        },
-        {
-          "type": "||",
-          "named": true
-        },
-        {
-          "type": "~",
-          "named": true
-        }
-      ]
     }
   },
   {
