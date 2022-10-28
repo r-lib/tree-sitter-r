@@ -33,60 +33,55 @@
 // operator precedence to match the declared precedence in the R syntax table,
 // while allowing for R's declared precedence differences between certain
 // control flow keywords.
-//
-// NOTE: For many binary operators, we choose to declare them as right-associative,
-// with an optional right-hand operand. This is mainly because it allows tree-sitter
-// to produce an AST with the binary operand created in the tree, but with the
-// operand missing when unused. This makes introspection on the AST a bit easier.
 
 // Precedence table for unary operators.
 const UNARY_OPERATORS = {
-  "?": 1,
-  "~": 5,
-  "!": 8,
-  "+": 14,
-  "-": 14
+  "?": [prec.left, 1],
+  "~": [prec.left, 5],
+  "!": [prec.left, 8],
+  "+": [prec.left, 14],
+  "-": [prec.left, 14]
 };
 
 // Precedence table for binary operators.
 const BINARY_OPERATORS = {
-  "?":    1,
-  ":=":   2,
-  "=":    3,
-  "<-":   3,
-  "<<-":  3,
-  "->":   4,
-  "->>":  4,
-  "~":    5,
-  "|>":   6,
-  "=>":   6,
-  "||":   7,
-  "|":    7,
-  "&&":   8,
-  "&":    8,
-  "<":    9,
-  "<=":   9,
-  ">":    9,
-  ">=":   9,
-  "==":   9,
-  "!=":   9,
-  "+":    10,
-  "-":    10,
-  "*":    11,
-  "/":    11,
-  "%<>%": 12,
-  "%$%":  12,
-  "%!>%": 12,
-  "%>%":  12,
-  "%T>%": 12,
-  "%%":   12,
-  ":":    13,
-  "**":   15,
-  "^":    15,
-  "$":    18,
-  "@":    18,
-  "::":   20,
-  ":::":  20,
+  "?":    [prec.left,  1],
+  ":=":   [prec.right, 2],
+  "=":    [prec.right, 3],
+  "<-":   [prec.right, 3],
+  "<<-":  [prec.right, 3],
+  "->":   [prec.left,  4],
+  "->>":  [prec.left,  4],
+  "~":    [prec.left,  5],
+  "|>":   [prec.left,  6],
+  "=>":   [prec.left,  6],
+  "||":   [prec.left,  7],
+  "|":    [prec.left,  7],
+  "&&":   [prec.left,  8],
+  "&":    [prec.left,  8],
+  "<":    [prec.left,  9],
+  "<=":   [prec.left,  9],
+  ">":    [prec.left,  9],
+  ">=":   [prec.left,  9],
+  "==":   [prec.left,  9],
+  "!=":   [prec.left,  9],
+  "+":    [prec.left,  10],
+  "-":    [prec.left,  10],
+  "*":    [prec.left,  11],
+  "/":    [prec.left,  11],
+  "%<>%": [prec.left,  12],
+  "%$%":  [prec.left,  12],
+  "%!>%": [prec.left,  12],
+  "%>%":  [prec.left,  12],
+  "%T>%": [prec.left,  12],
+  "%%":   [prec.left,  12],
+  ":":    [prec.left,  13],
+  "**":   [prec.right, 15],
+  "^":    [prec.right, 15],
+  "$":    [prec.left,  18],
+  "@":    [prec.left,  18],
+  "::":   [prec.left,  20],
+  ":::":  [prec.left,  20],
 };
 
 // All operators.
@@ -106,32 +101,44 @@ function commaSep1($, rule) {
   return seq(rule, repeat(seq($.comma, rule)));
 }
 
-function operator($, rule) {
+function unaryRule($, rule, spec) {
+  const [assoc, prec] = spec;
+  return assoc(prec, seq(field("operator", rule), field("operand", $._expression)));
+}
 
-  // Get the precedence values.
-  const unaryPrecedence  = UNARY_OPERATORS[rule];
-  const binaryPrecedence = BINARY_OPERATORS[rule];
+function binaryRule($, rule, spec) {
+
+  const [assoc, prec] = spec;
 
   // Special handling for '%%'.
   if (rule === "%%") {
     rule = alias(/%[^%]*%/, "%%");
   }
 
+  const inner = (rule === "::" || rule === ":::")
+    ? seq(field("lhs", $._expression), field("operator", rule), field("rhs", $._expression))
+    : seq(field("lhs", $._expression), field("operator", rule), repeat($._newline), field("rhs", $._expression));
+
+  return assoc(prec, inner);
+
+}
+
+function operator($, rule) {
+
+  // Get the precedence values.
+  const unarySpec  = UNARY_OPERATORS[rule];
+  const binarySpec = BINARY_OPERATORS[rule];
+
   // Build the operator rules.
   // Note: newlines aren't permitted following a '::' or ':::'.
-  const unaryRule  = seq(rule, optional($._expression));
-  const binaryRule = (rule === "::" || rule === ":::")
-    ? seq(field("lhs", $._expression), field("operator", rule), field("rhs", optional($._expression)))
-    : seq(field("lhs", $._expression), field("operator", rule), repeat($._newline), field("rhs", optional($._expression)));
-
-  if (unaryPrecedence == null) {
-    return prec.right(binaryPrecedence, binaryRule);
-  } else if (binaryPrecedence == null) {
-    return prec.right(unaryPrecedence, unaryRule);
+  if (binarySpec == null) {
+    return unaryRule($, rule, unarySpec);
+  } else if (unarySpec == null) {
+    return binaryRule($, rule, binarySpec);
   } else {
     return choice(
-      prec.right(unaryPrecedence, unaryRule),
-      prec.right(binaryPrecedence, binaryRule)
+      unaryRule($, rule, unarySpec),
+      binaryRule($, rule, binarySpec)
     );
   }
 }
@@ -289,7 +296,7 @@ module.exports = grammar({
 
     // An argument; either named or unnamed.
     argument: $ => prec.right(choice(
-      prec(1, seq(field("name", $.identifier), "=", optional(field("value", choice($._expression, $._newline))))),
+      prec(1, seq(field("name", choice($.dots, $.identifier)), "=", optional(field("value", choice($._expression, $._newline))))),
       prec(2, field("value", choice($._expression, $._newline)))
     )),
 
