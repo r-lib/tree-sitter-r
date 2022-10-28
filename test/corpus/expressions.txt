@@ -17,50 +17,50 @@ function(arg1, arg2 = 2) {}
 
 (program
   (function
-    (parameters)
+    parameters: (parameters)
     (float))
   (function
-    (parameters)
+    parameters: (parameters)
     ({))
   (function
-    (parameters
-      (parameter
+    parameters: (parameters
+      parameter: (parameter
         name: (identifier))
       (comma)
-      (parameter
+      parameter: (parameter
         name: (identifier)))
     ({
-      (identifier)))
+      body: (identifier)))
   (function
-    (parameters
-      (parameter
+    parameters: (parameters
+      parameter: (parameter
         name: (identifier))
       (comma)
-      (parameter
+      parameter: (parameter
         name: (identifier)))
     (call
       (return)
-      (arguments
-        (argument
+      arguments: (arguments
+        argument: (argument
           value: (identifier)))))
   (function
-    (parameters
-      (parameter
+    parameters: (parameters
+      parameter: (parameter
         name: (identifier))
       (comma)
-      (parameter
+      parameter: (parameter
         name: (dots)))
     (call
       (identifier)
-      (arguments
-        (argument
+      arguments: (arguments
+        argument: (argument
           value: (dots)))))
   (function
-    (parameters
-      (parameter
+    parameters: (parameters
+      parameter: (parameter
         name: (identifier))
       (comma)
-      (parameter
+      parameter: (parameter
         name: (identifier)
         default: (float)))
     ({)))
@@ -81,40 +81,40 @@ c <- \(fun, ...) fun(...)
   (<-
     lhs: (identifier)
     rhs: (function
-      (parameters
-        (parameter
+      parameters: (parameters
+        parameter: (parameter
           name: (identifier)))
       (identifier)))
   (<-
     lhs: (identifier)
     rhs: (function
-      (parameters
-        (parameter
+      parameters: (parameters
+        parameter: (parameter
           name: (identifier))
         (comma)
-        (parameter
+        parameter: (parameter
           name: (identifier)))
       (call
         (identifier)
-        (arguments
-          (argument
+        arguments: (arguments
+          argument: (argument
             value: (identifier))
           (comma)
-          (argument
+          argument: (argument
             value: (identifier))))))
   (<-
     lhs: (identifier)
     rhs: (function
-      (parameters
-        (parameter
+      parameters: (parameters
+        parameter: (parameter
           name: (identifier))
         (comma)
-        (parameter
+        parameter: (parameter
           name: (dots)))
       (call
         (identifier)
-        (arguments
-          (argument
+        arguments: (arguments
+          argument: (argument
             value: (dots))))))
   (|>
     lhs: (|>
@@ -123,43 +123,43 @@ c <- \(fun, ...) fun(...)
         rhs: (float))
       rhs: (call
         ({
-          (function
-            (parameters
-              (parameter
+          body: (function
+            parameters: (parameters
+              parameter: (parameter
                 name: (identifier))
               (comma)
-              (parameter
+              parameter: (parameter
                 name: (identifier)
                 default: (float)))
             (+
               lhs: (identifier)
               rhs: (identifier))))
-        (arguments)))
+        arguments: (arguments)))
     rhs: (call
       ({
-        (function
-          (parameters
-            (parameter
+        body: (function
+          parameters: (parameters
+            parameter: (parameter
               name: (identifier)))
           (call
             (identifier)
-            (arguments
-              (argument
+            arguments: (arguments
+              argument: (argument
                 value: (identifier))))))
-      (arguments)))
+      arguments: (arguments)))
   (call
     ({
-      (function
-        (parameters
-          (parameter
+      body: (function
+        parameters: (parameters
+          parameter: (parameter
             name: (identifier)
             default: (float)))
         (+
           lhs: (identifier)
           rhs: (float))))
-    (arguments))
+    arguments: (arguments))
   (function
-    (parameters)
+    parameters: (parameters)
     (+
       lhs: (float)
       rhs: (float))))
@@ -232,12 +232,12 @@ foo(-a, bar)
     operand: (identifier))
   (call
     (identifier)
-    (arguments
-      (argument
+    arguments: (arguments
+      argument: (argument
         value: (-
           operand: (identifier)))
       (comma)
-      (argument
+      argument: (argument
         value: (identifier)))))
 
 ================================================================================
@@ -275,8 +275,8 @@ val <- foo %>% bar(1) %>% baz()
   (<-
     lhs: ([
       (identifier)
-      (arguments
-        (argument
+      arguments: (arguments
+        argument: (argument
           value: (float))))
     rhs: (||
       lhs: (identifier)
@@ -286,8 +286,8 @@ val <- foo %>% bar(1) %>% baz()
       lhs: (identifier)
       rhs: (call
         (identifier)
-        (arguments
-          (argument
+        arguments: (arguments
+          argument: (argument
             value: (identifier)))))
     rhs: (identifier))
   (<-
@@ -297,12 +297,12 @@ val <- foo %>% bar(1) %>% baz()
         lhs: (identifier)
         rhs: (call
           (identifier)
-          (arguments
-            (argument
+          arguments: (arguments
+            argument: (argument
               value: (float)))))
       rhs: (call
         (identifier)
-        (arguments)))))
+        arguments: (arguments)))))
 
 ================================================================================
 Specials
@@ -346,30 +346,30 @@ x |> {function(x) x}()
     lhs: (identifier)
     rhs: (call
       (identifier)
-      (arguments)))
+      arguments: (arguments)))
   (|>
     lhs: (|>
       lhs: (identifier)
       rhs: (call
         (identifier)
-        (arguments)))
+        arguments: (arguments)))
     rhs: (+
       lhs: (call
         (identifier)
-        (arguments))
+        arguments: (arguments))
       rhs: (call
         (identifier)
-        (arguments))))
+        arguments: (arguments))))
   (|>
     lhs: (identifier)
     rhs: (call
       ({
-        (function
-          (parameters
-            (parameter
+        body: (function
+          parameters: (parameters
+            parameter: (parameter
               name: (identifier)))
           (identifier)))
-      (arguments))))
+      arguments: (arguments))))
 
 ================================================================================
 Pipe Placeholder
@@ -385,11 +385,11 @@ foo |> bar() |> baz(data = _)
     lhs: (identifier)
     rhs: (call
       (identifier)
-      (arguments
-        (argument
+      arguments: (arguments
+        argument: (argument
           value: (identifier))
         (comma)
-        (argument
+        argument: (argument
           name: (identifier))
         (ERROR
           (UNEXPECTED '_')))))
@@ -398,11 +398,11 @@ foo |> bar() |> baz(data = _)
       lhs: (identifier)
       rhs: (call
         (identifier)
-        (arguments)))
+        arguments: (arguments)))
     rhs: (call
       (identifier)
-      (arguments
-        (argument
+      arguments: (arguments
+        argument: (argument
           name: (identifier))
         (ERROR
           (UNEXPECTED '_'))))))
@@ -489,18 +489,18 @@ if (a.b) {
     condition: (identifier)
     consequence: (call
       (identifier)
-      (arguments
-        (argument
+      arguments: (arguments
+        argument: (argument
           value: (identifier)))))
   (if
     condition: (identifier)
     consequence: ({
-      (call
+      body: (call
         (identifier)
-        (arguments
-          (argument
+        arguments: (arguments
+          argument: (argument
             value: (identifier))))
-      (identifier))))
+      body: (identifier))))
 
 ================================================================================
 If-else
@@ -529,10 +529,10 @@ if (a) {
   (if
     condition: (identifier)
     consequence: ({
-      (identifier)
-      (identifier))
+      body: (identifier)
+      body: (identifier))
     alternative: ({
-      (identifier))))
+      body: (identifier))))
 
 ================================================================================
 for
@@ -614,23 +614,22 @@ switch(foo,
 (program
   (call
     (identifier)
-    (arguments
-      (argument
+    arguments: (arguments
+      argument: (argument
         value: (identifier))
       (comma)
-      (argument
+      argument: (argument
         name: (identifier)
         value: (float))
       (comma)
-      (argument
-        value: (=
-          lhs: (string)
-          rhs: (float)))
+      argument: (argument
+        name: (string)
+        value: (float))
       (comma)
-      (argument
+      argument: (argument
         name: (identifier))
       (comma)
-      (argument
+      argument: (argument
         value: (float)))))
 
 ================================================================================
@@ -684,8 +683,8 @@ foo::bar(1)
     (::
       lhs: (identifier)
       rhs: (identifier))
-    (arguments
-      (argument
+    arguments: (arguments
+      argument: (argument
         value: (float)))))
 
 ================================================================================
@@ -705,8 +704,8 @@ foo:::bar(1)
     (:::
       lhs: (identifier)
       rhs: (identifier))
-    (arguments
-      (argument
+    arguments: (arguments
+      argument: (argument
         value: (float)))))
 
 ================================================================================
@@ -747,14 +746,14 @@ y(1) -> x
     lhs: (identifier)
     rhs: (call
       (identifier)
-      (arguments
-        (argument
+      arguments: (arguments
+        argument: (argument
           value: (float)))))
   (->
     lhs: (call
       (identifier)
-      (arguments
-        (argument
+      arguments: (arguments
+        argument: (argument
           value: (float))))
     rhs: (identifier)))
 
@@ -785,118 +784,116 @@ f(,y=)
 (program
   (call
     (identifier)
-    (arguments))
+    arguments: (arguments))
   (call
     (identifier)
-    (arguments
-      (argument
+    arguments: (arguments
+      argument: (argument
         value: (identifier))))
   (call
     (identifier)
-    (arguments
-      (argument
+    arguments: (arguments
+      argument: (argument
         value: (+
           lhs: (float)
           rhs: (float)))))
   (call
     (identifier)
-    (arguments
-      (argument
+    arguments: (arguments
+      argument: (argument
         value: (~
           lhs: (float)
           rhs: (float)))))
   (call
     (identifier)
-    (arguments
-      (argument
+    arguments: (arguments
+      argument: (argument
         value: (identifier))
       (comma)))
   (call
     (identifier)
-    (arguments
-      (argument
+    arguments: (arguments
+      argument: (argument
         value: (identifier))
       (comma)
-      (argument
+      argument: (argument
         value: (identifier))))
   (call
     (identifier)
-    (arguments
-      (argument
+    arguments: (arguments
+      argument: (argument
         value: (identifier))
       (comma)
-      (argument
+      argument: (argument
         name: (identifier)
         value: (float))))
   (call
     (identifier)
-    (arguments
-      (argument
+    arguments: (arguments
+      argument: (argument
         name: (identifier)
         value: (+
           lhs: (float)
           rhs: (float)))))
   (call
     (identifier)
-    (arguments
-      (argument
+    arguments: (arguments
+      argument: (argument
         value: (identifier))
       (comma)
-      (argument
+      argument: (argument
         name: (identifier))))
   (call
     (identifier)
-    (arguments
-      (argument
+    arguments: (arguments
+      argument: (argument
         value: (call
           (identifier)
-          (arguments
-            (argument
+          arguments: (arguments
+            argument: (argument
               value: (identifier))
             (comma)
-            (argument
+            argument: (argument
               value: (identifier)))))))
   (call
     (identifier)
-    (arguments
+    arguments: (arguments
       (comma)))
   (call
     (identifier)
-    (arguments
-      (argument
+    arguments: (arguments
+      argument: (argument
         value: (identifier))
       (comma)))
   (call
     (identifier)
-    (arguments
+    arguments: (arguments
       (comma)
-      (argument
+      argument: (argument
         value: (identifier))))
   (call
     (identifier)
-    (arguments
-      (argument
+    arguments: (arguments
+      argument: (argument
         name: (identifier))
       (comma)))
   (call
     (identifier)
-    (arguments
-      (argument
-        value: (string))
-      (ERROR)
+    arguments: (arguments
+      argument: (argument
+        name: (string))
       (comma)))
   (call
     (identifier)
-    (arguments
-      (argument
-        value: (dots))
-      (ERROR)
+    arguments: (arguments
+      argument: (argument
+        name: (dots))
       (comma)))
   (call
     (identifier)
-    (arguments
+    arguments: (arguments
       (comma)
-      (argument
+      argument: (argument
         name: (identifier)))))
 
 ================================================================================
