@@ -223,6 +223,7 @@ module.exports = grammar({
     function: $ => prec.right(seq(
       choice("\\", "function"),
       field("parameters", $.parameters),
+      repeat($._newline),
       optional($._expression)
     )),
 
