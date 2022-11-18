@@ -27,7 +27,7 @@
   "**" "^" "$" "@"
 ] @operator
 
-; Brackets
+;; Brackets
 [
   "("  ")"
   "{"  "}"
@@ -35,9 +35,9 @@
   "[[" "]]"
 ] @punctuation.bracket
 
-(comma) @puntuation.delimiter
+(comma) @punctuation.delimiter
 
-; Keywords
+;; Keywords
 [
   (return) (next) (break) (NULL)
 ] @keyword
@@ -59,7 +59,7 @@
   (NA) (NA_integer_) (NA_real_) (NA_complex_) (NA_character_)
 ] @constant.builtin
 
-; Calls
+;; Calls
 
-; Error
+;; Error
 (ERROR) @error
