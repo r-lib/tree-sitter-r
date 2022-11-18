@@ -1,9 +1,10 @@
 [package]
 name = "tree-sitter-r"
 description = "R grammar for the tree-sitter parsing library"
-version = "0.19.5"
+version = "0.20.0"
 authors = [
-    "Jim Hester <jim.hester@rstudio.com>"
+    "Kevin Ushey <kevin@posit.co>",
+    "Jim Hester <jim.hester@rstudio.com>",
 ]
 license = "MIT"
 keywords = ["incremental", "parsing", "R"]
