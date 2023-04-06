@@ -6,6 +6,7 @@ foo
 foo2
 foo.bar
 .foo.bar
+.__NAMESPACE__.
 foo_bar
 `a "literal"`
 `another
@@ -16,6 +17,7 @@ _foo
 --------------------------------------------------------------------------------
 
 (program
+  (identifier)
   (identifier)
   (identifier)
   (identifier)

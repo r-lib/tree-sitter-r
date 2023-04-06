@@ -355,15 +355,12 @@ module.exports = grammar({
       $["..i"],
 
       // Literals.
-      prec.left($.identifier), $.integer, $.float, $.complex, $.string,
+      $.integer, $.float, $.complex, $.string,
+
+      // Identifiers.
+      prec.left($.identifier)
 
     )),
-
-    // Identifiers.
-    _identifier: $ => /[.]*[\p{XID_Start}][._\p{XID_Continue}]*/,
-    _quoted_identifier: $ => /`((?:\\.)|[^`\\])*`/,
-    _dotted_identifier: $ => /[.]+/,
-    identifier: $ => choice($._identifier, $._quoted_identifier, $._dotted_identifier),
 
     // Numeric literals.
     _hex_literal: $ => seq(/0[xX][0-9a-fA-F]+/),
@@ -380,6 +377,11 @@ module.exports = grammar({
       /'((?:\\.)|[^'\\])*'/,
       /"((?:\\.)|[^"\\])*"/,
     ),
+
+    // Identifiers.
+    _identifier: $ => /[\p{XID_Start}.][\p{XID_Continue}.]*/,
+    _quoted_identifier: $ => /`((?:\\.)|[^`\\])*`/,
+    identifier: $ => choice($._identifier, $._quoted_identifier),
 
     // Comments.
     comment: $ => /#.*/,
