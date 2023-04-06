@@ -2850,14 +2850,6 @@
             "name": "..i"
           },
           {
-            "type": "PREC_LEFT",
-            "value": 0,
-            "content": {
-              "type": "SYMBOL",
-              "name": "identifier"
-            }
-          },
-          {
             "type": "SYMBOL",
             "name": "integer"
           },
@@ -2872,38 +2864,17 @@
           {
             "type": "SYMBOL",
             "name": "string"
+          },
+          {
+            "type": "PREC_LEFT",
+            "value": 0,
+            "content": {
+              "type": "SYMBOL",
+              "name": "identifier"
+            }
           }
         ]
       }
-    },
-    "_identifier": {
-      "type": "PATTERN",
-      "value": "[.]*[\\p{XID_Start}][._\\p{XID_Continue}]*"
-    },
-    "_quoted_identifier": {
-      "type": "PATTERN",
-      "value": "`((?:\\\\.)|[^`\\\\])*`"
-    },
-    "_dotted_identifier": {
-      "type": "PATTERN",
-      "value": "[.]+"
-    },
-    "identifier": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_identifier"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_quoted_identifier"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_dotted_identifier"
-        }
-      ]
     },
     "_hex_literal": {
       "type": "SEQ",
@@ -2975,6 +2946,27 @@
         {
           "type": "PATTERN",
           "value": "\"((?:\\\\.)|[^\"\\\\])*\""
+        }
+      ]
+    },
+    "_identifier": {
+      "type": "PATTERN",
+      "value": "[\\p{XID_Start}.][\\p{XID_Continue}.]*"
+    },
+    "_quoted_identifier": {
+      "type": "PATTERN",
+      "value": "`((?:\\\\.)|[^`\\\\])*`"
+    },
+    "identifier": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_quoted_identifier"
         }
       ]
     },
