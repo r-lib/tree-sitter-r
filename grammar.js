@@ -224,7 +224,7 @@ module.exports = grammar({
       choice("\\", "function"),
       field("parameters", $.parameters),
       repeat($._newline),
-      optional($._expression)
+      optional(field("body", $._expression))
     )),
 
     // NOTE: We include "(" and ")" as part of the rule here to allow

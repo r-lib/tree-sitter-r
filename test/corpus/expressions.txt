@@ -18,10 +18,10 @@ function(arg1, arg2 = 2) {}
 (program
   (function
     parameters: (parameters)
-    (float))
+    body: (float))
   (function
     parameters: (parameters)
-    ({))
+    body: ({))
   (function
     parameters: (parameters
       parameter: (parameter
@@ -29,7 +29,7 @@ function(arg1, arg2 = 2) {}
       (comma)
       parameter: (parameter
         name: (identifier)))
-    ({
+    body: ({
       body: (identifier)))
   (function
     parameters: (parameters
@@ -38,7 +38,7 @@ function(arg1, arg2 = 2) {}
       (comma)
       parameter: (parameter
         name: (identifier)))
-    (call
+    body: (call
       (return)
       arguments: (arguments
         argument: (argument
@@ -50,7 +50,7 @@ function(arg1, arg2 = 2) {}
       (comma)
       parameter: (parameter
         name: (dots)))
-    (call
+    body: (call
       (identifier)
       arguments: (arguments
         argument: (argument
@@ -63,7 +63,7 @@ function(arg1, arg2 = 2) {}
       parameter: (parameter
         name: (identifier)
         default: (float)))
-    ({)))
+    body: ({)))
 
 ================================================================================
 Lambda Function
@@ -84,7 +84,7 @@ c <- \(fun, ...) fun(...)
       parameters: (parameters
         parameter: (parameter
           name: (identifier)))
-      (identifier)))
+      body: (identifier)))
   (<-
     lhs: (identifier)
     rhs: (function
@@ -94,7 +94,7 @@ c <- \(fun, ...) fun(...)
         (comma)
         parameter: (parameter
           name: (identifier)))
-      (call
+      body: (call
         (identifier)
         arguments: (arguments
           argument: (argument
@@ -111,7 +111,7 @@ c <- \(fun, ...) fun(...)
         (comma)
         parameter: (parameter
           name: (dots)))
-      (call
+      body: (call
         (identifier)
         arguments: (arguments
           argument: (argument
@@ -131,7 +131,7 @@ c <- \(fun, ...) fun(...)
               parameter: (parameter
                 name: (identifier)
                 default: (float)))
-            (+
+            body: (+
               lhs: (identifier)
               rhs: (identifier))))
         arguments: (arguments)))
@@ -141,7 +141,7 @@ c <- \(fun, ...) fun(...)
           parameters: (parameters
             parameter: (parameter
               name: (identifier)))
-          (call
+          body: (call
             (identifier)
             arguments: (arguments
               argument: (argument
@@ -154,13 +154,13 @@ c <- \(fun, ...) fun(...)
           parameter: (parameter
             name: (identifier)
             default: (float)))
-        (+
+        body: (+
           lhs: (identifier)
           rhs: (float))))
     arguments: (arguments))
   (function
     parameters: (parameters)
-    (+
+    body: (+
       lhs: (float)
       rhs: (float))))
 
@@ -368,7 +368,7 @@ x |> {function(x) x}()
           parameters: (parameters
             parameter: (parameter
               name: (identifier)))
-          (identifier)))
+          body: (identifier)))
       arguments: (arguments))))
 
 ================================================================================
