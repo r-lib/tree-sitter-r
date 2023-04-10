@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-r",
-  "version": "0.20.0",
+  "version": "0.20.1",
   "description": "R grammar for tree-sitter",
   "main": "bindings/node",
   "keywords": [
