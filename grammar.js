@@ -358,7 +358,9 @@ module.exports = grammar({
       $.integer, $.float, $.complex, $.string,
 
       // Identifiers.
-      prec.left($.identifier)
+      prec.left($.identifier),
+
+      $["}"], $[")"], $["]"]
 
     )),
 
@@ -390,6 +392,13 @@ module.exports = grammar({
     // argument call position. This is necessary given how R tolerates
     // missing arguments in function calls.
     comma: $ => ",",
+
+    // Check for un-matched closing brackets. This allows us to recover in
+    // cases where the parse tree is temporarily incorrect, e.g. because the
+    // user has removed the opening bracket associated with some closing bracket.
+    "}":   $ => /\}/,
+    ")":   $ => /\)/,
+    "]":   $ => /\]/
 
   }
 

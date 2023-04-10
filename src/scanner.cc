@@ -1,6 +1,8 @@
 
 #include <tree_sitter/parser.h>
 
+#include <unistd.h>
+
 #include <cwctype>
 #include <sstream>
 #include <vector>
@@ -43,14 +45,20 @@ struct Scanner {
   }
 
   TokenType peek() {
-    return tokens_.back();
+    if (tokens_.empty())
+      return NEWLINE;
+    else
+      return tokens_.back();
   }
 
   unsigned serialize(char* buffer) {
 
-    int n = tokens_.size() - 1;
+    int n = tokens_.size();
+    if (n > TREE_SITTER_SERIALIZATION_BUFFER_SIZE)
+      return 0;
+
     for (int i = 0; i < n; i++) {
-      buffer[i] = (char) tokens_[i+ 1];
+      buffer[i] = (char) tokens_[i];
     }
 
     return n;
@@ -60,7 +68,6 @@ struct Scanner {
   void deserialize(const char* buffer, unsigned n) {
 
     tokens_.clear();
-    tokens_.push_back(OPEN_BRACE);
     for (unsigned i = 0; i < n; i++) {
       tokens_.push_back((TokenType) buffer[i]);
     }
@@ -153,7 +160,7 @@ struct Scanner {
         return true;
       }
     }
-
+ 
     return false;
 
   }

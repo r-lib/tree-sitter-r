@@ -2876,6 +2876,18 @@
               "type": "SYMBOL",
               "name": "identifier"
             }
+          },
+          {
+            "type": "SYMBOL",
+            "name": "}"
+          },
+          {
+            "type": "SYMBOL",
+            "name": ")"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "]"
           }
         ]
       }
@@ -2981,6 +2993,18 @@
     "comma": {
       "type": "STRING",
       "value": ","
+    },
+    "}": {
+      "type": "PATTERN",
+      "value": "\\}"
+    },
+    ")": {
+      "type": "PATTERN",
+      "value": "\\)"
+    },
+    "]": {
+      "type": "PATTERN",
+      "value": "\\]"
     }
   },
   "extras": [
