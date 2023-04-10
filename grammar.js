@@ -360,7 +360,8 @@ module.exports = grammar({
       // Identifiers.
       prec.left($.identifier),
 
-      $["}"], $[")"], $["]"]
+      // Unmatched closing brackets.
+      $["_}"], $["_)"], $["_]"]
 
     )),
 
@@ -396,9 +397,9 @@ module.exports = grammar({
     // Check for un-matched closing brackets. This allows us to recover in
     // cases where the parse tree is temporarily incorrect, e.g. because the
     // user has removed the opening bracket associated with some closing bracket.
-    "}":   $ => /\}/,
-    ")":   $ => /\)/,
-    "]":   $ => /\]/
+    "_}": $ => /\}/,
+    "_)": $ => /\)/,
+    "_]": $ => /\]/
 
   }
 
