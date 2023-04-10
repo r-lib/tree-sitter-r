@@ -45,20 +45,17 @@ struct Scanner {
   }
 
   TokenType peek() {
-    if (tokens_.empty())
-      return NEWLINE;
-    else
-      return tokens_.back();
+    return tokens_.back();
   }
 
   unsigned serialize(char* buffer) {
 
-    int n = tokens_.size();
+    int n = tokens_.size() - 1;
     if (n > TREE_SITTER_SERIALIZATION_BUFFER_SIZE)
       return 0;
 
     for (int i = 0; i < n; i++) {
-      buffer[i] = (char) tokens_[i];
+      buffer[i] = (char) tokens_[i + 1];
     }
 
     return n;
@@ -68,6 +65,8 @@ struct Scanner {
   void deserialize(const char* buffer, unsigned n) {
 
     tokens_.clear();
+    tokens_.reserve(n + 1);
+    tokens_.push_back((TokenType) -1);
     for (unsigned i = 0; i < n; i++) {
       tokens_.push_back((TokenType) buffer[i]);
     }
