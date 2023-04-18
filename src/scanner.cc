@@ -48,6 +48,10 @@ struct Scanner {
     return tokens_.back();
   }
 
+  bool atTopLevel() {
+    return peek() == -1;
+  }
+
   unsigned serialize(char* buffer) {
 
     int n = tokens_.size() - 1;
@@ -167,7 +171,7 @@ struct Scanner {
   bool scan_whitespace(TSLexer* lexer, const bool* valid_symbols) {
 
     while (std::iswspace(lexer->lookahead)) {
-      if (lexer->lookahead == '\n' && peek() == OPEN_BRACE) {
+      if (lexer->lookahead == '\n' && (atTopLevel() || peek() == OPEN_BRACE)) {
         lexer->advance(lexer, true);
         lexer->mark_end(lexer);
         lexer->result_symbol = NEWLINE;
