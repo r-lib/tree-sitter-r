@@ -167,28 +167,6 @@ function operatorRules($) {
   });
 }
 
-// Maps rule names to their associated tokens. Required because
-// an external scanner is used to parse brackets and parentheses,
-// but we need to ensure those brackets are tokenized as anonymous
-// nodes with a particular name in the AST.
-const BRACKETS = {
-    _open_paren:     "(",
-    _close_paren:    ")",
-    _open_brace:     "{",
-    _close_brace:    "}",
-    _open_bracket:   "[",
-    _close_bracket:  "]",
-    _open_bracket2:  "[[",
-    _close_bracket2: "]]",
-}
-
-function generateBracketAliases($) {
-  return Object.keys(BRACKETS).reduce((rules, key) => {
-    rules[key] = $ => alias($["_" + key], BRACKETS[key]);
-    return rules;
-  }, {});
-}
-
 module.exports = grammar({
 
   name: "r",
@@ -202,14 +180,14 @@ module.exports = grammar({
     $._newline,
     $._semicolon,
     $._raw_string_literal,
-    $.__open_paren,
-    $.__close_paren,
-    $.__open_brace,
-    $.__close_brace,
-    $.__open_bracket,
-    $.__close_bracket,
-    $.__open_bracket2,
-    $.__close_bracket2,
+    "(",
+    ")",
+    "{",
+    "}",
+    "[",
+    "]",
+    "[[",
+    "]]",
   ],
 
   word: $ => $._identifier,
@@ -231,9 +209,9 @@ module.exports = grammar({
     // tree-sitter to create a "parameters" node in the AST even when
     // no parameters are declared for a function.
     parameters: $ => seq(
-      $._open_paren,
+      "(",
       optional(commaSep1($, field("parameter", $.parameter))),
-      $._close_paren
+      ")"
     ),
 
     parameter: $ => choice(
@@ -245,9 +223,9 @@ module.exports = grammar({
     if: $ => prec.right(seq(
       "if",
       repeat($._newline),
-      $._open_paren,
+      "(",
       field("condition", $._expression),
-      $._close_paren,
+      ")",
       repeat($._newline),
       field("consequence", $._expression),
       repeat($._newline),
@@ -257,11 +235,11 @@ module.exports = grammar({
     for: $ => prec.right(seq(
       "for",
       repeat($._newline),
-      $._open_paren,
+      "(",
       field("variable", $.identifier),
       "in",
       field("sequence", $._expression),
-      $._close_paren,
+      ")",
       repeat($._newline),
       field("body", optional($._expression))
     )),
@@ -269,9 +247,9 @@ module.exports = grammar({
     while: $ => prec.right(seq(
       "while",
       repeat($._newline),
-      $._open_paren,
+      "(",
       field("condition", $._expression),
-      $._close_paren,
+      ")",
       repeat($._newline),
       field("body", optional($._expression))
     )),
@@ -284,15 +262,15 @@ module.exports = grammar({
 
     // Blocks.
     "{": $ => prec.right(seq(
-      $._open_brace,
+      "{",
       field("body", repeat(choice($._expression, $._semicolon, $._newline))),
-      optional($._close_brace)
+      optional("}")
     )),
 
     "(": $ => prec.right(seq(
-      $._open_paren,
+      "(",
       field("body", repeat(choice($._expression, $._newline))),
-      optional($._close_paren)
+      optional(")")
     )),
 
     // Function calls and subsetting.
@@ -306,9 +284,9 @@ module.exports = grammar({
     // The actual matching rules for arguments in each of the above.
     // Semi-colons are not actually permitted here, but we add them to the rules to avoid
     // semi-colons erroneously closing a call.
-    _call_arguments:    $ => prec.right(seq($._open_paren,    repeat(choice($.comma, $._semicolon, field("argument", $.argument))), optional($._close_paren))),
-    _subset_arguments:  $ => prec.right(seq($._open_bracket,  repeat(choice($.comma, $._semicolon, field("argument", $.argument))), optional($._close_bracket))),
-    _subset2_arguments: $ => prec.right(seq($._open_bracket2, repeat(choice($.comma, $._semicolon, field("argument", $.argument))), optional($._close_bracket2))),
+    _call_arguments:    $ => prec.right(seq("(",  repeat(choice($.comma, $._semicolon, field("argument", $.argument))), optional(")"))),
+    _subset_arguments:  $ => prec.right(seq("[",  repeat(choice($.comma, $._semicolon, field("argument", $.argument))), optional("]"))),
+    _subset2_arguments: $ => prec.right(seq("[[", repeat(choice($.comma, $._semicolon, field("argument", $.argument))), optional("]]"))),
 
     // An argument; either named or unnamed.
     argument: $ => prec.right(choice(
@@ -321,9 +299,6 @@ module.exports = grammar({
 
     // Keywords.
     ...generateKeywordRules(),
-
-    // Aliases for external routines matching brackets.
-    ...generateBracketAliases(),
 
     // Miscellaneous.
     "..i": $ => token(/[.][.]\d+/),
