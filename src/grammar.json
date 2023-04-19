@@ -629,6 +629,10 @@
                   "name": "comma"
                 },
                 {
+                  "type": "SYMBOL",
+                  "name": "_semicolon"
+                },
+                {
                   "type": "FIELD",
                   "name": "argument",
                   "content": {
@@ -674,6 +678,10 @@
                   "name": "comma"
                 },
                 {
+                  "type": "SYMBOL",
+                  "name": "_semicolon"
+                },
+                {
                   "type": "FIELD",
                   "name": "argument",
                   "content": {
@@ -717,6 +725,10 @@
                 {
                   "type": "SYMBOL",
                   "name": "comma"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_semicolon"
                 },
                 {
                   "type": "FIELD",
@@ -2879,15 +2891,15 @@
           },
           {
             "type": "SYMBOL",
-            "name": "}"
+            "name": "_}"
           },
           {
             "type": "SYMBOL",
-            "name": ")"
+            "name": "_)"
           },
           {
             "type": "SYMBOL",
-            "name": "]"
+            "name": "_]"
           }
         ]
       }
@@ -2994,15 +3006,15 @@
       "type": "STRING",
       "value": ","
     },
-    "}": {
+    "_}": {
       "type": "PATTERN",
       "value": "\\}"
     },
-    ")": {
+    "_)": {
       "type": "PATTERN",
       "value": "\\)"
     },
-    "]": {
+    "_]": {
       "type": "PATTERN",
       "value": "\\]"
     }
