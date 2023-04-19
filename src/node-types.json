@@ -5,7 +5,7 @@
     "fields": {
       "operand": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -53,10 +53,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -200,10 +196,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -281,10 +273,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -311,7 +299,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -359,10 +347,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -506,10 +490,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -587,10 +567,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -611,7 +587,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -659,10 +635,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -806,10 +778,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -887,10 +855,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -907,7 +871,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -955,10 +919,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -1102,10 +1062,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -1183,10 +1139,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -1207,7 +1159,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -1255,10 +1207,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -1402,10 +1350,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -1483,10 +1427,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -1503,7 +1443,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -1551,10 +1491,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -1698,10 +1634,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -1779,10 +1711,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -1803,7 +1731,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -1851,10 +1779,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -1998,10 +1922,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -2079,10 +1999,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -2099,7 +2015,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -2147,10 +2063,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -2294,10 +2206,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -2375,10 +2283,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -2399,7 +2303,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -2447,10 +2351,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -2594,10 +2494,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -2675,10 +2571,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -2695,7 +2587,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -2743,10 +2635,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -2890,10 +2778,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -2971,10 +2855,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -2995,7 +2875,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -3043,10 +2923,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -3190,10 +3066,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -3271,10 +3143,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -3291,7 +3159,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -3339,10 +3207,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -3486,10 +3350,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -3567,10 +3427,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -3591,7 +3447,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -3639,10 +3495,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -3786,10 +3638,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -3867,10 +3715,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -3887,7 +3731,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -3935,10 +3779,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -4082,10 +3922,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -4163,10 +3999,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -4187,7 +4019,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -4235,10 +4067,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -4382,10 +4210,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -4463,10 +4287,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -4483,7 +4303,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -4531,10 +4351,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -4678,10 +4494,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -4759,10 +4571,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -4783,7 +4591,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -4831,10 +4639,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -4978,10 +4782,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -5059,10 +4859,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -5079,7 +4875,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -5127,10 +4923,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -5274,10 +5066,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -5355,10 +5143,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -5379,7 +5163,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -5427,10 +5211,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -5574,10 +5354,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -5655,10 +5431,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -5675,7 +5447,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -5723,10 +5495,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -5870,10 +5638,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -5951,10 +5715,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -5975,7 +5735,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -6023,10 +5783,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -6170,10 +5926,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -6251,10 +6003,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -6322,10 +6070,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -6466,10 +6210,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -6547,10 +6287,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -6567,7 +6303,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -6615,10 +6351,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -6762,10 +6494,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -6843,10 +6571,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -6867,7 +6591,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -6915,10 +6639,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -7062,10 +6782,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -7143,10 +6859,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -7163,7 +6875,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -7211,10 +6923,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -7358,10 +7066,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -7439,10 +7143,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -7463,7 +7163,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -7511,10 +7211,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -7658,10 +7354,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -7739,10 +7431,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -7810,10 +7498,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -7954,10 +7638,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -8035,10 +7715,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -8100,10 +7776,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -8244,10 +7916,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -8325,10 +7993,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -8400,10 +8064,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -8544,10 +8204,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -8625,10 +8281,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -8696,10 +8348,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -8840,10 +8488,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -8921,10 +8565,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -8986,10 +8626,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -9130,10 +8766,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -9211,10 +8843,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -9286,10 +8914,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -9430,10 +9054,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -9511,10 +9131,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -9531,7 +9147,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -9579,10 +9195,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -9726,10 +9338,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -9807,10 +9415,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -9831,7 +9435,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -9879,10 +9483,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -10026,10 +9626,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -10107,10 +9703,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -10127,7 +9719,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -10175,10 +9767,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -10322,10 +9910,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -10403,10 +9987,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -10427,7 +10007,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -10475,10 +10055,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -10622,10 +10198,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -10703,10 +10275,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -10723,7 +10291,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -10771,10 +10339,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -10918,10 +10482,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -10999,10 +10559,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -11023,7 +10579,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -11071,10 +10627,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -11218,10 +10770,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -11299,10 +10847,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -11319,7 +10863,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -11367,10 +10911,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -11514,10 +11054,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -11595,10 +11131,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -11619,7 +11151,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -11667,10 +11199,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -11814,10 +11342,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -11895,10 +11419,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -11915,7 +11435,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -11963,10 +11483,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -12110,10 +11626,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -12191,10 +11703,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -12215,7 +11723,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -12263,10 +11771,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -12410,10 +11914,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -12491,10 +11991,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -12511,7 +12007,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -12559,10 +12055,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -12706,10 +12198,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -12787,10 +12275,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -12811,7 +12295,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -12859,10 +12343,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -13006,10 +12486,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -13087,10 +12563,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -13107,7 +12579,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -13155,10 +12627,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -13302,10 +12770,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -13383,10 +12847,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -13407,7 +12867,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -13455,10 +12915,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -13602,10 +13058,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -13683,10 +13135,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -13703,7 +13151,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -13751,10 +13199,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -13898,10 +13342,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -13979,10 +13419,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -14003,7 +13439,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -14051,10 +13487,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -14198,10 +13630,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -14279,10 +13707,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -14299,7 +13723,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -14347,10 +13771,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -14494,10 +13914,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -14575,10 +13991,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -14599,7 +14011,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -14647,10 +14059,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -14794,10 +14202,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -14875,10 +14279,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -14895,7 +14295,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -14943,10 +14343,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -15090,10 +14486,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -15171,10 +14563,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -15195,7 +14583,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -15243,10 +14631,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -15390,10 +14774,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -15471,10 +14851,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -15491,7 +14867,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -15539,10 +14915,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -15686,10 +15058,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -15767,10 +15135,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -15791,7 +15155,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -15839,10 +15203,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -15986,10 +15346,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -16067,10 +15423,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -16087,7 +15439,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -16135,10 +15487,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -16282,10 +15630,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -16363,10 +15707,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -16387,7 +15727,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -16435,10 +15775,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -16582,10 +15918,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -16663,10 +15995,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -16683,7 +16011,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -16731,10 +16059,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -16878,10 +16202,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -16959,10 +16279,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -16983,7 +16299,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -17031,10 +16347,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -17178,10 +16490,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -17259,10 +16567,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -17279,7 +16583,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -17327,10 +16631,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -17474,10 +16774,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -17555,10 +16851,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -17579,7 +16871,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -17627,10 +16919,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -17774,10 +17062,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -17855,10 +17139,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -17875,7 +17155,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -17923,10 +17203,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -18070,10 +17346,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -18151,10 +17423,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -18175,7 +17443,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -18223,10 +17491,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -18370,10 +17634,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -18451,10 +17711,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -18471,7 +17727,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -18519,10 +17775,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -18666,10 +17918,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -18747,10 +17995,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -18771,7 +18015,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -18819,10 +18063,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -18966,10 +18206,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -19047,10 +18283,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -19118,10 +18350,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -19262,10 +18490,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -19343,10 +18567,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -19408,10 +18628,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -19552,10 +18768,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -19633,10 +18845,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -19708,10 +18916,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -19852,10 +19056,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -19936,10 +19136,6 @@
             "named": true
           },
           {
-            "type": "}",
-            "named": true
-          },
-          {
             "type": "~",
             "named": true
           }
@@ -19953,7 +19149,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -20004,10 +19200,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -20148,10 +19340,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -20229,10 +19417,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -20253,7 +19437,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -20301,10 +19485,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -20448,10 +19628,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -20529,10 +19705,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -20560,7 +19732,7 @@
     },
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "!",
@@ -20608,10 +19780,6 @@
         },
         {
           "type": "(",
-          "named": true
-        },
-        {
-          "type": ")",
           "named": true
         },
         {
@@ -20755,10 +19923,6 @@
           "named": true
         },
         {
-          "type": "]",
-          "named": true
-        },
-        {
           "type": "^",
           "named": true
         },
@@ -20836,10 +20000,6 @@
         },
         {
           "type": "||",
-          "named": true
-        },
-        {
-          "type": "}",
           "named": true
         },
         {
@@ -20866,7 +20026,7 @@
     },
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "!",
@@ -20914,10 +20074,6 @@
         },
         {
           "type": "(",
-          "named": true
-        },
-        {
-          "type": ")",
           "named": true
         },
         {
@@ -21061,10 +20217,6 @@
           "named": true
         },
         {
-          "type": "]",
-          "named": true
-        },
-        {
           "type": "^",
           "named": true
         },
@@ -21145,10 +20297,6 @@
           "named": true
         },
         {
-          "type": "}",
-          "named": true
-        },
-        {
           "type": "~",
           "named": true
         }
@@ -21161,7 +20309,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -21209,10 +20357,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -21356,10 +20500,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -21437,10 +20577,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -21461,7 +20597,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -21509,10 +20645,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -21656,10 +20788,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -21737,10 +20865,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -21826,10 +20950,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -21970,10 +21090,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -22054,10 +21170,6 @@
             "named": true
           },
           {
-            "type": "}",
-            "named": true
-          },
-          {
             "type": "~",
             "named": true
           }
@@ -22108,7 +21220,7 @@
     },
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "!",
@@ -22156,10 +21268,6 @@
         },
         {
           "type": "(",
-          "named": true
-        },
-        {
-          "type": ")",
           "named": true
         },
         {
@@ -22303,10 +21411,6 @@
           "named": true
         },
         {
-          "type": "]",
-          "named": true
-        },
-        {
           "type": "^",
           "named": true
         },
@@ -22387,10 +21491,6 @@
           "named": true
         },
         {
-          "type": "}",
-          "named": true
-        },
-        {
           "type": "~",
           "named": true
         }
@@ -22464,10 +21564,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -22608,10 +21704,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -22692,10 +21784,6 @@
             "named": true
           },
           {
-            "type": "}",
-            "named": true
-          },
-          {
             "type": "~",
             "named": true
           }
@@ -22703,7 +21791,7 @@
       },
       "sequence": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -22754,10 +21842,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -22898,10 +21982,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -22979,10 +22059,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -23060,10 +22136,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -23204,10 +22276,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -23285,10 +22353,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -23371,10 +22435,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -23512,10 +22572,6 @@
           },
           {
             "type": "[[",
-            "named": true
-          },
-          {
-            "type": "]",
             "named": true
           },
           {
@@ -23603,10 +22659,6 @@
             "named": true
           },
           {
-            "type": "}",
-            "named": true
-          },
-          {
             "type": "~",
             "named": true
           }
@@ -23614,7 +22666,7 @@
       },
       "condition": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -23662,10 +22714,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -23809,10 +22857,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -23890,10 +22934,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -23904,7 +22944,7 @@
       },
       "consequence": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -23952,10 +22992,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -24099,10 +23135,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -24180,10 +23212,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -24256,10 +23284,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -24400,10 +23424,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -24481,10 +23501,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -24592,10 +23608,6 @@
           "named": true
         },
         {
-          "type": ")",
-          "named": true
-        },
-        {
           "type": "*",
           "named": true
         },
@@ -24736,10 +23748,6 @@
           "named": true
         },
         {
-          "type": "]",
-          "named": true
-        },
-        {
           "type": "^",
           "named": true
         },
@@ -24820,10 +23828,6 @@
           "named": true
         },
         {
-          "type": "}",
-          "named": true
-        },
-        {
           "type": "~",
           "named": true
         }
@@ -24884,10 +23888,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -25031,10 +24031,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -25112,10 +24108,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -25188,10 +24180,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -25332,10 +24320,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -25416,10 +24400,6 @@
             "named": true
           },
           {
-            "type": "}",
-            "named": true
-          },
-          {
             "type": "~",
             "named": true
           }
@@ -25427,7 +24407,7 @@
       },
       "condition": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -25478,10 +24458,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -25622,10 +24598,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -25703,10 +24675,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -25774,10 +24742,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -25918,10 +24882,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -25999,10 +24959,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -26019,7 +24975,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -26067,10 +25023,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -26214,10 +25166,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -26295,10 +25243,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -26319,7 +25263,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -26367,10 +25311,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -26514,10 +25454,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -26595,10 +25531,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -26615,7 +25547,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -26663,10 +25595,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -26810,10 +25738,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -26891,10 +25815,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -26915,7 +25835,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -26963,10 +25883,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -27110,10 +26026,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -27191,10 +26103,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -27211,7 +26119,7 @@
     "fields": {
       "lhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -27259,10 +26167,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -27406,10 +26310,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -27487,10 +26387,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -27511,7 +26407,7 @@
       },
       "rhs": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!",
@@ -27559,10 +26455,6 @@
           },
           {
             "type": "(",
-            "named": true
-          },
-          {
-            "type": ")",
             "named": true
           },
           {
@@ -27706,10 +26598,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -27787,10 +26675,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -27858,10 +26742,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -28002,10 +26882,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -28083,10 +26959,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -28148,10 +27020,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -28292,10 +27160,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -28373,10 +27237,6 @@
           },
           {
             "type": "||",
-            "named": true
-          },
-          {
-            "type": "}",
             "named": true
           },
           {
@@ -28448,10 +27308,6 @@
             "named": true
           },
           {
-            "type": ")",
-            "named": true
-          },
-          {
             "type": "*",
             "named": true
           },
@@ -28592,10 +27448,6 @@
             "named": true
           },
           {
-            "type": "]",
-            "named": true
-          },
-          {
             "type": "^",
             "named": true
           },
@@ -28676,10 +27528,6 @@
             "named": true
           },
           {
-            "type": "}",
-            "named": true
-          },
-          {
             "type": "~",
             "named": true
           }
@@ -28738,10 +27586,6 @@
   {
     "type": ")",
     "named": false
-  },
-  {
-    "type": ")",
-    "named": true
   },
   {
     "type": "*",
@@ -28896,10 +27740,6 @@
     "named": false
   },
   {
-    "type": "]",
-    "named": true
-  },
-  {
     "type": "]]",
     "named": false
   },
@@ -28978,10 +27818,6 @@
   {
     "type": "||",
     "named": false
-  },
-  {
-    "type": "}",
-    "named": true
   },
   {
     "type": "}",

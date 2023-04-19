@@ -304,9 +304,11 @@ module.exports = grammar({
     arguments: $ => $._expression,
 
     // The actual matching rules for arguments in each of the above.
-    _call_arguments:    $ => prec.right(seq($._open_paren,    repeat(choice($.comma, field("argument", $.argument))), optional($._close_paren))),
-    _subset_arguments:  $ => prec.right(seq($._open_bracket,  repeat(choice($.comma, field("argument", $.argument))), optional($._close_bracket))),
-    _subset2_arguments: $ => prec.right(seq($._open_bracket2, repeat(choice($.comma, field("argument", $.argument))), optional($._close_bracket2))),
+    // Semi-colons are not actually permitted here, but we add them to the rules to avoid
+    // semi-colons erroneously closing a call.
+    _call_arguments:    $ => prec.right(seq($._open_paren,    repeat(choice($.comma, $._semicolon, field("argument", $.argument))), optional($._close_paren))),
+    _subset_arguments:  $ => prec.right(seq($._open_bracket,  repeat(choice($.comma, $._semicolon, field("argument", $.argument))), optional($._close_bracket))),
+    _subset2_arguments: $ => prec.right(seq($._open_bracket2, repeat(choice($.comma, $._semicolon, field("argument", $.argument))), optional($._close_bracket2))),
 
     // An argument; either named or unnamed.
     argument: $ => prec.right(choice(

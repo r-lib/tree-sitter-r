@@ -9,6 +9,8 @@
 
 namespace {
 
+static const int TOP_LEVEL = -1;
+
 enum TokenType {
   NEWLINE,
   SEMICOLON,
@@ -66,7 +68,7 @@ struct Scanner {
 
     tokens_.clear();
     tokens_.reserve(n + 1);
-    tokens_.push_back((TokenType) -1);
+    tokens_.push_back((TokenType) TOP_LEVEL);
     for (unsigned i = 0; i < n; i++) {
       tokens_.push_back((TokenType) buffer[i]);
     }
@@ -167,13 +169,23 @@ struct Scanner {
   bool scan_whitespace(TSLexer* lexer, const bool* valid_symbols) {
 
     while (std::iswspace(lexer->lookahead)) {
-      if (lexer->lookahead == '\n' && peek() == OPEN_BRACE) {
+
+      if (lexer->lookahead != '\n') {
         lexer->advance(lexer, true);
-        lexer->mark_end(lexer);
-        lexer->result_symbol = NEWLINE;
-        return true;
+        continue;
       }
+
+      char token = peek();
+      if (token != TOP_LEVEL && token != OPEN_BRACE) {
+        lexer->advance(lexer, true);
+        continue;
+      }
+
       lexer->advance(lexer, true);
+      lexer->mark_end(lexer);
+      lexer->result_symbol = NEWLINE;
+      return true;
+
     }
 
     return false;
