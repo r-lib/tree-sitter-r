@@ -175,7 +175,7 @@ struct Scanner {
         continue;
       }
 
-      char token = peek();
+      TokenType token = peek();
       if (token != TOP_LEVEL && token != OPEN_BRACE) {
         lexer->advance(lexer, true);
         continue;
