@@ -2989,6 +2989,13 @@
       "type": "CHOICE",
       "members": [
         {
+          "type": "TOKEN",
+          "content": {
+            "type": "STRING",
+            "value": "_"
+          }
+        },
+        {
           "type": "SYMBOL",
           "name": "_identifier"
         },

@@ -386,7 +386,7 @@ module.exports = grammar({
     // Identifiers.
     _identifier: $ => /[\p{XID_Start}.][\p{XID_Continue}.]*/,
     _quoted_identifier: $ => /`((?:\\.)|[^`\\])*`/,
-    identifier: $ => choice($._identifier, $._quoted_identifier),
+    identifier: $ => choice(token("_"), $._identifier, $._quoted_identifier),
 
     // Comments.
     comment: $ => /#.*/,
