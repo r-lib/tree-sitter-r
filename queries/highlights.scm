@@ -10,7 +10,7 @@
 (complex) @number
 
 (string) @string
-(string (escape_sequence) @string.escape)
+(string (string_content (escape_sequence) @string.escape))
 
 (comment) @comment
 
