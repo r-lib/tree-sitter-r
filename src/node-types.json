@@ -5230,6 +5230,21 @@
       "required": false,
       "types": [
         {
+          "type": "string_content",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "string_content",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
           "type": "escape_sequence",
           "named": true
         }
