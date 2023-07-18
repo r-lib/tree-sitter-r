@@ -488,20 +488,19 @@ module.exports = grammar({
       $._raw_string_literal,
       seq(
         '"',
-        repeat(choice(
-          /[^"\\\n]+|\\\r?\n/,
-          $.escape_sequence
-        )),
+        repeat($.string_content),
         '"'
       ),
       seq(
         "'",
-        repeat(choice(
-          /[^'\\\n]+|\\\r?\n/,
-          $.escape_sequence
-        )),
+        repeat($.string_content),
         "'"
       )
+    ),
+
+    string_content: $ => choice(
+      /[^'|"\\\n]+|\\\r?\n/,
+      $.escape_sequence,
     ),
 
     special: $ => seq(

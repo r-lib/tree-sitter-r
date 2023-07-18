@@ -2166,17 +2166,8 @@
             {
               "type": "REPEAT",
               "content": {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "PATTERN",
-                    "value": "[^\"\\\\\\n]+|\\\\\\r?\\n"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "escape_sequence"
-                  }
-                ]
+                "type": "SYMBOL",
+                "name": "string_content"
               }
             },
             {
@@ -2195,17 +2186,8 @@
             {
               "type": "REPEAT",
               "content": {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "PATTERN",
-                    "value": "[^'\\\\\\n]+|\\\\\\r?\\n"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "escape_sequence"
-                  }
-                ]
+                "type": "SYMBOL",
+                "name": "string_content"
               }
             },
             {
@@ -2213,6 +2195,19 @@
               "value": "'"
             }
           ]
+        }
+      ]
+    },
+    "string_content": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "[^'|\"\\\\\\n]+|\\\\\\r?\\n"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "escape_sequence"
         }
       ]
     },
