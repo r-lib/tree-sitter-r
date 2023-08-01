@@ -80,6 +80,7 @@ c <- \(fun, ...) fun(...)
 (program
   (<-
     lhs: (identifier)
+    operator: (_operator)
     rhs: (function
       parameters: (parameters
         parameter: (parameter
@@ -87,6 +88,7 @@ c <- \(fun, ...) fun(...)
       body: (identifier)))
   (<-
     lhs: (identifier)
+    operator: (_operator)
     rhs: (function
       parameters: (parameters
         parameter: (parameter
@@ -104,6 +106,7 @@ c <- \(fun, ...) fun(...)
             value: (identifier))))))
   (<-
     lhs: (identifier)
+    operator: (_operator)
     rhs: (function
       parameters: (parameters
         parameter: (parameter
@@ -120,7 +123,9 @@ c <- \(fun, ...) fun(...)
     lhs: (|>
       lhs: (:
         lhs: (float)
+        operator: (_operator)
         rhs: (float))
+      operator: (_operator)
       rhs: (call
         ({
           body: (function
@@ -133,8 +138,10 @@ c <- \(fun, ...) fun(...)
                 default: (float)))
             body: (+
               lhs: (identifier)
+              operator: (_operator)
               rhs: (identifier))))
         arguments: (arguments)))
+    operator: (_operator)
     rhs: (call
       ({
         body: (function
@@ -156,12 +163,14 @@ c <- \(fun, ...) fun(...)
             default: (float)))
         body: (+
           lhs: (identifier)
+          operator: (_operator)
           rhs: (float))))
     arguments: (arguments))
   (function
     parameters: (parameters)
     body: (+
       lhs: (float)
+      operator: (_operator)
       rhs: (float))))
 
 ================================================================================
@@ -175,6 +184,7 @@ a == b
 (program
   (==
     (identifier)
+    (_operator)
     (identifier)))
 
 ================================================================================
@@ -188,6 +198,7 @@ a + b
 (program
   (+
     (identifier)
+    (_operator)
     (identifier)))
 
 ================================================================================
@@ -201,6 +212,7 @@ a * b
 (program
   (*
     (identifier)
+    (_operator)
     (identifier)))
 
 ================================================================================
@@ -214,8 +226,10 @@ Binary operations
 (program
   (+
     (float)
+    (_operator)
     (*
       (float)
+      (_operator)
       (float))))
 
 ================================================================================
@@ -229,12 +243,14 @@ foo(-a, bar)
 
 (program
   (-
+    operator: (_operator)
     operand: (identifier))
   (call
     (identifier)
     arguments: (arguments
       argument: (argument
         value: (-
+          operator: (_operator)
           operand: (identifier)))
       (comma)
       argument: (argument
@@ -251,6 +267,7 @@ foo-a
 (program
   (-
     (identifier)
+    (_operator)
     (identifier)))
 
 ================================================================================
@@ -268,9 +285,12 @@ val <- foo %>% bar(1) %>% baz()
   (&&
     lhs: (<=
       lhs: (identifier)
+      operator: (_operator)
       rhs: (identifier))
+    operator: (_operator)
     rhs: (>=
       lhs: (identifier)
+      operator: (_operator)
       rhs: (identifier)))
   (<-
     lhs: ([
@@ -278,28 +298,35 @@ val <- foo %>% bar(1) %>% baz()
       arguments: (arguments
         argument: (argument
           value: (float))))
+    operator: (_operator)
     rhs: (||
       lhs: (identifier)
+      operator: (_operator)
       rhs: (identifier)))
   (&&
     lhs: (&&
       lhs: (identifier)
+      operator: (_operator)
       rhs: (call
         (identifier)
         arguments: (arguments
           argument: (argument
             value: (identifier)))))
+    operator: (_operator)
     rhs: (identifier))
   (<-
     lhs: (identifier)
+    operator: (_operator)
     rhs: (%>%
       lhs: (%>%
         lhs: (identifier)
+        operator: (_operator)
         rhs: (call
           (identifier)
           arguments: (arguments
             argument: (argument
               value: (float)))))
+      operator: (_operator)
       rhs: (call
         (identifier)
         arguments: (arguments)))))
@@ -318,15 +345,19 @@ x %some text% y
 (program
   (%%
     (identifier)
+    (_operator)
     (identifier))
   (%%
     (identifier)
+    (_operator)
     (identifier))
   (%>%
     (identifier)
+    (_operator)
     (identifier))
   (%%
     (identifier)
+    (_operator)
     (identifier)))
 
 ================================================================================
@@ -344,24 +375,29 @@ x |> {function(x) x}()
 (program
   (|>
     lhs: (identifier)
+    operator: (_operator)
     rhs: (call
       (identifier)
       arguments: (arguments)))
   (|>
     lhs: (|>
       lhs: (identifier)
+      operator: (_operator)
       rhs: (call
         (identifier)
         arguments: (arguments)))
+    operator: (_operator)
     rhs: (+
       lhs: (call
         (identifier)
         arguments: (arguments))
+      operator: (_operator)
       rhs: (call
         (identifier)
         arguments: (arguments))))
   (|>
     lhs: (identifier)
+    operator: (_operator)
     rhs: (call
       ({
         body: (function
@@ -383,6 +419,7 @@ foo |> bar() |> baz(data = _)
 (program
   (|>
     lhs: (identifier)
+    operator: (_operator)
     rhs: (call
       (identifier)
       arguments: (arguments
@@ -390,22 +427,22 @@ foo |> bar() |> baz(data = _)
           value: (identifier))
         (comma)
         argument: (argument
-          name: (identifier))
-        (ERROR
-          (UNEXPECTED '_')))))
+          name: (identifier)
+          value: (identifier)))))
   (|>
     lhs: (|>
       lhs: (identifier)
+      operator: (_operator)
       rhs: (call
         (identifier)
         arguments: (arguments)))
+    operator: (_operator)
     rhs: (call
       (identifier)
       arguments: (arguments
         argument: (argument
-          name: (identifier))
-        (ERROR
-          (UNEXPECTED '_'))))))
+          name: (identifier)
+          value: (identifier))))))
 
 ================================================================================
 Subset
@@ -573,11 +610,14 @@ while(TRUE)
   (while
     condition: (>
       lhs: (identifier)
+      operator: (_operator)
       rhs: (float))
     body: (<-
       lhs: (identifier)
+      operator: (_operator)
       rhs: (-
         lhs: (identifier)
+        operator: (_operator)
         rhs: (float))))
   (while
     condition: (TRUE)
@@ -645,9 +685,11 @@ foo$"bar"
 (program
   ($
     (identifier)
+    (_operator)
     (identifier))
   ($
     (identifier)
+    (_operator)
     (string)))
 
 ================================================================================
@@ -661,6 +703,7 @@ foo@bar
 (program
   (@
     (identifier)
+    (_operator)
     (identifier)))
 
 ================================================================================
@@ -677,11 +720,14 @@ foo::bar(1)
   (::
     lhs: (::
       lhs: (identifier)
+      operator: (_operator)
       rhs: (identifier))
+    operator: (_operator)
     rhs: (identifier))
   (call
     (::
       lhs: (identifier)
+      operator: (_operator)
       rhs: (identifier))
     arguments: (arguments
       argument: (argument
@@ -699,10 +745,12 @@ foo:::bar(1)
 (program
   (:::
     lhs: (identifier)
+    operator: (_operator)
     rhs: (identifier))
   (call
     (:::
       lhs: (identifier)
+      operator: (_operator)
       rhs: (identifier))
     arguments: (arguments
       argument: (argument
@@ -726,24 +774,31 @@ y(1) -> x
 (program
   (<-
     lhs: (identifier)
+    operator: (_operator)
     rhs: (float))
   (=
     lhs: (identifier)
+    operator: (_operator)
     rhs: (float))
   (:=
     lhs: (identifier)
+    operator: (_operator)
     rhs: (float))
   (<<-
     lhs: (identifier)
+    operator: (_operator)
     rhs: (float))
   (->>
     lhs: (float)
+    operator: (_operator)
     rhs: (identifier))
   (->
     lhs: (float)
+    operator: (_operator)
     rhs: (identifier))
   (<-
     lhs: (identifier)
+    operator: (_operator)
     rhs: (call
       (identifier)
       arguments: (arguments
@@ -755,6 +810,7 @@ y(1) -> x
       arguments: (arguments
         argument: (argument
           value: (float))))
+    operator: (_operator)
     rhs: (identifier)))
 
 ================================================================================
@@ -796,6 +852,7 @@ f(,y=)
       argument: (argument
         value: (+
           lhs: (float)
+          operator: (_operator)
           rhs: (float)))))
   (call
     (identifier)
@@ -803,6 +860,7 @@ f(,y=)
       argument: (argument
         value: (~
           lhs: (float)
+          operator: (_operator)
           rhs: (float)))))
   (call
     (identifier)
@@ -834,6 +892,7 @@ f(,y=)
         name: (identifier)
         value: (+
           lhs: (float)
+          operator: (_operator)
           rhs: (float)))))
   (call
     (identifier)
@@ -949,13 +1008,17 @@ Colon
 (program
   (:
     (float)
+    (_operator)
     (float))
   (:
     ((
       (+
         (float)
+        (_operator)
         (float)))
+    (_operator)
     (-
+      (_operator)
       (float))))
 
 ================================================================================
@@ -969,9 +1032,11 @@ y~x
 
 (program
   (~
+    (_operator)
     (identifier))
   (~
     (identifier)
+    (_operator)
     (identifier)))
 
 ================================================================================
@@ -985,11 +1050,14 @@ a ? b <- 1
 (program
   (?
     (identifier)
+    (_operator)
     (identifier))
   (?
     (identifier)
+    (_operator)
     (<-
       (identifier)
+      (_operator)
       (float))))
 
 ================================================================================
@@ -1029,20 +1097,27 @@ TRUE ? FALSE = NA
       ($
         (::
           (identifier)
+          (_operator)
           (identifier))
+        (_operator)
         (identifier))
       (arguments
         (argument
           (identifier))))
+    (_operator)
     (identifier))
   (?
     (?
       (~
         (~
           (TRUE)
+          (_operator)
           (FALSE))
+        (_operator)
         (NULL))
+      (_operator)
       (NA))
+    (_operator)
     (NaN))
   (if
     (TRUE)
@@ -1056,27 +1131,37 @@ TRUE ? FALSE = NA
   (?
     (=
       (identifier)
+      (_operator)
       (TRUE))
+    (_operator)
     (FALSE))
   (<-
     (TRUE)
+    (_operator)
     (=
       (FALSE)
+      (_operator)
       (NA)))
   (?
     (<-
       (TRUE)
+      (_operator)
       (FALSE))
+    (_operator)
     (NA))
   (?
     (=
       (TRUE)
+      (_operator)
       (FALSE))
+    (_operator)
     (NA))
   (?
     (TRUE)
+    (_operator)
     (=
       (FALSE)
+      (_operator)
       (NA))))
 
 ================================================================================
@@ -1092,17 +1177,23 @@ a$b?c
   (^
     ($
       (identifier)
+      (_operator)
       (string))
+    (_operator)
     (NA))
   ($
     (::
       (identifier)
+      (_operator)
       (identifier))
+    (_operator)
     (identifier))
   (?
     ($
       (identifier)
+      (_operator)
       (identifier))
+    (_operator)
     (identifier)))
 
 ================================================================================
