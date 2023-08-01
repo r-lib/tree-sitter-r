@@ -103,7 +103,7 @@ function commaSep1($, rule) {
 
 function unaryRule($, rule, spec) {
   const [assoc, prec] = spec;
-  return assoc(prec, seq(field("operator", rule), field("operand", $._expression)));
+  return assoc(prec, seq(field("operator", alias(rule, $._operator)), field("operand", $._expression)));
 }
 
 function binaryRule($, rule, spec) {
@@ -116,8 +116,8 @@ function binaryRule($, rule, spec) {
   }
 
   const inner = (rule === "::" || rule === ":::")
-    ? seq(field("lhs", $._expression), field("operator", rule), field("rhs", $._expression))
-    : seq(field("lhs", $._expression), field("operator", rule), repeat($._newline), field("rhs", $._expression));
+    ? seq(field("lhs", $._expression), field("operator", alias(rule, $._operator)), field("rhs", $._expression))
+    : seq(field("lhs", $._expression), field("operator", alias(rule, $._operator)), repeat($._newline), field("rhs", $._expression));
 
   return assoc(prec, inner);
 
@@ -280,6 +280,7 @@ module.exports = grammar({
 
     // Dummy rule; used for aliasing so we can easily search the AST.
     arguments: $ => $._expression,
+    operator: $ => $._expression,
 
     // The actual matching rules for arguments in each of the above.
     // Semi-colons are not actually permitted here, but we add them to the rules to avoid
@@ -358,10 +359,12 @@ module.exports = grammar({
       /"((?:\\.)|[^"\\])*"/,
     ),
 
-    // Identifiers.
-    _identifier: $ => /[\p{XID_Start}.][\p{XID_Continue}.]*/,
+    // Identifiers. Note that we allow '_' to start an identifier here,
+    // even though that's not technically a 'legal' identifier. It does,
+    // however, make the AST easier to traverse.
+    _identifier: $ => /[\p{XID_Start}._][\p{XID_Continue}.]*/,
     _quoted_identifier: $ => /`((?:\\.)|[^`\\])*`/,
-    identifier: $ => choice(token("_"), $._identifier, $._quoted_identifier),
+    identifier: $ => choice($._identifier, $._quoted_identifier),
 
     // Comments.
     comment: $ => /#.*/,
