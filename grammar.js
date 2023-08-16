@@ -263,13 +263,13 @@ module.exports = grammar({
     // Blocks.
     "{": $ => prec.right(seq(
       "{",
-      field("body", repeat(choice($._expression, $._semicolon, $._newline))),
+      repeat(field("body", choice($._expression, $._semicolon, $._newline))),
       optional("}")
     )),
 
     "(": $ => prec.right(seq(
       "(",
-      field("body", repeat(choice($._expression, $._newline))),
+      repeat(field("body", choice($._expression, $._newline))),
       optional(")")
     )),
 
