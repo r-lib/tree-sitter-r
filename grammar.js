@@ -215,7 +215,7 @@ module.exports = grammar({
     ),
 
     parameter: $ => choice(
-      seq(field("name", $.identifier), "=", field("default", optional($._expression))),
+      seq(field("name", $.identifier), "=", optional(field("default", $._expression))),
       field("name", choice($.identifier, $.dots))
     ),
 
@@ -229,7 +229,7 @@ module.exports = grammar({
       repeat($._newline),
       field("consequence", $._expression),
       repeat($._newline),
-      field("alternative", optional(seq("else", $._expression)))
+      optional(seq("else", field("alternative", $._expression)))
     )),
 
     for: $ => prec.right(seq(
@@ -241,7 +241,7 @@ module.exports = grammar({
       field("sequence", $._expression),
       ")",
       repeat($._newline),
-      field("body", optional($._expression))
+      optional(field("body", $._expression))
     )),
 
     while: $ => prec.right(seq(
@@ -251,25 +251,25 @@ module.exports = grammar({
       field("condition", $._expression),
       ")",
       repeat($._newline),
-      field("body", optional($._expression))
+      optional(field("body", $._expression))
     )),
 
     repeat: $ => prec.right(seq(
       "repeat",
       repeat($._newline),
-      field("body", optional($._expression))
+      optional(field("body", $._expression))
     )),
 
     // Blocks.
     "{": $ => prec.right(seq(
       "{",
-      field("body", repeat(choice($._expression, $._semicolon, $._newline))),
+      repeat(field("body", choice($._expression, $._semicolon, $._newline))),
       optional("}")
     )),
 
     "(": $ => prec.right(seq(
       "(",
-      field("body", repeat(choice($._expression, $._newline))),
+      repeat(field("body", choice($._expression, $._newline))),
       optional(")")
     )),
 
@@ -338,7 +338,7 @@ module.exports = grammar({
       prec.left($.identifier),
 
       // Unmatched closing brackets.
-      $["_}"], $["_)"], $["_]"]
+      $["}"], $[")"], $["]"]
 
     )),
 
@@ -374,9 +374,9 @@ module.exports = grammar({
     // Check for un-matched closing brackets. This allows us to recover in
     // cases where the parse tree is temporarily incorrect, e.g. because the
     // user has removed the opening bracket associated with some closing bracket.
-    "_}": $ => /\}/,
-    "_)": $ => /\)/,
-    "_]": $ => /\]/
+    "}": $ => /\}/,
+    ")": $ => /\)/,
+    "]": $ => /\]/
 
   }
 
