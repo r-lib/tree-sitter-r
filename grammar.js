@@ -201,8 +201,7 @@ module.exports = grammar({
     function: $ => prec.right(seq(
       choice("\\", "function"),
       field("parameters", $.parameters),
-      repeat($._newline),
-      optional(field("body", $._expression))
+      optional(seq(repeat($._newline), field("body", $._expression)))
     )),
 
     // NOTE: We include "(" and ")" as part of the rule here to allow
@@ -228,8 +227,7 @@ module.exports = grammar({
       ")",
       repeat($._newline),
       field("consequence", $._expression),
-      repeat($._newline),
-      optional(seq("else", field("alternative", $._expression)))
+      optional(seq(repeat($._newline), "else", field("alternative", $._expression)))
     )),
 
     for: $ => prec.right(seq(
@@ -240,8 +238,7 @@ module.exports = grammar({
       "in",
       field("sequence", $._expression),
       ")",
-      repeat($._newline),
-      optional(field("body", $._expression))
+      optional(seq(repeat($._newline), field("body", $._expression)))
     )),
 
     while: $ => prec.right(seq(
@@ -250,14 +247,12 @@ module.exports = grammar({
       "(",
       field("condition", $._expression),
       ")",
-      repeat($._newline),
-      optional(field("body", $._expression))
+      optional(seq(repeat($._newline), field("body", $._expression)))
     )),
 
     repeat: $ => prec.right(seq(
       "repeat",
-      repeat($._newline),
-      optional(field("body", $._expression))
+      optional(seq(repeat($._newline), field("body", $._expression)))
     )),
 
     // Blocks.
