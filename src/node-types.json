@@ -28733,11 +28733,11 @@
   },
   {
     "type": ")",
-    "named": false
+    "named": true
   },
   {
     "type": ")",
-    "named": true
+    "named": false
   },
   {
     "type": "*",
