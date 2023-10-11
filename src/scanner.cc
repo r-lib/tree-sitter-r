@@ -9,8 +9,6 @@
 
 namespace {
 
-static const int TOP_LEVEL = -1;
-
 enum TokenType {
   NEWLINE,
   SEMICOLON,
@@ -23,6 +21,7 @@ enum TokenType {
   CLOSE_BRACKET,
   OPEN_BRACKET2,
   CLOSE_BRACKET2,
+  TOP_LEVEL,
 };
 
 struct Scanner {
