@@ -1,8 +1,6 @@
 
 #include <tree_sitter/parser.h>
 
-#include <unistd.h>
-
 #include <cwctype>
 #include <sstream>
 #include <vector>
