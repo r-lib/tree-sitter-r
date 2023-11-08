@@ -36,52 +36,52 @@
 
 // Precedence table for unary operators.
 const UNARY_OPERATORS = {
-  "?": [prec.left, 1],
-  "~": [prec.left, 5],
-  "!": [prec.left, 8],
-  "+": [prec.left, 14],
-  "-": [prec.left, 14]
+  unary_help: [prec.left, 1],
+  unary_tilde: [prec.left, 5],
+  unary_not: [prec.left, 8],
+  unary_plus: [prec.left, 14],
+  unary_minus: [prec.left, 14]
 };
 
 // Precedence table for binary operators.
 const BINARY_OPERATORS = {
-  "?":    [prec.left,  1],
-  ":=":   [prec.right, 2],
-  "=":    [prec.right, 3],
-  "<-":   [prec.right, 3],
-  "<<-":  [prec.right, 3],
-  "->":   [prec.left,  4],
-  "->>":  [prec.left,  4],
-  "~":    [prec.left,  5],
-  "|>":   [prec.left,  6],
-  "=>":   [prec.left,  6],
-  "||":   [prec.left,  7],
-  "|":    [prec.left,  7],
-  "&&":   [prec.left,  8],
-  "&":    [prec.left,  8],
-  "<":    [prec.left,  9],
-  "<=":   [prec.left,  9],
-  ">":    [prec.left,  9],
-  ">=":   [prec.left,  9],
-  "==":   [prec.left,  9],
-  "!=":   [prec.left,  9],
-  "+":    [prec.left,  10],
-  "-":    [prec.left,  10],
-  "*":    [prec.left,  11],
-  "/":    [prec.left,  11],
-  "%<>%": [prec.left,  12],
-  "%$%":  [prec.left,  12],
-  "%!>%": [prec.left,  12],
-  "%>%":  [prec.left,  12],
-  "%T>%": [prec.left,  12],
-  "%%":   [prec.left,  12],
-  ":":    [prec.left,  13],
-  "**":   [prec.right, 15],
-  "^":    [prec.right, 15],
-  "$":    [prec.left,  18],
-  "@":    [prec.left,  18],
-  "::":   [prec.left,  20],
-  ":::":  [prec.left,  20],
+  binary_help:    [prec.left,  1],
+  colon_assignment:   [prec.right, 2],
+  equals_assignment:    [prec.right, 3],
+  left_arrow_assignment:   [prec.right, 3],
+  left_arrow_super_assignment:  [prec.right, 3],
+  right_arrow_assignment:   [prec.left,  4],
+  right_arrow_super_assignment:  [prec.left,  4],
+  binary_tilde:    [prec.left,  5],
+  pipe:   [prec.left,  6],
+  pipebind:   [prec.left,  6],
+  or2:   [prec.left,  7],
+  or:    [prec.left,  7],
+  and2:   [prec.left,  8],
+  and:    [prec.left,  8],
+  less_than:    [prec.left,  9],
+  less_than_equal:   [prec.left,  9],
+  greater_than:    [prec.left,  9],
+  greater_than_equal:   [prec.left,  9],
+  equal:   [prec.left,  9],
+  not_equal:   [prec.left,  9],
+  binary_plus:    [prec.left,  10],
+  binary_minus:    [prec.left,  10],
+  multiplication:    [prec.left,  11],
+  division:    [prec.left,  11],
+  special_gt_lt: [prec.left,  12],
+  special_dollar:  [prec.left,  12],
+  special_excl: [prec.left,  12],
+  special_gt:  [prec.left,  12],
+  special_t: [prec.left,  12],
+  modulus:   [prec.left,  12],
+  sequence:    [prec.left,  13],
+  exponentation_star:   [prec.right, 15],
+  exponentation:    [prec.right, 15],
+  index:    [prec.left,  18],
+  index_slot:    [prec.left,  18],
+  namespace_get:   [prec.left,  20],
+  namespace_get_int:  [prec.left,  20],
 };
 
 // All operators.
@@ -261,13 +261,13 @@ module.exports = grammar({
     )),
 
     // Blocks.
-    "{": $ => prec.right(seq(
+    block: $ => prec.right(seq(
       "{",
       repeat(field("body", choice($._expression, $._semicolon, $._newline))),
       optional("}")
     )),
 
-    "(": $ => prec.right(seq(
+    block_expression: $ => prec.right(seq(
       "(",
       repeat(field("body", choice($._expression, $._newline))),
       optional(")")
@@ -275,8 +275,8 @@ module.exports = grammar({
 
     // Function calls and subsetting.
     call: $ => prec.right(16, seq($._expression, field("arguments", alias($._call_arguments,    $.arguments)))),
-    "[":  $ => prec.right(16, seq($._expression, field("arguments", alias($._subset_arguments,  $.arguments)))),
-    "[[": $ => prec.right(16, seq($._expression, field("arguments", alias($._subset2_arguments, $.arguments)))),
+    subset:  $ => prec.right(16, seq($._expression, field("arguments", alias($._subset_arguments,  $.arguments)))),
+    subset2: $ => prec.right(16, seq($._expression, field("arguments", alias($._subset2_arguments, $.arguments)))),
 
     // Dummy rule; used for aliasing so we can easily search the AST.
     arguments: $ => $._expression,
@@ -301,7 +301,7 @@ module.exports = grammar({
     ...generateKeywordRules(),
 
     // Miscellaneous.
-    "..i": $ => token(/[.][.]\d+/),
+    argument_reference: $ => token(/[.][.]\d+/),
     dots: $ => token("..."),
 
     // A general R expression.
@@ -311,13 +311,13 @@ module.exports = grammar({
       $.function,
 
       // Calls and subsets.
-      $.call, $["["], $["[["],
+      $.call, $.subset, $.subset2,
 
       // Control flow.
       $.if, $.for, $.while, $.repeat, $.break, $.next,
 
       // Blocks.
-      $["{"], $["("],
+      $.block, $.block_expression,
 
       // Binary operators.
       ...operatorRules($),
@@ -329,7 +329,7 @@ module.exports = grammar({
       $.dots,
 
       // E.g. '..1'
-      $["..i"],
+      $.argument_reference,
 
       // Literals.
       $.integer, $.float, $.complex, $.string,
@@ -338,7 +338,7 @@ module.exports = grammar({
       prec.left($.identifier),
 
       // Unmatched closing brackets.
-      $["}"], $[")"], $["]"]
+      $.unmatched_curly_bracket, $.unmatched_round_bracket, $.unmatched_square_bracket
 
     )),
 
@@ -374,9 +374,9 @@ module.exports = grammar({
     // Check for un-matched closing brackets. This allows us to recover in
     // cases where the parse tree is temporarily incorrect, e.g. because the
     // user has removed the opening bracket associated with some closing bracket.
-    "}": $ => /\}/,
-    ")": $ => /\)/,
-    "]": $ => /\]/
+    unmatched_curly_bracket: $ => /\}/,
+    unmatched_round_bracket: $ => /\)/,
+    unmatched_square_bracket: $ => /\]/
 
   }
 
