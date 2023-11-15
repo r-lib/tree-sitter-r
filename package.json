@@ -10,7 +10,7 @@
   "author": "Kevin Ushey",
   "license": "MIT",
   "dependencies": {
-    "nan": "^2.14.2"
+    "nan": "^2.18.0"
   },
   "devDependencies": {
     "tree-sitter": "^0.20",
