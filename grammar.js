@@ -344,12 +344,12 @@ module.exports = grammar({
 
     // Numeric literals.
     _hex_literal: $ => seq(/0[xX][0-9a-fA-F]+/),
-    _number_literal: $ => /(?:(?:\d+(?:\.\d*)?)|(?:\.\d+))(?:[eE][+-]?\d*)?[i]?/,
+    _number_literal: $ => /(?:(?:\d+(?:\.\d*)?)|(?:\.\d+))(?:[eE][+-]?\d*)?/,
     _float_literal: $ => choice($._hex_literal, $._number_literal),
 
-    float: $ => $._float_literal,
     integer: $ => seq($._float_literal, "L"),
     complex: $ => seq($._float_literal, "i"),
+    float: $ => $._float_literal,
 
     // Strings.
     string: $ => choice(
