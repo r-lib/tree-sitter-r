@@ -2843,7 +2843,7 @@
     },
     "_number_literal": {
       "type": "PATTERN",
-      "value": "(?:(?:\\d+(?:\\.\\d*)?)|(?:\\.\\d+))(?:[eE][+-]?\\d*)?[i]?"
+      "value": "(?:(?:\\d+(?:\\.\\d*)?)|(?:\\.\\d+))(?:[eE][+-]?\\d*)?"
     },
     "_float_literal": {
       "type": "CHOICE",
@@ -2857,10 +2857,6 @@
           "name": "_number_literal"
         }
       ]
-    },
-    "float": {
-      "type": "SYMBOL",
-      "name": "_float_literal"
     },
     "integer": {
       "type": "SEQ",
@@ -2887,6 +2883,10 @@
           "value": "i"
         }
       ]
+    },
+    "float": {
+      "type": "SYMBOL",
+      "name": "_float_literal"
     },
     "string": {
       "type": "CHOICE",
