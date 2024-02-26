@@ -233,18 +233,15 @@
             }
           },
           {
-            "type": "REPEAT",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_newline"
-            }
-          },
-          {
             "type": "CHOICE",
             "members": [
               {
                 "type": "SEQ",
                 "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_whitespace_before_else"
+                  },
                   {
                     "type": "STRING",
                     "value": "else"
@@ -2970,6 +2967,10 @@
     {
       "type": "SYMBOL",
       "name": "_newline"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_whitespace_before_else"
     },
     {
       "type": "SYMBOL",

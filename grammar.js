@@ -178,6 +178,7 @@ module.exports = grammar({
 
   externals: $ => [
     $._newline,
+    $._whitespace_before_else,
     $._semicolon,
     $._raw_string_literal,
     "(",
@@ -228,8 +229,7 @@ module.exports = grammar({
       ")",
       repeat($._newline),
       field("consequence", $._expression),
-      repeat($._newline),
-      optional(seq("else", field("alternative", $._expression)))
+      optional(seq($._whitespace_before_else, "else", field("alternative", $._expression)))
     )),
 
     for: $ => prec.right(seq(

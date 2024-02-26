@@ -9,6 +9,7 @@ namespace {
 
 enum TokenType {
   NEWLINE,
+  WHITESPACE_BEFORE_ELSE,
   SEMICOLON,
   RAW_STRING_LITERAL,
   OPEN_PAREN,
@@ -77,6 +78,11 @@ struct Scanner {
     // scan whitespace
     if (valid_symbols[NEWLINE] && scan_whitespace(lexer, valid_symbols)) {
       return true;
+    }
+
+    // whitespace before else
+    if (valid_symbols[WHITESPACE_BEFORE_ELSE]) {
+      return scan_whitespace_before_else(lexer, valid_symbols);
     }
 
     // check for semi-colons
@@ -187,6 +193,42 @@ struct Scanner {
 
     return false;
 
+  }
+
+  bool scan_whitespace_before_else(TSLexer* lexer, const bool* valid_symbols) {
+
+    while (std::iswspace(lexer->lookahead)) {
+      lexer->advance(lexer, true);
+    }
+
+    lexer->mark_end(lexer);
+    if (lexer->lookahead != 'e') {
+      return false;
+    }
+
+    lexer->advance(lexer, false);
+    if (lexer->lookahead != 'l') {
+      return false;
+    }
+
+    lexer->advance(lexer, false);
+    if (lexer->lookahead != 's') {
+      return false;
+    }
+
+    lexer->advance(lexer, false);
+    if (lexer->lookahead != 'e') {
+      return false;
+    }
+
+    lexer->advance(lexer, false);
+    if (std::iswalnum(lexer->lookahead)) {
+      return false;
+    }
+
+    lexer->result_symbol = WHITESPACE_BEFORE_ELSE;
+    return true;
+    
   }
 
   bool scan_raw_string_literal(TSLexer* lexer, const bool* valid_symbols) {
