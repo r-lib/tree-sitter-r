@@ -390,9 +390,8 @@ foo |> bar() |> baz(data = _)
           value: (identifier))
         (comma)
         argument: (argument
-          name: (identifier))
-        (ERROR
-          (UNEXPECTED '_')))))
+          name: (identifier)
+          value: (identifier)))))
   (|>
     lhs: (|>
       lhs: (identifier)
@@ -403,9 +402,8 @@ foo |> bar() |> baz(data = _)
       (identifier)
       arguments: (arguments
         argument: (argument
-          name: (identifier))
-        (ERROR
-          (UNEXPECTED '_'))))))
+          name: (identifier)
+          value: (identifier))))))
 
 ================================================================================
 Subset
