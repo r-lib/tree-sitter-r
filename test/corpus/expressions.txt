@@ -520,19 +520,17 @@ if (a) {
 (program
   (if
     condition: (identifier)
-    consequence: (identifier))
-  (identifier)
-  (if
-    condition: (identifier)
-    consequence: (identifier))
+    consequence: (identifier)
+    alternative: (if
+      condition: (identifier)
+      consequence: (identifier)))
   (if
     condition: (identifier)
     consequence: ({
       body: (identifier)
-      body: (identifier)))
-  (identifier)
-  ({
-    body: (identifier)))
+      body: (identifier))
+    alternative: ({
+      body: (identifier))))
 
 ================================================================================
 for
@@ -1015,17 +1013,15 @@ TRUE ? FALSE = NA
   (repeat
     (if
       (float)
-      (TRUE)))
-  (identifier)
-  (repeat
-    (float))
+      (TRUE)
+      (repeat
+        (float))))
   (if
     (TRUE)
     (if
       (FALSE)
-      (float)))
-  (identifier)
-  (NULL)
+      (float)
+      (NULL)))
   (<-
     ([[
       ($
@@ -1054,9 +1050,8 @@ TRUE ? FALSE = NA
   ((
     (if
       (TRUE)
-      (FALSE))
-    (identifier)
-    (NA))
+      (FALSE)
+      (NA)))
   (?
     (=
       (identifier)
@@ -1167,7 +1162,6 @@ else {
     (if
       (TRUE)
       ({
-        (FALSE)))
-    (identifier)
-    ({
-      (NA))))
+        (FALSE))
+      ({
+        (NA)))))

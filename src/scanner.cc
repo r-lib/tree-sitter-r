@@ -230,6 +230,7 @@ struct Scanner {
       return false;
     }
 
+    lexer->advance(lexer, false);
     if (std::iswalnum(lexer->lookahead)) {
       return false;
     }
