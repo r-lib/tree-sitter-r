@@ -25,8 +25,7 @@ _foo
   (identifier)
   (identifier)
   (identifier)
-  (ERROR
-    (UNEXPECTED '_'))
+  (identifier)
   (identifier))
 
 ================================================================================

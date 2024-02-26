@@ -390,9 +390,8 @@ foo |> bar() |> baz(data = _)
           value: (identifier))
         (comma)
         argument: (argument
-          name: (identifier))
-        (ERROR
-          (UNEXPECTED '_')))))
+          name: (identifier)
+          value: (identifier)))))
   (|>
     lhs: (|>
       lhs: (identifier)
@@ -403,9 +402,8 @@ foo |> bar() |> baz(data = _)
       (identifier)
       arguments: (arguments
         argument: (argument
-          name: (identifier))
-        (ERROR
-          (UNEXPECTED '_'))))))
+          name: (identifier)
+          value: (identifier))))))
 
 ================================================================================
 Subset
@@ -522,17 +520,19 @@ if (a) {
 (program
   (if
     condition: (identifier)
-    consequence: (identifier)
-    alternative: (if
-      condition: (identifier)
-      consequence: (identifier)))
+    consequence: (identifier))
+  (identifier)
+  (if
+    condition: (identifier)
+    consequence: (identifier))
   (if
     condition: (identifier)
     consequence: ({
       body: (identifier)
-      body: (identifier))
-    alternative: ({
-      body: (identifier))))
+      body: (identifier)))
+  (identifier)
+  ({
+    body: (identifier)))
 
 ================================================================================
 for
@@ -1015,15 +1015,17 @@ TRUE ? FALSE = NA
   (repeat
     (if
       (float)
-      (TRUE)
-      (repeat
-        (float))))
+      (TRUE)))
+  (identifier)
+  (repeat
+    (float))
   (if
     (TRUE)
     (if
       (FALSE)
-      (float)
-      (NULL)))
+      (float)))
+  (identifier)
+  (NULL)
   (<-
     ([[
       ($
@@ -1046,13 +1048,15 @@ TRUE ? FALSE = NA
     (NaN))
   (if
     (TRUE)
-    (FALSE)
-    (NA))
+    (FALSE))
+  (identifier)
+  (NA)
   ((
     (if
       (TRUE)
-      (FALSE)
-      (NA)))
+      (FALSE))
+    (identifier)
+    (NA))
   (?
     (=
       (identifier)
@@ -1138,3 +1142,32 @@ apple
       (arguments
         (argument
           (identifier))))))
+
+================================================================================
+Complex If Expression
+================================================================================
+
+{
+
+  # do the thing
+  if (TRUE) {
+    FALSE
+  }
+else {
+    NA
+  }
+
+}
+
+--------------------------------------------------------------------------------
+
+(program
+  ({
+    (comment)
+    (if
+      (TRUE)
+      ({
+        (FALSE)))
+    (identifier)
+    ({
+      (NA))))

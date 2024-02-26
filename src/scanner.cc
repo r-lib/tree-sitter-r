@@ -197,31 +197,39 @@ struct Scanner {
 
   bool scan_whitespace_before_else(TSLexer* lexer, const bool* valid_symbols) {
 
+    // ???????????
+    if (lexer->lookahead == '}') {
+      lexer->advance(lexer, false);
+    }
+
+    // consume whitespace and comments?
     while (std::iswspace(lexer->lookahead)) {
       lexer->advance(lexer, true);
     }
 
+    // mark end of whitespace + comments we consumed
     lexer->mark_end(lexer);
-    if (lexer->lookahead != 'e') {
+
+    // check for an 'else' following
+    if (lexer->lookahead != L'e') {
       return false;
     }
 
     lexer->advance(lexer, false);
-    if (lexer->lookahead != 'l') {
+    if (lexer->lookahead != L'l') {
       return false;
     }
 
     lexer->advance(lexer, false);
-    if (lexer->lookahead != 's') {
+    if (lexer->lookahead != L's') {
       return false;
     }
 
     lexer->advance(lexer, false);
-    if (lexer->lookahead != 'e') {
+    if (lexer->lookahead != L'e') {
       return false;
     }
 
-    lexer->advance(lexer, false);
     if (std::iswalnum(lexer->lookahead)) {
       return false;
     }
