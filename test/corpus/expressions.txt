@@ -533,6 +533,72 @@ if (a) {
       body: (identifier))))
 
 ================================================================================
+Complex If Expression
+================================================================================
+
+# Invalid at top level due to newline before `else`, so not a real if statement
+if (TRUE) {
+  1
+}
+else {
+  2
+}
+
+# Valid inside `{` only due to special `else` handling with newlines
+{
+  if (TRUE) {
+    1
+  }
+  else {
+    2
+  }
+}
+
+# Valid with comments in special newline territory
+{
+  if (TRUE) {
+    1
+  }
+  # hi there
+  
+  # another one!
+
+  else {
+    2
+  }
+}
+
+--------------------------------------------------------------------------------
+
+(program
+  (comment)
+  (if
+    (TRUE)
+    ({
+      (float)))
+  (identifier)
+  ({
+    (float))
+  (comment)
+  ({
+    (if
+      (TRUE)
+      ({
+        (float))
+      ({
+        (float))))
+  (comment)
+  ({
+    (if
+      (TRUE)
+      ({
+        (float))
+      (comment)
+      (comment)
+      ({
+        (float)))))
+
+================================================================================
 for
 ================================================================================
 
@@ -1044,8 +1110,9 @@ TRUE ? FALSE = NA
     (NaN))
   (if
     (TRUE)
-    (FALSE)
-    (NA))
+    (FALSE))
+  (identifier)
+  (NA)
   ((
     (if
       (TRUE)
