@@ -508,6 +508,10 @@ if (x)
   y else if (a)
   b
 
+if (x)
+  y else if (a)
+  b else d
+
 if (a) {
   c
   d
@@ -524,6 +528,13 @@ if (a) {
     alternative: (if
       condition: (identifier)
       consequence: (identifier)))
+  (if
+    condition: (identifier)
+    consequence: (identifier)
+    alternative: (if
+      condition: (identifier)
+      consequence: (identifier)
+      alternative: (identifier)))
   (if
     condition: (identifier)
     consequence: ({
