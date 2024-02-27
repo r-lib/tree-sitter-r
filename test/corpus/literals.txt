@@ -11,6 +11,8 @@ foo_bar
 `a "literal"`
 `another
 literal \` foo`
+`backslash followed by newline \
+`
 # Recognized as `_` and `foo` identifiers. Should it be this way?
 _foo
 
@@ -18,6 +20,7 @@ _foo
 --------------------------------------------------------------------------------
 
 (program
+  (identifier)
   (identifier)
   (identifier)
   (identifier)
@@ -51,14 +54,24 @@ Strings
 
 "foo"
 "foo\"bar"
+"foo\ "
+"foo\
+"
 'foo'
 'foo\'bar'
+'foo\ '
+'foo\
+'
 "#"
 '#'
 
 --------------------------------------------------------------------------------
 
 (program
+  (string)
+  (string)
+  (string)
+  (string)
   (string)
   (string)
   (string)
