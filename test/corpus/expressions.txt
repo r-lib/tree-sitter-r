@@ -544,6 +544,12 @@ else {
   2
 }
 
+# Invalid for same reason as above
+if (TRUE)
+  1
+else
+  2
+
 # Valid inside `{` only due to special `else` handling with newlines
 {
   if (TRUE) {
@@ -579,6 +585,12 @@ else {
   (identifier)
   ({
     (float))
+  (comment)
+  (if
+    (TRUE)
+    (float))
+  (identifier)
+  (float)
   (comment)
   ({
     (if
