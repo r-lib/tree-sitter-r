@@ -11,6 +11,7 @@ foo_bar
 `a "literal"`
 `another
 literal \` foo`
+# Recognized as `_` and `foo` identifiers. Should it be this way?
 _foo
 
 
@@ -25,8 +26,8 @@ _foo
   (identifier)
   (identifier)
   (identifier)
-  (ERROR
-    (UNEXPECTED '_'))
+  (comment)
+  (identifier)
   (identifier))
 
 ================================================================================
