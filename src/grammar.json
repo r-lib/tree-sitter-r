@@ -233,20 +233,18 @@
             }
           },
           {
-            "type": "REPEAT",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_newline"
-            }
-          },
-          {
             "type": "CHOICE",
             "members": [
               {
                 "type": "SEQ",
                 "members": [
                   {
-                    "type": "STRING",
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_else"
+                    },
+                    "named": false,
                     "value": "else"
                   },
                   {
@@ -2977,6 +2975,10 @@
     },
     {
       "type": "SYMBOL",
+      "name": "_else"
+    },
+    {
+      "type": "SYMBOL",
       "name": "_raw_string_literal"
     },
     {
@@ -3015,4 +3017,3 @@
   "inline": [],
   "supertypes": []
 }
-

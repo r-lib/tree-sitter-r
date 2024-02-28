@@ -10,6 +10,7 @@ namespace {
 enum TokenType {
   NEWLINE,
   SEMICOLON,
+  ELSE,
   RAW_STRING_LITERAL,
   OPEN_PAREN,
   CLOSE_PAREN,
@@ -73,22 +74,13 @@ struct Scanner {
   }
 
   bool scan(TSLexer* lexer, const bool* valid_symbols) {
-
-    // scan whitespace
-    if (valid_symbols[NEWLINE] && scan_whitespace(lexer, valid_symbols)) {
-      return true;
-    }
+    consume_whitespace_and_ignored_newlines(lexer);
 
     // check for semi-colons
     if (valid_symbols[SEMICOLON] && lexer->lookahead == ';') {
       lexer->advance(lexer, false);
       lexer->mark_end(lexer);
       lexer->result_symbol = SEMICOLON;
-      return true;
-    }
-
-    // check for a raw string literal
-    if (valid_symbols[RAW_STRING_LITERAL] && scan_raw_string_literal(lexer, valid_symbols)) {
       return true;
     }
 
@@ -158,38 +150,117 @@ struct Scanner {
         return true;
       }
     }
+
+    // There absolutely must not be any other conditions after these.
+    // These functions `advance()` internally, so if they return `false` then we can't
+    // check any other conditions after these because `lookahead` won't be accurate.
+    if (valid_symbols[RAW_STRING_LITERAL] && (lexer->lookahead == 'r' || lexer->lookahead == 'R')) {
+      return scan_raw_string_literal(lexer);
+    } else if (valid_symbols[ELSE] && lexer->lookahead == 'e') {
+      return scan_else(lexer);
+    } else if (valid_symbols[NEWLINE] && lexer->lookahead == '\n') {
+      return scan_newline_or_else(lexer, valid_symbols);
+    }
  
     return false;
 
   }
 
-  bool scan_whitespace(TSLexer* lexer, const bool* valid_symbols) {
+  void consume_whitespace_and_ignored_newlines(TSLexer* lexer) {
+    while (std::isspace(lexer->lookahead)) {
+      if (lexer->lookahead != '\n') {
+        // Consume all spaces, tabs, etc, unconditionally
+        lexer->advance(lexer, true);
+        continue;
+      }
 
-    while (std::iswspace(lexer->lookahead)) {
+      // If we are inside `(`, `[`, or `[[`, we consume newlines unconditionally.
+      // Notably not within `{` nor at "top level", where newlines have contextual
+      // meaning, particularly for `if` statements. Both of those are handled elsewhere.
+      TokenType token = peek();
+      if (token == OPEN_PAREN || token == OPEN_BRACKET || token == OPEN_BRACKET2) {
+        lexer->advance(lexer, true);
+        continue;
+      }
 
+      // We've hit a newline with contextual meaning to be handled elsewhere
+      break;
+    }
+  }
+
+  bool scan_else(TSLexer* lexer) {
+    if (lexer->lookahead != 'e') {
+      return false;
+    }
+
+    lexer->advance(lexer, false);
+    if (lexer->lookahead != 'l') {
+      return false;
+    }
+
+    lexer->advance(lexer, false);
+    if (lexer->lookahead != 's') {
+      return false;
+    }
+
+    lexer->advance(lexer, false);
+    if (lexer->lookahead != 'e') {
+      return false;
+    }
+
+    // We found `else`, return special `external` for it
+    lexer->advance(lexer, false);
+    lexer->mark_end(lexer);
+    lexer->result_symbol = ELSE;
+
+    return true;
+  }
+
+  // Due to `consume_whitespace_and_ignored_newlines()`, expect that we are either in
+  // a `TOP_LEVEL` context or a `OPEN_BRACE` one if we saw a new line at this point.
+  bool scan_newline_or_else(TSLexer* lexer, const bool* valid_symbols) {
+    // Advance to the next non-newline, non-space character,
+    // we know we have at least 1 newline because this function was called
+    while (std::isspace(lexer->lookahead)) {
       if (lexer->lookahead != '\n') {
         lexer->advance(lexer, true);
         continue;
       }
-
-      TokenType token = peek();
-      if (token != TOP_LEVEL && token != OPEN_BRACE) {
-        lexer->advance(lexer, true);
-        continue;
-      }
-
+      
       lexer->advance(lexer, true);
       lexer->mark_end(lexer);
-      lexer->result_symbol = NEWLINE;
-      return true;
-
     }
 
-    return false;
+    // If the next symbol is a comment, we go ahead and consume the newline as it won't
+    // affect the context, and would otherwise interfere with a situation like below, as
+    // the rogue newline would make it look like we exited the `if` statement, making a
+    // potential `else` node "invalid" in terms of `valid_symbols`.
+    //
+    // if (cond) {
+    // }
+    // # comment
+    // else {
+    //  
+    // }
+    if (lexer->lookahead == '#') {
+      lexer->advance(lexer, true);
+      return false;
+    }
 
+    // At this point the most recent newline is marked by `mark_end()`, so lock
+    // it in as a result before giving the special `else` case a chance to run.
+    lexer->result_symbol = NEWLINE;
+
+    // If the next symbol is an `e`, we need to check if we are coming up on an `else`,
+    // in which case we consume all of the newlines if we are also in a `{` scope.
+    if (valid_symbols[ELSE] && peek() == OPEN_BRACE && scan_else(lexer)) {
+      return true;
+    }
+
+    return true;
   }
 
-  bool scan_raw_string_literal(TSLexer* lexer, const bool* valid_symbols) {
+  bool scan_raw_string_literal(TSLexer* lexer) {
 
     // scan a raw string literal; see R source code for implementation:
     // https://github.com/wch/r-source/blob/52b730f217c12ba3d95dee0cd1f330d1977b5ea3/src/main/gram.y#L3102
