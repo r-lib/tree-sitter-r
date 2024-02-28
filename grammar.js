@@ -357,13 +357,13 @@ module.exports = grammar({
     // character (i.e. escaped quote) or any character except that quote character"
     string: $ => choice(
       $._raw_string_literal,
-      /'((?:\\')|[^'])*'/,
-      /"((?:\\")|[^"])*"/,
+      /'((?:\\(.|\n))|[^'\\])*'/,
+      /"((?:\\(.|\n))|[^"\\])*"/,
     ),
 
     // Identifiers.
     _identifier: $ => /[\p{XID_Start}.][\p{XID_Continue}.]*/,
-    _quoted_identifier: $ => /`((?:\\`)|[^`])*`/,
+    _quoted_identifier: $ => /`((?:\\(.|\n))|[^`\\])*`/,
     identifier: $ => choice(token("_"), $._identifier, $._quoted_identifier),
 
     // Comments.
