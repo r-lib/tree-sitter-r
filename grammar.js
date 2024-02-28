@@ -353,8 +353,9 @@ module.exports = grammar({
     float: $ => $._float_literal,
 
     // Strings.
-    // Regex is: "Between two quote characters, allow backslash followed by that quote
-    // character (i.e. escaped quote) or any character except that quote character"
+    // Regex is: "Between two quote characters, allow either backslash followed by any
+    // character (i.e. escape sequence) or any character except that quote character or
+    // a bare backtick."
     string: $ => choice(
       $._raw_string_literal,
       /'((?:\\(.|\n))|[^'\\])*'/,
