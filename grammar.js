@@ -353,15 +353,18 @@ module.exports = grammar({
     float: $ => $._float_literal,
 
     // Strings.
+    // Regex is: "Between two quote characters, allow either backslash followed by any
+    // character (i.e. escape sequence) or any character except that quote character or
+    // a bare backtick."
     string: $ => choice(
       $._raw_string_literal,
-      /'((?:\\.)|[^'\\])*'/,
-      /"((?:\\.)|[^"\\])*"/,
+      /'((?:\\(.|\n))|[^'\\])*'/,
+      /"((?:\\(.|\n))|[^"\\])*"/,
     ),
 
     // Identifiers.
     _identifier: $ => /[\p{XID_Start}.][\p{XID_Continue}.]*/,
-    _quoted_identifier: $ => /`((?:\\.)|[^`\\])*`/,
+    _quoted_identifier: $ => /`((?:\\(.|\n))|[^`\\])*`/,
     identifier: $ => choice(token("_"), $._identifier, $._quoted_identifier),
 
     // Comments.
