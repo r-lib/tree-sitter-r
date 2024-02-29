@@ -6,7 +6,8 @@
 //! ```
 //! let code = "";
 //! let mut parser = tree_sitter::Parser::new();
-//! parser.set_language(tree_sitter_r::language()).expect("Error loading r grammar");
+//! let language = tree_sitter_r::language();
+//! parser.set_language(&language).expect("Error loading r grammar");
 //! let tree = parser.parse(code, None).unwrap();
 //! ```
 //!
@@ -45,8 +46,9 @@ mod tests {
     #[test]
     fn test_can_load_grammar() {
         let mut parser = tree_sitter::Parser::new();
+        let language = super::language();
         parser
-            .set_language(super::language())
+            .set_language(&language)
             .expect("Error loading r language");
     }
 }
