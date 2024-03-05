@@ -376,46 +376,65 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
     return true;
   }
 
-  if (valid_symbols[OPEN_BRACKET] || valid_symbols[OPEN_BRACKET2]) {
-    if (lexer->lookahead == '[') {
-      lexer->advance(lexer, false);
-      if (lexer->lookahead == '[') {
-        if (!stack_push(stack, SCOPE_BRACKET2)) {
-          return false;
-        }
-        lexer->advance(lexer, false);
-        lexer->mark_end(lexer);
-        lexer->result_symbol = OPEN_BRACKET2;
-      } else {
-        if (!stack_push(stack, SCOPE_BRACKET)) {
-          return false;
-        }
-        lexer->mark_end(lexer);
-        lexer->result_symbol = OPEN_BRACKET;
+  if ((valid_symbols[OPEN_BRACKET] || valid_symbols[OPEN_BRACKET2]) && lexer->lookahead == '[') {
+    lexer->advance(lexer, false);
+
+    // If we see `[[` when it's a valid symbol, greedily accept that
+    if (valid_symbols[OPEN_BRACKET2] && lexer->lookahead == '[') {
+      if (!stack_push(stack, SCOPE_BRACKET2)) {
+        return false;
       }
+      lexer->advance(lexer, false);
+      lexer->mark_end(lexer);
+      lexer->result_symbol = OPEN_BRACKET2;
       return true;
     }
+    
+    // If we see either `[` followed by something else, or `[[` when `[[` happens to
+    // not be a valid symbol, accept the single `[` if it's a valid symbol.
+    if (valid_symbols[OPEN_BRACKET]) {
+      if (!stack_push(stack, SCOPE_BRACKET)) {
+        return false;
+      }
+      lexer->mark_end(lexer);
+      lexer->result_symbol = OPEN_BRACKET;
+      return true;
+    }
+
+    // If we see a `[` that isn't captured by the above cases, we don't know how to
+    // handle it
+    return false;
   }
 
-  if (valid_symbols[CLOSE_BRACKET] || valid_symbols[CLOSE_BRACKET2]) {
-    if (lexer->lookahead == ']') {
-      lexer->advance(lexer, false);
-      if (lexer->lookahead == ']') {
-        if (!stack_pop(stack, SCOPE_BRACKET2)) {
-          return false;
-        } 
-        lexer->advance(lexer, false);
-        lexer->mark_end(lexer);
-        lexer->result_symbol = CLOSE_BRACKET2;
-      } else {
-        if (!stack_pop(stack, SCOPE_BRACKET)) {
-          return false;
-        }
-        lexer->mark_end(lexer);
-        lexer->result_symbol = CLOSE_BRACKET;
-      }
-      return true;
+  if (valid_symbols[CLOSE_BRACKET] && lexer->lookahead == ']' && stack_peek(stack) == SCOPE_BRACKET) {
+    // Must check the scope before entering this branch to account for `x[[a[1]]]` where
+    // the first `]` occurs when both `]` and `]]` are valid. The scope breaks the tie
+    // in favor of this branch.
+    if (!stack_pop(stack, SCOPE_BRACKET)) {
+      return false;
     }
+    lexer->advance(lexer, false);
+    lexer->mark_end(lexer);
+    lexer->result_symbol = CLOSE_BRACKET;
+    return true;
+  }
+
+  if (valid_symbols[CLOSE_BRACKET2] && lexer->lookahead == ']' && stack_peek(stack) == SCOPE_BRACKET2) {
+    // Must check the scope before entering this branch to account for `x[a[[1]]]` where
+    // the first `]` occurs when both `]` and `]]` are valid. The scope breaks the tie
+    // in favor of this branch.
+    lexer->advance(lexer, false);
+    if (lexer->lookahead != ']') {
+      // Like `x[[1]` where we instead want an unmatched `]`
+      return false;
+    }
+    if (!stack_pop(stack, SCOPE_BRACKET2)) {
+      return false;
+    }
+    lexer->advance(lexer, false);
+    lexer->mark_end(lexer);
+    lexer->result_symbol = CLOSE_BRACKET2;
+    return true;
   }
 
   // There absolutely must not be any other conditions after these.
