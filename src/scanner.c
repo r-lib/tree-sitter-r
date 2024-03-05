@@ -1,6 +1,9 @@
 
 #include <tree_sitter/parser.h>
 #include <ctype.h> // isspace()
+#include <stdarg.h> // va_list, va_start(), va_end()
+#include <stdio.h> // printf()
+#include <stdlib.h> // getenv()
 #include <string.h> // memcpy()
 
 enum TokenType {
@@ -17,6 +20,21 @@ enum TokenType {
   OPEN_BRACKET2,
   CLOSE_BRACKET2
 };
+
+// Expected that we only use this in unexpected (cold) paths, but branch prediction
+// should essentially make it free anyways.
+static inline void debug_print(bool debug, const char* fmt, ...) {
+  if (debug) {
+    va_list args;
+    va_start(args, fmt);
+    vprintf(fmt, args);
+    va_end(args);
+  }
+}
+
+static inline bool is_debug_build() {
+  return getenv("TREE_SITTER_DEBUG") != NULL;
+}
 
 // ---------------------------------------------------------------------------------------
 // Temporary Stack structure until we can use the `<tree_sitter/array.h>` header from
@@ -48,15 +66,17 @@ const Scope SCOPE_BRACKET2 = 4;
 typedef struct {
   Scope *arr;
   unsigned len;
+  bool debug;
 } Stack;
 
-static Stack *stack_new() {
+static Stack *stack_new(bool debug) {
   Scope *arr = malloc(TREE_SITTER_SERIALIZATION_BUFFER_SIZE);
   if (arr == NULL) exit(1);
   Stack *stack = malloc(sizeof(Stack));
   if (stack == NULL) exit(1);
   stack->arr = arr;
   stack->len = 0;
+  stack->debug = debug;
   return stack;
 }
 
@@ -65,10 +85,18 @@ static void stack_free(Stack *stack) {
   free(stack);
 }
 
-static void stack_push(Stack *stack, Scope scope) {
-  if (stack->len >= TREE_SITTER_SERIALIZATION_BUFFER_SIZE) exit(1);
+static bool stack_push(Stack *stack, Scope scope) {
+  if (stack->len >= TREE_SITTER_SERIALIZATION_BUFFER_SIZE) {
+    // Return `false` so `scan()` can return `false` and refuse to handle the token.
+    // Should only ever happen in pathological cases (i.e. 1025 unmatched opening braces).
+    debug_print(stack->debug, "`stack_push()` failed. Stack is at maximum capacity.\n");
+    return false;
+  }
+
   stack->arr[stack->len] = scope;
   stack->len++;
+
+  return true;
 }
 
 static Scope stack_peek(Stack *stack) {
@@ -79,11 +107,23 @@ static Scope stack_peek(Stack *stack) {
   }
 }
 
-static void stack_pop(Stack *stack, Scope scope) {
-  if (stack->len == 0) exit(1);
+static bool stack_pop(Stack *stack, Scope scope) {
+  if (stack->len == 0) {
+    // Return `false` so `scan()` can return `false` and refuse to handle the token
+    debug_print(stack->debug, "`stack_pop()` failed. Stack is empty, nothing to pop.\n");
+    return false;
+  }
+  
   Scope x = stack_peek(stack);
   stack->len--;
-  if (x != scope) exit(1);
+
+  if (x != scope) {
+    // Return `false` so `scan()` can return `false` and refuse to handle the token
+    debug_print(stack->debug, "`stack_pop()` failed. Actual scope '%c' does not match expected scope '%c'.\n", x, scope);
+    return false;
+  }
+
+  return true;
 }
 
 static unsigned stack_serialize(Stack *stack, char *buffer) {
@@ -297,34 +337,42 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
 
   // check for an open bracket
   if (valid_symbols[OPEN_PAREN] && lexer->lookahead == '(') {
+    if (!stack_push(stack, SCOPE_PAREN)) {
+      return false;
+    }
     lexer->advance(lexer, false);
     lexer->mark_end(lexer);
     lexer->result_symbol = OPEN_PAREN;
-    stack_push(stack, SCOPE_PAREN);
     return true;
   }
 
   if (valid_symbols[CLOSE_PAREN] && lexer->lookahead == ')') {
+    if (!stack_pop(stack, SCOPE_PAREN)) {
+      return false;
+    }
     lexer->advance(lexer, false);
     lexer->mark_end(lexer);
     lexer->result_symbol = CLOSE_PAREN;
-    stack_pop(stack, SCOPE_PAREN);
     return true;
   }
 
   if (valid_symbols[OPEN_BRACE] && lexer->lookahead == '{') {
+    if (!stack_push(stack, SCOPE_BRACE)) {
+      return false;
+    }
     lexer->advance(lexer, false);
     lexer->mark_end(lexer);
     lexer->result_symbol = OPEN_BRACE;
-    stack_push(stack, SCOPE_BRACE);
     return true;
   }
 
   if (valid_symbols[CLOSE_BRACE] && lexer->lookahead == '}') {
+    if (!stack_pop(stack, SCOPE_BRACE)) {
+      return false;
+    }
     lexer->advance(lexer, false);
     lexer->mark_end(lexer);
     lexer->result_symbol = CLOSE_BRACE;
-    stack_pop(stack, SCOPE_BRACE);
     return true;
   }
 
@@ -332,14 +380,18 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
     if (lexer->lookahead == '[') {
       lexer->advance(lexer, false);
       if (lexer->lookahead == '[') {
+        if (!stack_push(stack, SCOPE_BRACKET2)) {
+          return false;
+        }
         lexer->advance(lexer, false);
         lexer->mark_end(lexer);
         lexer->result_symbol = OPEN_BRACKET2;
-        stack_push(stack, SCOPE_BRACKET2);
       } else {
+        if (!stack_push(stack, SCOPE_BRACKET)) {
+          return false;
+        }
         lexer->mark_end(lexer);
         lexer->result_symbol = OPEN_BRACKET;
-        stack_push(stack, SCOPE_BRACKET);
       }
       return true;
     }
@@ -349,14 +401,18 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
     if (lexer->lookahead == ']') {
       lexer->advance(lexer, false);
       if (lexer->lookahead == ']') {
+        if (!stack_pop(stack, SCOPE_BRACKET2)) {
+          return false;
+        } 
         lexer->advance(lexer, false);
         lexer->mark_end(lexer);
         lexer->result_symbol = CLOSE_BRACKET2;
-        stack_pop(stack, SCOPE_BRACKET2);
       } else {
+        if (!stack_pop(stack, SCOPE_BRACKET)) {
+          return false;
+        }
         lexer->mark_end(lexer);
         lexer->result_symbol = CLOSE_BRACKET;
-        stack_pop(stack, SCOPE_BRACKET);
       }
       return true;
     }
@@ -380,7 +436,8 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
 // ---------------------------------------------------------------------------------------
 
 void *tree_sitter_r_external_scanner_create() {
-  return stack_new();
+  bool debug = is_debug_build();
+  return stack_new(debug);
 }
 
 bool tree_sitter_r_external_scanner_scan(void *payload,
