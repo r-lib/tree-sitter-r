@@ -228,8 +228,8 @@ static bool scan_newline_or_else(TSLexer* lexer, Stack* stack, const bool* valid
   // it in as a result before giving the special `else` case a chance to run.
   lexer->result_symbol = NEWLINE;
 
-  // If the next symbol is an `e`, we need to check if we are coming up on an `else`,
-  // in which case we consume all of the newlines if we are also in a `{` scope.
+  // If we are inside a `SCOPE_BRACE`, this is an extremely special case where `else`
+  // can follow any number of newlines or whitespace and still be valid.
   if (valid_symbols[ELSE] && stack_peek(stack) == SCOPE_BRACE && scan_else(lexer)) {
     return true;
   }
