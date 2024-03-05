@@ -50,7 +50,7 @@ typedef struct {
   unsigned len;
 } Stack;
 
-static Stack *new_stack() {
+static Stack *stack_new() {
   Scope *arr = malloc(TREE_SITTER_SERIALIZATION_BUFFER_SIZE);
   if (arr == NULL) exit(1);
   Stack *stack = malloc(sizeof(Stack));
@@ -380,8 +380,7 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
 // ---------------------------------------------------------------------------------------
 
 void *tree_sitter_r_external_scanner_create() {
-  Stack* stack = new_stack();
-  return stack;
+  return stack_new();
 }
 
 bool tree_sitter_r_external_scanner_scan(void *payload,
