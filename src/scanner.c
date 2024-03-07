@@ -200,9 +200,8 @@ static bool scan_else(TSLexer* lexer) {
 
 // Due to `consume_whitespace_and_ignored_newlines()`, expect that we are either in
 // a `SCOPE_TOP_LEVEL` or a `SCOPE_BRACE` if we saw a new line at this point.
-static bool scan_newline_or_else(
-    TSLexer* lexer, Stack* stack, const bool* valid_symbols
-) {
+static bool
+scan_newline_or_else(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
   // Advance to the next non-newline, non-space character,
   // we know we have at least 1 newline because this function was called
   while (isspace(lexer->lookahead)) {
@@ -466,7 +465,9 @@ void* tree_sitter_r_external_scanner_create() {
 }
 
 bool tree_sitter_r_external_scanner_scan(
-    void* payload, TSLexer* lexer, const bool* valid_symbols
+    void* payload,
+    TSLexer* lexer,
+    const bool* valid_symbols
 ) {
   return scan(lexer, payload, valid_symbols);
 }
@@ -476,7 +477,9 @@ unsigned tree_sitter_r_external_scanner_serialize(void* payload, char* buffer) {
 }
 
 void tree_sitter_r_external_scanner_deserialize(
-    void* payload, const char* buffer, unsigned length
+    void* payload,
+    const char* buffer,
+    unsigned length
 ) {
   stack_deserialize(payload, buffer, length);
 }

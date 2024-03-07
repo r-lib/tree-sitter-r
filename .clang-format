@@ -8,3 +8,5 @@ SpaceAfterCStyleCast: true
 IncludeBlocks: Regroup
 AllowShortFunctionsOnASingleLine: Empty
 BinPackArguments: false
+BinPackParameters: false
+AllowAllParametersOfDeclarationOnNextLine: false
