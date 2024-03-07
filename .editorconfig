@@ -2,7 +2,7 @@
 indent_style = space
 indent_size = 2
 
-[src/scanner.cc]
+[src/scanner.c]
 indent_style = space
 indent_size = 2
 
