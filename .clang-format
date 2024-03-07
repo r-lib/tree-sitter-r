@@ -1,0 +1,10 @@
+BasedOnStyle: Google
+IndentWidth: 2
+DerivePointerAlignment: false
+PointerAlignment: Left
+ColumnLimit: 90
+AlignAfterOpenBracket: BlockIndent
+SpaceAfterCStyleCast: true
+IncludeBlocks: Regroup
+AllowShortFunctionsOnASingleLine: Empty
+BinPackArguments: false

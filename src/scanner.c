@@ -1,10 +1,10 @@
 
+#include <ctype.h>   // isspace()
+#include <stdarg.h>  // va_list, va_start(), va_end()
+#include <stdio.h>   // printf()
+#include <stdlib.h>  // getenv()
+#include <string.h>  // memcpy()
 #include <tree_sitter/parser.h>
-#include <ctype.h> // isspace()
-#include <stdarg.h> // va_list, va_start(), va_end()
-#include <stdio.h> // printf()
-#include <stdlib.h> // getenv()
-#include <string.h> // memcpy()
 
 enum TokenType {
   NEWLINE,
@@ -54,7 +54,7 @@ const Scope SCOPE_BRACKET2 = 4;
 // `stack_peek()` as a base case when `len = 0`. Note that in `stack_pop()` we still check
 // for `len > 0` before peeking to retain the invariant that we can't pop without
 // something on the stack.
-// 
+//
 // This actually makes serialization/deserialization very simple. Even if we pushed an
 // initial `SCOPE_TOP_LEVEL` in the create hook, there is no guarantee that that will get
 // serialized (so the length of the stack won't be remembered) because the serialize hook
@@ -64,15 +64,15 @@ const Scope SCOPE_BRACKET2 = 4;
 // 2) A deserialization call when there wasn't a previous serialization (len = 0), where
 //    we'd have to repush an initial `SCOPE_TOP_LEVEL`.
 typedef struct {
-  Scope *arr;
+  Scope* arr;
   unsigned len;
   bool debug;
 } Stack;
 
-static Stack *stack_new(bool debug) {
-  Scope *arr = malloc(TREE_SITTER_SERIALIZATION_BUFFER_SIZE);
+static Stack* stack_new(bool debug) {
+  Scope* arr = malloc(TREE_SITTER_SERIALIZATION_BUFFER_SIZE);
   if (arr == NULL) exit(1);
-  Stack *stack = malloc(sizeof(Stack));
+  Stack* stack = malloc(sizeof(Stack));
   if (stack == NULL) exit(1);
   stack->arr = arr;
   stack->len = 0;
@@ -80,12 +80,12 @@ static Stack *stack_new(bool debug) {
   return stack;
 }
 
-static void stack_free(Stack *stack) {
+static void stack_free(Stack* stack) {
   free(stack->arr);
   free(stack);
 }
 
-static bool stack_push(Stack *stack, Scope scope) {
+static bool stack_push(Stack* stack, Scope scope) {
   if (stack->len >= TREE_SITTER_SERIALIZATION_BUFFER_SIZE) {
     // Return `false` so `scan()` can return `false` and refuse to handle the token.
     // Should only ever happen in pathological cases (i.e. 1025 unmatched opening braces).
@@ -99,7 +99,7 @@ static bool stack_push(Stack *stack, Scope scope) {
   return true;
 }
 
-static Scope stack_peek(Stack *stack) {
+static Scope stack_peek(Stack* stack) {
   if (stack->len == 0) {
     return SCOPE_TOP_LEVEL;
   } else {
@@ -107,26 +107,31 @@ static Scope stack_peek(Stack *stack) {
   }
 }
 
-static bool stack_pop(Stack *stack, Scope scope) {
+static bool stack_pop(Stack* stack, Scope scope) {
   if (stack->len == 0) {
     // Return `false` so `scan()` can return `false` and refuse to handle the token
     debug_print(stack->debug, "`stack_pop()` failed. Stack is empty, nothing to pop.\n");
     return false;
   }
-  
+
   Scope x = stack_peek(stack);
   stack->len--;
 
   if (x != scope) {
     // Return `false` so `scan()` can return `false` and refuse to handle the token
-    debug_print(stack->debug, "`stack_pop()` failed. Actual scope '%c' does not match expected scope '%c'.\n", x, scope);
+    debug_print(
+        stack->debug,
+        "`stack_pop()` failed. Actual scope '%c' does not match expected scope '%c'.\n",
+        x,
+        scope
+    );
     return false;
   }
 
   return true;
 }
 
-static unsigned stack_serialize(Stack *stack, char *buffer) {
+static unsigned stack_serialize(Stack* stack, char* buffer) {
   unsigned len = stack->len;
   if (len > 0) {
     memcpy(buffer, stack->arr, len);
@@ -134,7 +139,7 @@ static unsigned stack_serialize(Stack *stack, char *buffer) {
   return len;
 }
 
-static void stack_deserialize(Stack *stack, const char *buffer, unsigned len) {
+static void stack_deserialize(Stack* stack, const char* buffer, unsigned len) {
   if (len > 0) {
     memcpy(stack->arr, buffer, len);
   }
@@ -195,7 +200,9 @@ static bool scan_else(TSLexer* lexer) {
 
 // Due to `consume_whitespace_and_ignored_newlines()`, expect that we are either in
 // a `SCOPE_TOP_LEVEL` or a `SCOPE_BRACE` if we saw a new line at this point.
-static bool scan_newline_or_else(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
+static bool scan_newline_or_else(
+    TSLexer* lexer, Stack* stack, const bool* valid_symbols
+) {
   // Advance to the next non-newline, non-space character,
   // we know we have at least 1 newline because this function was called
   while (isspace(lexer->lookahead)) {
@@ -203,7 +210,7 @@ static bool scan_newline_or_else(TSLexer* lexer, Stack* stack, const bool* valid
       lexer->advance(lexer, true);
       continue;
     }
-    
+
     lexer->advance(lexer, true);
     lexer->mark_end(lexer);
   }
@@ -217,7 +224,7 @@ static bool scan_newline_or_else(TSLexer* lexer, Stack* stack, const bool* valid
   // }
   // # comment
   // else {
-  //  
+  //
   // }
   if (lexer->lookahead == '#') {
     lexer->advance(lexer, true);
@@ -238,7 +245,6 @@ static bool scan_newline_or_else(TSLexer* lexer, Stack* stack, const bool* valid
 }
 
 static bool scan_raw_string_literal(TSLexer* lexer) {
-
   // scan a raw string literal; see R source code for implementation:
   // https://github.com/wch/r-source/blob/52b730f217c12ba3d95dee0cd1f330d1977b5ea3/src/main/gram.y#L3102
 
@@ -284,7 +290,6 @@ static bool scan_raw_string_literal(TSLexer* lexer) {
   // we're in the body of the raw string; start looping until
   // we find the matching closing bracket
   for (; lexer->lookahead != 0; lexer->advance(lexer, false)) {
-
     // consume a closing bracket
     if (lexer->lookahead != closing_bracket) {
       continue;
@@ -315,13 +320,11 @@ static bool scan_raw_string_literal(TSLexer* lexer) {
     lexer->mark_end(lexer);
     lexer->result_symbol = RAW_STRING_LITERAL;
     return true;
-
   }
 
   // if we get here, this implies we hit eof (and so we have
   // an unclosed raw string)
   return false;
-
 }
 
 static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
@@ -376,7 +379,8 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
     return true;
   }
 
-  if ((valid_symbols[OPEN_BRACKET] || valid_symbols[OPEN_BRACKET2]) && lexer->lookahead == '[') {
+  if ((valid_symbols[OPEN_BRACKET] || valid_symbols[OPEN_BRACKET2]) &&
+      lexer->lookahead == '[') {
     lexer->advance(lexer, false);
 
     // If we see `[[` when it's a valid symbol, greedily accept that
@@ -389,7 +393,7 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
       lexer->result_symbol = OPEN_BRACKET2;
       return true;
     }
-    
+
     // If we see either `[` followed by something else, or `[[` when `[[` happens to
     // not be a valid symbol, accept the single `[` if it's a valid symbol.
     if (valid_symbols[OPEN_BRACKET]) {
@@ -406,7 +410,8 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
     return false;
   }
 
-  if (valid_symbols[CLOSE_BRACKET] && lexer->lookahead == ']' && stack_peek(stack) == SCOPE_BRACKET) {
+  if (valid_symbols[CLOSE_BRACKET] && lexer->lookahead == ']' &&
+      stack_peek(stack) == SCOPE_BRACKET) {
     // Must check the scope before entering this branch to account for `x[[a[1]]]` where
     // the first `]` occurs when both `]` and `]]` are valid. The scope breaks the tie
     // in favor of this branch.
@@ -419,7 +424,8 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
     return true;
   }
 
-  if (valid_symbols[CLOSE_BRACKET2] && lexer->lookahead == ']' && stack_peek(stack) == SCOPE_BRACKET2) {
+  if (valid_symbols[CLOSE_BRACKET2] && lexer->lookahead == ']' &&
+      stack_peek(stack) == SCOPE_BRACKET2) {
     // Must check the scope before entering this branch to account for `x[a[[1]]]` where
     // the first `]` occurs when both `]` and `]]` are valid. The scope breaks the tie
     // in favor of this branch.
@@ -440,7 +446,8 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
   // There absolutely must not be any other conditions after these.
   // These functions `advance()` internally, so if they return `false` then we can't
   // check any other conditions after these because `lookahead` won't be accurate.
-  if (valid_symbols[RAW_STRING_LITERAL] && (lexer->lookahead == 'r' || lexer->lookahead == 'R')) {
+  if (valid_symbols[RAW_STRING_LITERAL] &&
+      (lexer->lookahead == 'r' || lexer->lookahead == 'R')) {
     return scan_raw_string_literal(lexer);
   } else if (valid_symbols[ELSE] && lexer->lookahead == 'e') {
     return scan_else(lexer);
@@ -449,30 +456,31 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
   }
 
   return false;
-
 }
 
 // ---------------------------------------------------------------------------------------
 
-void *tree_sitter_r_external_scanner_create() {
+void* tree_sitter_r_external_scanner_create() {
   bool debug = is_debug_build();
   return stack_new(debug);
 }
 
-bool tree_sitter_r_external_scanner_scan(void *payload,
-                                         TSLexer *lexer,
-                                         const bool *valid_symbols) {
+bool tree_sitter_r_external_scanner_scan(
+    void* payload, TSLexer* lexer, const bool* valid_symbols
+) {
   return scan(lexer, payload, valid_symbols);
 }
 
-unsigned tree_sitter_r_external_scanner_serialize(void *payload, char *buffer) {
+unsigned tree_sitter_r_external_scanner_serialize(void* payload, char* buffer) {
   return stack_serialize(payload, buffer);
 }
 
-void tree_sitter_r_external_scanner_deserialize(void *payload, const char *buffer, unsigned length) {
+void tree_sitter_r_external_scanner_deserialize(
+    void* payload, const char* buffer, unsigned length
+) {
   stack_deserialize(payload, buffer, length);
 }
 
-void tree_sitter_r_external_scanner_destroy(void *payload) {
+void tree_sitter_r_external_scanner_destroy(void* payload) {
   stack_free(payload);
 }
