@@ -24,6 +24,16 @@ function()
 
   1
 
+function() function() {}
+
+function(x = function() {}) {}
+
+# With missing RHS in inner function
+function(x = function()) {}
+
+# With no intermediate `{` scope
+function() for(i in 1:5) i
+
 --------------------------------------------------------------------------------
 
 (program
@@ -89,7 +99,37 @@ function()
     body: (braces))
   (function_definition
     parameters: (parameters)
-    body: (float)))
+    body: (float))
+  (function_definition
+    parameters: (parameters)
+    body: (function_definition
+      parameters: (parameters)
+      body: (braces)))
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (identifier)
+        default: (function_definition
+          parameters: (parameters)
+          body: (braces))))
+    body: (braces))
+  (comment)
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (identifier)
+        default: (function_definition
+          parameters: (parameters))))
+    body: (braces))
+  (comment)
+  (function_definition
+    parameters: (parameters)
+    body: (for_statement
+      variable: (identifier)
+      sequence: (colon
+        lhs: (float)
+        rhs: (float))
+      body: (identifier))))
 
 ================================================================================
 Function No Body
@@ -106,9 +146,7 @@ function(x, y)
         name: (identifier))
       (comma)
       parameter: (parameter
-        name: (identifier)))
-    body: (identifier
-      (MISSING _identifier))))
+        name: (identifier)))))
 
 ================================================================================
 Function No Body With Assignment
@@ -127,9 +165,7 @@ x <- function(x, y)
           name: (identifier))
         (comma)
         parameter: (parameter
-          name: (identifier)))
-      body: (identifier
-        (MISSING _identifier)))))
+          name: (identifier))))))
 
 ================================================================================
 Lambda Function

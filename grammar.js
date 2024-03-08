@@ -60,7 +60,8 @@ const PREC = {
   HELP: { ASSOC: prec.left, RANK: 1 },
 
   // function() {}
-  FUNCTION: { ASSOC: prec.left, RANK: 2 },
+  // See `NOTE ON PREC.RIGHT` above
+  FUNCTION: { ASSOC: prec.right, RANK: 2 },
 
   // while() {}
   WHILE: { ASSOC: prec.left, RANK: 2 },
@@ -173,7 +174,7 @@ module.exports = grammar({
       field("name", choice("\\", "function")),
       field("parameters", $.parameters),
       repeat($._newline),
-      field("body", $._expression)
+      optional(field("body", $._expression))
     )),
 
     // NOTE: We include "(" and ")" as part of the rule here to allow
