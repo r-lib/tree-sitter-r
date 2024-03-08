@@ -482,6 +482,7 @@ x %% y
 x %/% y
 x %+% y
 x %>% y
+x %>% 2 %>% z
 x %some text% y
 x %//% y
 
@@ -503,6 +504,11 @@ x %//% y
     (identifier)
     (identifier))
   (special
+    (special
+      (identifier)
+      (float))
+    (identifier))
+  (special
     (identifier)
     (identifier))
   (special
@@ -516,6 +522,8 @@ Pipe
 
 x |> print()
 
+x |> foo() %>% bar() |> baz()
+
 x |> foo() |> bar() + baz()
 
 x |> {function(x) x}()
@@ -525,6 +533,19 @@ x |> {function(x) x}()
 (program
   (pipe
     (identifier)
+    (call
+      (identifier)
+      (arguments)))
+  (pipe
+    (special
+      (pipe
+        (identifier)
+        (call
+          (identifier)
+          (arguments)))
+      (call
+        (identifier)
+        (arguments)))
     (call
       (identifier)
       (arguments)))
