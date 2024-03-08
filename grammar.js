@@ -254,26 +254,25 @@ module.exports = grammar({
     // The actual matching rules for arguments in each of the above.
     // Semi-colons are not actually permitted here, but we add them to the rules to avoid
     // semi-colons erroneously closing a call.
-    call_arguments: $ => PREC.CALL_OR_BLOCK.ASSOC(seq(
+    call_arguments: $ => seq(
       $._open_parenthesis, 
-      repeat($._inner_argument), 
+      optional($._arguments), 
       $._close_parenthesis
-    )),
-    subset_arguments: $ => PREC.CALL_OR_BLOCK.ASSOC(seq(
+    ),
+    subset_arguments: $ => seq(
       $._open_bracket, 
-      repeat($._inner_argument), 
+      optional($._arguments), 
       $._close_bracket
-    )),
-    subset2_arguments: $ => PREC.CALL_OR_BLOCK.ASSOC(seq(
+    ),
+    subset2_arguments: $ => seq(
       $._open_bracket2, 
-      repeat($._inner_argument), 
+      optional($._arguments), 
       $._close_bracket2
-    )),
+    ),
 
-    _inner_argument: $ => choice(
-      $.comma, 
-      $._semicolon,
-      field("argument", $.argument)
+    _arguments: $ => seq(
+      field("argument", $.argument), 
+      repeat(seq($.comma, field("argument", $.argument)))
     ),
 
     // An argument; either named or unnamed.
@@ -282,13 +281,16 @@ module.exports = grammar({
       $._argument_unnamed
     ),
 
-    _argument_named: $ => seq(
+    // Since `_argument_unnamed` can be an arbitrary `_expression` (with precedence 0)
+    // which include `dots`, `string`, and `identifier`, there is an ambiguity. We need to
+    // set a higher precedence here to try and match `_argument_named` first.
+    _argument_named: $ => prec(1, seq(
       field("name", choice($.dots, $.identifier, $.string)),
       "=",
       optional($._argument_value)
-    ),
+    )),
 
-    _argument_unnamed: $ => prec.right(1, $._argument_value),
+    _argument_unnamed: $ => $._argument_value,
 
     _argument_value: $ => field("value", choice($._expression, $._newline)),
 
