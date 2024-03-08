@@ -1023,31 +1023,45 @@ foo$bar$baz
 foo$bar@baz
 foo$bar()
 foo$"bar"
+foo$bar()$baz[[1]]$bam
 
 --------------------------------------------------------------------------------
 
 (program
   (dollar
-    (identifier)
-    (identifier))
+    lhs: (identifier)
+    rhs: (identifier))
   (dollar
-    (dollar
-      (identifier)
-      (identifier))
-    (identifier))
+    lhs: (dollar
+      lhs: (identifier)
+      rhs: (identifier))
+    rhs: (identifier))
   (at
-    (dollar
-      (identifier)
-      (identifier))
-    (identifier))
+    lhs: (dollar
+      lhs: (identifier)
+      rhs: (identifier))
+    rhs: (identifier))
   (call
-    (dollar
-      (identifier)
-      (identifier))
-    (arguments))
+    function: (dollar
+      lhs: (identifier)
+      rhs: (identifier))
+    arguments: (arguments))
   (dollar
-    (identifier)
-    (string)))
+    lhs: (identifier)
+    rhs: (string))
+  (dollar
+    lhs: (subset2
+      function: (dollar
+        lhs: (call
+          function: (dollar
+            lhs: (identifier)
+            rhs: (identifier))
+          arguments: (arguments))
+        rhs: (identifier))
+      arguments: (arguments
+        argument: (argument
+          value: (float))))
+    rhs: (identifier)))
 
 ================================================================================
 Dollar Invalid
