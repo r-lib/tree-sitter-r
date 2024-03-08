@@ -258,23 +258,25 @@ module.exports = grammar({
     // by the external scanner.
     call_arguments: $ => seq(
       $._open_parenthesis, 
-      optional($._arguments), 
+      repeat($._argument), 
       $._close_parenthesis
     ),
     subset_arguments: $ => seq(
       $._open_bracket, 
-      optional($._arguments), 
+      repeat($._argument), 
       $._close_bracket
     ),
     subset2_arguments: $ => seq(
       $._open_bracket2, 
-      optional($._arguments), 
+      repeat($._argument), 
       $._close_bracket2
     ),
 
-    _arguments: $ => seq(
-      field("argument", $.argument), 
-      repeat(seq($.comma, field("argument", $.argument)))
+    // Supports `x[1,]` or `x[1,,2]`, so it really is `choice()` rather than `seq()`
+    // like in function `parameters`.
+    _argument: $ => choice(
+      $.comma,
+      field("argument", $.argument)
     ),
 
     // An argument; either named or unnamed.
@@ -285,8 +287,10 @@ module.exports = grammar({
 
     // Since `_argument_unnamed` can be an arbitrary `_expression` (with precedence 0)
     // which include `dots`, `string`, and `identifier`, there is an ambiguity. We need to
-    // set a higher precedence here to try and match `_argument_named` first.
-    _argument_named: $ => prec(1, seq(
+    // set a higher precedence here to try and match `_argument_named` first. Also, since
+    // it `repeat()`s we need right precedence specified to ensure the optional
+    // `_argument_value` is preferred.
+    _argument_named: $ => prec.right(1, seq(
       field("name", choice($.dots, $.identifier, $.string)),
       "=",
       optional($._argument_value)
@@ -382,17 +386,18 @@ module.exports = grammar({
         ["*", PREC.MULTIPLY_DIVIDE],
         ["/", PREC.MULTIPLY_DIVIDE],
         ["**", PREC.EXPONENTIATE],
-        ["^", PREC.EXPONENTIATE],
-        // TODO: Is this right? We don't want anything between them at all.
-        [alias(/%[^%]*%/, "%%"), PREC.SPECIAL],
-        ["%/%", PREC.SPECIAL]
+        ["^", PREC.EXPONENTIATE]
       ];
       return choice(
         ...table.map(([operator, prec]) => binaryRule($, operator, prec))
       )
     },
 
-    // TODO: Special?
+    // Special infix operator
+    // Regex: Between two `%`, anything but another `%`, `\`, or `\n`.
+    // Includes primitives `%%` and `%/%`.
+    // TODO: This could probably be fine tuned to disallow more things.
+    special: $ => binaryRule($, /%[^%\\\n]*%/, PREC.SPECIAL),
 
     // Colon
     colon: $ => binaryRule($, ":", PREC.COLON),
@@ -492,6 +497,8 @@ module.exports = grammar({
       $.logical_scalar_operator,
       $.comparison_operator,
       $.arithmetic_operator,
+
+      $.special,
 
       $.colon,
 
