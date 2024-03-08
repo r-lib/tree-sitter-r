@@ -108,7 +108,13 @@ const PREC = {
   EXTRACT: { ASSOC: prec.left, RANK: 20 },
   
   // ::, :::
-  NAMESPACE: { ASSOC: prec.left, RANK: 21 },
+  // NOTE: These are left associative in R's grammar, but to be able to have
+  // an `optional()` rhs, which we really do want for completion purposes,
+  // we are forced to make it right associative so that if there is a rhs, it
+  // binds as part of the namespace rule and not as its own separate string or identifier.
+  // In practice we don't think this will matter, since these are the only things at
+  // this numeric precedence rank.
+  NAMESPACE: { ASSOC: prec.right, RANK: 21 },
 
   // match(1, 2), {, (, [, [[
   // NOTE: These are nonassoc in R's grammar
@@ -600,7 +606,7 @@ function binaryRuleNamespace($, operator, prec) {
   return prec.ASSOC(prec.RANK, seq(
     field("lhs", $._string_or_identifier), 
     field("operator", operator), 
-    field("rhs", $._string_or_identifier)
+    optional(field("rhs", $._string_or_identifier))
   ));
 }
 

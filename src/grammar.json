@@ -2127,7 +2127,7 @@
       }
     },
     "namespace": {
-      "type": "PREC_LEFT",
+      "type": "PREC_RIGHT",
       "value": 21,
       "content": {
         "type": "SEQ",
@@ -2149,18 +2149,26 @@
             }
           },
           {
-            "type": "FIELD",
-            "name": "rhs",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_string_or_identifier"
-            }
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "FIELD",
+                "name": "rhs",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_string_or_identifier"
+                }
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
           }
         ]
       }
     },
     "namespace_internal": {
-      "type": "PREC_LEFT",
+      "type": "PREC_RIGHT",
       "value": 21,
       "content": {
         "type": "SEQ",
@@ -2182,12 +2190,20 @@
             }
           },
           {
-            "type": "FIELD",
-            "name": "rhs",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_string_or_identifier"
-            }
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "FIELD",
+                "name": "rhs",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_string_or_identifier"
+                }
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
           }
         ]
       }
