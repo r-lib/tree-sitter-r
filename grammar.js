@@ -60,17 +60,11 @@ const PREC = {
   HELP: { ASSOC: prec.left, RANK: 1 },
 
   // function() {}
-  // See `NOTE ON PREC.RIGHT` above
-  FUNCTION: { ASSOC: prec.right, RANK: 2 },
-
   // while() {}
-  WHILE: { ASSOC: prec.left, RANK: 2 },
-
   // for() {}
-  FOR: { ASSOC: prec.left, RANK: 2 },
-
   // repeat {}
-  REPEAT: { ASSOC: prec.left, RANK: 2 },
+  // See `NOTE ON PREC.RIGHT` above
+  FUNCTION_OR_LOOP: { ASSOC: prec.right, RANK: 2 },
 
   // if {} else {}
   IF: { ASSOC: prec.right, RANK: 3 },
@@ -170,7 +164,7 @@ module.exports = grammar({
     program: $ => repeat(choice($._expression, $._semicolon, $._newline)),
 
     // Function definitions.
-    function_definition: $ => PREC.FUNCTION.ASSOC(PREC.FUNCTION.RANK, seq(
+    function_definition: $ => PREC.FUNCTION_OR_LOOP.ASSOC(PREC.FUNCTION_OR_LOOP.RANK, seq(
       field("name", choice("\\", "function")),
       field("parameters", $.parameters),
       repeat($._newline),
@@ -220,7 +214,7 @@ module.exports = grammar({
       ))
     )),
 
-    for_statement: $ => PREC.FOR.ASSOC(PREC.FOR.RANK, seq(
+    for_statement: $ => PREC.FUNCTION_OR_LOOP.ASSOC(PREC.FUNCTION_OR_LOOP.RANK, seq(
       "for",
       repeat($._newline),
       $._open_parenthesis,
@@ -229,23 +223,23 @@ module.exports = grammar({
       field("sequence", $._expression),
       $._close_parenthesis,
       repeat($._newline),
-      field("body", $._expression)
+      optional(field("body", $._expression))
     )),
 
-    while_statement: $ => PREC.WHILE.ASSOC(PREC.WHILE.RANK, seq(
+    while_statement: $ => PREC.FUNCTION_OR_LOOP.ASSOC(PREC.FUNCTION_OR_LOOP.RANK, seq(
       "while",
       repeat($._newline),
       $._open_parenthesis,
       field("condition", $._expression),
       $._close_parenthesis,
       repeat($._newline),
-      field("body", $._expression)
+      optional(field("body", $._expression))
     )),
 
-    repeat_statement: $ => PREC.REPEAT.ASSOC(PREC.REPEAT.RANK, seq(
+    repeat_statement: $ => PREC.FUNCTION_OR_LOOP.ASSOC(PREC.FUNCTION_OR_LOOP.RANK, seq(
       "repeat",
       repeat($._newline),
-      field("body", $._expression)
+      optional(field("body", $._expression))
     )),
 
     // Blocks.
