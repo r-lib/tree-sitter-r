@@ -164,7 +164,7 @@ module.exports = grammar({
     program: $ => repeat(choice($._expression, $._semicolon, $._newline)),
 
     // Function definitions.
-    function_definition: $ => PREC.FUNCTION_OR_LOOP.ASSOC(PREC.FUNCTION_OR_LOOP.RANK, seq(
+    function_definition: $ => withPrec(PREC.FUNCTION_OR_LOOP, seq(
       field("name", choice("\\", "function")),
       field("parameters", $.parameters),
       repeat($._newline),
@@ -199,7 +199,7 @@ module.exports = grammar({
     _parameter_without_default: $ => field("name", choice($.identifier, $.dots)),
 
     // Control flow.
-    if_statement: $ => PREC.IF.ASSOC(PREC.IF.RANK, seq(
+    if_statement: $ => withPrec(PREC.IF, seq(
       "if",
       repeat($._newline),
       $._open_parenthesis,
@@ -214,7 +214,7 @@ module.exports = grammar({
       ))
     )),
 
-    for_statement: $ => PREC.FUNCTION_OR_LOOP.ASSOC(PREC.FUNCTION_OR_LOOP.RANK, seq(
+    for_statement: $ => withPrec(PREC.FUNCTION_OR_LOOP, seq(
       "for",
       repeat($._newline),
       $._open_parenthesis,
@@ -226,7 +226,7 @@ module.exports = grammar({
       optional(field("body", $._expression))
     )),
 
-    while_statement: $ => PREC.FUNCTION_OR_LOOP.ASSOC(PREC.FUNCTION_OR_LOOP.RANK, seq(
+    while_statement: $ => withPrec(PREC.FUNCTION_OR_LOOP, seq(
       "while",
       repeat($._newline),
       $._open_parenthesis,
@@ -236,37 +236,37 @@ module.exports = grammar({
       optional(field("body", $._expression))
     )),
 
-    repeat_statement: $ => PREC.FUNCTION_OR_LOOP.ASSOC(PREC.FUNCTION_OR_LOOP.RANK, seq(
+    repeat_statement: $ => withPrec(PREC.FUNCTION_OR_LOOP, seq(
       "repeat",
       repeat($._newline),
       optional(field("body", $._expression))
     )),
 
     // Blocks.
-    braces: $ => PREC.CALL_OR_BLOCK.ASSOC(PREC.CALL_OR_BLOCK.RANK, seq(
+    braces: $ => withPrec(PREC.CALL_OR_BLOCK, seq(
       $._open_brace,
       repeat(field("body", choice($._expression, $._semicolon, $._newline))),
       $._close_brace
     )),
 
-    parentheses: $ => PREC.CALL_OR_BLOCK.ASSOC(PREC.CALL_OR_BLOCK.RANK, seq(
+    parentheses: $ => withPrec(PREC.CALL_OR_BLOCK, seq(
       $._open_parenthesis,
       repeat(field("body", choice($._expression, $._newline))),
       $._close_parenthesis
     )),
 
     // Function calls and subsetting.
-    call: $ => PREC.CALL_OR_BLOCK.ASSOC(PREC.CALL_OR_BLOCK.RANK, seq(
+    call: $ => withPrec(PREC.CALL_OR_BLOCK, seq(
       field("function", $._expression),
       field("arguments", alias($.call_arguments, $.arguments))
     )),
 
-    subset: $ => PREC.CALL_OR_BLOCK.ASSOC(PREC.CALL_OR_BLOCK.RANK, seq(
+    subset: $ => withPrec(PREC.CALL_OR_BLOCK, seq(
       field("function", $._expression), 
       field("arguments", alias($.subset_arguments, $.arguments))
     )),
 
-    subset2: $ => PREC.CALL_OR_BLOCK.ASSOC(PREC.CALL_OR_BLOCK.RANK, seq(
+    subset2: $ => withPrec(PREC.CALL_OR_BLOCK, seq(
       field("function", $._expression), 
       field("arguments", alias($.subset2_arguments, $.arguments))
     )),
@@ -582,6 +582,10 @@ module.exports = grammar({
     _close_bracket2: $ => alias($._external_close_bracket2, "]]")
   }
 })
+
+function withPrec(prec, rule) {
+  return prec.ASSOC(prec.RANK, rule)
+}
 
 // NOTE: Newlines are allowed after all unary operators
 function unaryRule($, operator, prec) {
