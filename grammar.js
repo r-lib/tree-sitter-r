@@ -147,8 +147,8 @@ module.exports = grammar({
 
     // Function definitions.
     function_definition: $ => PREC.FUNCTION.ASSOC(PREC.FUNCTION.RANK, seq(
-      choice("\\", "function"),
-      field("parameters", $.function_parameters),
+      field("name", choice("\\", "function")),
+      field("parameters", $.parameters),
       repeat($._newline),
       field("body", $._expression)
     )),
@@ -156,27 +156,29 @@ module.exports = grammar({
     // NOTE: We include "(" and ")" as part of the rule here to allow
     // tree-sitter to create a "parameters" node in the AST even when
     // no parameters are declared for a function.
-    function_parameters: $ => seq(
+    // Spaces and newlines between the `()` are consumed ahead of time
+    // by the external scanner.
+    parameters: $ => seq(
       $._open_parenthesis,
       optional(seq(
-        field("parameter", $.function_parameter), 
-        repeat(seq($.comma, field("parameter", $.function_parameter)))
+        field("parameter", $.parameter), 
+        repeat(seq($.comma, field("parameter", $.parameter)))
       )),
       $._close_parenthesis
     ),
 
-    function_parameter: $ => choice(
-      $._function_parameter_with_default,
-      $._function_parameter_without_default
+    parameter: $ => choice(
+      $._parameter_with_default,
+      $._parameter_without_default
     ),
 
-    _function_parameter_with_default: $ => seq(
+    _parameter_with_default: $ => seq(
       field("name", $.identifier), 
       "=", 
       optional(field("default", $._expression))
     ),
 
-    _function_parameter_without_default: $ => field("name", choice($.identifier, $.dots)),
+    _parameter_without_default: $ => field("name", choice($.identifier, $.dots)),
 
     // Control flow.
     if_statement: $ => PREC.IF.ASSOC(PREC.IF.RANK, seq(
@@ -238,22 +240,22 @@ module.exports = grammar({
     // Function calls and subsetting.
     call: $ => PREC.CALL_OR_BLOCK.ASSOC(PREC.CALL_OR_BLOCK.RANK, seq(
       field("function", $._expression),
-      field("arguments", $.call_arguments)
+      field("arguments", alias($.call_arguments, $.arguments))
     )),
 
     subset: $ => PREC.CALL_OR_BLOCK.ASSOC(PREC.CALL_OR_BLOCK.RANK, seq(
       field("function", $._expression), 
-      field("arguments", $.subset_arguments)
+      field("arguments", alias($.subset_arguments, $.arguments))
     )),
 
     subset2: $ => PREC.CALL_OR_BLOCK.ASSOC(PREC.CALL_OR_BLOCK.RANK, seq(
       field("function", $._expression), 
-      field("arguments", $.subset2_arguments)
+      field("arguments", alias($.subset2_arguments, $.arguments))
     )),
 
     // The actual matching rules for arguments in each of the above.
-    // Semi-colons are not actually permitted here, but we add them to the rules to avoid
-    // semi-colons erroneously closing a call.
+    // Spaces and newlines between the `()`, `[]`, or `[[]]` are consumed ahead of time
+    // by the external scanner.
     call_arguments: $ => seq(
       $._open_parenthesis, 
       optional($._arguments), 
