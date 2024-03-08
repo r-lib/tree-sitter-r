@@ -69,7 +69,7 @@ function(x,
       parameter: (parameter
         name: (identifier)
         default: (float)))
-        body: (braces))
+    body: (braces))
   (function_definition
     parameters: (parameters
       parameter: (parameter
@@ -1690,6 +1690,6 @@ x[[y[2]]
           arguments: (arguments
             argument: (argument
               value: (float)))))
-          argument: (argument
-            value: (unmatched_closing_bracket))
+      argument: (argument
+        value: (unmatched_closing_bracket))
       (MISSING "]]"))))
