@@ -1072,20 +1072,23 @@ foo$
 
 (program
   (dollar
-    lhs: (identifier)
-    rhs: (identifier
-      (MISSING _identifier))))
+    lhs: (identifier)))
 
 ================================================================================
 Dollar Invalid
 ================================================================================
+# The `dollar` node allows an optional RHS, and the RHS must be a string/identifier,
+# so we nicely get a true `at` node here alongside the braces. Even if that's not
+# parsable R code, it's useful for completions and highlighting.
 foo${hi}
 
 --------------------------------------------------------------------------------
 
 (program
-  (identifier)
-  (ERROR)
+  (comment)
+  (comment)
+  (dollar
+    (identifier))
   (braces
     (identifier)))
 
@@ -1127,20 +1130,23 @@ foo@
 
 (program
   (at
-    lhs: (identifier)
-    rhs: (identifier
-      (MISSING _identifier))))
+    lhs: (identifier)))
 
 ================================================================================
 Slot Invalid
 ================================================================================
+# The `at` node allows an optional RHS, and the RHS must be a string/identifier,
+# so we nicely get a true `at` node here alongside the braces. Even if that's not
+# parsable R code, it's useful for completions and highlighting.
 foo@{hi}
 
 --------------------------------------------------------------------------------
 
 (program
-  (identifier)
-  (ERROR)
+  (comment)
+  (comment)
+  (at
+    (identifier))
   (braces
     (identifier)))
 

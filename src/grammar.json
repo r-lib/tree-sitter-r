@@ -2047,7 +2047,7 @@
       }
     },
     "dollar": {
-      "type": "PREC_LEFT",
+      "type": "PREC_RIGHT",
       "value": 20,
       "content": {
         "type": "SEQ",
@@ -2076,18 +2076,26 @@
             }
           },
           {
-            "type": "FIELD",
-            "name": "rhs",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_string_or_identifier"
-            }
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "FIELD",
+                "name": "rhs",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_string_or_identifier"
+                }
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
           }
         ]
       }
     },
     "at": {
-      "type": "PREC_LEFT",
+      "type": "PREC_RIGHT",
       "value": 20,
       "content": {
         "type": "SEQ",
@@ -2116,12 +2124,20 @@
             }
           },
           {
-            "type": "FIELD",
-            "name": "rhs",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_string_or_identifier"
-            }
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "FIELD",
+                "name": "rhs",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_string_or_identifier"
+                }
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
           }
         ]
       }

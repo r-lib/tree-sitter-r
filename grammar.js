@@ -34,6 +34,27 @@
 // while allowing for R's declared precedence differences between certain
 // control flow keywords.
 
+// NOTE ON PREC.RIGHT:
+// 
+// A few things in this table are left associative in R's grammar, but we are forced to
+// make them right associative to get the behavior we want. This includes:
+// - $, @
+// - ::, :::
+//
+// We are forced to do this because we want these nodes to have an `optional()` RHS.
+// While `dplyr::` isn't parsable R code, we want it to be recognized as a `::` node with
+// a known package name, as this helps us generate completions.
+//
+// The trailing `optional()` then means there are two interpretations of `foo::bar`:
+// - [foo::][bar] == [namespace][identifier]
+// - [foo::bar] == [namespace]
+//
+// We want to force the latter, which means that the namespace rule has to be right
+// associative to "prefer matching a rule that ends later".
+//
+// In practice we don't think this will matter for the rules we've had to swap the order
+// on, since they are typically the only things at their numeric precedence rank.
+
 const PREC = {
   // ?
   HELP: { ASSOC: prec.left, RANK: 1 },
@@ -105,15 +126,11 @@ const PREC = {
   EXPONENTIATE: { ASSOC: prec.right, RANK: 19 },
 
   // $, @
-  EXTRACT: { ASSOC: prec.left, RANK: 20 },
+  // See `NOTE ON PREC.RIGHT` above
+  EXTRACT: { ASSOC: prec.right, RANK: 20 },
   
   // ::, :::
-  // NOTE: These are left associative in R's grammar, but to be able to have
-  // an `optional()` rhs, which we really do want for completion purposes,
-  // we are forced to make it right associative so that if there is a rhs, it
-  // binds as part of the namespace rule and not as its own separate string or identifier.
-  // In practice we don't think this will matter, since these are the only things at
-  // this numeric precedence rank.
+  // See `NOTE ON PREC.RIGHT` above
   NAMESPACE: { ASSOC: prec.right, RANK: 21 },
 
   // match(1, 2), {, (, [, [[
@@ -596,7 +613,7 @@ function binaryRuleExtract($, operator, prec) {
     field("lhs", $._expression), 
     field("operator", operator), 
     repeat($._newline), 
-    field("rhs", $._string_or_identifier)
+    optional(field("rhs", $._string_or_identifier))
   ));
 }
 
