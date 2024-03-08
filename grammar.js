@@ -570,7 +570,9 @@ module.exports = grammar({
     // This somehow ends up allowing better error recovery
     _string_or_identifier: $ => choice($.string, $.identifier),
 
-    // Provide aliasing of some key externals
+    // Provide aliasing of some key externals.
+    // This gives `highlights.scm` something to target for
+    // `@punctuation.bracket` and `@keyword`.
     _else: $ => alias($._external_else, "else"),
     _open_parenthesis: $ => alias($._external_open_parenthesis, "("),
     _close_parenthesis: $ => alias($._external_close_parenthesis, ")"),
