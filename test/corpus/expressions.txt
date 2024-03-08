@@ -1225,6 +1225,41 @@ foo:::bar(1)
         value: (float)))))
 
 ================================================================================
+Namespace With Missing RHS
+================================================================================
+# It's nice that `::` allows an optional RHS and enforces that it can only be a
+# string or identifier, so this gives us a pretty clean tree even though it is
+# invalid R code.
+# https://github.com/r-lib/tree-sitter-r/issues/65
+library(dplyr::)
+
+library()
+
+1
+2
+3
+
+--------------------------------------------------------------------------------
+
+(program
+  (comment)
+  (comment)
+  (comment)
+  (comment)
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (namespace
+          lhs: (identifier)))))
+  (call
+    function: (identifier)
+    arguments: (arguments))
+  (float)
+  (float)
+  (float))
+
+================================================================================
 Dollar, At, Namespace, Namespace Internal With Expression RHS
 ================================================================================
 # These nodes allows an optional RHS, and the RHS must be a string/identifier,
