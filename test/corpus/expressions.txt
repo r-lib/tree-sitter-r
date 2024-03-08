@@ -13,25 +13,31 @@ function(x, ...) f(...)
 
 function(arg1, arg2 = 2) {}
 
+function(x,
+         y,
+         z = 3) {
+
+}
+
 --------------------------------------------------------------------------------
 
 (program
-  (function
+  (function_definition
     parameters: (parameters)
     body: (float))
-  (function
+  (function_definition
     parameters: (parameters)
-    body: ({))
-  (function
+    body: (braces))
+  (function_definition
     parameters: (parameters
       parameter: (parameter
         name: (identifier))
       (comma)
       parameter: (parameter
         name: (identifier)))
-    body: ({
+    body: (braces
       body: (identifier)))
-  (function
+  (function_definition
     parameters: (parameters
       parameter: (parameter
         name: (identifier))
@@ -39,11 +45,11 @@ function(arg1, arg2 = 2) {}
       parameter: (parameter
         name: (identifier)))
     body: (call
-      (return)
+      function: (return)
       arguments: (arguments
         argument: (argument
           value: (identifier)))))
-  (function
+  (function_definition
     parameters: (parameters
       parameter: (parameter
         name: (identifier))
@@ -51,11 +57,11 @@ function(arg1, arg2 = 2) {}
       parameter: (parameter
         name: (dots)))
     body: (call
-      (identifier)
+      function: (identifier)
       arguments: (arguments
         argument: (argument
           value: (dots)))))
-  (function
+  (function_definition
     parameters: (parameters
       parameter: (parameter
         name: (identifier))
@@ -63,7 +69,19 @@ function(arg1, arg2 = 2) {}
       parameter: (parameter
         name: (identifier)
         default: (float)))
-    body: ({)))
+        body: (braces))
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (identifier))
+      (comma)
+      parameter: (parameter
+        name: (identifier))
+      (comma)
+      parameter: (parameter
+        name: (identifier)
+        default: (float)))
+    body: (braces)))
 
 ================================================================================
 Lambda Function
@@ -78,186 +96,231 @@ c <- \(fun, ...) fun(...)
 --------------------------------------------------------------------------------
 
 (program
-  (<-
-    lhs: (identifier)
-    rhs: (function
-      parameters: (parameters
-        parameter: (parameter
-          name: (identifier)))
-      body: (identifier)))
-  (<-
-    lhs: (identifier)
-    rhs: (function
-      parameters: (parameters
-        parameter: (parameter
-          name: (identifier))
+  (left_assignment
+    (identifier)
+    (function_definition
+      (parameters
+        (parameter
+          (identifier)))
+      (identifier)))
+  (left_assignment
+    (identifier)
+    (function_definition
+      (parameters
+        (parameter
+          (identifier))
         (comma)
-        parameter: (parameter
-          name: (identifier)))
-      body: (call
+        (parameter
+          (identifier)))
+      (call
         (identifier)
-        arguments: (arguments
-          argument: (argument
-            value: (identifier))
+        (arguments
+          (argument
+            (identifier))
           (comma)
-          argument: (argument
-            value: (identifier))))))
-  (<-
-    lhs: (identifier)
-    rhs: (function
-      parameters: (parameters
-        parameter: (parameter
-          name: (identifier))
+          (argument
+            (identifier))))))
+  (left_assignment
+    (identifier)
+    (function_definition
+      (parameters
+        (parameter
+          (identifier))
         (comma)
-        parameter: (parameter
-          name: (dots)))
-      body: (call
+        (parameter
+          (dots)))
+      (call
         (identifier)
-        arguments: (arguments
-          argument: (argument
-            value: (dots))))))
-  (|>
-    lhs: (|>
-      lhs: (:
-        lhs: (float)
-        rhs: (float))
-      rhs: (call
-        ({
-          body: (function
-            parameters: (parameters
-              parameter: (parameter
-                name: (identifier))
+        (arguments
+          (argument
+            (dots))))))
+  (pipe
+    (pipe
+      (colon
+        (float)
+        (float))
+      (call
+        (braces
+          (function_definition
+            (parameters
+              (parameter
+                (identifier))
               (comma)
-              parameter: (parameter
-                name: (identifier)
-                default: (float)))
-            body: (+
-              lhs: (identifier)
-              rhs: (identifier))))
-        arguments: (arguments)))
-    rhs: (call
-      ({
-        body: (function
-          parameters: (parameters
-            parameter: (parameter
-              name: (identifier)))
-          body: (call
+              (parameter
+                (identifier)
+                (float)))
+            (arithmetic_operator
+              (identifier)
+              (identifier))))
+        (arguments)))
+    (call
+      (braces
+        (function_definition
+          (parameters
+            (parameter
+              (identifier)))
+          (call
             (identifier)
-            arguments: (arguments
-              argument: (argument
-                value: (identifier))))))
-      arguments: (arguments)))
+            (arguments
+              (argument
+                (identifier))))))
+      (arguments)))
   (call
-    ({
-      body: (function
-        parameters: (parameters
-          parameter: (parameter
-            name: (identifier)
-            default: (float)))
-        body: (+
-          lhs: (identifier)
-          rhs: (float))))
-    arguments: (arguments))
-  (function
-    parameters: (parameters)
-    body: (+
-      lhs: (float)
-      rhs: (float))))
+    (braces
+      (function_definition
+        (parameters
+          (parameter
+            (identifier)
+            (float)))
+        (arithmetic_operator
+          (identifier)
+          (float))))
+    (arguments))
+  (function_definition
+    (parameters)
+    (arithmetic_operator
+      (float)
+      (float))))
 
 ================================================================================
 Relational
 ================================================================================
 
 a == b
+a > b
+a < b
+a >= b
+a <= b
+a != b
+
+a ==
+  b
 
 --------------------------------------------------------------------------------
 
 (program
-  (==
+  (comparison_operator
+    (identifier)
+    (identifier))
+  (comparison_operator
+    (identifier)
+    (identifier))
+  (comparison_operator
+    (identifier)
+    (identifier))
+  (comparison_operator
+    (identifier)
+    (identifier))
+  (comparison_operator
+    (identifier)
+    (identifier))
+  (comparison_operator
+    (identifier)
+    (identifier))
+  (comparison_operator
     (identifier)
     (identifier)))
 
 ================================================================================
-Additive
+Arithmetic Operator
 ================================================================================
 
 a + b
-
---------------------------------------------------------------------------------
-
-(program
-  (+
-    (identifier)
-    (identifier)))
-
-================================================================================
-Multiplicative
-================================================================================
-
+a - b
 a * b
+a / b
+a ^ b
+a ** b
+
+a +
+  b
+
+a *
+  b
 
 --------------------------------------------------------------------------------
 
 (program
-  (*
+  (arithmetic_operator
+    (identifier)
+    (identifier))
+  (arithmetic_operator
+    (identifier)
+    (identifier))
+  (arithmetic_operator
+    (identifier)
+    (identifier))
+  (arithmetic_operator
+    (identifier)
+    (identifier))
+  (arithmetic_operator
+    (identifier)
+    (identifier))
+  (arithmetic_operator
+    (identifier)
+    (identifier))
+  (arithmetic_operator
+    (identifier)
+    (identifier))
+  (arithmetic_operator
     (identifier)
     (identifier)))
 
 ================================================================================
-Binary operations
+Unary Operators
 ================================================================================
 
-2+2*2
-
---------------------------------------------------------------------------------
-
-(program
-  (+
-    (float)
-    (*
-      (float)
-      (float))))
-
-================================================================================
-Unary minus
-================================================================================
-
+!a
++a
 -a
+foo(!a, +b)
 foo(-a, bar)
 
+!
+  a
+-  b
+
 --------------------------------------------------------------------------------
 
 (program
-  (-
-    operand: (identifier))
+  (unary_operator
+    (identifier))
+  (unary_operator
+    (identifier))
+  (unary_operator
+    (identifier))
   (call
     (identifier)
-    arguments: (arguments
-      argument: (argument
-        value: (-
-          operand: (identifier)))
+    (arguments
+      (argument
+        (unary_operator
+          (identifier)))
       (comma)
-      argument: (argument
-        value: (identifier)))))
-
-================================================================================
-Binary minus
-================================================================================
-
-foo-a
-
---------------------------------------------------------------------------------
-
-(program
-  (-
+      (argument
+        (unary_operator
+          (identifier)))))
+  (call
     (identifier)
+    (arguments
+      (argument
+        (unary_operator
+          (identifier)))
+      (comma)
+      (argument
+        (identifier))))
+  (unary_operator
+    (identifier))
+  (unary_operator
     (identifier)))
 
 ================================================================================
 Operator precedence
 ================================================================================
 
-a <= b && c >= d
+2+a*2
+2+a+2
+!a + !b
+a <= 2 && 2 >= d
 a[1] <- foo || bar
 a && b(c) && d
 val <- foo %>% bar(1) %>% baz()
@@ -265,69 +328,95 @@ val <- foo %>% bar(1) %>% baz()
 --------------------------------------------------------------------------------
 
 (program
-  (&&
-    lhs: (<=
-      lhs: (identifier)
-      rhs: (identifier))
-    rhs: (>=
-      lhs: (identifier)
-      rhs: (identifier)))
-  (<-
-    lhs: ([
+  (arithmetic_operator
+    (float)
+    (arithmetic_operator
       (identifier)
-      arguments: (arguments
-        argument: (argument
-          value: (float))))
-    rhs: (||
-      lhs: (identifier)
-      rhs: (identifier)))
-  (&&
-    lhs: (&&
-      lhs: (identifier)
-      rhs: (call
+      (float)))
+  (arithmetic_operator
+    (arithmetic_operator
+      (float)
+      (identifier))
+    (float))
+  (unary_operator
+    (arithmetic_operator
+      (identifier)
+      (unary_operator
+        (identifier))))
+  (logical_scalar_operator
+    (comparison_operator
+      (identifier)
+      (float))
+    (comparison_operator
+      (float)
+      (identifier)))
+  (left_assignment
+    (subset
+      (identifier)
+      (arguments
+        (argument
+          (float))))
+    (logical_scalar_operator
+      (identifier)
+      (identifier)))
+  (logical_scalar_operator
+    (logical_scalar_operator
+      (identifier)
+      (call
         (identifier)
-        arguments: (arguments
-          argument: (argument
-            value: (identifier)))))
-    rhs: (identifier))
-  (<-
-    lhs: (identifier)
-    rhs: (%>%
-      lhs: (%>%
-        lhs: (identifier)
-        rhs: (call
+        (arguments
+          (argument
+            (identifier)))))
+    (identifier))
+  (left_assignment
+    (identifier)
+    (special
+      (special
+        (identifier)
+        (call
           (identifier)
-          arguments: (arguments
-            argument: (argument
-              value: (float)))))
-      rhs: (call
+          (arguments
+            (argument
+              (float)))))
+      (call
         (identifier)
-        arguments: (arguments)))))
+        (arguments)))))
 
 ================================================================================
 Specials
 ================================================================================
 
 x %% y
+x %/% y
 x %+% y
 x %>% y
 x %some text% y
+x %//% y
+
+# Not specials, but hard to test errors `%\%`, `%%%`
 
 --------------------------------------------------------------------------------
 
 (program
-  (%%
+  (special
     (identifier)
     (identifier))
-  (%%
+  (special
     (identifier)
     (identifier))
-  (%>%
+  (special
     (identifier)
     (identifier))
-  (%%
+  (special
     (identifier)
-    (identifier)))
+    (identifier))
+  (special
+    (identifier)
+    (identifier))
+  (special
+    (identifier)
+    (identifier))
+  (comment))
 
 ================================================================================
 Pipe
@@ -342,34 +431,34 @@ x |> {function(x) x}()
 --------------------------------------------------------------------------------
 
 (program
-  (|>
-    lhs: (identifier)
-    rhs: (call
+  (pipe
+    (identifier)
+    (call
       (identifier)
-      arguments: (arguments)))
-  (|>
-    lhs: (|>
-      lhs: (identifier)
-      rhs: (call
+      (arguments)))
+  (arithmetic_operator
+    (pipe
+      (pipe
         (identifier)
-        arguments: (arguments)))
-    rhs: (+
-      lhs: (call
+        (call
+          (identifier)
+          (arguments)))
+      (call
         (identifier)
-        arguments: (arguments))
-      rhs: (call
-        (identifier)
-        arguments: (arguments))))
-  (|>
-    lhs: (identifier)
-    rhs: (call
-      ({
-        body: (function
-          parameters: (parameters
-            parameter: (parameter
-              name: (identifier)))
-          body: (identifier)))
-      arguments: (arguments))))
+        (arguments)))
+    (call
+      (identifier)
+      (arguments)))
+  (pipe
+    (identifier)
+    (call
+      (braces
+        (function_definition
+          (parameters
+            (parameter
+              (identifier)))
+          (identifier)))
+      (arguments))))
 
 ================================================================================
 Pipe Placeholder
@@ -381,29 +470,29 @@ foo |> bar() |> baz(data = _)
 --------------------------------------------------------------------------------
 
 (program
-  (|>
-    lhs: (identifier)
-    rhs: (call
+  (pipe
+    (identifier)
+    (call
       (identifier)
-      arguments: (arguments
-        argument: (argument
-          value: (identifier))
+      (arguments
+        (argument
+          (identifier))
         (comma)
-        argument: (argument
-          name: (identifier)
-          value: (identifier)))))
-  (|>
-    lhs: (|>
-      lhs: (identifier)
-      rhs: (call
-        (identifier)
-        arguments: (arguments)))
-    rhs: (call
+        (argument
+          (identifier)
+          (identifier)))))
+  (pipe
+    (pipe
       (identifier)
-      arguments: (arguments
-        argument: (argument
-          name: (identifier)
-          value: (identifier))))))
+      (call
+        (identifier)
+        (arguments)))
+    (call
+      (identifier)
+      (arguments
+        (argument
+          (identifier)
+          (identifier))))))
 
 ================================================================================
 Subset
@@ -412,17 +501,20 @@ Subset
 foo[bar]
 foo[1, 2]
 foo[1, ]
+foo[1,, ]
+foo[1,,2]
+foo[x=1,,y=3,4]
 foo[]
 
 --------------------------------------------------------------------------------
 
 (program
-  ([
+  (subset
     (identifier)
     (arguments
       (argument
         (identifier))))
-  ([
+  (subset
     (identifier)
     (arguments
       (argument
@@ -430,13 +522,43 @@ foo[]
       (comma)
       (argument
         (float))))
-  ([
+  (subset
     (identifier)
     (arguments
       (argument
         (float))
       (comma)))
-  ([
+  (subset
+    (identifier)
+    (arguments
+      (argument
+        (float))
+      (comma)
+      (comma)))
+  (subset
+    (identifier)
+    (arguments
+      (argument
+        (float))
+      (comma)
+      (comma)
+      (argument
+        (float))))
+  (subset
+    (identifier)
+    (arguments
+      (argument
+        (identifier)
+        (float))
+      (comma)
+      (comma)
+      (argument
+        (identifier)
+        (float))
+      (comma)
+      (argument
+        (float))))
+  (subset
     (identifier)
     (arguments)))
 
@@ -446,17 +568,20 @@ Subset2
 
 foo[[x]]
 foo[[x, y]]
+foo[[x,]]
+foo[[x,,]]
+foo[[x,,y]]
 foo[[]]
 
 --------------------------------------------------------------------------------
 
 (program
-  ([[
+  (subset2
     (identifier)
     (arguments
       (argument
         (identifier))))
-  ([[
+  (subset2
     (identifier)
     (arguments
       (argument
@@ -464,7 +589,29 @@ foo[[]]
       (comma)
       (argument
         (identifier))))
-  ([[
+  (subset2
+    (identifier)
+    (arguments
+      (argument
+        (identifier))
+      (comma)))
+  (subset2
+    (identifier)
+    (arguments
+      (argument
+        (identifier))
+      (comma)
+      (comma)))
+  (subset2
+    (identifier)
+    (arguments
+      (argument
+        (identifier))
+      (comma)
+      (comma)
+      (argument
+        (identifier))))
+  (subset2
     (identifier)
     (arguments)))
 
@@ -478,20 +625,20 @@ a[b[[1]]]
 --------------------------------------------------------------------------------
 
 (program
-  ([[
+  (subset2
     (identifier)
     (arguments
       (argument
-        ([
+        (subset
           (identifier)
           (arguments
             (argument
               (float)))))))
-  ([
+  (subset
     (identifier)
     (arguments
       (argument
-        ([[
+        (subset2
           (identifier)
           (arguments
             (argument
@@ -512,18 +659,18 @@ if (a.b) {
 --------------------------------------------------------------------------------
 
 (program
-  (if
+  (if_statement
     condition: (identifier)
     consequence: (call
-      (identifier)
+      function: (identifier)
       arguments: (arguments
         argument: (argument
           value: (identifier)))))
-  (if
+  (if_statement
     condition: (identifier)
-    consequence: ({
+    consequence: (braces
       body: (call
-        (identifier)
+        function: (identifier)
         arguments: (arguments
           argument: (argument
             value: (identifier))))
@@ -551,25 +698,25 @@ if (a) {
 --------------------------------------------------------------------------------
 
 (program
-  (if
+  (if_statement
     condition: (identifier)
     consequence: (identifier)
-    alternative: (if
+    alternative: (if_statement
       condition: (identifier)
       consequence: (identifier)))
-  (if
+  (if_statement
     condition: (identifier)
     consequence: (identifier)
-    alternative: (if
+    alternative: (if_statement
       condition: (identifier)
       consequence: (identifier)
       alternative: (identifier)))
-  (if
+  (if_statement
     condition: (identifier)
-    consequence: ({
+    consequence: (braces
       body: (identifier)
       body: (identifier))
-    alternative: ({
+    alternative: (braces
       body: (identifier))))
 
 ================================================================================
@@ -618,52 +765,86 @@ else
 
 (program
   (comment)
-  (if
-    (TRUE)
-    ({
+  (if_statement
+    (true)
+    (braces
       (float)))
   (identifier)
-  ({
+  (braces
     (float))
   (comment)
-  (if
-    (TRUE)
+  (if_statement
+    (true)
     (float))
   (identifier)
   (float)
   (comment)
-  ({
-    (if
-      (TRUE)
-      ({
+  (braces
+    (if_statement
+      (true)
+      (braces
         (float))
-      ({
+      (braces
         (float))))
   (comment)
-  ({
-    (if
-      (TRUE)
-      ({
+  (braces
+    (if_statement
+      (true)
+      (braces
         (float))
       (comment)
       (comment)
-      ({
+      (braces
         (float)))))
 
 ================================================================================
-for
+For
 ================================================================================
 
 for (x in y)
   f
 
+for (x in 5:6) {
+  for (y in ys) {
+    z
+  }
+}
+
 --------------------------------------------------------------------------------
 
 (program
-  (for
+  (for_statement
     variable: (identifier)
     sequence: (identifier)
-    body: (identifier)))
+    body: (identifier))
+  (for_statement
+    variable: (identifier)
+    sequence: (colon
+      lhs: (float)
+      rhs: (float))
+    body: (braces
+      body: (for_statement
+        variable: (identifier)
+        sequence: (identifier)
+        body: (braces
+          body: (identifier))))))
+
+================================================================================
+For No Body
+================================================================================
+
+for (i in 1:5)
+
+--------------------------------------------------------------------------------
+
+(program
+  (for_statement
+    (identifier)
+    (colon
+      (float)
+      (float))
+    (identifier
+      (MISSING _identifier))))
 
 ================================================================================
 While
@@ -683,24 +864,40 @@ while(TRUE)
 --------------------------------------------------------------------------------
 
 (program
-  (while
-    condition: (TRUE)
+  (while_statement
+    condition: (true)
     body: (identifier))
-  (while
-    condition: (>
+  (while_statement
+    condition: (comparison_operator
       lhs: (identifier)
       rhs: (float))
-    body: (<-
+    body: (left_assignment
       lhs: (identifier)
-      rhs: (-
+      rhs: (arithmetic_operator
         lhs: (identifier)
         rhs: (float))))
-  (while
-    condition: (TRUE)
+  (while_statement
+    condition: (true)
     body: (break))
-  (while
-    condition: (TRUE)
+  (while_statement
+    condition: (true)
     body: (next)))
+
+================================================================================
+While No Body
+================================================================================
+
+while (a < b)
+
+--------------------------------------------------------------------------------
+
+(program
+  (while_statement
+    (comparison_operator
+      (identifier)
+      (identifier))
+    (identifier
+      (MISSING _identifier))))
 
 ================================================================================
 Repeat
@@ -711,8 +908,21 @@ repeat 1
 --------------------------------------------------------------------------------
 
 (program
-  (repeat
-    body: (float)))
+  (repeat_statement
+    (float)))
+
+================================================================================
+Repeat No Body
+================================================================================
+
+repeat
+
+--------------------------------------------------------------------------------
+
+(program
+  (repeat_statement
+    (identifier
+      (MISSING _identifier))))
 
 ================================================================================
 Switch
@@ -729,7 +939,7 @@ switch(foo,
 
 (program
   (call
-    (identifier)
+    function: (identifier)
     arguments: (arguments
       argument: (argument
         value: (identifier))
@@ -753,30 +963,89 @@ Dollar
 ================================================================================
 
 foo$bar
-
+foo$bar$baz
+foo$bar@baz
+foo$bar()
 foo$"bar"
 
 --------------------------------------------------------------------------------
 
 (program
-  ($
+  (dollar
     (identifier)
     (identifier))
-  ($
+  (dollar
+    (dollar
+      (identifier)
+      (identifier))
+    (identifier))
+  (at
+    (dollar
+      (identifier)
+      (identifier))
+    (identifier))
+  (call
+    (dollar
+      (identifier)
+      (identifier))
+    (arguments))
+  (dollar
     (identifier)
     (string)))
+
+================================================================================
+Dollar Invalid
+================================================================================
+foo${hi}
+
+--------------------------------------------------------------------------------
+
+(program
+  (identifier)
+  (ERROR)
+  (braces
+    (identifier)))
 
 ================================================================================
 Slot
 ================================================================================
 
 foo@bar
+foo@bar$baz
+foo@bar()
+foo@"bar"
 
 --------------------------------------------------------------------------------
 
 (program
-  (@
+  (at
     (identifier)
+    (identifier))
+  (dollar
+    (at
+      (identifier)
+      (identifier))
+    (identifier))
+  (call
+    (at
+      (identifier)
+      (identifier))
+    (arguments))
+  (at
+    (identifier)
+    (string)))
+
+================================================================================
+Slot Invalid
+================================================================================
+foo@{hi}
+
+--------------------------------------------------------------------------------
+
+(program
+  (identifier)
+  (ERROR)
+  (braces
     (identifier)))
 
 ================================================================================
@@ -790,13 +1059,13 @@ foo::bar(1)
 --------------------------------------------------------------------------------
 
 (program
-  (::
-    lhs: (::
-      lhs: (identifier)
-      rhs: (identifier))
+  (namespace
+    lhs: (identifier))
+  (namespace
+    lhs: (identifier)
     rhs: (identifier))
   (call
-    (::
+    function: (namespace
       lhs: (identifier)
       rhs: (identifier))
     arguments: (arguments
@@ -807,17 +1076,20 @@ foo::bar(1)
 Namespace get internal
 ================================================================================
 
+foo:::
 foo:::bar
 foo:::bar(1)
 
 --------------------------------------------------------------------------------
 
 (program
-  (:::
+  (namespace_internal
+    lhs: (identifier))
+  (namespace_internal
     lhs: (identifier)
     rhs: (identifier))
   (call
-    (:::
+    function: (namespace_internal
       lhs: (identifier)
       rhs: (identifier))
     arguments: (arguments
@@ -840,34 +1112,34 @@ y(1) -> x
 --------------------------------------------------------------------------------
 
 (program
-  (<-
+  (left_assignment
     lhs: (identifier)
     rhs: (float))
-  (=
+  (equals_assignment
     lhs: (identifier)
     rhs: (float))
-  (:=
+  (walrus_assignment
     lhs: (identifier)
     rhs: (float))
-  (<<-
+  (left_super_assignment
     lhs: (identifier)
     rhs: (float))
-  (->>
+  (right_super_assignment
     lhs: (float)
     rhs: (identifier))
-  (->
+  (right_assignment
     lhs: (float)
     rhs: (identifier))
-  (<-
+  (left_assignment
     lhs: (identifier)
     rhs: (call
-      (identifier)
+      function: (identifier)
       arguments: (arguments
         argument: (argument
           value: (float)))))
-  (->
+  (right_assignment
     lhs: (call
-      (identifier)
+      function: (identifier)
       arguments: (arguments
         argument: (argument
           value: (float))))
@@ -882,6 +1154,7 @@ f(x)
 f(1+1)
 f(1 ~ 1)
 f(x, )
+f(x,,y)
 f(x, y)
 f(x, y = 2)
 f(x = 1 + 1)
@@ -899,35 +1172,44 @@ f(,y=)
 
 (program
   (call
-    (identifier)
+    function: (identifier)
     arguments: (arguments))
   (call
-    (identifier)
+    function: (identifier)
     arguments: (arguments
       argument: (argument
         value: (identifier))))
   (call
-    (identifier)
+    function: (identifier)
     arguments: (arguments
       argument: (argument
-        value: (+
+        value: (arithmetic_operator
           lhs: (float)
           rhs: (float)))))
   (call
-    (identifier)
+    function: (identifier)
     arguments: (arguments
       argument: (argument
-        value: (~
+        value: (tilde
           lhs: (float)
           rhs: (float)))))
   (call
-    (identifier)
+    function: (identifier)
     arguments: (arguments
       argument: (argument
         value: (identifier))
       (comma)))
   (call
-    (identifier)
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (identifier))
+      (comma)
+      (comma)
+      argument: (argument
+        value: (identifier))))
+  (call
+    function: (identifier)
     arguments: (arguments
       argument: (argument
         value: (identifier))
@@ -935,7 +1217,7 @@ f(,y=)
       argument: (argument
         value: (identifier))))
   (call
-    (identifier)
+    function: (identifier)
     arguments: (arguments
       argument: (argument
         value: (identifier))
@@ -944,15 +1226,15 @@ f(,y=)
         name: (identifier)
         value: (float))))
   (call
-    (identifier)
+    function: (identifier)
     arguments: (arguments
       argument: (argument
         name: (identifier)
-        value: (+
+        value: (arithmetic_operator
           lhs: (float)
           rhs: (float)))))
   (call
-    (identifier)
+    function: (identifier)
     arguments: (arguments
       argument: (argument
         value: (identifier))
@@ -960,11 +1242,11 @@ f(,y=)
       argument: (argument
         name: (identifier))))
   (call
-    (identifier)
+    function: (identifier)
     arguments: (arguments
       argument: (argument
         value: (call
-          (identifier)
+          function: (identifier)
           arguments: (arguments
             argument: (argument
               value: (identifier))
@@ -972,41 +1254,41 @@ f(,y=)
             argument: (argument
               value: (identifier)))))))
   (call
-    (identifier)
+    function: (identifier)
     arguments: (arguments
       (comma)))
   (call
-    (identifier)
+    function: (identifier)
     arguments: (arguments
       argument: (argument
         value: (identifier))
       (comma)))
   (call
-    (identifier)
+    function: (identifier)
     arguments: (arguments
       (comma)
       argument: (argument
         value: (identifier))))
   (call
-    (identifier)
+    function: (identifier)
     arguments: (arguments
       argument: (argument
         name: (identifier))
       (comma)))
   (call
-    (identifier)
+    function: (identifier)
     arguments: (arguments
       argument: (argument
         name: (string))
       (comma)))
   (call
-    (identifier)
+    function: (identifier)
     arguments: (arguments
       argument: (argument
         name: (dots))
       (comma)))
   (call
-    (identifier)
+    function: (identifier)
     arguments: (arguments
       (comma)
       argument: (argument
@@ -1037,21 +1319,21 @@ Braces
 --------------------------------------------------------------------------------
 
 (program
-  ({)
-  ({
-    (float))
-  ({
-    (float)
-    (float))
-  ({
-    (float)
-    (float))
-  ({
-    (float)
-    (float))
-  ({
-    (float)
-    (float)))
+  (braces)
+  (braces
+    body: (float))
+  (braces
+    body: (float)
+    body: (float))
+  (braces
+    body: (float)
+    body: (float))
+  (braces
+    body: (float)
+    body: (float))
+  (braces
+    body: (float)
+    body: (float)))
 
 ================================================================================
 Colon
@@ -1063,16 +1345,16 @@ Colon
 --------------------------------------------------------------------------------
 
 (program
-  (:
-    (float)
-    (float))
-  (:
-    ((
-      (+
-        (float)
-        (float)))
-    (-
-      (float))))
+  (colon
+    lhs: (float)
+    rhs: (float))
+  (colon
+    lhs: (parentheses
+      body: (arithmetic_operator
+        lhs: (float)
+        rhs: (float)))
+    rhs: (unary_operator
+      rhs: (float))))
 
 ================================================================================
 Formulas
@@ -1084,29 +1366,32 @@ y~x
 --------------------------------------------------------------------------------
 
 (program
-  (~
-    (identifier))
-  (~
-    (identifier)
-    (identifier)))
+  (tilde
+    rhs: (identifier))
+  (tilde
+    lhs: (identifier)
+    rhs: (identifier)))
 
 ================================================================================
 Help Operator
 ================================================================================
 a ? b
 a ? b <- 1
+?a
 
 --------------------------------------------------------------------------------
 
 (program
-  (?
-    (identifier)
-    (identifier))
-  (?
-    (identifier)
-    (<-
-      (identifier)
-      (float))))
+  (help
+    lhs: (identifier)
+    rhs: (identifier))
+  (help
+    lhs: (identifier)
+    rhs: (left_assignment
+      lhs: (identifier)
+      rhs: (float)))
+  (help
+    rhs: (identifier)))
 
 ================================================================================
 Complex Expressions
@@ -1128,73 +1413,73 @@ TRUE ? FALSE = NA
 --------------------------------------------------------------------------------
 
 (program
-  (repeat
-    (if
-      (float)
-      (TRUE)
-      (repeat
-        (float))))
-  (if
-    (TRUE)
-    (if
-      (FALSE)
-      (float)
-      (NULL)))
-  (<-
-    ([[
-      ($
-        (::
-          (identifier)
-          (identifier))
-        (identifier))
-      (arguments
-        (argument
-          (identifier))))
-    (identifier))
-  (?
-    (?
-      (~
-        (~
-          (TRUE)
-          (FALSE))
-        (NULL))
-      (NA))
-    (NaN))
-  (if
-    (TRUE)
-    (FALSE))
+  (repeat_statement
+    body: (if_statement
+      condition: (float)
+      consequence: (true)
+      alternative: (repeat_statement
+        body: (float))))
+  (if_statement
+    condition: (true)
+    consequence: (if_statement
+      condition: (false)
+      consequence: (float)
+      alternative: (null)))
+  (left_assignment
+    lhs: (subset2
+      function: (dollar
+        lhs: (namespace
+          lhs: (identifier)
+          rhs: (identifier))
+        rhs: (identifier))
+      arguments: (arguments
+        argument: (argument
+          value: (identifier))))
+    rhs: (identifier))
+  (help
+    lhs: (help
+      lhs: (tilde
+        lhs: (tilde
+          lhs: (true)
+          rhs: (false))
+        rhs: (null))
+      rhs: (na))
+    rhs: (nan))
+  (if_statement
+    condition: (true)
+    consequence: (false))
   (identifier)
-  (NA)
-  ((
-    (if
-      (TRUE)
-      (FALSE)
-      (NA)))
-  (?
-    (=
-      (identifier)
-      (TRUE))
-    (FALSE))
-  (<-
-    (TRUE)
-    (=
-      (FALSE)
-      (NA)))
-  (?
-    (<-
-      (TRUE)
-      (FALSE))
-    (NA))
-  (?
-    (=
-      (TRUE)
-      (FALSE))
-    (NA))
-  (?
-    (TRUE)
-    (=
-      (FALSE)
-      (NA))))
+  (na)
+  (parentheses
+    body: (if_statement
+      condition: (true)
+      consequence: (false)
+      alternative: (na)))
+  (help
+    lhs: (equals_assignment
+      lhs: (identifier)
+      rhs: (true))
+    rhs: (false))
+  (left_assignment
+    lhs: (true)
+    rhs: (equals_assignment
+      lhs: (false)
+      rhs: (na)))
+  (help
+    lhs: (left_assignment
+      lhs: (true)
+      rhs: (false))
+    rhs: (na))
+  (help
+    lhs: (equals_assignment
+      lhs: (true)
+      rhs: (false))
+    rhs: (na))
+  (help
+    lhs: (true)
+    rhs: (equals_assignment
+      lhs: (false)
+      rhs: (na))))
 
 ================================================================================
 Precedence Tests
@@ -1206,21 +1491,21 @@ a$b?c
 --------------------------------------------------------------------------------
 
 (program
-  (^
-    ($
-      (identifier)
-      (string))
-    (NA))
-  ($
-    (::
-      (identifier)
-      (identifier))
-    (identifier))
-  (?
-    ($
-      (identifier)
-      (identifier))
-    (identifier)))
+  (arithmetic_operator
+    lhs: (dollar
+      lhs: (identifier)
+      rhs: (string))
+    rhs: (na))
+  (dollar
+    lhs: (namespace
+      lhs: (identifier)
+      rhs: (identifier))
+    rhs: (identifier))
+  (help
+    lhs: (dollar
+      lhs: (identifier)
+      rhs: (identifier))
+    rhs: (identifier)))
 
 ================================================================================
 Newlines
@@ -1243,18 +1528,18 @@ apple
 
 (program
   (identifier)
-  ((
-    (identifier))
-  ({
-    (identifier)
-    ((
-      (identifier)))
-  ((
-    (call
-      (identifier)
-      (arguments
-        (argument
-          (identifier))))))
+  (parentheses
+    body: (identifier))
+  (braces
+    body: (identifier)
+    body: (parentheses
+      body: (identifier)))
+  (parentheses
+    body: (call
+      function: (identifier)
+      arguments: (arguments
+        argument: (argument
+          value: (identifier))))))
 
 ================================================================================
 Closing Brace
@@ -1265,7 +1550,7 @@ Closing Brace
 --------------------------------------------------------------------------------
 
 (program
-  (}))
+  (unmatched_closing_brace))
 
 ================================================================================
 Closing Parenthesis
@@ -1276,7 +1561,7 @@ Closing Parenthesis
 --------------------------------------------------------------------------------
 
 (program
-  ()))
+  (unmatched_closing_parenthesis))
 
 ================================================================================
 Closing Bracket
@@ -1287,7 +1572,7 @@ Closing Bracket
 --------------------------------------------------------------------------------
 
 (program
-  (]))
+  (unmatched_closing_bracket))
 
 ================================================================================
 Opening Brace, Closing Parenthesis
@@ -1302,8 +1587,9 @@ Opening Brace, Closing Parenthesis
 (program
   (comment)
   (comment)
-  ({
-    ())))
+  (braces
+    (unmatched_closing_parenthesis)
+    (MISSING "}")))
 
 ================================================================================
 Opening Parenthesis, Closing Brace
@@ -1314,8 +1600,9 @@ Opening Parenthesis, Closing Brace
 --------------------------------------------------------------------------------
 
 (program
-  ((
-    (})))
+  (parentheses
+    (unmatched_closing_brace)
+    (MISSING ")")))
 
 ================================================================================
 Opening Parenthesis, Closing Bracket
@@ -1326,8 +1613,9 @@ Opening Parenthesis, Closing Bracket
 --------------------------------------------------------------------------------
 
 (program
-  ((
-    (])))
+  (parentheses
+    (unmatched_closing_bracket)
+    (MISSING ")")))
 
 ================================================================================
 Opening Bracket2, Unmatched Closing Bracket
@@ -1338,34 +1626,31 @@ x[[2]
 --------------------------------------------------------------------------------
 
 (program
-  ([[
+  (subset2
     (identifier)
     (arguments
       (argument
         (float))
       (argument
-        (])))))
+        (unmatched_closing_bracket))
+      (MISSING "]]"))))
 
 ================================================================================
 Opening Bracket and Bracket2, Unmatched Closing Bracket
 ================================================================================
 
-# This is currently not right due to https://github.com/r-lib/tree-sitter-r/issues/77
 x[y[[2]
 
 --------------------------------------------------------------------------------
 
 (program
-  (comment)
-  ([
+  (identifier)
+  (ERROR
     (identifier)
-    (arguments
-      (argument
-        ([[
-          (identifier)
-          (arguments
-            (argument
-              (float))))))))
+    (argument
+      (float))
+    (argument
+      (unmatched_closing_bracket))))
 
 ================================================================================
 Opening Bracket2 and Bracket, Matched Closing Bracket
@@ -1376,15 +1661,16 @@ x[[y[2]
 --------------------------------------------------------------------------------
 
 (program
-  ([[
-    (identifier)
-    (arguments
-      (argument
-        ([
-          (identifier)
-          (arguments
-            (argument
-              (float))))))))
+  (subset2
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (subset
+          function: (identifier)
+          arguments: (arguments
+            argument: (argument
+              value: (float)))))
+      (MISSING "]]"))))
 
 ================================================================================
 Opening Bracket2 and Bracket, Unmatched Closing Bracket
@@ -1395,14 +1681,15 @@ x[[y[2]]
 --------------------------------------------------------------------------------
 
 (program
-  ([[
-    (identifier)
-    (arguments
-      (argument
-        ([
-          (identifier)
-          (arguments
-            (argument
-              (float)))))
-      (argument
-        (])))))
+  (subset2
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (subset
+          function: (identifier)
+          arguments: (arguments
+            argument: (argument
+              value: (float)))))
+          argument: (argument
+            value: (unmatched_closing_bracket))
+      (MISSING "]]"))))
