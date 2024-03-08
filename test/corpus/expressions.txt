@@ -1075,24 +1075,6 @@ foo$
     lhs: (identifier)))
 
 ================================================================================
-Dollar Invalid
-================================================================================
-# The `dollar` node allows an optional RHS, and the RHS must be a string/identifier,
-# so we nicely get a true `at` node here alongside the braces. Even if that's not
-# parsable R code, it's useful for completions and highlighting.
-foo${hi}
-
---------------------------------------------------------------------------------
-
-(program
-  (comment)
-  (comment)
-  (dollar
-    (identifier))
-  (braces
-    (identifier)))
-
-================================================================================
 Slot
 ================================================================================
 
@@ -1131,24 +1113,6 @@ foo@
 (program
   (at
     lhs: (identifier)))
-
-================================================================================
-Slot Invalid
-================================================================================
-# The `at` node allows an optional RHS, and the RHS must be a string/identifier,
-# so we nicely get a true `at` node here alongside the braces. Even if that's not
-# parsable R code, it's useful for completions and highlighting.
-foo@{hi}
-
---------------------------------------------------------------------------------
-
-(program
-  (comment)
-  (comment)
-  (at
-    (identifier))
-  (braces
-    (identifier)))
 
 ================================================================================
 Namespace get
@@ -1197,6 +1161,40 @@ foo:::bar(1)
     arguments: (arguments
       argument: (argument
         value: (float)))))
+
+================================================================================
+Dollar, At, Namespace, Namespace Internal With Expression RHS
+================================================================================
+# These nodes allows an optional RHS, and the RHS must be a string/identifier,
+# so we nicely get a true node here alongside the braces. Even if that's not
+# parsable R code, it's useful for completions and highlighting.
+foo${bar}
+foo@{bar}
+foo::{bar}
+foo:::{bar}
+
+--------------------------------------------------------------------------------
+
+(program
+  (comment)
+  (comment)
+  (comment)
+  (dollar
+    lhs: (identifier))
+  (braces
+    body: (identifier))
+  (at
+    lhs: (identifier))
+  (braces
+    body: (identifier))
+  (namespace
+    lhs: (identifier))
+  (braces
+    body: (identifier))
+  (namespace_internal
+    lhs: (identifier))
+  (braces
+    body: (identifier)))
 
 ================================================================================
 Assignment
