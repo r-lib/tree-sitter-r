@@ -1294,6 +1294,38 @@ foo:::{bar}
     body: (identifier)))
 
 ================================================================================
+Dollar, At, Namespace, Namespace Internal With `if` RHS
+================================================================================
+# The RHS's of these nodes are restricted to strings and identifiers, and the RHS
+# is optional. This ends up trying to match to an `if_statement` node, leaving the RHS
+# empty, and then the `if_statement` node errors because it doesn't have a `(`. This
+# is actually pretty decent behavior.
+foo$if
+foo@if
+foo::if
+foo:::if
+
+--------------------------------------------------------------------------------
+
+(program
+  (comment)
+  (comment)
+  (comment)
+  (comment)
+  (dollar
+    (identifier))
+  (ERROR)
+  (at
+    (identifier))
+  (ERROR)
+  (namespace
+    (identifier))
+  (ERROR)
+  (namespace_internal
+    (identifier))
+  (ERROR))
+
+================================================================================
 Assignment
 ================================================================================
 
