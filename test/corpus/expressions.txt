@@ -19,6 +19,11 @@ function(x,
 
 }
 
+function()
+
+
+  1
+
 --------------------------------------------------------------------------------
 
 (program
@@ -81,7 +86,10 @@ function(x,
       parameter: (parameter
         name: (identifier)
         default: (float)))
-    body: (braces)))
+    body: (braces))
+  (function_definition
+    parameters: (parameters)
+    body: (float)))
 
 ================================================================================
 Lambda Function
@@ -93,6 +101,9 @@ c <- \(fun, ...) fun(...)
 1:3 |> {\(x, y = 1) x + y}() |> {\(x) sum(x)}()
 {\(a = 1) a + 1}()
 \() 1 + 2
+\()
+
+  1 + 2
 --------------------------------------------------------------------------------
 
 (program
@@ -176,6 +187,11 @@ c <- \(fun, ...) fun(...)
           (identifier)
           (float))))
     (arguments))
+  (function_definition
+    (parameters)
+    (arithmetic_operator
+      (float)
+      (float)))
   (function_definition
     (parameters)
     (arithmetic_operator
