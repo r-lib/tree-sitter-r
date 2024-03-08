@@ -92,6 +92,46 @@ function()
     body: (float)))
 
 ================================================================================
+Function No Body
+================================================================================
+
+function(x, y)
+
+--------------------------------------------------------------------------------
+
+(program
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (identifier))
+      (comma)
+      parameter: (parameter
+        name: (identifier)))
+    body: (identifier
+      (MISSING _identifier))))
+
+================================================================================
+Function No Body With Assignment
+================================================================================
+
+x <- function(x, y)
+
+--------------------------------------------------------------------------------
+
+(program
+  (left_assignment
+    lhs: (identifier)
+    rhs: (function_definition
+      parameters: (parameters
+        parameter: (parameter
+          name: (identifier))
+        (comma)
+        parameter: (parameter
+          name: (identifier)))
+      body: (identifier
+        (MISSING _identifier)))))
+
+================================================================================
 Lambda Function
 ================================================================================
 
