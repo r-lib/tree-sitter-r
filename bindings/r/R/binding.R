@@ -10,7 +10,8 @@
 #' language()
 language <- function() {
   # TODO: Possibly export wrapper from tree-sitter R bindings package for
-  # `new_language()` that all grammar binding packages could use?
+  # `new_language()` that all grammar binding packages could use? Would also
+  # provide a print method and `is_language()` method.
   out <- .Call(ffi_language)
   class(out) <- c("tree_sitter_r_language", "tree_sitter_language")
   out
