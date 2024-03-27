@@ -115,20 +115,16 @@ const PREC = {
   NAMESPACE: { ASSOC: prec.right, RANK: 21 },
 
   // match(1, 2), [, [[
-  // TODO: Should this be rank 1 or 22?
-  // TODO: Do they really need to be `prec.right()`? It seems like just `prec()` works.
-  // NOTE: If we understand correctly, calls and subsets have the same precedence as
-  // other general expressions (see same reasoning for `BLOCK` above). However, unlike
-  // `{` and `(` in `BLOCK`, these rules start their sequence with an `_expression`, which
-  // would cause `call`, `subset`, and `subset2` to be ambiguous with just a general
-  // `_expression` if they had the same precedence level. We get around this by assigning
-  // these rules a higher precedence rank.
+  // NOTE: We aren't entirely sure how Bison works for calls and subsets. Practically,
+  // we need calls to have high precedence so things like `function(x, y, z) match(x, y)`
+  // don't get parsed as a call with function `function(x, y, z) match` and arguments of
+  // `(x, y)`. In the Bison grammar, there is no `%prec` specified for these rules, and
+  // the last terminal nodes of `]` and `)` don't have an assigned precedence in the
+  // table, so in theory they have the same precedence as general R expressions, but that
+  // obviously isn't the case. Possibly this has to do with Bison's lookahead that
+  // tree-sitter doesn't do.
   // https://github.com/wch/r-source/blob/0a8f53a7ba47463f1c938dd3e2c2acc7a2d3a1c2/src/main/gram.y#L501
   // https://github.com/wch/r-source/blob/0a8f53a7ba47463f1c938dd3e2c2acc7a2d3a1c2/src/main/gram.y#L507-L508
-  // NOTE: These are supposedly nonassoc in R's grammar, but no rule has a terminal node
-  // of `[`, `(`, or `LBB` or specifies those as their `%prec`, so I'm not sure that is
-  // really happening. We should verify whether or not these really need to be
-  // `prec.right()` or just `prec()` and add some tests either way.
   // https://github.com/wch/r-source/blob/0a8f53a7ba47463f1c938dd3e2c2acc7a2d3a1c2/src/main/gram.y#L441
   CALL: { ASSOC: prec.right, RANK: 22 },
 }
