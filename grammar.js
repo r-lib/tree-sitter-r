@@ -75,11 +75,8 @@ const PREC = {
   // *, /
   MULTIPLY_DIVIDE: { ASSOC: prec.left, RANK: 14 },
   
-  // %>%, %<>%
-  SPECIAL: { ASSOC: prec.left, RANK: 15 },
-
-  // |>
-  PIPE: { ASSOC: prec.left, RANK: 15 },
+  // %>%, %<>%, |>
+  SPECIAL_OR_PIPE: { ASSOC: prec.left, RANK: 15 },
 
   // =>
   PIPEBIND: { ASSOC: prec.left, RANK: 16 },
@@ -314,7 +311,7 @@ module.exports = grammar({
     ),
 
     // Pipe and pipebind
-    pipe: $ => binaryRule($, "|>", PREC.PIPE),
+    pipe: $ => binaryRule($, "|>", PREC.SPECIAL_OR_PIPE),
     pipebind: $ => binaryRule($, "=>", PREC.PIPEBIND),
 
     // Unary operator
@@ -388,7 +385,7 @@ module.exports = grammar({
     // Regex: Between two `%`, anything but another `%`, `\`, or `\n`.
     // Includes primitives `%%` and `%/%`.
     // TODO: This could probably be fine tuned to disallow more things.
-    special: $ => binaryRule($, /%[^%\\\n]*%/, PREC.SPECIAL),
+    special: $ => binaryRule($, /%[^%\\\n]*%/, PREC.SPECIAL_OR_PIPE),
 
     // Colon
     colon: $ => binaryRule($, ":", PREC.COLON),
