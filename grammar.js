@@ -36,11 +36,15 @@ const PREC = {
   // while() {}
   // for() {}
   // repeat {}
-  // See `NOTE ON PREC.RIGHT` above
+  // NOTE: See `NOTE ON PREC.RIGHT` above
   FUNCTION_OR_LOOP: { ASSOC: prec.right, RANK: 2 },
 
-  // if {} else {}
+  // if {}
   IF: { ASSOC: prec.right, RANK: 3 },
+
+  // else {}
+  // NOTE: `ELSE` is not actually used, we have a special external for it and it is
+  // part of the `if` node, but we keep it in `PREC` for alignment with R's table.
   ELSE: { ASSOC: prec.left, RANK: 4 },
 
   // <-, <<-, :=
@@ -91,11 +95,11 @@ const PREC = {
   EXPONENTIATE: { ASSOC: prec.right, RANK: 19 },
 
   // $, @
-  // See `NOTE ON PREC.RIGHT` above
+  // NOTE: See `NOTE ON PREC.RIGHT` above
   EXTRACT: { ASSOC: prec.right, RANK: 20 },
   
   // ::, :::
-  // See `NOTE ON PREC.RIGHT` above
+  // NOTE: See `NOTE ON PREC.RIGHT` above
   NAMESPACE: { ASSOC: prec.right, RANK: 21 },
 
   // match(1, 2), {, (, [, [[
