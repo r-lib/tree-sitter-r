@@ -29,6 +29,18 @@
 // on, since they are typically the only things at their numeric precedence rank.
 
 const PREC = {
+  // {, (
+  // NOTE: If we understand correctly, brace and parenthesis blocks are given the same
+  // precedence as all other general expressions. Note that they are not tagged with an
+  // explicit `%prec` in the links below, and the last terminal nodes of `}` and `)` do
+  // not have a `%left` or `%right` precedence assigned in the table above (the last
+  // terminal node is how Bison assigns precedence to a rule by default), so we are left
+  // to assume they have default precedence.
+  // https://github.com/wch/r-source/blob/0a8f53a7ba47463f1c938dd3e2c2acc7a2d3a1c2/src/main/gram.y#L467-L468
+  // https://www.gnu.org/software/bison/manual/html_node/How-Precedence.html
+  // NOTE: See `NOTE ON PREC.RIGHT` above
+  BLOCK: { ASSOC: prec.right, RANK: 0 },
+
   // ?
   HELP: { ASSOC: prec.left, RANK: 1 },
 
@@ -102,9 +114,23 @@ const PREC = {
   // NOTE: See `NOTE ON PREC.RIGHT` above
   NAMESPACE: { ASSOC: prec.right, RANK: 21 },
 
-  // match(1, 2), {, (, [, [[
-  // NOTE: These are nonassoc in R's grammar
-  CALL_OR_BLOCK: { ASSOC: prec.right, RANK: 22 }
+  // match(1, 2), [, [[
+  // TODO: Should this be rank 1 or 22?
+  // TODO: Do they really need to be `prec.right()`? It seems like just `prec()` works.
+  // NOTE: If we understand correctly, calls and subsets have the same precedence as
+  // other general expressions (see same reasoning for `BLOCK` above). However, unlike
+  // `{` and `(` in `BLOCK`, these rules start their sequence with an `_expression`, which
+  // would cause `call`, `subset`, and `subset2` to be ambiguous with just a general
+  // `_expression` if they had the same precedence level. We get around this by assigning
+  // these rules a higher precedence rank.
+  // https://github.com/wch/r-source/blob/0a8f53a7ba47463f1c938dd3e2c2acc7a2d3a1c2/src/main/gram.y#L501
+  // https://github.com/wch/r-source/blob/0a8f53a7ba47463f1c938dd3e2c2acc7a2d3a1c2/src/main/gram.y#L507-L508
+  // NOTE: These are supposedly nonassoc in R's grammar, but no rule has a terminal node
+  // of `[`, `(`, or `LBB` or specifies those as their `%prec`, so I'm not sure that is
+  // really happening. We should verify whether or not these really need to be
+  // `prec.right()` or just `prec()` and add some tests either way.
+  // https://github.com/wch/r-source/blob/0a8f53a7ba47463f1c938dd3e2c2acc7a2d3a1c2/src/main/gram.y#L441
+  CALL: { ASSOC: prec.right, RANK: 22 },
 }
 
 module.exports = grammar({
@@ -217,30 +243,30 @@ module.exports = grammar({
     )),
 
     // Blocks.
-    braces: $ => withPrec(PREC.CALL_OR_BLOCK, seq(
+    braces: $ => withPrec(PREC.BLOCK, seq(
       $._open_brace,
       repeat(field("body", choice($._expression, $._semicolon, $._newline))),
-      $._close_brace
+      optional($._close_brace)
     )),
 
-    parentheses: $ => withPrec(PREC.CALL_OR_BLOCK, seq(
+    parentheses: $ => withPrec(PREC.BLOCK, seq(
       $._open_parenthesis,
       repeat(field("body", choice($._expression, $._newline))),
-      $._close_parenthesis
+      optional($._close_parenthesis)
     )),
 
     // Function calls and subsetting.
-    call: $ => withPrec(PREC.CALL_OR_BLOCK, seq(
+    call: $ => withPrec(PREC.CALL, seq(
       field("function", $._expression),
       field("arguments", alias($.call_arguments, $.arguments))
     )),
 
-    subset: $ => withPrec(PREC.CALL_OR_BLOCK, seq(
+    subset: $ => withPrec(PREC.CALL, seq(
       field("function", $._expression), 
       field("arguments", alias($.subset_arguments, $.arguments))
     )),
 
-    subset2: $ => withPrec(PREC.CALL_OR_BLOCK, seq(
+    subset2: $ => withPrec(PREC.CALL, seq(
       field("function", $._expression), 
       field("arguments", alias($.subset2_arguments, $.arguments))
     )),

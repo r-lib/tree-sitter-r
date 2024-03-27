@@ -440,7 +440,7 @@
     },
     "braces": {
       "type": "PREC_RIGHT",
-      "value": 22,
+      "value": 0,
       "content": {
         "type": "SEQ",
         "members": [
@@ -473,15 +473,23 @@
             }
           },
           {
-            "type": "SYMBOL",
-            "name": "_close_brace"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_close_brace"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
           }
         ]
       }
     },
     "parentheses": {
       "type": "PREC_RIGHT",
-      "value": 22,
+      "value": 0,
       "content": {
         "type": "SEQ",
         "members": [
@@ -510,8 +518,16 @@
             }
           },
           {
-            "type": "SYMBOL",
-            "name": "_close_parenthesis"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_close_parenthesis"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
           }
         ]
       }

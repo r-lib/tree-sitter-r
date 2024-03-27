@@ -1817,8 +1817,7 @@ Opening Brace, Closing Parenthesis
   (comment)
   (comment)
   (braces
-    (unmatched_closing_parenthesis)
-    (MISSING "}")))
+    (unmatched_closing_parenthesis)))
 
 ================================================================================
 Opening Parenthesis, Closing Brace
@@ -1830,8 +1829,7 @@ Opening Parenthesis, Closing Brace
 
 (program
   (parentheses
-    (unmatched_closing_brace)
-    (MISSING ")")))
+    (unmatched_closing_brace)))
 
 ================================================================================
 Opening Parenthesis, Closing Bracket
@@ -1843,8 +1841,7 @@ Opening Parenthesis, Closing Bracket
 
 (program
   (parentheses
-    (unmatched_closing_bracket)
-    (MISSING ")")))
+    (unmatched_closing_bracket)))
 
 ================================================================================
 Opening Bracket2, Unmatched Closing Bracket
