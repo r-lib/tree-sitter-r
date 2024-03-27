@@ -20,11 +20,11 @@
 ;; Operators
 [
   "?" ":=" "=" "<-" "<<-" "->" "->>"
-  "~" "|>" "=>" "||" "|" "&&" "&"
+  "~" "|>" "||" "|" "&&" "&"
   "<" "<=" ">" ">=" "==" "!="
   "+" "-" "*" "/" "::" ":::"
-  "%<>%" "%$%" "%!>%" "%>%" "%T>%" "%%"
-  "**" "^" "$" "@"
+  "**" "^" "$" "@" ":"
+  "special"
 ] @operator
 
 ;; Brackets
@@ -39,7 +39,7 @@
 
 ;; Keywords
 [
-  (return) (next) (break) (NULL)
+  (return) (next) (break) (null)
 ] @keyword
 
 [
@@ -55,8 +55,7 @@
 ] @keyword
 
 [
-  (Inf) (NaN) (dots) (TRUE) (FALSE)
-  (NA) (NA_integer_) (NA_real_) (NA_complex_) (NA_character_)
+  (inf) (nan) (dots) (true) (false) (na)
 ] @constant.builtin
 
 ;; Calls
