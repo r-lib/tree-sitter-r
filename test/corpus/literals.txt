@@ -218,7 +218,7 @@ x <- -.66
   (float)
   (float)
   (float)
-  (left_assignment
+  (binary_operator
     (identifier)
     (unary_operator
       (float))))

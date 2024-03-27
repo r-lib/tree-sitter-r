@@ -126,7 +126,7 @@ function() for(i in 1:5) i
     parameters: (parameters)
     body: (for_statement
       variable: (identifier)
-      sequence: (colon
+      sequence: (binary_operator
         lhs: (float)
         rhs: (float))
       body: (identifier))))
@@ -157,7 +157,7 @@ x <- function(x, y)
 --------------------------------------------------------------------------------
 
 (program
-  (left_assignment
+  (binary_operator
     lhs: (identifier)
     rhs: (function_definition
       parameters: (parameters
@@ -183,14 +183,14 @@ c <- \(fun, ...) fun(...)
 --------------------------------------------------------------------------------
 
 (program
-  (left_assignment
+  (binary_operator
     (identifier)
     (function_definition
       (parameters
         (parameter
           (identifier)))
       (identifier)))
-  (left_assignment
+  (binary_operator
     (identifier)
     (function_definition
       (parameters
@@ -207,7 +207,7 @@ c <- \(fun, ...) fun(...)
           (comma)
           (argument
             (identifier))))))
-  (left_assignment
+  (binary_operator
     (identifier)
     (function_definition
       (parameters
@@ -221,9 +221,9 @@ c <- \(fun, ...) fun(...)
         (arguments
           (argument
             (dots))))))
-  (pipe
-    (pipe
-      (colon
+  (binary_operator
+    (binary_operator
+      (binary_operator
         (float)
         (float))
       (call
@@ -236,7 +236,7 @@ c <- \(fun, ...) fun(...)
               (parameter
                 (identifier)
                 (float)))
-            (arithmetic_operator
+            (binary_operator
               (identifier)
               (identifier))))
         (arguments)))
@@ -259,18 +259,18 @@ c <- \(fun, ...) fun(...)
           (parameter
             (identifier)
             (float)))
-        (arithmetic_operator
+        (binary_operator
           (identifier)
           (float))))
     (arguments))
   (function_definition
     (parameters)
-    (arithmetic_operator
+    (binary_operator
       (float)
       (float)))
   (function_definition
     (parameters)
-    (arithmetic_operator
+    (binary_operator
       (float)
       (float))))
 
@@ -291,25 +291,25 @@ a ==
 --------------------------------------------------------------------------------
 
 (program
-  (comparison_operator
+  (binary_operator
     (identifier)
     (identifier))
-  (comparison_operator
+  (binary_operator
     (identifier)
     (identifier))
-  (comparison_operator
+  (binary_operator
     (identifier)
     (identifier))
-  (comparison_operator
+  (binary_operator
     (identifier)
     (identifier))
-  (comparison_operator
+  (binary_operator
     (identifier)
     (identifier))
-  (comparison_operator
+  (binary_operator
     (identifier)
     (identifier))
-  (comparison_operator
+  (binary_operator
     (identifier)
     (identifier)))
 
@@ -333,28 +333,28 @@ a *
 --------------------------------------------------------------------------------
 
 (program
-  (arithmetic_operator
+  (binary_operator
     (identifier)
     (identifier))
-  (arithmetic_operator
+  (binary_operator
     (identifier)
     (identifier))
-  (arithmetic_operator
+  (binary_operator
     (identifier)
     (identifier))
-  (arithmetic_operator
+  (binary_operator
     (identifier)
     (identifier))
-  (arithmetic_operator
+  (binary_operator
     (identifier)
     (identifier))
-  (arithmetic_operator
+  (binary_operator
     (identifier)
     (identifier))
-  (arithmetic_operator
+  (binary_operator
     (identifier)
     (identifier))
-  (arithmetic_operator
+  (binary_operator
     (identifier)
     (identifier)))
 
@@ -420,39 +420,39 @@ val <- foo %>% bar(1) %>% baz()
 --------------------------------------------------------------------------------
 
 (program
-  (arithmetic_operator
+  (binary_operator
     (float)
-    (arithmetic_operator
+    (binary_operator
       (identifier)
       (float)))
-  (arithmetic_operator
-    (arithmetic_operator
+  (binary_operator
+    (binary_operator
       (float)
       (identifier))
     (float))
   (unary_operator
-    (arithmetic_operator
+    (binary_operator
       (identifier)
       (unary_operator
         (identifier))))
-  (logical_scalar_operator
-    (comparison_operator
+  (binary_operator
+    (binary_operator
       (identifier)
       (float))
-    (comparison_operator
+    (binary_operator
       (float)
       (identifier)))
-  (left_assignment
+  (binary_operator
     (subset
       (identifier)
       (arguments
         (argument
           (float))))
-    (logical_scalar_operator
+    (binary_operator
       (identifier)
       (identifier)))
-  (logical_scalar_operator
-    (logical_scalar_operator
+  (binary_operator
+    (binary_operator
       (identifier)
       (call
         (identifier)
@@ -460,10 +460,10 @@ val <- foo %>% bar(1) %>% baz()
           (argument
             (identifier)))))
     (identifier))
-  (left_assignment
+  (binary_operator
     (identifier)
-    (special
-      (special
+    (binary_operator
+      (binary_operator
         (identifier)
         (call
           (identifier)
@@ -491,27 +491,27 @@ x %//% y
 --------------------------------------------------------------------------------
 
 (program
-  (special
+  (binary_operator
     (identifier)
     (identifier))
-  (special
+  (binary_operator
     (identifier)
     (identifier))
-  (special
+  (binary_operator
     (identifier)
     (identifier))
-  (special
+  (binary_operator
     (identifier)
     (identifier))
-  (special
-    (special
+  (binary_operator
+    (binary_operator
       (identifier)
       (float))
     (identifier))
-  (special
+  (binary_operator
     (identifier)
     (identifier))
-  (special
+  (binary_operator
     (identifier)
     (identifier))
   (comment))
@@ -531,14 +531,14 @@ x |> {function(x) x}()
 --------------------------------------------------------------------------------
 
 (program
-  (pipe
+  (binary_operator
     (identifier)
     (call
       (identifier)
       (arguments)))
-  (pipe
-    (special
-      (pipe
+  (binary_operator
+    (binary_operator
+      (binary_operator
         (identifier)
         (call
           (identifier)
@@ -549,9 +549,9 @@ x |> {function(x) x}()
     (call
       (identifier)
       (arguments)))
-  (arithmetic_operator
-    (pipe
-      (pipe
+  (binary_operator
+    (binary_operator
+      (binary_operator
         (identifier)
         (call
           (identifier)
@@ -562,7 +562,7 @@ x |> {function(x) x}()
     (call
       (identifier)
       (arguments)))
-  (pipe
+  (binary_operator
     (identifier)
     (call
       (braces
@@ -583,7 +583,7 @@ foo |> bar() |> baz(data = _)
 --------------------------------------------------------------------------------
 
 (program
-  (pipe
+  (binary_operator
     (identifier)
     (call
       (identifier)
@@ -594,8 +594,8 @@ foo |> bar() |> baz(data = _)
         (argument
           (identifier)
           (identifier)))))
-  (pipe
-    (pipe
+  (binary_operator
+    (binary_operator
       (identifier)
       (call
         (identifier)
@@ -934,7 +934,7 @@ for (x in y) for (y in z) x + y
     body: (identifier))
   (for_statement
     variable: (identifier)
-    sequence: (colon
+    sequence: (binary_operator
       lhs: (float)
       rhs: (float))
     body: (braces
@@ -949,7 +949,7 @@ for (x in y) for (y in z) x + y
     body: (for_statement
       variable: (identifier)
       sequence: (identifier)
-      body: (arithmetic_operator
+      body: (binary_operator
         lhs: (identifier)
         rhs: (identifier)))))
 
@@ -964,7 +964,7 @@ for (i in 1:5)
 (program
   (for_statement
     (identifier)
-    (colon
+    (binary_operator
       (float)
       (float))))
 
@@ -990,12 +990,12 @@ while(TRUE)
     condition: (true)
     body: (identifier))
   (while_statement
-    condition: (comparison_operator
+    condition: (binary_operator
       lhs: (identifier)
       rhs: (float))
-    body: (left_assignment
+    body: (binary_operator
       lhs: (identifier)
-      rhs: (arithmetic_operator
+      rhs: (binary_operator
         lhs: (identifier)
         rhs: (float))))
   (while_statement
@@ -1015,7 +1015,7 @@ while (a < b)
 
 (program
   (while_statement
-    (comparison_operator
+    (binary_operator
       (identifier)
       (identifier))))
 
@@ -1090,32 +1090,32 @@ foo$bar()$baz[[1]]$bam
 --------------------------------------------------------------------------------
 
 (program
-  (dollar
+  (extract_operator
     lhs: (identifier)
     rhs: (identifier))
-  (dollar
-    lhs: (dollar
+  (extract_operator
+    lhs: (extract_operator
       lhs: (identifier)
       rhs: (identifier))
     rhs: (identifier))
-  (at
-    lhs: (dollar
+  (extract_operator
+    lhs: (extract_operator
       lhs: (identifier)
       rhs: (identifier))
     rhs: (identifier))
   (call
-    function: (dollar
+    function: (extract_operator
       lhs: (identifier)
       rhs: (identifier))
     arguments: (arguments))
-  (dollar
+  (extract_operator
     lhs: (identifier)
     rhs: (string))
-  (dollar
+  (extract_operator
     lhs: (subset2
-      function: (dollar
+      function: (extract_operator
         lhs: (call
-          function: (dollar
+          function: (extract_operator
             lhs: (identifier)
             rhs: (identifier))
           arguments: (arguments))
@@ -1133,7 +1133,7 @@ foo$
 --------------------------------------------------------------------------------
 
 (program
-  (dollar
+  (extract_operator
     lhs: (identifier)))
 
 ================================================================================
@@ -1148,20 +1148,20 @@ foo@"bar"
 --------------------------------------------------------------------------------
 
 (program
-  (at
+  (extract_operator
     (identifier)
     (identifier))
-  (dollar
-    (at
+  (extract_operator
+    (extract_operator
       (identifier)
       (identifier))
     (identifier))
   (call
-    (at
+    (extract_operator
       (identifier)
       (identifier))
     (arguments))
-  (at
+  (extract_operator
     (identifier)
     (string)))
 
@@ -1173,7 +1173,7 @@ foo@
 --------------------------------------------------------------------------------
 
 (program
-  (at
+  (extract_operator
     lhs: (identifier)))
 
 ================================================================================
@@ -1187,13 +1187,13 @@ foo::bar(1)
 --------------------------------------------------------------------------------
 
 (program
-  (namespace
+  (namespace_operator
     lhs: (identifier))
-  (namespace
+  (namespace_operator
     lhs: (identifier)
     rhs: (identifier))
   (call
-    function: (namespace
+    function: (namespace_operator
       lhs: (identifier)
       rhs: (identifier))
     arguments: (arguments
@@ -1211,13 +1211,13 @@ foo:::bar(1)
 --------------------------------------------------------------------------------
 
 (program
-  (namespace_internal
+  (namespace_operator
     lhs: (identifier))
-  (namespace_internal
+  (namespace_operator
     lhs: (identifier)
     rhs: (identifier))
   (call
-    function: (namespace_internal
+    function: (namespace_operator
       lhs: (identifier)
       rhs: (identifier))
     arguments: (arguments
@@ -1250,7 +1250,7 @@ library()
     function: (identifier)
     arguments: (arguments
       argument: (argument
-        value: (namespace
+        value: (namespace_operator
           lhs: (identifier)))))
   (call
     function: (identifier)
@@ -1276,19 +1276,19 @@ foo:::{bar}
   (comment)
   (comment)
   (comment)
-  (dollar
+  (extract_operator
     lhs: (identifier))
   (braces
     body: (identifier))
-  (at
+  (extract_operator
     lhs: (identifier))
   (braces
     body: (identifier))
-  (namespace
+  (namespace_operator
     lhs: (identifier))
   (braces
     body: (identifier))
-  (namespace_internal
+  (namespace_operator
     lhs: (identifier))
   (braces
     body: (identifier)))
@@ -1312,16 +1312,16 @@ foo:::if
   (comment)
   (comment)
   (comment)
-  (dollar
+  (extract_operator
     (identifier))
   (ERROR)
-  (at
+  (extract_operator
     (identifier))
   (ERROR)
-  (namespace
+  (namespace_operator
     (identifier))
   (ERROR)
-  (namespace_internal
+  (namespace_operator
     (identifier))
   (ERROR))
 
@@ -1341,32 +1341,32 @@ y(1) -> x
 --------------------------------------------------------------------------------
 
 (program
-  (left_assignment
+  (binary_operator
     lhs: (identifier)
     rhs: (float))
-  (equals_assignment
+  (binary_operator
     lhs: (identifier)
     rhs: (float))
-  (walrus_assignment
+  (binary_operator
     lhs: (identifier)
     rhs: (float))
-  (left_super_assignment
+  (binary_operator
     lhs: (identifier)
     rhs: (float))
-  (right_super_assignment
+  (binary_operator
     lhs: (float)
     rhs: (identifier))
-  (right_assignment
+  (binary_operator
     lhs: (float)
     rhs: (identifier))
-  (left_assignment
+  (binary_operator
     lhs: (identifier)
     rhs: (call
       function: (identifier)
       arguments: (arguments
         argument: (argument
           value: (float)))))
-  (right_assignment
+  (binary_operator
     lhs: (call
       function: (identifier)
       arguments: (arguments
@@ -1412,14 +1412,14 @@ f(,y=)
     function: (identifier)
     arguments: (arguments
       argument: (argument
-        value: (arithmetic_operator
+        value: (binary_operator
           lhs: (float)
           rhs: (float)))))
   (call
     function: (identifier)
     arguments: (arguments
       argument: (argument
-        value: (tilde
+        value: (binary_operator
           lhs: (float)
           rhs: (float)))))
   (call
@@ -1459,7 +1459,7 @@ f(,y=)
     arguments: (arguments
       argument: (argument
         name: (identifier)
-        value: (arithmetic_operator
+        value: (binary_operator
           lhs: (float)
           rhs: (float)))))
   (call
@@ -1574,12 +1574,12 @@ Colon
 --------------------------------------------------------------------------------
 
 (program
-  (colon
+  (binary_operator
     lhs: (float)
     rhs: (float))
-  (colon
+  (binary_operator
     lhs: (parentheses
-      body: (arithmetic_operator
+      body: (binary_operator
         lhs: (float)
         rhs: (float)))
     rhs: (unary_operator
@@ -1595,9 +1595,9 @@ y~x
 --------------------------------------------------------------------------------
 
 (program
-  (tilde
+  (unary_operator
     rhs: (identifier))
-  (tilde
+  (binary_operator
     lhs: (identifier)
     rhs: (identifier)))
 
@@ -1611,15 +1611,15 @@ a ? b <- 1
 --------------------------------------------------------------------------------
 
 (program
-  (help
+  (binary_operator
     lhs: (identifier)
     rhs: (identifier))
-  (help
+  (binary_operator
     lhs: (identifier)
-    rhs: (left_assignment
+    rhs: (binary_operator
       lhs: (identifier)
       rhs: (float)))
-  (help
+  (unary_operator
     rhs: (identifier)))
 
 ================================================================================
@@ -1654,10 +1654,10 @@ TRUE ? FALSE = NA
       condition: (false)
       consequence: (float)
       alternative: (null)))
-  (left_assignment
+  (binary_operator
     lhs: (subset2
-      function: (dollar
-        lhs: (namespace
+      function: (extract_operator
+        lhs: (namespace_operator
           lhs: (identifier)
           rhs: (identifier))
         rhs: (identifier))
@@ -1665,10 +1665,10 @@ TRUE ? FALSE = NA
         argument: (argument
           value: (identifier))))
     rhs: (identifier))
-  (help
-    lhs: (help
-      lhs: (tilde
-        lhs: (tilde
+  (binary_operator
+    lhs: (binary_operator
+      lhs: (binary_operator
+        lhs: (binary_operator
           lhs: (true)
           rhs: (false))
         rhs: (null))
@@ -1684,29 +1684,29 @@ TRUE ? FALSE = NA
       condition: (true)
       consequence: (false)
       alternative: (na)))
-  (help
-    lhs: (equals_assignment
+  (binary_operator
+    lhs: (binary_operator
       lhs: (identifier)
       rhs: (true))
     rhs: (false))
-  (left_assignment
+  (binary_operator
     lhs: (true)
-    rhs: (equals_assignment
+    rhs: (binary_operator
       lhs: (false)
       rhs: (na)))
-  (help
-    lhs: (left_assignment
+  (binary_operator
+    lhs: (binary_operator
       lhs: (true)
       rhs: (false))
     rhs: (na))
-  (help
-    lhs: (equals_assignment
+  (binary_operator
+    lhs: (binary_operator
       lhs: (true)
       rhs: (false))
     rhs: (na))
-  (help
+  (binary_operator
     lhs: (true)
-    rhs: (equals_assignment
+    rhs: (binary_operator
       lhs: (false)
       rhs: (na))))
 
@@ -1720,18 +1720,18 @@ a$b?c
 --------------------------------------------------------------------------------
 
 (program
-  (arithmetic_operator
-    lhs: (dollar
+  (binary_operator
+    lhs: (extract_operator
       lhs: (identifier)
       rhs: (string))
     rhs: (na))
-  (dollar
-    lhs: (namespace
+  (extract_operator
+    lhs: (namespace_operator
       lhs: (identifier)
       rhs: (identifier))
     rhs: (identifier))
-  (help
-    lhs: (dollar
+  (binary_operator
+    lhs: (extract_operator
       lhs: (identifier)
       rhs: (identifier))
     rhs: (identifier)))
@@ -1779,7 +1779,7 @@ Closing Brace
 --------------------------------------------------------------------------------
 
 (program
-  (unmatched_closing_brace))
+  (unmatched_delimiter))
 
 ================================================================================
 Closing Parenthesis
@@ -1790,7 +1790,7 @@ Closing Parenthesis
 --------------------------------------------------------------------------------
 
 (program
-  (unmatched_closing_parenthesis))
+  (unmatched_delimiter))
 
 ================================================================================
 Closing Bracket
@@ -1801,7 +1801,7 @@ Closing Bracket
 --------------------------------------------------------------------------------
 
 (program
-  (unmatched_closing_bracket))
+  (unmatched_delimiter))
 
 ================================================================================
 Opening Brace, Closing Parenthesis
@@ -1817,7 +1817,7 @@ Opening Brace, Closing Parenthesis
   (comment)
   (comment)
   (braces
-    (unmatched_closing_parenthesis)))
+    (unmatched_delimiter)))
 
 ================================================================================
 Opening Parenthesis, Closing Brace
@@ -1829,7 +1829,7 @@ Opening Parenthesis, Closing Brace
 
 (program
   (parentheses
-    (unmatched_closing_brace)))
+    (unmatched_delimiter)))
 
 ================================================================================
 Opening Parenthesis, Closing Bracket
@@ -1841,7 +1841,7 @@ Opening Parenthesis, Closing Bracket
 
 (program
   (parentheses
-    (unmatched_closing_bracket)))
+    (unmatched_delimiter)))
 
 ================================================================================
 Opening Bracket2, Unmatched Closing Bracket
@@ -1858,7 +1858,7 @@ x[[2]
       (argument
         (float))
       (argument
-        (unmatched_closing_bracket))
+        (unmatched_delimiter))
       (MISSING "]]"))))
 
 ================================================================================
@@ -1876,7 +1876,7 @@ x[y[[2]
     (argument
       (float))
     (argument
-      (unmatched_closing_bracket))))
+      (unmatched_delimiter))))
 
 ================================================================================
 Opening Bracket2 and Bracket, Matched Closing Bracket
@@ -1917,5 +1917,5 @@ x[[y[2]]
             argument: (argument
               value: (float)))))
       argument: (argument
-        value: (unmatched_closing_bracket))
+        value: (unmatched_delimiter))
       (MISSING "]]"))))

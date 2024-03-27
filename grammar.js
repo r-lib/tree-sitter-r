@@ -1,3 +1,4 @@
+// ---------------------------------------------------------------------------------------
 // R has an operator precedence table defined here:
 // https://github.com/wch/r-source/blob/0a8f53a7ba47463f1c938dd3e2c2acc7a2d3a1c2/src/main/gram.y#L419-L441
 //
@@ -10,7 +11,9 @@
 // a return.
 //
 // Note that if a precedence rank is unspecified in a rule, it can be assumed to be 0.
+// ---------------------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------------------
 // NOTE ON PREC.RIGHT:
 // 
 // A few things in this table are left associative in R's grammar, but we are forced to
@@ -31,6 +34,26 @@
 //
 // In practice we don't think this will matter for the rules we've had to swap the order
 // on, since they are typically the only things at their numeric precedence rank.
+// ---------------------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------------------
+// NOTE ON OPERATORS:
+//
+// For `unary_operator`, `binary_operator`, `extract_operator`, and `namespace_operator`,
+// the way these have been grouped is based on the semantic definition of each kind of
+// operator group. Specifically:
+// 
+// <unary> <expr>
+// <expr> <binary> <expr>
+// <expr> <extract> <symbol>
+// <symbol> <namespace> <symbol>
+// 
+// In theory, we could have gone further to, say, split out comparison and arithmetic
+// operators from the binary operator group, or split out the pipe as its own rule.
+// However, this is all rather arbitrary, and we decided it was best to stop the grouping
+// at semantic meaning, and let end consumers layer on additional behavior as needed by
+// creating more granular groups based on the `operator` field.
+// ---------------------------------------------------------------------------------------
 
 const PREC = {
   // {, (
@@ -310,114 +333,108 @@ module.exports = grammar({
 
     _argument_value: $ => field("value", choice($._expression, $._newline)),
 
-    // Help
-    help: $ => choice(
-      unaryRule($, "?", PREC.HELP),
-      binaryRule($, "?", PREC.HELP)
-    ),
-
-    // Assignment
-    left_assignment: $ => binaryRule($, "<-", PREC.LEFT_ASSIGN),
-    left_super_assignment: $ => binaryRule($, "<<-", PREC.LEFT_ASSIGN),
-    walrus_assignment: $ => binaryRule($, ":=", PREC.LEFT_ASSIGN),
-    
-    right_assignment: $ => binaryRule($, "->", PREC.RIGHT_ASSIGN),
-    right_super_assignment: $ => binaryRule($, "->>", PREC.RIGHT_ASSIGN),
-
-    equals_assignment: $ => binaryRule($, "=", PREC.EQUALS_ASSIGN),
-
-    // Tilde
-    tilde: $ => choice(
-      unaryRule($, "~", PREC.TILDE),
-      binaryRule($, "~", PREC.TILDE)
-    ),
-
-    // Pipe
-    pipe: $ => binaryRule($, "|>", PREC.SPECIAL_OR_PIPE),
-
-    // Unary operator
-    // NOTE: Unary `?` and `~` are lumped with their binary version for clarity
+    // Operators
+    // NOTE: See `NOTE ON OPERATORS` above
+    // NOTE: Newlines are allowed after all unary operators
     unary_operator: $ => {
       const table = [
+        ["?", PREC.HELP],
+        ["~", PREC.TILDE],
         ["!", PREC.UNARY_NOT],
         ["+", PREC.UNARY_PLUS_MINUS],
         ["-", PREC.UNARY_PLUS_MINUS]
       ];
-      return choice(
-        ...table.map(([operator, prec]) => unaryRule($, operator, prec))
-      )
+
+      return choice(...table.map(([operator, prec]) => prec.ASSOC(prec.RANK, seq(
+        field("operator", operator), 
+        repeat($._newline),
+        field("rhs", $._expression)
+      ))))
     },
 
-    // Logical operators (vectorized)
-    logical_operator: $ => {
+    // NOTE: Expressions are allowed on either side of the operator
+    binary_operator: $ => {
       const table = [
+        ["?", PREC.HELP],
+
+        ["~", PREC.TILDE],
+
+        ["<-", PREC.LEFT_ASSIGN],
+        ["<<-", PREC.LEFT_ASSIGN],
+        [":=", PREC.LEFT_ASSIGN],
+
+        ["->", PREC.RIGHT_ASSIGN],
+        ["->>", PREC.RIGHT_ASSIGN],
+
+        ["=", PREC.EQUALS_ASSIGN],
+
         ["|", PREC.OR],
-        ["&", PREC.AND]
-      ];
-      return choice(
-        ...table.map(([operator, prec]) => binaryRule($, operator, prec))
-      )
-    },
+        ["&", PREC.AND],
 
-    // Logical operators (scalar)
-    logical_scalar_operator: $ => {
-      const table = [
         ["||", PREC.OR],
-        ["&&", PREC.AND]
-      ];
-      return choice(
-        ...table.map(([operator, prec]) => binaryRule($, operator, prec))
-      )
-    },
+        ["&&", PREC.AND],
 
-    // Comparison operators
-    // From ?`<`
-    comparison_operator: $ => {
-      const table = [
         ["<", PREC.COMPARISON],
         ["<=", PREC.COMPARISON],
         [">", PREC.COMPARISON],
         [">=", PREC.COMPARISON],
         ["==", PREC.COMPARISON],
-        ["!=", PREC.COMPARISON]
-      ];
-      return choice(
-        ...table.map(([operator, prec]) => binaryRule($, operator, prec))
-      )
-    },
+        ["!=", PREC.COMPARISON],
 
-    // Arithmetic operators
-    // From ?`+`
-    arithmetic_operator: $ => {
-      const table = [
         ["+", PREC.PLUS_MINUS],
         ["-", PREC.PLUS_MINUS],
         ["*", PREC.MULTIPLY_DIVIDE],
         ["/", PREC.MULTIPLY_DIVIDE],
         ["**", PREC.EXPONENTIATE],
-        ["^", PREC.EXPONENTIATE]
+        ["^", PREC.EXPONENTIATE],
+
+        // Special infix operator
+        // Regex: Between two `%`, anything but another `%`, `\`, or `\n`.
+        // Includes primitives `%%` and `%/%`.
+        // Alias is used for targeting in `highlights.scm`.
+        // TODO: This could probably be fine tuned to disallow more things.
+        [alias(/%[^%\\\n]*%/, "special"), PREC.SPECIAL_OR_PIPE],
+        ["|>", PREC.SPECIAL_OR_PIPE],
+
+        [":", PREC.COLON]
       ];
-      return choice(
-        ...table.map(([operator, prec]) => binaryRule($, operator, prec))
-      )
+
+      return choice(...table.map(([operator, prec]) => prec.ASSOC(prec.RANK, seq(
+        field("lhs", $._expression), 
+        field("operator", operator), 
+        repeat($._newline), 
+        field("rhs", $._expression)
+      ))))
     },
 
-    // Special infix operator
-    // Regex: Between two `%`, anything but another `%`, `\`, or `\n`.
-    // Includes primitives `%%` and `%/%`.
-    // TODO: This could probably be fine tuned to disallow more things.
-    special: $ => binaryRule($, /%[^%\\\n]*%/, PREC.SPECIAL_OR_PIPE),
+    // NOTE: Expression on LHS, string or identifier on RHS
+    extract_operator: $ => {
+      const table = [
+        ["$", PREC.EXTRACT],
+        ["@", PREC.EXTRACT]
+      ];
 
-    // Colon
-    colon: $ => binaryRule($, ":", PREC.COLON),
+      return choice(...table.map(([operator, prec]) => prec.ASSOC(prec.RANK, seq(
+        field("lhs", $._expression), 
+        field("operator", operator), 
+        repeat($._newline), 
+        optional(field("rhs", $._string_or_identifier))
+      ))))
+    },
 
-    // Extractors
-    dollar: $ => binaryRuleExtract($, "$", PREC.EXTRACT),
-    at: $ => binaryRuleExtract($, "@", PREC.EXTRACT),
+    // NOTE: No newlines are allowed. String or identifier on both LHS and RHS.
+    namespace_operator: $ => {
+      const table = [
+        ["::", PREC.NAMESPACE],
+        [":::", PREC.NAMESPACE]
+      ];
 
-    // Namespace operators
-    namespace: $ => binaryRuleNamespace($, "::", PREC.NAMESPACE),
-    namespace_internal: $ => binaryRuleNamespace($, ":::", PREC.NAMESPACE),
+      return choice(...table.map(([operator, prec]) => prec.ASSOC(prec.RANK, seq(
+        field("lhs", $._string_or_identifier), 
+        field("operator", operator), 
+        optional(field("rhs", $._string_or_identifier))
+      ))))
+    },
 
     // Numeric literals.
     integer: $ => seq($._float_literal, "L"),
@@ -487,34 +504,10 @@ module.exports = grammar({
       $.subset,
       $.subset2,
 
-      $.help,
-
-      $.left_assignment,
-      $.left_super_assignment,
-      $.walrus_assignment,
-      $.right_assignment,
-      $.right_super_assignment,
-      $.equals_assignment,
-
-      $.tilde,
-
-      $.pipe,
-
       $.unary_operator,
-      $.logical_operator,
-      $.logical_scalar_operator,
-      $.comparison_operator,
-      $.arithmetic_operator,
-
-      $.special,
-
-      $.colon,
-
-      $.dollar,
-      $.at,
-
-      $.namespace,
-      $.namespace_internal,
+      $.binary_operator,
+      $.extract_operator,
+      $.namespace_operator,
 
       $.integer,
       $.complex,
@@ -537,9 +530,7 @@ module.exports = grammar({
       $.nan,
       $.na,
 
-      $.unmatched_closing_brace,
-      $.unmatched_closing_parenthesis,
-      $.unmatched_closing_bracket
+      $.unmatched_delimiter
     ),
 
     // Comments.
@@ -550,12 +541,14 @@ module.exports = grammar({
     // missing arguments in function calls.
     comma: $ => ",",
 
-    // Check for un-matched closing brackets. This allows us to recover in
+    // Check for un-matched closing delimiter. This allows us to recover in
     // cases where the parse tree is temporarily incorrect, e.g. because the
-    // user has removed the opening bracket associated with some closing bracket.
-    unmatched_closing_brace: $ => /\}/,
-    unmatched_closing_parenthesis: $ => /\)/,
-    unmatched_closing_bracket: $ => /\]/,
+    // user has removed the opening delimiter associated with some closing delimiter.
+    unmatched_delimiter: $ => choice(
+      /\}/,
+      /\)/,
+      /\]/
+    ),
 
     // This somehow ends up allowing better error recovery
     _string_or_identifier: $ => choice($.string, $.identifier),
@@ -577,43 +570,4 @@ module.exports = grammar({
 
 function withPrec(prec, rule) {
   return prec.ASSOC(prec.RANK, rule)
-}
-
-// NOTE: Newlines are allowed after all unary operators
-function unaryRule($, operator, prec) {
-  return prec.ASSOC(prec.RANK, seq(
-    field("operator", operator), 
-    repeat($._newline),
-    field("rhs", $._expression)
-  ));
-}
-
-// The typical case, where expressions are allowed on either side
-function binaryRule($, operator, prec) {
-  return prec.ASSOC(prec.RANK, seq(
-    field("lhs", $._expression), 
-    field("operator", operator), 
-    repeat($._newline), 
-    field("rhs", $._expression)
-  ));
-}
-
-// Expression on LHS, string or identifier on RHS
-function binaryRuleExtract($, operator, prec) {
-  return prec.ASSOC(prec.RANK, seq(
-    field("lhs", $._expression), 
-    field("operator", operator), 
-    repeat($._newline), 
-    optional(field("rhs", $._string_or_identifier))
-  ));
-}
-
-// String or identifier on both sides
-function binaryRuleNamespace($, operator, prec) {
-  // Note, no allowance for newlines
-  return prec.ASSOC(prec.RANK, seq(
-    field("lhs", $._string_or_identifier), 
-    field("operator", operator), 
-    optional(field("rhs", $._string_or_identifier))
-  ));
 }
