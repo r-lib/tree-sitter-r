@@ -158,10 +158,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -393,10 +389,6 @@
           },
           {
             "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
             "named": true
           },
           {
@@ -632,10 +624,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -841,10 +829,6 @@
           },
           {
             "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
             "named": true
           },
           {
@@ -1080,10 +1064,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -1302,10 +1282,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -1511,10 +1487,6 @@
           },
           {
             "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
             "named": true
           },
           {
@@ -1730,10 +1702,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -1939,10 +1907,6 @@
           },
           {
             "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
             "named": true
           },
           {
@@ -2178,10 +2142,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -2392,10 +2352,6 @@
           },
           {
             "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
             "named": true
           },
           {
@@ -2631,10 +2587,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -2844,10 +2796,6 @@
           },
           {
             "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
             "named": true
           },
           {
@@ -3064,10 +3012,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -3267,10 +3211,6 @@
           },
           {
             "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
             "named": true
           },
           {
@@ -3489,10 +3429,6 @@
           },
           {
             "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
             "named": true
           },
           {
@@ -3728,10 +3664,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -3941,10 +3873,6 @@
           },
           {
             "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
             "named": true
           },
           {
@@ -4161,10 +4089,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -4367,10 +4291,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -4570,10 +4490,6 @@
           },
           {
             "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
             "named": true
           },
           {
@@ -4790,10 +4706,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -5006,10 +4918,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -5215,10 +5123,6 @@
           },
           {
             "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
             "named": true
           },
           {
@@ -5434,10 +5338,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -5643,10 +5543,6 @@
           },
           {
             "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
             "named": true
           },
           {
@@ -5866,10 +5762,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -6075,10 +5967,6 @@
           },
           {
             "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
             "named": true
           },
           {
@@ -6295,10 +6183,6 @@
           },
           {
             "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
             "named": true
           },
           {
@@ -6603,10 +6487,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -6855,10 +6735,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -7064,10 +6940,6 @@
           },
           {
             "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
             "named": true
           },
           {
@@ -7283,438 +7155,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
-            "type": "repeat_statement",
-            "named": true
-          },
-          {
-            "type": "return",
-            "named": true
-          },
-          {
-            "type": "right_assignment",
-            "named": true
-          },
-          {
-            "type": "right_super_assignment",
-            "named": true
-          },
-          {
-            "type": "special",
-            "named": true
-          },
-          {
-            "type": "string",
-            "named": true
-          },
-          {
-            "type": "subset",
-            "named": true
-          },
-          {
-            "type": "subset2",
-            "named": true
-          },
-          {
-            "type": "tilde",
-            "named": true
-          },
-          {
-            "type": "true",
-            "named": true
-          },
-          {
-            "type": "unary_operator",
-            "named": true
-          },
-          {
-            "type": "unmatched_closing_brace",
-            "named": true
-          },
-          {
-            "type": "unmatched_closing_bracket",
-            "named": true
-          },
-          {
-            "type": "unmatched_closing_parenthesis",
-            "named": true
-          },
-          {
-            "type": "walrus_assignment",
-            "named": true
-          },
-          {
-            "type": "while_statement",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "pipebind",
-    "named": true,
-    "fields": {
-      "lhs": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "arithmetic_operator",
-            "named": true
-          },
-          {
-            "type": "at",
-            "named": true
-          },
-          {
-            "type": "braces",
-            "named": true
-          },
-          {
-            "type": "break",
-            "named": true
-          },
-          {
-            "type": "call",
-            "named": true
-          },
-          {
-            "type": "colon",
-            "named": true
-          },
-          {
-            "type": "comparison_operator",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "dollar",
-            "named": true
-          },
-          {
-            "type": "dot_dot_i",
-            "named": true
-          },
-          {
-            "type": "dots",
-            "named": true
-          },
-          {
-            "type": "equals_assignment",
-            "named": true
-          },
-          {
-            "type": "false",
-            "named": true
-          },
-          {
-            "type": "float",
-            "named": true
-          },
-          {
-            "type": "for_statement",
-            "named": true
-          },
-          {
-            "type": "function_definition",
-            "named": true
-          },
-          {
-            "type": "help",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "if_statement",
-            "named": true
-          },
-          {
-            "type": "inf",
-            "named": true
-          },
-          {
-            "type": "integer",
-            "named": true
-          },
-          {
-            "type": "left_assignment",
-            "named": true
-          },
-          {
-            "type": "left_super_assignment",
-            "named": true
-          },
-          {
-            "type": "logical_operator",
-            "named": true
-          },
-          {
-            "type": "logical_scalar_operator",
-            "named": true
-          },
-          {
-            "type": "na",
-            "named": true
-          },
-          {
-            "type": "namespace",
-            "named": true
-          },
-          {
-            "type": "namespace_internal",
-            "named": true
-          },
-          {
-            "type": "nan",
-            "named": true
-          },
-          {
-            "type": "next",
-            "named": true
-          },
-          {
-            "type": "null",
-            "named": true
-          },
-          {
-            "type": "parentheses",
-            "named": true
-          },
-          {
-            "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
-            "named": true
-          },
-          {
-            "type": "repeat_statement",
-            "named": true
-          },
-          {
-            "type": "return",
-            "named": true
-          },
-          {
-            "type": "right_assignment",
-            "named": true
-          },
-          {
-            "type": "right_super_assignment",
-            "named": true
-          },
-          {
-            "type": "special",
-            "named": true
-          },
-          {
-            "type": "string",
-            "named": true
-          },
-          {
-            "type": "subset",
-            "named": true
-          },
-          {
-            "type": "subset2",
-            "named": true
-          },
-          {
-            "type": "tilde",
-            "named": true
-          },
-          {
-            "type": "true",
-            "named": true
-          },
-          {
-            "type": "unary_operator",
-            "named": true
-          },
-          {
-            "type": "unmatched_closing_brace",
-            "named": true
-          },
-          {
-            "type": "unmatched_closing_bracket",
-            "named": true
-          },
-          {
-            "type": "unmatched_closing_parenthesis",
-            "named": true
-          },
-          {
-            "type": "walrus_assignment",
-            "named": true
-          },
-          {
-            "type": "while_statement",
-            "named": true
-          }
-        ]
-      },
-      "operator": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "=>",
-            "named": false
-          }
-        ]
-      },
-      "rhs": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "arithmetic_operator",
-            "named": true
-          },
-          {
-            "type": "at",
-            "named": true
-          },
-          {
-            "type": "braces",
-            "named": true
-          },
-          {
-            "type": "break",
-            "named": true
-          },
-          {
-            "type": "call",
-            "named": true
-          },
-          {
-            "type": "colon",
-            "named": true
-          },
-          {
-            "type": "comparison_operator",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "dollar",
-            "named": true
-          },
-          {
-            "type": "dot_dot_i",
-            "named": true
-          },
-          {
-            "type": "dots",
-            "named": true
-          },
-          {
-            "type": "equals_assignment",
-            "named": true
-          },
-          {
-            "type": "false",
-            "named": true
-          },
-          {
-            "type": "float",
-            "named": true
-          },
-          {
-            "type": "for_statement",
-            "named": true
-          },
-          {
-            "type": "function_definition",
-            "named": true
-          },
-          {
-            "type": "help",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "if_statement",
-            "named": true
-          },
-          {
-            "type": "inf",
-            "named": true
-          },
-          {
-            "type": "integer",
-            "named": true
-          },
-          {
-            "type": "left_assignment",
-            "named": true
-          },
-          {
-            "type": "left_super_assignment",
-            "named": true
-          },
-          {
-            "type": "logical_operator",
-            "named": true
-          },
-          {
-            "type": "logical_scalar_operator",
-            "named": true
-          },
-          {
-            "type": "na",
-            "named": true
-          },
-          {
-            "type": "namespace",
-            "named": true
-          },
-          {
-            "type": "namespace_internal",
-            "named": true
-          },
-          {
-            "type": "nan",
-            "named": true
-          },
-          {
-            "type": "next",
-            "named": true
-          },
-          {
-            "type": "null",
-            "named": true
-          },
-          {
-            "type": "parentheses",
-            "named": true
-          },
-          {
-            "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -7920,10 +7360,6 @@
         },
         {
           "type": "pipe",
-          "named": true
-        },
-        {
-          "type": "pipebind",
           "named": true
         },
         {
@@ -8134,10 +7570,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -8343,10 +7775,6 @@
           },
           {
             "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
             "named": true
           },
           {
@@ -8562,10 +7990,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -8771,10 +8195,6 @@
           },
           {
             "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
             "named": true
           },
           {
@@ -8990,10 +8410,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -9202,10 +8618,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -9405,10 +8817,6 @@
           },
           {
             "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
             "named": true
           },
           {
@@ -9635,10 +9043,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -9857,10 +9261,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -10066,10 +9466,6 @@
           },
           {
             "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
             "named": true
           },
           {
@@ -10282,10 +9678,6 @@
           },
           {
             "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
             "named": true
           },
           {
@@ -10515,10 +9907,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -10724,10 +10112,6 @@
           },
           {
             "type": "pipe",
-            "named": true
-          },
-          {
-            "type": "pipebind",
             "named": true
           },
           {
@@ -10943,10 +10327,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -11155,10 +10535,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -11361,10 +10737,6 @@
             "named": true
           },
           {
-            "type": "pipebind",
-            "named": true
-          },
-          {
             "type": "repeat_statement",
             "named": true
           },
@@ -11526,10 +10898,6 @@
   },
   {
     "type": "==",
-    "named": false
-  },
-  {
-    "type": "=>",
     "named": false
   },
   {

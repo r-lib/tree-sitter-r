@@ -1,11 +1,15 @@
 // R has an operator precedence table defined here:
 // https://github.com/wch/r-source/blob/0a8f53a7ba47463f1c938dd3e2c2acc7a2d3a1c2/src/main/gram.y#L419-L441
 //
-// Our precedence table defined in `PREC` follows the R precedence order exactly. However,
-// we sometimes need to adjust the associativity, see `NOTE ON PREC.RIGHT` below.
+// Our precedence table defined in `PREC` follows the R precedence order pretty closely.
+// However, we sometimes need to adjust the associativity, see `NOTE ON PREC.RIGHT` below.
 //
-// We start the rank at 1, because unspecified precedence has a rank of 0 and we want that
-// to be on its own precedence level.
+// We also don't need the `ELSE` or `PIPEBIND` precedence specifications from the table.
+// We handle `ELSE` within the `if` node using a special external, and `=>` didn't make it
+// into a release version of R (it is off by default) and we think it is unlikely to make
+// a return.
+//
+// Note that if a precedence rank is unspecified in a rule, it can be assumed to be 0.
 
 // NOTE ON PREC.RIGHT:
 // 
@@ -54,65 +58,57 @@ const PREC = {
   // if {}
   IF: { ASSOC: prec.right, RANK: 3 },
 
-  // else {}
-  // NOTE: `ELSE` is not actually used, we have a special external for it and it is
-  // part of the `if` node, but we keep it in `PREC` for alignment with R's table.
-  ELSE: { ASSOC: prec.left, RANK: 4 },
-
   // <-, <<-, :=
-  LEFT_ASSIGN: { ASSOC: prec.right, RANK: 5 },
+  LEFT_ASSIGN: { ASSOC: prec.right, RANK: 4 },
 
   // =
-  EQUALS_ASSIGN: { ASSOC: prec.right, RANK: 6 },
+  EQUALS_ASSIGN: { ASSOC: prec.right, RANK: 5 },
 
   // ->, ->>
-  RIGHT_ASSIGN: { ASSOC: prec.left, RANK: 7 },
+  RIGHT_ASSIGN: { ASSOC: prec.left, RANK: 6 },
 
   // ~
-  TILDE: { ASSOC: prec.left, RANK: 8 },
+  TILDE: { ASSOC: prec.left, RANK: 7 },
 
   // |, ||
-  OR: { ASSOC: prec.left, RANK: 9 },
+  OR: { ASSOC: prec.left, RANK: 8 },
 
   // &, &&
-  AND: { ASSOC: prec.left, RANK: 10 },
+  AND: { ASSOC: prec.left, RANK: 9 },
 
   // !
-  UNARY_NOT: { ASSOC: prec.left, RANK: 11 },
+  UNARY_NOT: { ASSOC: prec.left, RANK: 10 },
 
   // >, >=, <, <=, ==, !=
   // NOTE: These are nonassoc in R's grammar, but we have to specify
   // associativity to generate the grammar, and left seems correct.
-  COMPARISON: { ASSOC: prec.left, RANK: 12 },
+  COMPARISON: { ASSOC: prec.left, RANK: 11 },
 
   // +, -
-  PLUS_MINUS: { ASSOC: prec.left, RANK: 13 },
+  PLUS_MINUS: { ASSOC: prec.left, RANK: 12 },
 
   // *, /
-  MULTIPLY_DIVIDE: { ASSOC: prec.left, RANK: 14 },
+  MULTIPLY_DIVIDE: { ASSOC: prec.left, RANK: 13 },
   
   // %>%, %<>%, |>
-  SPECIAL_OR_PIPE: { ASSOC: prec.left, RANK: 15 },
-
-  // =>
-  PIPEBIND: { ASSOC: prec.left, RANK: 16 },
+  SPECIAL_OR_PIPE: { ASSOC: prec.left, RANK: 14 },
 
   // :
-  COLON: { ASSOC: prec.left, RANK: 17 },
+  COLON: { ASSOC: prec.left, RANK: 15 },
 
   // +, -
-  UNARY_PLUS_MINUS: { ASSOC: prec.left, RANK: 18 },
+  UNARY_PLUS_MINUS: { ASSOC: prec.left, RANK: 16 },
   
   // ^, **
-  EXPONENTIATE: { ASSOC: prec.right, RANK: 19 },
+  EXPONENTIATE: { ASSOC: prec.right, RANK: 17 },
 
   // $, @
   // NOTE: See `NOTE ON PREC.RIGHT` above
-  EXTRACT: { ASSOC: prec.right, RANK: 20 },
+  EXTRACT: { ASSOC: prec.right, RANK: 18 },
   
   // ::, :::
   // NOTE: See `NOTE ON PREC.RIGHT` above
-  NAMESPACE: { ASSOC: prec.right, RANK: 21 },
+  NAMESPACE: { ASSOC: prec.right, RANK: 19 },
 
   // match(1, 2), [, [[
   // NOTE: We aren't entirely sure how Bison works for calls and subsets. Practically,
@@ -126,7 +122,7 @@ const PREC = {
   // https://github.com/wch/r-source/blob/0a8f53a7ba47463f1c938dd3e2c2acc7a2d3a1c2/src/main/gram.y#L501
   // https://github.com/wch/r-source/blob/0a8f53a7ba47463f1c938dd3e2c2acc7a2d3a1c2/src/main/gram.y#L507-L508
   // https://github.com/wch/r-source/blob/0a8f53a7ba47463f1c938dd3e2c2acc7a2d3a1c2/src/main/gram.y#L441
-  CALL: { ASSOC: prec.right, RANK: 22 },
+  CALL: { ASSOC: prec.right, RANK: 20 },
 }
 
 module.exports = grammar({
@@ -336,9 +332,8 @@ module.exports = grammar({
       binaryRule($, "~", PREC.TILDE)
     ),
 
-    // Pipe and pipebind
+    // Pipe
     pipe: $ => binaryRule($, "|>", PREC.SPECIAL_OR_PIPE),
-    pipebind: $ => binaryRule($, "=>", PREC.PIPEBIND),
 
     // Unary operator
     // NOTE: Unary `?` and `~` are lumped with their binary version for clarity
@@ -504,7 +499,6 @@ module.exports = grammar({
       $.tilde,
 
       $.pipe,
-      $.pipebind,
 
       $.unary_operator,
       $.logical_operator,
