@@ -70,9 +70,17 @@ typedef struct {
 
 static Stack* stack_new(void) {
   Scope* arr = malloc(TREE_SITTER_SERIALIZATION_BUFFER_SIZE);
-  if (arr == NULL) exit(1);
+  if (arr == NULL) {
+    debug_print("`stack_new()` failed. Can't allocate scope array.");
+    return NULL;
+  }
+
   Stack* stack = malloc(sizeof(Stack));
-  if (stack == NULL) exit(1);
+  if (stack == NULL) {
+    debug_print("`stack_new()` failed. Can't allocate stack.");
+    return NULL;
+  }
+
   stack->arr = arr;
   stack->len = 0;
   return stack;
@@ -141,6 +149,10 @@ static void stack_deserialize(Stack* stack, const char* buffer, unsigned len) {
     memcpy(stack->arr, buffer, len);
   }
   stack->len = len;
+}
+
+static inline bool stack_exists(void* stack) {
+  return stack != NULL;
 }
 
 // ---------------------------------------------------------------------------------------
@@ -465,11 +477,19 @@ bool tree_sitter_r_external_scanner_scan(
     TSLexer* lexer,
     const bool* valid_symbols
 ) {
-  return scan(lexer, payload, valid_symbols);
+  if (stack_exists(payload)) {
+    return scan(lexer, payload, valid_symbols);
+  } else {
+    return false;
+  }
 }
 
 unsigned tree_sitter_r_external_scanner_serialize(void* payload, char* buffer) {
-  return stack_serialize(payload, buffer);
+  if (stack_exists(payload)) {
+    return stack_serialize(payload, buffer);
+  } else {
+    return 0;
+  }
 }
 
 void tree_sitter_r_external_scanner_deserialize(
@@ -477,9 +497,13 @@ void tree_sitter_r_external_scanner_deserialize(
     const char* buffer,
     unsigned length
 ) {
-  stack_deserialize(payload, buffer, length);
+  if (stack_exists(payload)) {
+    stack_deserialize(payload, buffer, length);
+  }
 }
 
 void tree_sitter_r_external_scanner_destroy(void* payload) {
-  stack_free(payload);
+  if (stack_exists(payload)) {
+    stack_free(payload);
+  }
 }
