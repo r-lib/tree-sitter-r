@@ -1,3 +1,6 @@
+# Assumes that you have forked tree-sitter-r in its entirety, but your
+# current working directory is `tree-sitter-r/bindings/r/`, as set by the
+# `.Rprofile` in the root of the directory.
 update <- function() {
   header <- normalizePath(file.path("..", "..", "src", "tree_sitter", "parser.h"))
   parser <- normalizePath(file.path("..", "..", "src", "parser.c"))
