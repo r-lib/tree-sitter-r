@@ -456,7 +456,7 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
 
 // ---------------------------------------------------------------------------------------
 
-void* tree_sitter_r_external_scanner_create() {
+void* tree_sitter_r_external_scanner_create(void) {
   return stack_new();
 }
 
