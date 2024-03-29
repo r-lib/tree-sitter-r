@@ -1,6 +1,6 @@
 {
     "[c]": {
         "editor.formatOnSave": true,
-        "editor.defaultFormatter": "ms-vscode.cpptools"
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
     },
 }
