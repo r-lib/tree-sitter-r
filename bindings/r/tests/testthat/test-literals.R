@@ -20,7 +20,7 @@ _foo
   node <- parse(text)
 
   expect_snapshot({
-    treesitter::node_children(node)
+    node_children_print(node)
   })
 })
 
@@ -33,7 +33,7 @@ test_that("unicode identifiers", {
 
   node <- parse(text)
 
-  expect_snapshot(node)
+  expect_snapshot(node_print(node))
 })
 
 test_that("strings", {
@@ -56,7 +56,7 @@ test_that("strings", {
 
   node <- parse(text)
 
-  expect_snapshot(treesitter::node_children(node))
+  expect_snapshot(node_children_print(node))
 })
 
 test_that("unclosed double quote", {
@@ -66,7 +66,7 @@ test_that("unclosed double quote", {
 
   node <- parse(text)
 
-  expect_snapshot(node)
+  expect_snapshot(node_print(node))
 })
 
 test_that("unclosed single quote", {
@@ -76,7 +76,7 @@ test_that("unclosed single quote", {
 
   node <- parse(text)
 
-  expect_snapshot(node)
+  expect_snapshot(node_print(node))
 })
 
 test_that("unclosed backtick", {
@@ -86,7 +86,7 @@ test_that("unclosed backtick", {
 
   node <- parse(text)
 
-  expect_snapshot(node)
+  expect_snapshot(node_print(node))
 })
 
 test_that("raw strings", {
@@ -99,7 +99,7 @@ r()
 
   node <- parse(text)
 
-  expect_snapshot(treesitter::node_children(node))
+  expect_snapshot(node_children_print(node))
 })
 
 test_that("comments", {
@@ -115,7 +115,7 @@ test_that("comments", {
 
   node <- parse(text)
 
-  expect_snapshot(node)
+  expect_snapshot(node_print(node))
 })
 
 test_that("constants", {
@@ -133,7 +133,7 @@ NA_complex_
 
   node <- parse(text)
 
-  expect_snapshot(node)
+  expect_snapshot(node_print(node))
 })
 
 test_that("integers", {
@@ -146,7 +146,7 @@ test_that("integers", {
 
   node <- parse(text)
 
-  expect_snapshot(node)
+  expect_snapshot(node_print(node))
 })
 
 test_that("floats", {
@@ -161,7 +161,7 @@ x <- -.66
 
   node <- parse(text)
 
-  expect_snapshot(treesitter::node_children(node))
+  expect_snapshot(node_children_print(node))
 })
 
 test_that("scientific notation floats", {
@@ -176,5 +176,5 @@ test_that("scientific notation floats", {
 
   node <- parse(text)
 
-  expect_snapshot(node)
+  expect_snapshot(node_print(node))
 })
