@@ -8,7 +8,8 @@ Authors@R: c(
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Suggests:
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    treesitter
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
