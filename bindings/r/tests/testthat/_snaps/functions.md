@@ -1,7 +1,7 @@
 # functions
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (function_definition [(1, 0), (1, 12)]
@@ -312,65 +312,63 @@
 # function no body
 
     Code
-      node_print(node)
+      node_children_print(x)
     Output
       S-Expression
-      (program [(1, 0), (2, 2)]
-        (function_definition [(1, 0), (2, 0)]
-          name: "function" [(1, 0), (1, 8)]
-          parameters: (parameters [(1, 8), (1, 14)]
-            "(" [(1, 8), (1, 9)]
-            parameter: (parameter [(1, 9), (1, 10)]
-              name: (identifier [(1, 9), (1, 10)])
-            )
-            (comma [(1, 10), (1, 11)])
-            parameter: (parameter [(1, 12), (1, 13)]
-              name: (identifier [(1, 12), (1, 13)])
-            )
-            ")" [(1, 13), (1, 14)]
+      (function_definition [(1, 0), (2, 0)]
+        name: "function" [(1, 0), (1, 8)]
+        parameters: (parameters [(1, 8), (1, 14)]
+          "(" [(1, 8), (1, 9)]
+          parameter: (parameter [(1, 9), (1, 10)]
+            name: (identifier [(1, 9), (1, 10)])
           )
+          (comma [(1, 10), (1, 11)])
+          parameter: (parameter [(1, 12), (1, 13)]
+            name: (identifier [(1, 12), (1, 13)])
+          )
+          ")" [(1, 13), (1, 14)]
         )
       )
       
       Text
       function(x, y)
-        
+      
+      
 
 # function no body with assignment
 
     Code
-      node_print(node)
+      node_children_print(x)
     Output
       S-Expression
-      (program [(1, 0), (2, 2)]
-        (binary_operator [(1, 0), (2, 0)]
-          lhs: (identifier [(1, 0), (1, 1)])
-          operator: "<-" [(1, 2), (1, 4)]
-          rhs: (function_definition [(1, 5), (2, 0)]
-            name: "function" [(1, 5), (1, 13)]
-            parameters: (parameters [(1, 13), (1, 19)]
-              "(" [(1, 13), (1, 14)]
-              parameter: (parameter [(1, 14), (1, 15)]
-                name: (identifier [(1, 14), (1, 15)])
-              )
-              (comma [(1, 15), (1, 16)])
-              parameter: (parameter [(1, 17), (1, 18)]
-                name: (identifier [(1, 17), (1, 18)])
-              )
-              ")" [(1, 18), (1, 19)]
+      (binary_operator [(1, 0), (2, 0)]
+        lhs: (identifier [(1, 0), (1, 1)])
+        operator: "<-" [(1, 2), (1, 4)]
+        rhs: (function_definition [(1, 5), (2, 0)]
+          name: "function" [(1, 5), (1, 13)]
+          parameters: (parameters [(1, 13), (1, 19)]
+            "(" [(1, 13), (1, 14)]
+            parameter: (parameter [(1, 14), (1, 15)]
+              name: (identifier [(1, 14), (1, 15)])
             )
+            (comma [(1, 15), (1, 16)])
+            parameter: (parameter [(1, 17), (1, 18)]
+              name: (identifier [(1, 17), (1, 18)])
+            )
+            ")" [(1, 18), (1, 19)]
           )
         )
       )
       
       Text
       x <- function(x, y)
-        
+      
+      
 
 # lambda function
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (binary_operator [(1, 0), (1, 15)]

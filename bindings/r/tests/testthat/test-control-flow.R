@@ -11,7 +11,7 @@ if (a.b) {
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("if else", {
@@ -34,7 +34,7 @@ if (a) {
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("complex if statements", {
@@ -48,7 +48,7 @@ else {
 }
   )"
   node <- parse(text)
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 
   # Invalid for same reason as above
   text <- r"(
@@ -58,7 +58,7 @@ else
   2
   )"
   node <- parse(text)
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 
   # Valid inside `{` only due to special `else` handling with newlines
   text <- r"(
@@ -72,7 +72,7 @@ else
 }
   )"
   node <- parse(text)
-  expect_snapshot(node_print(node))
+  expect_node_snapshot(node)
 
   # Valid with comments in special newline territory
   text <- r"(
@@ -90,7 +90,7 @@ else
 }
   )"
   node <- parse(text)
-  expect_snapshot(node_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("for", {
@@ -109,7 +109,7 @@ for (x in y) for (y in z) x + y
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("for no body", {
@@ -119,7 +119,7 @@ for (i in 1:5)
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("while", {
@@ -139,7 +139,7 @@ while(TRUE)
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("while no body", {
@@ -149,7 +149,7 @@ while (a < b)
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("repeat", {
@@ -159,7 +159,7 @@ repeat 1
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("repeat no body", {
@@ -169,5 +169,5 @@ repeat
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })

@@ -1,7 +1,7 @@
 # if
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (if_statement [(1, 0), (2, 8)]
@@ -58,7 +58,7 @@
 # if else
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (if_statement [(1, 0), (3, 3)]
@@ -138,7 +138,7 @@
 # complex if statements
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (if_statement [(1, 0), (3, 1)]
@@ -180,7 +180,7 @@
 ---
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (if_statement [(1, 0), (2, 3)]
@@ -211,31 +211,29 @@
 ---
 
     Code
-      node_print(node)
+      node_children_print(x)
     Output
       S-Expression
-      (program [(1, 0), (9, 2)]
-        (braced_expression [(1, 0), (8, 1)]
-          "{" [(1, 0), (1, 1)]
-          body: (if_statement [(2, 2), (7, 3)]
-            "if" [(2, 2), (2, 4)]
-            "(" [(2, 5), (2, 6)]
-            condition: (true [(2, 6), (2, 10)])
-            ")" [(2, 10), (2, 11)]
-            consequence: (braced_expression [(2, 12), (4, 3)]
-              "{" [(2, 12), (2, 13)]
-              body: (float [(3, 4), (3, 5)])
-              "}" [(4, 2), (4, 3)]
-            )
-            "else" [(5, 2), (5, 6)]
-            alternative: (braced_expression [(5, 7), (7, 3)]
-              "{" [(5, 7), (5, 8)]
-              body: (float [(6, 4), (6, 5)])
-              "}" [(7, 2), (7, 3)]
-            )
+      (braced_expression [(1, 0), (8, 1)]
+        "{" [(1, 0), (1, 1)]
+        body: (if_statement [(2, 2), (7, 3)]
+          "if" [(2, 2), (2, 4)]
+          "(" [(2, 5), (2, 6)]
+          condition: (true [(2, 6), (2, 10)])
+          ")" [(2, 10), (2, 11)]
+          consequence: (braced_expression [(2, 12), (4, 3)]
+            "{" [(2, 12), (2, 13)]
+            body: (float [(3, 4), (3, 5)])
+            "}" [(4, 2), (4, 3)]
           )
-          "}" [(8, 0), (8, 1)]
+          "else" [(5, 2), (5, 6)]
+          alternative: (braced_expression [(5, 7), (7, 3)]
+            "{" [(5, 7), (5, 8)]
+            body: (float [(6, 4), (6, 5)])
+            "}" [(7, 2), (7, 3)]
+          )
         )
+        "}" [(8, 0), (8, 1)]
       )
       
       Text
@@ -247,38 +245,36 @@
           2
         }
       }
-        
+      
 
 ---
 
     Code
-      node_print(node)
+      node_children_print(x)
     Output
       S-Expression
-      (program [(1, 0), (13, 2)]
-        (braced_expression [(1, 0), (12, 1)]
-          "{" [(1, 0), (1, 1)]
-          body: (if_statement [(2, 2), (11, 3)]
-            "if" [(2, 2), (2, 4)]
-            "(" [(2, 5), (2, 6)]
-            condition: (true [(2, 6), (2, 10)])
-            ")" [(2, 10), (2, 11)]
-            consequence: (braced_expression [(2, 12), (4, 3)]
-              "{" [(2, 12), (2, 13)]
-              body: (float [(3, 4), (3, 5)])
-              "}" [(4, 2), (4, 3)]
-            )
-            consequence: (comment [(5, 2), (5, 12)])
-            consequence: (comment [(7, 2), (7, 16)])
-            "else" [(9, 2), (9, 6)]
-            alternative: (braced_expression [(9, 7), (11, 3)]
-              "{" [(9, 7), (9, 8)]
-              body: (float [(10, 4), (10, 5)])
-              "}" [(11, 2), (11, 3)]
-            )
+      (braced_expression [(1, 0), (12, 1)]
+        "{" [(1, 0), (1, 1)]
+        body: (if_statement [(2, 2), (11, 3)]
+          "if" [(2, 2), (2, 4)]
+          "(" [(2, 5), (2, 6)]
+          condition: (true [(2, 6), (2, 10)])
+          ")" [(2, 10), (2, 11)]
+          consequence: (braced_expression [(2, 12), (4, 3)]
+            "{" [(2, 12), (2, 13)]
+            body: (float [(3, 4), (3, 5)])
+            "}" [(4, 2), (4, 3)]
           )
-          "}" [(12, 0), (12, 1)]
+          consequence: (comment [(5, 2), (5, 12)])
+          consequence: (comment [(7, 2), (7, 16)])
+          "else" [(9, 2), (9, 6)]
+          alternative: (braced_expression [(9, 7), (11, 3)]
+            "{" [(9, 7), (9, 8)]
+            body: (float [(10, 4), (10, 5)])
+            "}" [(11, 2), (11, 3)]
+          )
         )
+        "}" [(12, 0), (12, 1)]
       )
       
       Text
@@ -294,12 +290,12 @@
           2
         }
       }
-        
+      
 
 # for
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (for_statement [(1, 0), (2, 3)]
@@ -384,7 +380,7 @@
 # for no body
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (for_statement [(1, 0), (2, 0)]
@@ -408,7 +404,7 @@
 # while
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (while_statement [(1, 0), (2, 5)]
@@ -478,7 +474,7 @@
 # while no body
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (while_statement [(1, 0), (2, 0)]
@@ -500,7 +496,7 @@
 # repeat
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (repeat_statement [(1, 0), (1, 8)]
@@ -515,7 +511,7 @@
 # repeat no body
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (repeat_statement [(1, 0), (2, 0)]

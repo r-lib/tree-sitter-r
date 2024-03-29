@@ -1,7 +1,7 @@
 # dollar, at, namespace, namespace internal with expression rhs
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (extract_operator [(1, 0), (1, 4)]
@@ -83,7 +83,7 @@
 # dollar, at, namespace, namespace internal with `if` rhs
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (extract_operator [(1, 0), (1, 4)]
@@ -161,7 +161,7 @@
 # complex expressions
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (repeat_statement [(1, 0), (1, 33)]
@@ -383,7 +383,7 @@
 # precedence
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (binary_operator [(1, 0), (1, 8)]
@@ -433,7 +433,7 @@
 # newlines
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (identifier [(1, 0), (1, 5)])

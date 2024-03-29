@@ -1,7 +1,7 @@
 # closing brace
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (unmatched_delimiter [(1, 0), (1, 1)])
@@ -13,7 +13,7 @@
 # closing parenthesis
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (unmatched_delimiter [(1, 0), (1, 1)])
@@ -25,7 +25,7 @@
 # closing bracket
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (unmatched_delimiter [(1, 0), (1, 1)])
@@ -37,7 +37,7 @@
 # opening brace, closing parenthesis
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (braced_expression [(1, 0), (2, 0)]
@@ -53,7 +53,7 @@
 # opening parenthesis, closing brace
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (parenthesized_expression [(1, 0), (1, 2)]
@@ -68,7 +68,7 @@
 # opening parenthesis, closing bracket
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (parenthesized_expression [(1, 0), (1, 2)]
@@ -83,7 +83,7 @@
 # opening bracket2, unmatched closing bracket
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (subset2 [(1, 0), (1, 5)]
@@ -107,7 +107,7 @@
 # opening bracket and bracket2, unmatched closing bracket
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (identifier [(1, 0), (1, 1)])
@@ -135,7 +135,7 @@
 # opening bracket2 and bracket, matched closing bracket
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (subset2 [(1, 0), (1, 7)]
@@ -165,7 +165,7 @@
 # opening bracket2 and bracket, unmatched closing bracket
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (subset2 [(1, 0), (1, 8)]

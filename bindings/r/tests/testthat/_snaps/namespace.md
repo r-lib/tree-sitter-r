@@ -1,7 +1,7 @@
 # namespace
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (namespace_operator [(1, 0), (1, 5)]
@@ -45,7 +45,7 @@
 # namespace internal
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (namespace_operator [(1, 0), (1, 6)]
@@ -89,7 +89,7 @@
 # namespace missing rhs
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (call [(1, 0), (1, 16)]

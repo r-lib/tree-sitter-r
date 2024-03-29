@@ -10,7 +10,7 @@ foo$bar()$baz[[1]]$bam
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("dollar no rhs", {
@@ -20,7 +20,7 @@ foo$
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("slot", {
@@ -33,7 +33,7 @@ foo@"bar"
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("slot no rhs", {
@@ -43,5 +43,5 @@ foo@
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })

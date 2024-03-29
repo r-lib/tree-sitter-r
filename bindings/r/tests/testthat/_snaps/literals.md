@@ -83,25 +83,31 @@
 # unicode identifiers
 
     Code
-      node_print(node)
+      node_children_print(x)
     Output
       S-Expression
-      (program [(1, 0), (4, 2)]
-        (identifier [(1, 0), (1, 6)])
-        (identifier [(2, 0), (2, 9)])
-        (identifier [(3, 0), (3, 9)])
-      )
+      (identifier [(1, 0), (1, 6)])
       
       Text
       你好
+      
+      S-Expression
+      (identifier [(2, 0), (2, 9)])
+      
+      Text
       .你.好.
+      
+      S-Expression
+      (identifier [(3, 0), (3, 9)])
+      
+      Text
       .你_好.
-        
+      
 
 # strings
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (string [(1, 0), (1, 5)])
@@ -181,55 +187,52 @@
 # unclosed double quote
 
     Code
-      node_print(node)
+      node_children_print(x)
     Output
       S-Expression
-      (program [(1, 0), (2, 2)]
-        (ERROR [(1, 0), (2, 2)]
-          (ERROR [(1, 0), (2, 2)])
-        )
+      (ERROR [(1, 0), (2, 2)]
+        (ERROR [(1, 0), (2, 2)])
       )
       
       Text
       "\"
         
+      
 
 # unclosed single quote
 
     Code
-      node_print(node)
+      node_children_print(x)
     Output
       S-Expression
-      (program [(1, 0), (2, 2)]
-        (ERROR [(1, 0), (2, 2)]
-          (ERROR [(1, 0), (2, 2)])
-        )
+      (ERROR [(1, 0), (2, 2)]
+        (ERROR [(1, 0), (2, 2)])
       )
       
       Text
       '\'
         
+      
 
 # unclosed backtick
 
     Code
-      node_print(node)
+      node_children_print(x)
     Output
       S-Expression
-      (program [(1, 0), (2, 2)]
-        (ERROR [(1, 0), (2, 2)]
-          (ERROR [(1, 0), (2, 2)])
-        )
+      (ERROR [(1, 0), (2, 2)]
+        (ERROR [(1, 0), (2, 2)])
       )
       
       Text
       `\`
         
+      
 
 # raw strings
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (string [(1, 0), (1, 15)])
@@ -265,95 +268,138 @@
 # comments
 
     Code
-      node_print(node)
+      node_children_print(x)
     Output
       S-Expression
-      (program [(1, 0), (8, 2)]
-        (comment [(1, 0), (1, 12)])
-        (string [(3, 0), (3, 17)])
-        (string [(6, 0), (7, 22)])
-      )
+      (comment [(1, 0), (1, 12)])
       
       Text
       # a comment'
       
+      S-Expression
+      (string [(3, 0), (3, 17)])
+      
+      Text
       '# not a comment'
       
+      S-Expression
+      (string [(6, 0), (7, 22)])
       
+      Text
       '
       # still not a comment'
-        
+      
 
 # constants
 
     Code
-      node_print(node)
+      node_children_print(x)
     Output
       S-Expression
-      (program [(1, 0), (10, 2)]
-        (true [(1, 0), (1, 4)])
-        (false [(2, 0), (2, 5)])
-        (null [(3, 0), (3, 4)])
-        (inf [(4, 0), (4, 3)])
-        (nan [(5, 0), (5, 3)])
-        (na [(6, 0), (6, 2)]
-          "NA" [(6, 0), (6, 2)]
-        )
-        (na [(7, 0), (7, 8)]
-          "NA_real_" [(7, 0), (7, 8)]
-        )
-        (na [(8, 0), (8, 13)]
-          "NA_character_" [(8, 0), (8, 13)]
-        )
-        (na [(9, 0), (9, 11)]
-          "NA_complex_" [(9, 0), (9, 11)]
-        )
-      )
+      (true [(1, 0), (1, 4)])
       
       Text
       TRUE
+      
+      S-Expression
+      (false [(2, 0), (2, 5)])
+      
+      Text
       FALSE
+      
+      S-Expression
+      (null [(3, 0), (3, 4)])
+      
+      Text
       NULL
+      
+      S-Expression
+      (inf [(4, 0), (4, 3)])
+      
+      Text
       Inf
+      
+      S-Expression
+      (nan [(5, 0), (5, 3)])
+      
+      Text
       NaN
+      
+      S-Expression
+      (na [(6, 0), (6, 2)]
+        "NA" [(6, 0), (6, 2)]
+      )
+      
+      Text
       NA
+      
+      S-Expression
+      (na [(7, 0), (7, 8)]
+        "NA_real_" [(7, 0), (7, 8)]
+      )
+      
+      Text
       NA_real_
+      
+      S-Expression
+      (na [(8, 0), (8, 13)]
+        "NA_character_" [(8, 0), (8, 13)]
+      )
+      
+      Text
       NA_character_
+      
+      S-Expression
+      (na [(9, 0), (9, 11)]
+        "NA_complex_" [(9, 0), (9, 11)]
+      )
+      
+      Text
       NA_complex_
-        
+      
 
 # integers
 
     Code
-      node_print(node)
+      node_children_print(x)
     Output
       S-Expression
-      (program [(1, 0), (5, 2)]
-        (integer [(1, 0), (1, 6)]
-          "L" [(1, 5), (1, 6)]
-        )
-        (integer [(2, 0), (2, 2)]
-          "L" [(2, 1), (2, 2)]
-        )
-        (integer [(3, 0), (3, 3)]
-          "L" [(3, 2), (3, 3)]
-        )
-        (integer [(4, 0), (4, 7)]
-          "L" [(4, 6), (4, 7)]
-        )
+      (integer [(1, 0), (1, 6)]
+        "L" [(1, 5), (1, 6)]
       )
       
       Text
       12332L
+      
+      S-Expression
+      (integer [(2, 0), (2, 2)]
+        "L" [(2, 1), (2, 2)]
+      )
+      
+      Text
       0L
+      
+      S-Expression
+      (integer [(3, 0), (3, 3)]
+        "L" [(3, 2), (3, 3)]
+      )
+      
+      Text
       12L
+      
+      S-Expression
+      (integer [(4, 0), (4, 7)]
+        "L" [(4, 6), (4, 7)]
+      )
+      
+      Text
       0xDEADL
-        
+      
 
 # floats
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (float [(1, 0), (1, 3)])
@@ -402,24 +448,42 @@
 # scientific notation floats
 
     Code
-      node_print(node)
+      node_children_print(x)
     Output
       S-Expression
-      (program [(1, 0), (7, 2)]
-        (float [(1, 0), (1, 5)])
-        (float [(2, 0), (2, 4)])
-        (float [(3, 0), (3, 4)])
-        (float [(4, 0), (4, 6)])
-        (float [(5, 0), (5, 5)])
-        (float [(6, 0), (6, 4)])
-      )
+      (float [(1, 0), (1, 5)])
       
       Text
       1e322
+      
+      S-Expression
+      (float [(2, 0), (2, 4)])
+      
+      Text
       1e-3
+      
+      S-Expression
+      (float [(3, 0), (3, 4)])
+      
+      Text
       1e+3
+      
+      S-Expression
+      (float [(4, 0), (4, 6)])
+      
+      Text
       1.8e10
+      
+      S-Expression
+      (float [(5, 0), (5, 5)])
+      
+      Text
       1.e10
+      
+      S-Expression
+      (float [(6, 0), (6, 4)])
+      
+      Text
       1e10
-        
+      
 

@@ -11,7 +11,7 @@ foo:::{bar}
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("dollar, at, namespace, namespace internal with `if` rhs", {
@@ -28,7 +28,7 @@ foo:::if
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("complex expressions", {
@@ -50,7 +50,7 @@ TRUE ? FALSE = NA
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("precedence", {
@@ -62,7 +62,7 @@ a$b?c
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 
@@ -84,5 +84,5 @@ apple
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })

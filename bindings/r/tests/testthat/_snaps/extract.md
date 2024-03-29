@@ -1,7 +1,7 @@
 # dollar
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (extract_operator [(1, 0), (1, 7)]
@@ -104,7 +104,7 @@
 # dollar no rhs
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (extract_operator [(1, 0), (2, 0)]
@@ -120,7 +120,7 @@
 # slot
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (extract_operator [(1, 0), (1, 7)]
@@ -176,7 +176,7 @@
 # slot no rhs
 
     Code
-      node_children_print(node)
+      node_children_print(x)
     Output
       S-Expression
       (extract_operator [(1, 0), (2, 0)]

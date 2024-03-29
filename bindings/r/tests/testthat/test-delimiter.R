@@ -5,7 +5,7 @@ test_that("closing brace", {
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("closing parenthesis", {
@@ -15,7 +15,7 @@ test_that("closing parenthesis", {
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("closing bracket", {
@@ -25,7 +25,7 @@ test_that("closing bracket", {
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("opening brace, closing parenthesis", {
@@ -37,7 +37,7 @@ test_that("opening brace, closing parenthesis", {
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("opening parenthesis, closing brace", {
@@ -47,7 +47,7 @@ test_that("opening parenthesis, closing brace", {
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("opening parenthesis, closing bracket", {
@@ -57,7 +57,7 @@ test_that("opening parenthesis, closing bracket", {
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("opening bracket2, unmatched closing bracket", {
@@ -67,7 +67,7 @@ x[[2]
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("opening bracket and bracket2, unmatched closing bracket", {
@@ -77,7 +77,7 @@ x[y[[2]
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("opening bracket2 and bracket, matched closing bracket", {
@@ -87,7 +87,7 @@ x[[y[2]
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("opening bracket2 and bracket, unmatched closing bracket", {
@@ -97,5 +97,5 @@ x[[y[2]]
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })

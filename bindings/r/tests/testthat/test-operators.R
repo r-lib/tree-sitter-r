@@ -13,7 +13,7 @@ a ==
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("arithmetic", {
@@ -34,7 +34,7 @@ a *
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("unary", {
@@ -52,7 +52,7 @@ foo(-a, bar)
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("precedence", {
@@ -68,7 +68,7 @@ val <- foo %>% bar(1) %>% baz()
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("specials", {
@@ -85,7 +85,7 @@ x %//% y
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("not specials", {
@@ -93,13 +93,13 @@ test_that("not specials", {
 x %\% y
   )"
   node <- parse(text)
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 
   text <- r"(
 x %%% y
   )"
   node <- parse(text)
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("pipe", {
@@ -115,7 +115,7 @@ x |> {function(x) x}()
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("pipe placeholder", {
@@ -126,7 +126,7 @@ foo |> bar() |> baz(data = _)
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("assignment", {
@@ -143,7 +143,7 @@ y(1) -> x
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("colon", {
@@ -154,7 +154,7 @@ test_that("colon", {
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("formulas", {
@@ -165,7 +165,7 @@ y~x
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("help", {
@@ -177,5 +177,5 @@ a ? b <- 1
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })

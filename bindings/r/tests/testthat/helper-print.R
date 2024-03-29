@@ -18,6 +18,8 @@ node_print <- function(x) {
   invisible(x)
 }
 
+# Always starts with a `program` node that we
+# print the children of
 node_children_print <- function(x) {
   children <- treesitter::node_children(x)
 
@@ -27,6 +29,10 @@ node_children_print <- function(x) {
   }
 
   invisible(x)
+}
+
+expect_node_snapshot <- function(x) {
+  expect_snapshot(node_children_print(x))
 }
 
 cat_line <- function(...) {

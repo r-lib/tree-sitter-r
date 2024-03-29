@@ -36,7 +36,7 @@ function() for(i in 1:5) i
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("function no body", {
@@ -46,7 +46,7 @@ function(x, y)
 
   node <- parse(text)
 
-  expect_snapshot(node_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("function no body with assignment", {
@@ -56,7 +56,7 @@ x <- function(x, y)
 
   node <- parse(text)
 
-  expect_snapshot(node_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("lambda function", {
@@ -74,5 +74,5 @@ c <- \(fun, ...) fun(...)
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })

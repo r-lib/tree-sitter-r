@@ -11,7 +11,7 @@ foo[]
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("subset2", {
@@ -26,7 +26,7 @@ foo[[]]
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("subset and subset2 precedence", {
@@ -37,7 +37,7 @@ a[b[[1]]]
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("switch", {
@@ -52,7 +52,7 @@ switch(foo,
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("calls", {
@@ -79,7 +79,7 @@ f(,y=)
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("braces", {
@@ -105,5 +105,5 @@ test_that("braces", {
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })

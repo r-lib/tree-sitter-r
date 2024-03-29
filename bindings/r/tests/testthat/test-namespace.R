@@ -7,7 +7,7 @@ foo::bar(1)
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("namespace internal", {
@@ -19,7 +19,7 @@ foo:::bar(1)
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
 
 test_that("namespace missing rhs", {
@@ -39,5 +39,5 @@ library()
 
   node <- parse(text)
 
-  expect_snapshot(node_children_print(node))
+  expect_node_snapshot(node)
 })
