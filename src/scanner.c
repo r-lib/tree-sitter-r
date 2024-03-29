@@ -4,7 +4,8 @@
 #include <stdio.h>   // printf()
 #include <stdlib.h>  // getenv()
 #include <string.h>  // memcpy()
-#include <tree_sitter/parser.h>
+
+#include "tree_sitter/parser.h"
 
 enum TokenType {
   NEWLINE,
