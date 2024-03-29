@@ -1,5 +1,5 @@
-#include <ctype.h>   // isspace()
 #include <string.h>  // memcpy()
+#include <wctype.h>  // iswspace()
 
 #include "tree_sitter/parser.h"
 
@@ -146,7 +146,7 @@ static void stack_deserialize(Stack* stack, const char* buffer, unsigned len) {
 // ---------------------------------------------------------------------------------------
 
 static void consume_whitespace_and_ignored_newlines(TSLexer* lexer, Stack* stack) {
-  while (isspace(lexer->lookahead)) {
+  while (iswspace(lexer->lookahead)) {
     if (lexer->lookahead != '\n') {
       // Consume all spaces, tabs, etc, unconditionally
       lexer->advance(lexer, true);
@@ -201,7 +201,7 @@ static bool
 scan_newline_or_else(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
   // Advance to the next non-newline, non-space character,
   // we know we have at least 1 newline because this function was called
-  while (isspace(lexer->lookahead)) {
+  while (iswspace(lexer->lookahead)) {
     if (lexer->lookahead != '\n') {
       lexer->advance(lexer, true);
       continue;
