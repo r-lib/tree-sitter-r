@@ -487,7 +487,7 @@
         ]
       }
     },
-    "parentheses": {
+    "parenthesized_expression": {
       "type": "PREC_RIGHT",
       "value": 0,
       "content": {
@@ -2423,7 +2423,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "parentheses"
+          "name": "parenthesized_expression"
         },
         {
           "type": "SYMBOL",

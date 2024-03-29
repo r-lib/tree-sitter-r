@@ -1578,7 +1578,7 @@ Colon
     lhs: (float)
     rhs: (float))
   (binary_operator
-    lhs: (parentheses
+    lhs: (parenthesized_expression
       body: (binary_operator
         lhs: (float)
         rhs: (float)))
@@ -1679,7 +1679,7 @@ TRUE ? FALSE = NA
     consequence: (false))
   (identifier)
   (na)
-  (parentheses
+  (parenthesized_expression
     body: (if_statement
       condition: (true)
       consequence: (false)
@@ -1757,13 +1757,13 @@ apple
 
 (program
   (identifier)
-  (parentheses
+  (parenthesized_expression
     body: (identifier))
   (braces
     body: (identifier)
-    body: (parentheses
+    body: (parenthesized_expression
       body: (identifier)))
-  (parentheses
+  (parenthesized_expression
     body: (call
       function: (identifier)
       arguments: (arguments
@@ -1828,7 +1828,7 @@ Opening Parenthesis, Closing Brace
 --------------------------------------------------------------------------------
 
 (program
-  (parentheses
+  (parenthesized_expression
     (unmatched_delimiter)))
 
 ================================================================================
@@ -1840,7 +1840,7 @@ Opening Parenthesis, Closing Bracket
 --------------------------------------------------------------------------------
 
 (program
-  (parentheses
+  (parenthesized_expression
     (unmatched_delimiter)))
 
 ================================================================================

@@ -264,7 +264,7 @@ module.exports = grammar({
       optional($._close_brace)
     )),
 
-    parentheses: $ => withPrec(PREC.BLOCK, seq(
+    parenthesized_expression: $ => withPrec(PREC.BLOCK, seq(
       $._open_parenthesis,
       repeat(field("body", choice($._expression, $._newline))),
       optional($._close_parenthesis)
@@ -498,7 +498,7 @@ module.exports = grammar({
       $.repeat_statement,
 
       $.braces,
-      $.parentheses,
+      $.parenthesized_expression,
 
       $.call,
       $.subset,
