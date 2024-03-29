@@ -8,13 +8,20 @@ update <- function() {
   to_scanner <- file.path(".", "src", "scanner.c")
 
   if (!dir.exists(file.path(".", "src"))) {
+    message("Creating `src/` directory")
     dir.create(file.path(".", "src"))
   }
   if (!dir.exists(file.path(".", "src", "tree_sitter"))) {
+    message("Creating `src/tree_sitter/` directory")
     dir.create(file.path(".", "src", "tree_sitter"))
   }
 
+  message("Updating `tree_sitter/parser.h`")
   file.copy(header, to_header, overwrite = TRUE)
+
+  message("Updating `parser.c`")
   file.copy(parser, to_parser, overwrite = TRUE)
+
+  message("Updating `scanner.c`")
   file.copy(scanner, to_scanner, overwrite = TRUE)
 }
