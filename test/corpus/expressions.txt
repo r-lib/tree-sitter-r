@@ -42,7 +42,7 @@ function() for(i in 1:5) i
     body: (float))
   (function_definition
     parameters: (parameters)
-    body: (braces))
+    body: (braced_expression))
   (function_definition
     parameters: (parameters
       parameter: (parameter
@@ -50,7 +50,7 @@ function() for(i in 1:5) i
       (comma)
       parameter: (parameter
         name: (identifier)))
-    body: (braces
+    body: (braced_expression
       body: (identifier)))
   (function_definition
     parameters: (parameters
@@ -84,7 +84,7 @@ function() for(i in 1:5) i
       parameter: (parameter
         name: (identifier)
         default: (float)))
-    body: (braces))
+    body: (braced_expression))
   (function_definition
     parameters: (parameters
       parameter: (parameter
@@ -96,7 +96,7 @@ function() for(i in 1:5) i
       parameter: (parameter
         name: (identifier)
         default: (float)))
-    body: (braces))
+    body: (braced_expression))
   (function_definition
     parameters: (parameters)
     body: (float))
@@ -104,15 +104,15 @@ function() for(i in 1:5) i
     parameters: (parameters)
     body: (function_definition
       parameters: (parameters)
-      body: (braces)))
+      body: (braced_expression)))
   (function_definition
     parameters: (parameters
       parameter: (parameter
         name: (identifier)
         default: (function_definition
           parameters: (parameters)
-          body: (braces))))
-    body: (braces))
+          body: (braced_expression))))
+    body: (braced_expression))
   (comment)
   (function_definition
     parameters: (parameters
@@ -120,7 +120,7 @@ function() for(i in 1:5) i
         name: (identifier)
         default: (function_definition
           parameters: (parameters))))
-    body: (braces))
+    body: (braced_expression))
   (comment)
   (function_definition
     parameters: (parameters)
@@ -227,7 +227,7 @@ c <- \(fun, ...) fun(...)
         (float)
         (float))
       (call
-        (braces
+        (braced_expression
           (function_definition
             (parameters
               (parameter
@@ -241,7 +241,7 @@ c <- \(fun, ...) fun(...)
               (identifier))))
         (arguments)))
     (call
-      (braces
+      (braced_expression
         (function_definition
           (parameters
             (parameter
@@ -253,7 +253,7 @@ c <- \(fun, ...) fun(...)
                 (identifier))))))
       (arguments)))
   (call
-    (braces
+    (braced_expression
       (function_definition
         (parameters
           (parameter
@@ -565,7 +565,7 @@ x |> {function(x) x}()
   (binary_operator
     (identifier)
     (call
-      (braces
+      (braced_expression
         (function_definition
           (parameters
             (parameter
@@ -781,7 +781,7 @@ if (a.b) {
           value: (identifier)))))
   (if_statement
     condition: (identifier)
-    consequence: (braces
+    consequence: (braced_expression
       body: (call
         function: (identifier)
         arguments: (arguments
@@ -826,10 +826,10 @@ if (a) {
       alternative: (identifier)))
   (if_statement
     condition: (identifier)
-    consequence: (braces
+    consequence: (braced_expression
       body: (identifier)
       body: (identifier))
-    alternative: (braces
+    alternative: (braced_expression
       body: (identifier))))
 
 ================================================================================
@@ -880,10 +880,10 @@ else
   (comment)
   (if_statement
     (true)
-    (braces
+    (braced_expression
       (float)))
   (identifier)
-  (braces
+  (braced_expression
     (float))
   (comment)
   (if_statement
@@ -892,22 +892,22 @@ else
   (identifier)
   (float)
   (comment)
-  (braces
+  (braced_expression
     (if_statement
       (true)
-      (braces
+      (braced_expression
         (float))
-      (braces
+      (braced_expression
         (float))))
   (comment)
-  (braces
+  (braced_expression
     (if_statement
       (true)
-      (braces
+      (braced_expression
         (float))
       (comment)
       (comment)
-      (braces
+      (braced_expression
         (float)))))
 
 ================================================================================
@@ -937,11 +937,11 @@ for (x in y) for (y in z) x + y
     sequence: (binary_operator
       lhs: (float)
       rhs: (float))
-    body: (braces
+    body: (braced_expression
       body: (for_statement
         variable: (identifier)
         sequence: (identifier)
-        body: (braces
+        body: (braced_expression
           body: (identifier)))))
   (for_statement
     variable: (identifier)
@@ -1278,19 +1278,19 @@ foo:::{bar}
   (comment)
   (extract_operator
     lhs: (identifier))
-  (braces
+  (braced_expression
     body: (identifier))
   (extract_operator
     lhs: (identifier))
-  (braces
+  (braced_expression
     body: (identifier))
   (namespace_operator
     lhs: (identifier))
-  (braces
+  (braced_expression
     body: (identifier))
   (namespace_operator
     lhs: (identifier))
-  (braces
+  (braced_expression
     body: (identifier)))
 
 ================================================================================
@@ -1548,19 +1548,19 @@ Braces
 --------------------------------------------------------------------------------
 
 (program
-  (braces)
-  (braces
+  (braced_expression)
+  (braced_expression
     body: (float))
-  (braces
+  (braced_expression
     body: (float)
     body: (float))
-  (braces
+  (braced_expression
     body: (float)
     body: (float))
-  (braces
+  (braced_expression
     body: (float)
     body: (float))
-  (braces
+  (braced_expression
     body: (float)
     body: (float)))
 
@@ -1759,7 +1759,7 @@ apple
   (identifier)
   (parenthesized_expression
     body: (identifier))
-  (braces
+  (braced_expression
     body: (identifier)
     body: (parenthesized_expression
       body: (identifier)))
@@ -1816,7 +1816,7 @@ Opening Brace, Closing Parenthesis
 (program
   (comment)
   (comment)
-  (braces
+  (braced_expression
     (unmatched_delimiter)))
 
 ================================================================================

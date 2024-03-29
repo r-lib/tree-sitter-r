@@ -438,7 +438,7 @@
         ]
       }
     },
-    "braces": {
+    "braced_expression": {
       "type": "PREC_RIGHT",
       "value": 0,
       "content": {
@@ -2419,7 +2419,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "braces"
+          "name": "braced_expression"
         },
         {
           "type": "SYMBOL",

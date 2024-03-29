@@ -30,7 +30,7 @@
             "named": true
           },
           {
-            "type": "braces",
+            "type": "braced_expression",
             "named": true
           },
           {
@@ -192,7 +192,7 @@
             "named": true
           },
           {
-            "type": "braces",
+            "type": "braced_expression",
             "named": true
           },
           {
@@ -436,7 +436,7 @@
             "named": true
           },
           {
-            "type": "braces",
+            "type": "braced_expression",
             "named": true
           },
           {
@@ -560,7 +560,7 @@
     }
   },
   {
-    "type": "braces",
+    "type": "braced_expression",
     "named": true,
     "fields": {
       "body": {
@@ -572,7 +572,7 @@
             "named": true
           },
           {
-            "type": "braces",
+            "type": "braced_expression",
             "named": true
           },
           {
@@ -718,7 +718,7 @@
             "named": true
           },
           {
-            "type": "braces",
+            "type": "braced_expression",
             "named": true
           },
           {
@@ -859,7 +859,7 @@
             "named": true
           },
           {
-            "type": "braces",
+            "type": "braced_expression",
             "named": true
           },
           {
@@ -1028,7 +1028,7 @@
             "named": true
           },
           {
-            "type": "braces",
+            "type": "braced_expression",
             "named": true
           },
           {
@@ -1158,7 +1158,7 @@
             "named": true
           },
           {
-            "type": "braces",
+            "type": "braced_expression",
             "named": true
           },
           {
@@ -1304,7 +1304,7 @@
             "named": true
           },
           {
-            "type": "braces",
+            "type": "braced_expression",
             "named": true
           },
           {
@@ -1469,7 +1469,7 @@
             "named": true
           },
           {
-            "type": "braces",
+            "type": "braced_expression",
             "named": true
           },
           {
@@ -1599,7 +1599,7 @@
             "named": true
           },
           {
-            "type": "braces",
+            "type": "braced_expression",
             "named": true
           },
           {
@@ -1729,7 +1729,7 @@
             "named": true
           },
           {
-            "type": "braces",
+            "type": "braced_expression",
             "named": true
           },
           {
@@ -1923,7 +1923,7 @@
             "named": true
           },
           {
-            "type": "braces",
+            "type": "braced_expression",
             "named": true
           },
           {
@@ -2099,7 +2099,7 @@
             "named": true
           },
           {
-            "type": "braces",
+            "type": "braced_expression",
             "named": true
           },
           {
@@ -2235,7 +2235,7 @@
           "named": true
         },
         {
-          "type": "braces",
+          "type": "braced_expression",
           "named": true
         },
         {
@@ -2370,7 +2370,7 @@
             "named": true
           },
           {
-            "type": "braces",
+            "type": "braced_expression",
             "named": true
           },
           {
@@ -2521,7 +2521,7 @@
             "named": true
           },
           {
-            "type": "braces",
+            "type": "braced_expression",
             "named": true
           },
           {
@@ -2667,7 +2667,7 @@
             "named": true
           },
           {
-            "type": "braces",
+            "type": "braced_expression",
             "named": true
           },
           {
@@ -2829,7 +2829,7 @@
             "named": true
           },
           {
-            "type": "braces",
+            "type": "braced_expression",
             "named": true
           },
           {
@@ -2970,7 +2970,7 @@
             "named": true
           },
           {
-            "type": "braces",
+            "type": "braced_expression",
             "named": true
           },
           {
@@ -3100,7 +3100,7 @@
             "named": true
           },
           {
-            "type": "braces",
+            "type": "braced_expression",
             "named": true
           },
           {

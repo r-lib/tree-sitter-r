@@ -258,7 +258,7 @@ module.exports = grammar({
     )),
 
     // Blocks.
-    braces: $ => withPrec(PREC.BLOCK, seq(
+    braced_expression: $ => withPrec(PREC.BLOCK, seq(
       $._open_brace,
       repeat(field("body", choice($._expression, $._semicolon, $._newline))),
       optional($._close_brace)
@@ -497,7 +497,7 @@ module.exports = grammar({
       $.while_statement,
       $.repeat_statement,
 
-      $.braces,
+      $.braced_expression,
       $.parenthesized_expression,
 
       $.call,
