@@ -6,7 +6,7 @@
 \alias{treesitterr-package}
 \title{treesitterr: R Grammar for tree-sitter}
 \description{
-What the package does (one paragraph).
+Provides bindings to an R grammar for tree-sitter, to be used alongside the 'treesitter' package. Tree-sitter builds concrete syntax trees for source files of any language, and can efficiently update those syntax trees as the source file is edited.
 }
 \author{
 \strong{Maintainer}: Davis Vaughan \email{davis@posit.co}
