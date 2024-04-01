@@ -4,77 +4,83 @@
       node_children_print(node)
     Output
       S-Expression
-      (identifier [(1, 0), (1, 3)])
+      (comment [(1, 0), (1, 82)])
+      
+      Text
+      # TODO: `_foo` is recognized as  `_` and `foo` identifiers. Should it be this way?
+      
+      S-Expression
+      (identifier [(2, 0), (2, 3)])
       
       Text
       foo
       
       S-Expression
-      (identifier [(2, 0), (2, 4)])
+      (identifier [(3, 0), (3, 4)])
       
       Text
       foo2
       
       S-Expression
-      (identifier [(3, 0), (3, 7)])
+      (identifier [(4, 0), (4, 7)])
       
       Text
       foo.bar
       
       S-Expression
-      (identifier [(4, 0), (4, 8)])
+      (identifier [(5, 0), (5, 8)])
       
       Text
       .foo.bar
       
       S-Expression
-      (identifier [(5, 0), (5, 15)])
+      (identifier [(6, 0), (6, 15)])
       
       Text
       .__NAMESPACE__.
       
       S-Expression
-      (identifier [(6, 0), (6, 7)])
+      (identifier [(7, 0), (7, 7)])
       
       Text
       foo_bar
       
       S-Expression
-      (identifier [(7, 0), (7, 13)])
+      (identifier [(8, 0), (8, 13)])
       
       Text
       `a "literal"`
       
       S-Expression
-      (identifier [(8, 0), (9, 15)])
+      (identifier [(9, 0), (10, 15)])
       
       Text
       `another
       literal \` foo`
       
       S-Expression
-      (identifier [(10, 0), (11, 1)])
+      (identifier [(11, 0), (12, 1)])
       
       Text
       `backslash followed by newline \
       `
       
       S-Expression
-      (identifier [(12, 0), (12, 4)])
+      (identifier [(13, 0), (13, 4)])
       
       Text
       `\``
       
       S-Expression
-      (identifier [(13, 0), (13, 1)]
-        "_" [(13, 0), (13, 1)]
+      (identifier [(14, 0), (14, 1)]
+        "_" [(14, 0), (14, 1)]
       )
       
       Text
       _
       
       S-Expression
-      (identifier [(13, 1), (13, 4)])
+      (identifier [(14, 1), (14, 4)])
       
       Text
       foo
@@ -83,7 +89,7 @@
 # unicode identifiers
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (identifier [(1, 0), (1, 6)])
@@ -107,7 +113,7 @@
 # strings
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (string [(1, 0), (1, 5)])
@@ -184,55 +190,10 @@
       '#'
       
 
-# unclosed double quote
-
-    Code
-      node_children_print(x)
-    Output
-      S-Expression
-      (ERROR [(1, 0), (2, 2)]
-        (ERROR [(1, 0), (2, 2)])
-      )
-      
-      Text
-      "\"
-        
-      
-
-# unclosed single quote
-
-    Code
-      node_children_print(x)
-    Output
-      S-Expression
-      (ERROR [(1, 0), (2, 2)]
-        (ERROR [(1, 0), (2, 2)])
-      )
-      
-      Text
-      '\'
-        
-      
-
-# unclosed backtick
-
-    Code
-      node_children_print(x)
-    Output
-      S-Expression
-      (ERROR [(1, 0), (2, 2)]
-        (ERROR [(1, 0), (2, 2)])
-      )
-      
-      Text
-      `\`
-        
-      
-
 # raw strings
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (string [(1, 0), (1, 15)])
@@ -268,7 +229,7 @@
 # comments
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (comment [(1, 0), (1, 12)])
@@ -293,7 +254,7 @@
 # constants
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (true [(1, 0), (1, 4)])
@@ -361,7 +322,7 @@
 # integers
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (integer [(1, 0), (1, 6)]
@@ -399,7 +360,7 @@
 # floats
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (float [(1, 0), (1, 3)])
@@ -448,7 +409,7 @@
 # scientific notation floats
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (float [(1, 0), (1, 5)])

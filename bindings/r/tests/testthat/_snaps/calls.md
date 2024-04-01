@@ -1,7 +1,7 @@
 # subset
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (subset [(1, 0), (1, 8)]
@@ -134,7 +134,7 @@
 # subset2
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (subset2 [(1, 0), (1, 8)]
@@ -239,7 +239,7 @@
 # subset and subset2 precedence
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (subset2 [(1, 0), (1, 9)]
@@ -293,7 +293,7 @@
 # switch
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (call [(1, 0), (6, 1)]
@@ -340,7 +340,7 @@
 # calls
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (call [(1, 0), (1, 3)]
@@ -669,7 +669,7 @@
 # braces
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (braced_expression [(1, 0), (1, 2)]

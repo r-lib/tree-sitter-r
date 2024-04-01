@@ -1,7 +1,7 @@
 # closing brace
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (unmatched_delimiter [(1, 0), (1, 1)])
@@ -13,7 +13,7 @@
 # closing parenthesis
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (unmatched_delimiter [(1, 0), (1, 1)])
@@ -25,7 +25,7 @@
 # closing bracket
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (unmatched_delimiter [(1, 0), (1, 1)])
@@ -37,12 +37,24 @@
 # opening brace, closing parenthesis
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
-      (braced_expression [(1, 0), (2, 0)]
-        "{" [(1, 0), (1, 1)]
-        body: (unmatched_delimiter [(1, 1), (1, 2)])
+      (comment [(1, 0), (1, 77)])
+      
+      Text
+      # Parenthesis is "not valid" so it isn't matched by the external scanner, and
+      
+      S-Expression
+      (comment [(2, 0), (2, 73)])
+      
+      Text
+      # instead falls through to the `unmatched_delimiter` rule in the grammar.
+      
+      S-Expression
+      (braced_expression [(3, 0), (4, 0)]
+        "{" [(3, 0), (3, 1)]
+        body: (unmatched_delimiter [(3, 1), (3, 2)])
       )
       
       Text
@@ -53,7 +65,7 @@
 # opening parenthesis, closing brace
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (parenthesized_expression [(1, 0), (1, 2)]
@@ -68,7 +80,7 @@
 # opening parenthesis, closing bracket
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (parenthesized_expression [(1, 0), (1, 2)]
@@ -83,7 +95,7 @@
 # opening bracket2, unmatched closing bracket
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (subset2 [(1, 0), (1, 5)]
@@ -107,7 +119,7 @@
 # opening bracket and bracket2, unmatched closing bracket
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (identifier [(1, 0), (1, 1)])
@@ -135,7 +147,7 @@
 # opening bracket2 and bracket, matched closing bracket
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (subset2 [(1, 0), (1, 7)]
@@ -165,7 +177,7 @@
 # opening bracket2 and bracket, unmatched closing bracket
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (subset2 [(1, 0), (1, 8)]

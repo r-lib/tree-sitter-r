@@ -1,7 +1,7 @@
 # functions
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (function_definition [(1, 0), (1, 12)]
@@ -312,7 +312,7 @@
 # function no body
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (function_definition [(1, 0), (2, 0)]
@@ -338,7 +338,7 @@
 # function no body with assignment
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (binary_operator [(1, 0), (2, 0)]
@@ -368,7 +368,7 @@
 # lambda function
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (binary_operator [(1, 0), (1, 15)]

@@ -1,7 +1,7 @@
 # if
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (if_statement [(1, 0), (2, 8)]
@@ -58,7 +58,7 @@
 # if else
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (if_statement [(1, 0), (3, 3)]
@@ -138,18 +138,24 @@
 # complex if statements
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
-      (if_statement [(1, 0), (3, 1)]
-        "if" [(1, 0), (1, 2)]
-        "(" [(1, 3), (1, 4)]
-        condition: (true [(1, 4), (1, 8)])
-        ")" [(1, 8), (1, 9)]
-        consequence: (braced_expression [(1, 10), (3, 1)]
-          "{" [(1, 10), (1, 11)]
-          body: (float [(2, 2), (2, 3)])
-          "}" [(3, 0), (3, 1)]
+      (comment [(1, 0), (1, 79)])
+      
+      Text
+      # Invalid at top level due to newline before `else`, so not a real if statement
+      
+      S-Expression
+      (if_statement [(2, 0), (4, 1)]
+        "if" [(2, 0), (2, 2)]
+        "(" [(2, 3), (2, 4)]
+        condition: (true [(2, 4), (2, 8)])
+        ")" [(2, 8), (2, 9)]
+        consequence: (braced_expression [(2, 10), (4, 1)]
+          "{" [(2, 10), (2, 11)]
+          body: (float [(3, 2), (3, 3)])
+          "}" [(4, 0), (4, 1)]
         )
       )
       
@@ -159,16 +165,16 @@
       }
       
       S-Expression
-      (identifier [(4, 0), (4, 4)])
+      (identifier [(5, 0), (5, 4)])
       
       Text
       else
       
       S-Expression
-      (braced_expression [(4, 5), (6, 1)]
-        "{" [(4, 5), (4, 6)]
-        body: (float [(5, 2), (5, 3)])
-        "}" [(6, 0), (6, 1)]
+      (braced_expression [(5, 5), (7, 1)]
+        "{" [(5, 5), (5, 6)]
+        body: (float [(6, 2), (6, 3)])
+        "}" [(7, 0), (7, 1)]
       )
       
       Text
@@ -176,19 +182,19 @@
         2
       }
       
-
----
-
-    Code
-      node_children_print(x)
-    Output
       S-Expression
-      (if_statement [(1, 0), (2, 3)]
-        "if" [(1, 0), (1, 2)]
-        "(" [(1, 3), (1, 4)]
-        condition: (true [(1, 4), (1, 8)])
-        ")" [(1, 8), (1, 9)]
-        consequence: (float [(2, 2), (2, 3)])
+      (comment [(9, 0), (9, 34)])
+      
+      Text
+      # Invalid for same reason as above
+      
+      S-Expression
+      (if_statement [(10, 0), (11, 3)]
+        "if" [(10, 0), (10, 2)]
+        "(" [(10, 3), (10, 4)]
+        condition: (true [(10, 4), (10, 8)])
+        ")" [(10, 8), (10, 9)]
+        consequence: (float [(11, 2), (11, 3)])
       )
       
       Text
@@ -196,44 +202,44 @@
         1
       
       S-Expression
-      (identifier [(3, 0), (3, 4)])
+      (identifier [(12, 0), (12, 4)])
       
       Text
       else
       
       S-Expression
-      (float [(4, 2), (4, 3)])
+      (float [(13, 2), (13, 3)])
       
       Text
       2
       
-
----
-
-    Code
-      node_children_print(x)
-    Output
       S-Expression
-      (braced_expression [(1, 0), (8, 1)]
-        "{" [(1, 0), (1, 1)]
-        body: (if_statement [(2, 2), (7, 3)]
-          "if" [(2, 2), (2, 4)]
-          "(" [(2, 5), (2, 6)]
-          condition: (true [(2, 6), (2, 10)])
-          ")" [(2, 10), (2, 11)]
-          consequence: (braced_expression [(2, 12), (4, 3)]
-            "{" [(2, 12), (2, 13)]
-            body: (float [(3, 4), (3, 5)])
-            "}" [(4, 2), (4, 3)]
+      (comment [(15, 0), (15, 68)])
+      
+      Text
+      # Valid inside `{` only due to special `else` handling with newlines
+      
+      S-Expression
+      (braced_expression [(16, 0), (23, 1)]
+        "{" [(16, 0), (16, 1)]
+        body: (if_statement [(17, 2), (22, 3)]
+          "if" [(17, 2), (17, 4)]
+          "(" [(17, 5), (17, 6)]
+          condition: (true [(17, 6), (17, 10)])
+          ")" [(17, 10), (17, 11)]
+          consequence: (braced_expression [(17, 12), (19, 3)]
+            "{" [(17, 12), (17, 13)]
+            body: (float [(18, 4), (18, 5)])
+            "}" [(19, 2), (19, 3)]
           )
-          "else" [(5, 2), (5, 6)]
-          alternative: (braced_expression [(5, 7), (7, 3)]
-            "{" [(5, 7), (5, 8)]
-            body: (float [(6, 4), (6, 5)])
-            "}" [(7, 2), (7, 3)]
+          "else" [(20, 2), (20, 6)]
+          alternative: (braced_expression [(20, 7), (22, 3)]
+            "{" [(20, 7), (20, 8)]
+            body: (float [(21, 4), (21, 5)])
+            "}" [(22, 2), (22, 3)]
           )
         )
-        "}" [(8, 0), (8, 1)]
+        "}" [(23, 0), (23, 1)]
       )
       
       Text
@@ -246,35 +252,35 @@
         }
       }
       
-
----
-
-    Code
-      node_children_print(x)
-    Output
       S-Expression
-      (braced_expression [(1, 0), (12, 1)]
-        "{" [(1, 0), (1, 1)]
-        body: (if_statement [(2, 2), (11, 3)]
-          "if" [(2, 2), (2, 4)]
-          "(" [(2, 5), (2, 6)]
-          condition: (true [(2, 6), (2, 10)])
-          ")" [(2, 10), (2, 11)]
-          consequence: (braced_expression [(2, 12), (4, 3)]
-            "{" [(2, 12), (2, 13)]
-            body: (float [(3, 4), (3, 5)])
-            "}" [(4, 2), (4, 3)]
+      (comment [(25, 0), (25, 50)])
+      
+      Text
+      # Valid with comments in special newline territory
+      
+      S-Expression
+      (braced_expression [(26, 0), (37, 1)]
+        "{" [(26, 0), (26, 1)]
+        body: (if_statement [(27, 2), (36, 3)]
+          "if" [(27, 2), (27, 4)]
+          "(" [(27, 5), (27, 6)]
+          condition: (true [(27, 6), (27, 10)])
+          ")" [(27, 10), (27, 11)]
+          consequence: (braced_expression [(27, 12), (29, 3)]
+            "{" [(27, 12), (27, 13)]
+            body: (float [(28, 4), (28, 5)])
+            "}" [(29, 2), (29, 3)]
           )
-          consequence: (comment [(5, 2), (5, 12)])
-          consequence: (comment [(7, 2), (7, 16)])
-          "else" [(9, 2), (9, 6)]
-          alternative: (braced_expression [(9, 7), (11, 3)]
-            "{" [(9, 7), (9, 8)]
-            body: (float [(10, 4), (10, 5)])
-            "}" [(11, 2), (11, 3)]
+          consequence: (comment [(30, 2), (30, 12)])
+          consequence: (comment [(32, 2), (32, 16)])
+          "else" [(34, 2), (34, 6)]
+          alternative: (braced_expression [(34, 7), (36, 3)]
+            "{" [(34, 7), (34, 8)]
+            body: (float [(35, 4), (35, 5)])
+            "}" [(36, 2), (36, 3)]
           )
         )
-        "}" [(12, 0), (12, 1)]
+        "}" [(37, 0), (37, 1)]
       )
       
       Text
@@ -295,7 +301,7 @@
 # for
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (for_statement [(1, 0), (2, 3)]
@@ -380,7 +386,7 @@
 # for no body
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (for_statement [(1, 0), (2, 0)]
@@ -404,7 +410,7 @@
 # while
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (while_statement [(1, 0), (2, 5)]
@@ -474,7 +480,7 @@
 # while no body
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (while_statement [(1, 0), (2, 0)]
@@ -496,7 +502,7 @@
 # repeat
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (repeat_statement [(1, 0), (1, 8)]
@@ -511,15 +517,14 @@
 # repeat no body
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
-      (repeat_statement [(1, 0), (2, 0)]
+      (repeat_statement [(1, 0), (1, 6)]
         "repeat" [(1, 0), (1, 6)]
       )
       
       Text
       repeat
-      
       
 

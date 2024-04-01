@@ -35,6 +35,48 @@ expect_node_snapshot <- function(x) {
   expect_snapshot(node_children_print(x))
 }
 
+test_that_tree_sitter <- function(path) {
+  env <- parent.frame()
+
+  path <- testthat::test_path(path)
+  lines <- readLines(path)
+
+  boundaries <- startsWith(lines, "# -----")
+  boundaries <- which(boundaries)
+  boundaries <- unique(c(boundaries, length(lines) + 1L))
+
+  n_chunks <- length(boundaries) - 1L
+
+  for (i in seq_len(n_chunks)) {
+    start <- boundaries[[i]]
+    end <- boundaries[[i + 1L]]
+
+    desc <- lines[[start + 1L]]
+    desc <- sub("# ", "", desc, fixed = TRUE)
+
+    start <- start + 2L
+    end <- pmax(end - 1L, start)
+
+    text <- lines[seq(start, end)]
+    text <- paste0(text, collapse = "\n")
+
+    expr <- substitute(
+      testthat::test_that(desc, {
+        language <- language()
+        parser <- treesitter::parser(language)
+
+        tree <- treesitter::parser_parse(parser, text)
+        node <- treesitter::tree_root_node(tree)
+
+        expect_snapshot(node_children_print(node))
+      }),
+      list(desc = desc, text = text)
+    )
+
+    eval(expr, env)
+  }
+}
+
 cat_line <- function(...) {
   out <- paste0(..., collapse = "\n")
   cat(out, "\n", sep = "", file = stdout(), append = TRUE)
