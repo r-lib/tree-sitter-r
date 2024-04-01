@@ -31,16 +31,14 @@ node_children_print <- function(x) {
   invisible(x)
 }
 
-expect_node_snapshot <- function(x) {
-  expect_snapshot(node_children_print(x))
-}
-
 test_that_tree_sitter <- function(path) {
   env <- parent.frame()
 
   path <- testthat::test_path(path)
   lines <- readLines(path)
 
+  # Find lines that start with `# -----`, this is our divider
+  # (always add n_lines + 1 to the boundary list)
   boundaries <- startsWith(lines, "# -----")
   boundaries <- which(boundaries)
   boundaries <- unique(c(boundaries, length(lines) + 1L))
@@ -51,15 +49,18 @@ test_that_tree_sitter <- function(path) {
     start <- boundaries[[i]]
     end <- boundaries[[i + 1L]]
 
+    # The description should be the comment on the line after the `# -----`
     desc <- lines[[start + 1L]]
     desc <- sub("# ", "", desc, fixed = TRUE)
 
     start <- start + 2L
     end <- pmax(end - 1L, start)
 
+    # Text is everything between this divider and the next one
     text <- lines[seq(start, end)]
     text <- paste0(text, collapse = "\n")
 
+    # Parse and snapshot children
     expr <- substitute(
       testthat::test_that(desc, {
         language <- language()
