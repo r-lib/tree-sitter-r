@@ -63,13 +63,15 @@ test_that_tree_sitter <- function(path) {
     # Parse and snapshot children
     expr <- substitute(
       testthat::test_that(desc, {
+        testthat::skip_if_not_installed("treesitter")
+
         language <- language()
         parser <- treesitter::parser(language)
 
         tree <- treesitter::parser_parse(parser, text)
         node <- treesitter::tree_root_node(tree)
 
-        expect_snapshot(node_children_print(node))
+        testthat::expect_snapshot(node_children_print(node))
       }),
       list(desc = desc, text = text)
     )
