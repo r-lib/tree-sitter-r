@@ -1,7 +1,7 @@
 # namespace
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (namespace_operator [(1, 0), (1, 5)]
@@ -45,7 +45,7 @@
 # namespace internal
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (namespace_operator [(1, 0), (1, 6)]
@@ -89,20 +89,44 @@
 # namespace missing rhs
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
-      (call [(1, 0), (1, 16)]
-        function: (identifier [(1, 0), (1, 7)])
-        arguments: (arguments [(1, 7), (1, 16)]
-          "(" [(1, 7), (1, 8)]
-          argument: (argument [(1, 8), (1, 15)]
-            value: (namespace_operator [(1, 8), (1, 15)]
-              lhs: (identifier [(1, 8), (1, 13)])
-              operator: "::" [(1, 13), (1, 15)]
+      (comment [(1, 0), (1, 79)])
+      
+      Text
+      # It's nice that `::` allows an optional RHS and enforces that it can only be a
+      
+      S-Expression
+      (comment [(2, 0), (2, 78)])
+      
+      Text
+      # string or identifier, so this gives us a pretty clean tree even though it is
+      
+      S-Expression
+      (comment [(3, 0), (3, 17)])
+      
+      Text
+      # invalid R code.
+      
+      S-Expression
+      (comment [(4, 0), (4, 50)])
+      
+      Text
+      # https://github.com/r-lib/tree-sitter-r/issues/65
+      
+      S-Expression
+      (call [(5, 0), (5, 16)]
+        function: (identifier [(5, 0), (5, 7)])
+        arguments: (arguments [(5, 7), (5, 16)]
+          "(" [(5, 7), (5, 8)]
+          argument: (argument [(5, 8), (5, 15)]
+            value: (namespace_operator [(5, 8), (5, 15)]
+              lhs: (identifier [(5, 8), (5, 13)])
+              operator: "::" [(5, 13), (5, 15)]
             )
           )
-          ")" [(1, 15), (1, 16)]
+          ")" [(5, 15), (5, 16)]
         )
       )
       
@@ -110,11 +134,11 @@
       library(dplyr::)
       
       S-Expression
-      (call [(3, 0), (3, 9)]
-        function: (identifier [(3, 0), (3, 7)])
-        arguments: (arguments [(3, 7), (3, 9)]
-          "(" [(3, 7), (3, 8)]
-          ")" [(3, 8), (3, 9)]
+      (call [(7, 0), (7, 9)]
+        function: (identifier [(7, 0), (7, 7)])
+        arguments: (arguments [(7, 7), (7, 9)]
+          "(" [(7, 7), (7, 8)]
+          ")" [(7, 8), (7, 9)]
         )
       )
       
@@ -122,19 +146,19 @@
       library()
       
       S-Expression
-      (float [(5, 0), (5, 1)])
+      (float [(9, 0), (9, 1)])
       
       Text
       1
       
       S-Expression
-      (float [(6, 0), (6, 1)])
+      (float [(10, 0), (10, 1)])
       
       Text
       2
       
       S-Expression
-      (float [(7, 0), (7, 1)])
+      (float [(11, 0), (11, 1)])
       
       Text
       3

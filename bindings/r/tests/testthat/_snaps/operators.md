@@ -1,7 +1,7 @@
 # relational
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (binary_operator [(1, 0), (1, 6)]
@@ -78,7 +78,7 @@
 # arithmetic
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (binary_operator [(1, 0), (1, 5)]
@@ -166,7 +166,7 @@
 # unary
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (unary_operator [(1, 0), (1, 2)]
@@ -265,7 +265,7 @@
 # precedence
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (binary_operator [(1, 0), (1, 5)]
@@ -412,7 +412,7 @@
 # specials
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (binary_operator [(1, 0), (1, 6)]
@@ -489,52 +489,10 @@
       x %//% y
       
 
-# not specials
-
-    Code
-      node_children_print(x)
-    Output
-      S-Expression
-      (identifier [(1, 0), (1, 1)])
-      
-      Text
-      x
-      
-      S-Expression
-      (ERROR [(1, 2), (1, 7)]
-        (ERROR [(1, 2), (1, 3)])
-        "\\" [(1, 3), (1, 4)]
-        (ERROR [(1, 4), (1, 7)])
-      )
-      
-      Text
-      %\% y
-      
-
----
-
-    Code
-      node_children_print(x)
-    Output
-      S-Expression
-      (binary_operator [(1, 0), (2, 0)]
-        lhs: (identifier [(1, 0), (1, 1)])
-        operator: "special" [(1, 2), (1, 4)]
-        operator: (ERROR [(1, 4), (1, 7)]
-          (ERROR [(1, 4), (1, 7)])
-        )
-        rhs: (identifier [(2, 0), (2, 0)])
-      )
-      
-      Text
-      x %%% y
-      
-      
-
 # pipe
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (binary_operator [(1, 0), (1, 12)]
@@ -658,7 +616,7 @@
 # pipe placeholder
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (binary_operator [(1, 0), (1, 20)]
@@ -724,7 +682,7 @@
 # assignment
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (binary_operator [(1, 0), (1, 6)]
@@ -828,7 +786,7 @@
 # colon
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (binary_operator [(1, 0), (1, 3)]
@@ -865,7 +823,7 @@
 # formulas
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (unary_operator [(1, 0), (1, 2)]
@@ -890,7 +848,7 @@
 # help
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (binary_operator [(1, 0), (1, 5)]

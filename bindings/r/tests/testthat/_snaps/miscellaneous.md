@@ -1,79 +1,97 @@
 # dollar, at, namespace, namespace internal with expression rhs
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
-      (extract_operator [(1, 0), (1, 4)]
-        lhs: (identifier [(1, 0), (1, 3)])
-        operator: "$" [(1, 3), (1, 4)]
+      (comment [(1, 0), (1, 78)])
+      
+      Text
+      # These nodes allows an optional RHS, and the RHS must be a string/identifier,
+      
+      S-Expression
+      (comment [(2, 0), (2, 76)])
+      
+      Text
+      # so we nicely get a true node here alongside the braces. Even if that's not
+      
+      S-Expression
+      (comment [(3, 0), (3, 64)])
+      
+      Text
+      # parsable R code, it's useful for completions and highlighting.
+      
+      S-Expression
+      (extract_operator [(5, 0), (5, 4)]
+        lhs: (identifier [(5, 0), (5, 3)])
+        operator: "$" [(5, 3), (5, 4)]
       )
       
       Text
       foo$
       
       S-Expression
-      (braced_expression [(1, 4), (1, 9)]
-        "{" [(1, 4), (1, 5)]
-        body: (identifier [(1, 5), (1, 8)])
-        "}" [(1, 8), (1, 9)]
+      (braced_expression [(5, 4), (5, 9)]
+        "{" [(5, 4), (5, 5)]
+        body: (identifier [(5, 5), (5, 8)])
+        "}" [(5, 8), (5, 9)]
       )
       
       Text
       {bar}
       
       S-Expression
-      (extract_operator [(2, 0), (2, 4)]
-        lhs: (identifier [(2, 0), (2, 3)])
-        operator: "@" [(2, 3), (2, 4)]
+      (extract_operator [(6, 0), (6, 4)]
+        lhs: (identifier [(6, 0), (6, 3)])
+        operator: "@" [(6, 3), (6, 4)]
       )
       
       Text
       foo@
       
       S-Expression
-      (braced_expression [(2, 4), (2, 9)]
-        "{" [(2, 4), (2, 5)]
-        body: (identifier [(2, 5), (2, 8)])
-        "}" [(2, 8), (2, 9)]
+      (braced_expression [(6, 4), (6, 9)]
+        "{" [(6, 4), (6, 5)]
+        body: (identifier [(6, 5), (6, 8)])
+        "}" [(6, 8), (6, 9)]
       )
       
       Text
       {bar}
       
       S-Expression
-      (namespace_operator [(3, 0), (3, 5)]
-        lhs: (identifier [(3, 0), (3, 3)])
-        operator: "::" [(3, 3), (3, 5)]
+      (namespace_operator [(7, 0), (7, 5)]
+        lhs: (identifier [(7, 0), (7, 3)])
+        operator: "::" [(7, 3), (7, 5)]
       )
       
       Text
       foo::
       
       S-Expression
-      (braced_expression [(3, 5), (3, 10)]
-        "{" [(3, 5), (3, 6)]
-        body: (identifier [(3, 6), (3, 9)])
-        "}" [(3, 9), (3, 10)]
+      (braced_expression [(7, 5), (7, 10)]
+        "{" [(7, 5), (7, 6)]
+        body: (identifier [(7, 6), (7, 9)])
+        "}" [(7, 9), (7, 10)]
       )
       
       Text
       {bar}
       
       S-Expression
-      (namespace_operator [(4, 0), (4, 6)]
-        lhs: (identifier [(4, 0), (4, 3)])
-        operator: ":::" [(4, 3), (4, 6)]
+      (namespace_operator [(8, 0), (8, 6)]
+        lhs: (identifier [(8, 0), (8, 3)])
+        operator: ":::" [(8, 3), (8, 6)]
       )
       
       Text
       foo:::
       
       S-Expression
-      (braced_expression [(4, 6), (4, 11)]
-        "{" [(4, 6), (4, 7)]
-        body: (identifier [(4, 7), (4, 10)])
-        "}" [(4, 10), (4, 11)]
+      (braced_expression [(8, 6), (8, 11)]
+        "{" [(8, 6), (8, 7)]
+        body: (identifier [(8, 7), (8, 10)])
+        "}" [(8, 10), (8, 11)]
       )
       
       Text
@@ -83,20 +101,44 @@
 # dollar, at, namespace, namespace internal with `if` rhs
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
-      (extract_operator [(1, 0), (1, 4)]
-        lhs: (identifier [(1, 0), (1, 3)])
-        operator: "$" [(1, 3), (1, 4)]
+      (comment [(1, 0), (1, 81)])
+      
+      Text
+      # The RHS's of these nodes are restricted to strings and identifiers, and the RHS
+      
+      S-Expression
+      (comment [(2, 0), (2, 86)])
+      
+      Text
+      # is optional. This ends up trying to match to an `if_statement` node, leaving the RHS
+      
+      S-Expression
+      (comment [(3, 0), (3, 84)])
+      
+      Text
+      # empty, and then the `if_statement` node errors because it doesn't have a `(`. This
+      
+      S-Expression
+      (comment [(4, 0), (4, 37)])
+      
+      Text
+      # is actually pretty decent behavior.
+      
+      S-Expression
+      (extract_operator [(6, 0), (6, 4)]
+        lhs: (identifier [(6, 0), (6, 3)])
+        operator: "$" [(6, 3), (6, 4)]
       )
       
       Text
       foo$
       
       S-Expression
-      (ERROR [(1, 4), (2, 0)]
-        "if" [(1, 4), (1, 6)]
+      (ERROR [(6, 4), (7, 0)]
+        "if" [(6, 4), (6, 6)]
       )
       
       Text
@@ -104,17 +146,17 @@
       
       
       S-Expression
-      (extract_operator [(2, 0), (2, 4)]
-        lhs: (identifier [(2, 0), (2, 3)])
-        operator: "@" [(2, 3), (2, 4)]
+      (extract_operator [(7, 0), (7, 4)]
+        lhs: (identifier [(7, 0), (7, 3)])
+        operator: "@" [(7, 3), (7, 4)]
       )
       
       Text
       foo@
       
       S-Expression
-      (ERROR [(2, 4), (3, 0)]
-        "if" [(2, 4), (2, 6)]
+      (ERROR [(7, 4), (8, 0)]
+        "if" [(7, 4), (7, 6)]
       )
       
       Text
@@ -122,17 +164,17 @@
       
       
       S-Expression
-      (namespace_operator [(3, 0), (3, 5)]
-        lhs: (identifier [(3, 0), (3, 3)])
-        operator: "::" [(3, 3), (3, 5)]
+      (namespace_operator [(8, 0), (8, 5)]
+        lhs: (identifier [(8, 0), (8, 3)])
+        operator: "::" [(8, 3), (8, 5)]
       )
       
       Text
       foo::
       
       S-Expression
-      (ERROR [(3, 5), (4, 0)]
-        "if" [(3, 5), (3, 7)]
+      (ERROR [(8, 5), (9, 0)]
+        "if" [(8, 5), (8, 7)]
       )
       
       Text
@@ -140,17 +182,17 @@
       
       
       S-Expression
-      (namespace_operator [(4, 0), (4, 6)]
-        lhs: (identifier [(4, 0), (4, 3)])
-        operator: ":::" [(4, 3), (4, 6)]
+      (namespace_operator [(9, 0), (9, 6)]
+        lhs: (identifier [(9, 0), (9, 3)])
+        operator: ":::" [(9, 3), (9, 6)]
       )
       
       Text
       foo:::
       
       S-Expression
-      (ERROR [(4, 6), (5, 0)]
-        "if" [(4, 6), (4, 8)]
+      (ERROR [(9, 6), (10, 0)]
+        "if" [(9, 6), (9, 8)]
       )
       
       Text
@@ -161,7 +203,7 @@
 # complex expressions
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (repeat_statement [(1, 0), (1, 33)]
@@ -383,7 +425,7 @@
 # precedence
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (binary_operator [(1, 0), (1, 8)]
@@ -433,7 +475,7 @@
 # newlines
 
     Code
-      node_children_print(x)
+      node_children_print(node)
     Output
       S-Expression
       (identifier [(1, 0), (1, 5)])
