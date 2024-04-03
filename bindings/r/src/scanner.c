@@ -1,11 +1,25 @@
-
-#include <ctype.h>   // isspace()
-#include <stdarg.h>  // va_list, va_start(), va_end()
-#include <stdio.h>   // printf()
-#include <stdlib.h>  // getenv()
 #include <string.h>  // memcpy()
+#include <wctype.h>  // iswspace()
 
 #include "tree_sitter/parser.h"
+
+// Uncomment if debugging for extra output during parsing. Note that we can't
+// use `vprintf()` for print debugging in WASM or on CRAN for the R package!
+// #define TREE_SITTER_R_DEBUG
+
+#ifdef TREE_SITTER_R_DEBUG
+#include <stdarg.h>  // va_list, va_start(), va_end()
+#include <stdio.h>   // vprintf()
+
+static inline void debug_print(const char* fmt, ...) {
+  va_list args;
+  va_start(args, fmt);
+  vprintf(fmt, args);
+  va_end(args);
+}
+#else
+#define debug_print(...)
+#endif
 
 enum TokenType {
   NEWLINE,
@@ -21,21 +35,6 @@ enum TokenType {
   OPEN_BRACKET2,
   CLOSE_BRACKET2
 };
-
-// Expected that we only use this in unexpected (cold) paths, but branch prediction
-// should essentially make it free anyways.
-static inline void debug_print(bool debug, const char* fmt, ...) {
-  if (debug) {
-    va_list args;
-    va_start(args, fmt);
-    vprintf(fmt, args);
-    va_end(args);
-  }
-}
-
-static inline bool is_debug_build() {
-  return getenv("TREE_SITTER_DEBUG") != NULL;
-}
 
 // ---------------------------------------------------------------------------------------
 // Temporary Stack structure until we can use the `<tree_sitter/array.h>` header from
@@ -67,17 +66,23 @@ const Scope SCOPE_BRACKET2 = 4;
 typedef struct {
   Scope* arr;
   unsigned len;
-  bool debug;
 } Stack;
 
-static Stack* stack_new(bool debug) {
+static Stack* stack_new(void) {
   Scope* arr = malloc(TREE_SITTER_SERIALIZATION_BUFFER_SIZE);
-  if (arr == NULL) exit(1);
+  if (arr == NULL) {
+    debug_print("`stack_new()` failed. Can't allocate scope array.");
+    return NULL;
+  }
+
   Stack* stack = malloc(sizeof(Stack));
-  if (stack == NULL) exit(1);
+  if (stack == NULL) {
+    debug_print("`stack_new()` failed. Can't allocate stack.");
+    return NULL;
+  }
+
   stack->arr = arr;
   stack->len = 0;
-  stack->debug = debug;
   return stack;
 }
 
@@ -90,7 +95,7 @@ static bool stack_push(Stack* stack, Scope scope) {
   if (stack->len >= TREE_SITTER_SERIALIZATION_BUFFER_SIZE) {
     // Return `false` so `scan()` can return `false` and refuse to handle the token.
     // Should only ever happen in pathological cases (i.e. 1025 unmatched opening braces).
-    debug_print(stack->debug, "`stack_push()` failed. Stack is at maximum capacity.\n");
+    debug_print("`stack_push()` failed. Stack is at maximum capacity.\n");
     return false;
   }
 
@@ -111,7 +116,7 @@ static Scope stack_peek(Stack* stack) {
 static bool stack_pop(Stack* stack, Scope scope) {
   if (stack->len == 0) {
     // Return `false` so `scan()` can return `false` and refuse to handle the token
-    debug_print(stack->debug, "`stack_pop()` failed. Stack is empty, nothing to pop.\n");
+    debug_print("`stack_pop()` failed. Stack is empty, nothing to pop.\n");
     return false;
   }
 
@@ -121,7 +126,6 @@ static bool stack_pop(Stack* stack, Scope scope) {
   if (x != scope) {
     // Return `false` so `scan()` can return `false` and refuse to handle the token
     debug_print(
-        stack->debug,
         "`stack_pop()` failed. Actual scope '%c' does not match expected scope '%c'.\n",
         x,
         scope
@@ -147,10 +151,14 @@ static void stack_deserialize(Stack* stack, const char* buffer, unsigned len) {
   stack->len = len;
 }
 
+static inline bool stack_exists(void* stack) {
+  return stack != NULL;
+}
+
 // ---------------------------------------------------------------------------------------
 
 static void consume_whitespace_and_ignored_newlines(TSLexer* lexer, Stack* stack) {
-  while (isspace(lexer->lookahead)) {
+  while (iswspace(lexer->lookahead)) {
     if (lexer->lookahead != '\n') {
       // Consume all spaces, tabs, etc, unconditionally
       lexer->advance(lexer, true);
@@ -205,7 +213,7 @@ static bool
 scan_newline_or_else(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
   // Advance to the next non-newline, non-space character,
   // we know we have at least 1 newline because this function was called
-  while (isspace(lexer->lookahead)) {
+  while (iswspace(lexer->lookahead)) {
     if (lexer->lookahead != '\n') {
       lexer->advance(lexer, true);
       continue;
@@ -460,9 +468,8 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
 
 // ---------------------------------------------------------------------------------------
 
-void* tree_sitter_r_external_scanner_create() {
-  bool debug = is_debug_build();
-  return stack_new(debug);
+void* tree_sitter_r_external_scanner_create(void) {
+  return stack_new();
 }
 
 bool tree_sitter_r_external_scanner_scan(
@@ -470,11 +477,19 @@ bool tree_sitter_r_external_scanner_scan(
     TSLexer* lexer,
     const bool* valid_symbols
 ) {
-  return scan(lexer, payload, valid_symbols);
+  if (stack_exists(payload)) {
+    return scan(lexer, payload, valid_symbols);
+  } else {
+    return false;
+  }
 }
 
 unsigned tree_sitter_r_external_scanner_serialize(void* payload, char* buffer) {
-  return stack_serialize(payload, buffer);
+  if (stack_exists(payload)) {
+    return stack_serialize(payload, buffer);
+  } else {
+    return 0;
+  }
 }
 
 void tree_sitter_r_external_scanner_deserialize(
@@ -482,9 +497,13 @@ void tree_sitter_r_external_scanner_deserialize(
     const char* buffer,
     unsigned length
 ) {
-  stack_deserialize(payload, buffer, length);
+  if (stack_exists(payload)) {
+    stack_deserialize(payload, buffer, length);
+  }
 }
 
 void tree_sitter_r_external_scanner_destroy(void* payload) {
-  stack_free(payload);
+  if (stack_exists(payload)) {
+    stack_free(payload);
+  }
 }
