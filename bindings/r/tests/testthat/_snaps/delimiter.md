@@ -4,7 +4,9 @@
       node_children_print(node)
     Output
       S-Expression
-      (unmatched_delimiter [(1, 0), (1, 1)])
+      (unmatched_delimiter [(1, 0), (1, 1)]
+        "}" [(1, 0), (1, 1)]
+      )
       
       Text
       }
@@ -16,7 +18,9 @@
       node_children_print(node)
     Output
       S-Expression
-      (unmatched_delimiter [(1, 0), (1, 1)])
+      (unmatched_delimiter [(1, 0), (1, 1)]
+        ")" [(1, 0), (1, 1)]
+      )
       
       Text
       )
@@ -28,7 +32,9 @@
       node_children_print(node)
     Output
       S-Expression
-      (unmatched_delimiter [(1, 0), (1, 1)])
+      (unmatched_delimiter [(1, 0), (1, 1)]
+        "]" [(1, 0), (1, 1)]
+      )
       
       Text
       ]
@@ -54,7 +60,9 @@
       S-Expression
       (braced_expression [(3, 0), (4, 0)]
         "{" [(3, 0), (3, 1)]
-        body: (unmatched_delimiter [(3, 1), (3, 2)])
+        body: (unmatched_delimiter [(3, 1), (3, 2)]
+          ")" [(3, 1), (3, 2)]
+        )
       )
       
       Text
@@ -70,7 +78,9 @@
       S-Expression
       (parenthesized_expression [(1, 0), (1, 2)]
         "(" [(1, 0), (1, 1)]
-        body: (unmatched_delimiter [(1, 1), (1, 2)])
+        body: (unmatched_delimiter [(1, 1), (1, 2)]
+          "}" [(1, 1), (1, 2)]
+        )
       )
       
       Text
@@ -85,7 +95,9 @@
       S-Expression
       (parenthesized_expression [(1, 0), (1, 2)]
         "(" [(1, 0), (1, 1)]
-        body: (unmatched_delimiter [(1, 1), (1, 2)])
+        body: (unmatched_delimiter [(1, 1), (1, 2)]
+          "]" [(1, 1), (1, 2)]
+        )
       )
       
       Text
@@ -106,7 +118,9 @@
             value: (float [(1, 3), (1, 4)])
           )
           argument: (argument [(1, 4), (1, 5)]
-            value: (unmatched_delimiter [(1, 4), (1, 5)])
+            value: (unmatched_delimiter [(1, 4), (1, 5)]
+              "]" [(1, 4), (1, 5)]
+            )
           )
           "]]" [(1, 5), (1, 5)]
         )
@@ -136,7 +150,9 @@
           value: (float [(1, 5), (1, 6)])
         )
         argument: (argument [(1, 6), (1, 7)]
-          value: (unmatched_delimiter [(1, 6), (1, 7)])
+          value: (unmatched_delimiter [(1, 6), (1, 7)]
+            "]" [(1, 6), (1, 7)]
+          )
         )
       )
       
@@ -197,7 +213,9 @@
             )
           )
           argument: (argument [(1, 7), (1, 8)]
-            value: (unmatched_delimiter [(1, 7), (1, 8)])
+            value: (unmatched_delimiter [(1, 7), (1, 8)]
+              "]" [(1, 7), (1, 8)]
+            )
           )
           "]]" [(1, 8), (1, 8)]
         )
