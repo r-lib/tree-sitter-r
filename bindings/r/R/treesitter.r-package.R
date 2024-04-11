@@ -2,6 +2,6 @@
 "_PACKAGE"
 
 ## usethis namespace: start
-#' @useDynLib treesitterr, .registration = TRUE
+#' @useDynLib treesitter.r, .registration = TRUE
 ## usethis namespace: end
 NULL

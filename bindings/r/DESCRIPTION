@@ -1,4 +1,4 @@
-Package: treesitterr
+Package: treesitter.r
 Title: R Grammar for tree-sitter
 Version: 0.0.0.9000
 Authors@R: c(

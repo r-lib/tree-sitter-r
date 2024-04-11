@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(treesitterr)
+library(treesitter.r)
 
-test_check("treesitterr")
+test_check("treesitter.r")

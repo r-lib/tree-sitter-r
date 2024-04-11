@@ -1,5 +1,6 @@
-^treesitterr\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^.cache$
 ^.clang-format$
+^compile_commands.json$
+^.vscode$
