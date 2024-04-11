@@ -142,10 +142,6 @@
             "named": true
           },
           {
-            "type": "unmatched_delimiter",
-            "named": true
-          },
-          {
             "type": "while_statement",
             "named": true
           }
@@ -337,10 +333,6 @@
           },
           {
             "type": "unary_operator",
-            "named": true
-          },
-          {
-            "type": "unmatched_delimiter",
             "named": true
           },
           {
@@ -584,10 +576,6 @@
             "named": true
           },
           {
-            "type": "unmatched_delimiter",
-            "named": true
-          },
-          {
             "type": "while_statement",
             "named": true
           }
@@ -717,10 +705,6 @@
           },
           {
             "type": "unary_operator",
-            "named": true
-          },
-          {
-            "type": "unmatched_delimiter",
             "named": true
           },
           {
@@ -866,10 +850,6 @@
             "named": true
           },
           {
-            "type": "unmatched_delimiter",
-            "named": true
-          },
-          {
             "type": "while_statement",
             "named": true
           }
@@ -1004,10 +984,6 @@
           },
           {
             "type": "unary_operator",
-            "named": true
-          },
-          {
-            "type": "unmatched_delimiter",
             "named": true
           },
           {
@@ -1176,10 +1152,6 @@
             "named": true
           },
           {
-            "type": "unmatched_delimiter",
-            "named": true
-          },
-          {
             "type": "while_statement",
             "named": true
           }
@@ -1303,10 +1275,6 @@
           },
           {
             "type": "unary_operator",
-            "named": true
-          },
-          {
-            "type": "unmatched_delimiter",
             "named": true
           },
           {
@@ -1449,10 +1417,6 @@
           },
           {
             "type": "unary_operator",
-            "named": true
-          },
-          {
-            "type": "unmatched_delimiter",
             "named": true
           },
           {
@@ -1612,10 +1576,6 @@
             "named": true
           },
           {
-            "type": "unmatched_delimiter",
-            "named": true
-          },
-          {
             "type": "while_statement",
             "named": true
           }
@@ -1742,10 +1702,6 @@
             "named": true
           },
           {
-            "type": "unmatched_delimiter",
-            "named": true
-          },
-          {
             "type": "while_statement",
             "named": true
           }
@@ -1869,10 +1825,6 @@
           },
           {
             "type": "unary_operator",
-            "named": true
-          },
-          {
-            "type": "unmatched_delimiter",
             "named": true
           },
           {
@@ -2066,10 +2018,6 @@
             "named": true
           },
           {
-            "type": "unmatched_delimiter",
-            "named": true
-          },
-          {
             "type": "while_statement",
             "named": true
           }
@@ -2242,10 +2190,6 @@
             "named": true
           },
           {
-            "type": "unmatched_delimiter",
-            "named": true
-          },
-          {
             "type": "while_statement",
             "named": true
           }
@@ -2378,10 +2322,6 @@
           "named": true
         },
         {
-          "type": "unmatched_delimiter",
-          "named": true
-        },
-        {
           "type": "while_statement",
           "named": true
         }
@@ -2510,10 +2450,6 @@
           },
           {
             "type": "unary_operator",
-            "named": true
-          },
-          {
-            "type": "unmatched_delimiter",
             "named": true
           },
           {
@@ -2690,10 +2626,6 @@
             "named": true
           },
           {
-            "type": "unmatched_delimiter",
-            "named": true
-          },
-          {
             "type": "while_statement",
             "named": true
           }
@@ -2833,10 +2765,6 @@
           },
           {
             "type": "unary_operator",
-            "named": true
-          },
-          {
-            "type": "unmatched_delimiter",
             "named": true
           },
           {
@@ -2998,21 +2926,12 @@
             "named": true
           },
           {
-            "type": "unmatched_delimiter",
-            "named": true
-          },
-          {
             "type": "while_statement",
             "named": true
           }
         ]
       }
     }
-  },
-  {
-    "type": "unmatched_delimiter",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "while_statement",
@@ -3139,10 +3058,6 @@
             "named": true
           },
           {
-            "type": "unmatched_delimiter",
-            "named": true
-          },
-          {
             "type": "while_statement",
             "named": true
           }
@@ -3266,10 +3181,6 @@
           },
           {
             "type": "unary_operator",
-            "named": true
-          },
-          {
-            "type": "unmatched_delimiter",
             "named": true
           },
           {
