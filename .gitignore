@@ -30,6 +30,7 @@ dist/
 *.pc
 
 # R artifacts
+*.Rcheck/
 *.tar.gz
 
 # Example dirs

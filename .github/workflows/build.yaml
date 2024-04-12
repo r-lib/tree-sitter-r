@@ -1,27 +1,55 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
-name: build
+name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
+    paths:
+      - grammar.js
+      - src/**
+      - test/**
+      - bindings/**
+      - binding.gyp
   pull_request:
-    branches: [ main ]
+    paths:
+      - grammar.js
+      - src/**
+      - test/**
+      - bindings/**
+      - binding.gyp
+
+concurrency:
+  group: ${{github.workflow}}-${{github.ref}}
+  cancel-in-progress: true
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
+  test:
+    name: Test parser
+    runs-on: ${{matrix.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-14]
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
-
-    - name: Run cargo check
-      uses: actions-rs/cargo@v1
-      with:
-        command: check
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up tree-sitter
+        uses: tree-sitter/setup-action/cli@v1
+      - name: Run parser and binding tests
+        uses: tree-sitter/parser-test-action@v2
+        with:
+          test-rust: true
+      - name: Parse sample files
+        uses: tree-sitter/parse-action@v4
+        id: parse-files
+        with:
+          files: |-
+            bindings/r/**/*.R
+            !bindings/r/tests/testthat/references/delimiter.R
+            !bindings/r/tests/testthat/references/miscellaneous.R
+            !bindings/r/tests/testthat/references/unclosed.R
+      - name: Upload failures artifact
+        uses: actions/upload-artifact@v4
+        if: "!cancelled() && steps.parse-files.outcome == 'failure'"
+        with:
+          name: failures-${{runner.os}}
+          path: ${{steps.parse-files.outputs.failures}}
