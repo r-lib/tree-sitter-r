@@ -1,13 +1,13 @@
 #include <string.h>  // memcpy()
 #include <wctype.h>  // iswspace()
 
+#include "tree_sitter/array.h"
 #include "tree_sitter/parser.h"
 
-// Uncomment if debugging for extra output during parsing. Note that we can't
-// use `vprintf()` for print debugging in WASM or on CRAN for the R package!
-// #define TREE_SITTER_R_DEBUG
-
-#ifdef TREE_SITTER_R_DEBUG
+// NOTE: print debugging cannot be used in WASM or on CRAN for the R package
+#if defined(NDEBUG) || defined(__wasm__) || defined(USING_R)
+#define debug_print(...)
+#else
 #include <stdarg.h>  // va_list, va_start(), va_end()
 #include <stdio.h>   // vprintf()
 
@@ -17,8 +17,6 @@ static inline void debug_print(const char* fmt, ...) {
   vprintf(fmt, args);
   va_end(args);
 }
-#else
-#define debug_print(...)
 #endif
 
 // NOTE: libFuzzer produces random input which results in too many logs
@@ -43,18 +41,6 @@ enum TokenType {
   CLOSE_BRACKET2
 };
 
-// ---------------------------------------------------------------------------------------
-// Temporary Stack structure until we can use the `<tree_sitter/array.h>` header from
-// tree sitter 1.0.0. Inspired from tree-sitter-julia.
-
-typedef char Scope;
-
-const Scope SCOPE_TOP_LEVEL = 0;
-const Scope SCOPE_BRACE = 1;
-const Scope SCOPE_PAREN = 2;
-const Scope SCOPE_BRACKET = 3;
-const Scope SCOPE_BRACKET2 = 4;
-
 // A `Stack` data structure for tracking the current `Scope`
 //
 // `SCOPE_TOP_LEVEL` is never actually pushed onto the stack. It is returned from
@@ -70,58 +56,55 @@ const Scope SCOPE_BRACKET2 = 4;
 // 1) A deserialization call restoring state from a previous serialization (len > 0).
 // 2) A deserialization call when there wasn't a previous serialization (len = 0), where
 //    we'd have to repush an initial `SCOPE_TOP_LEVEL`.
-typedef struct {
-  Scope* arr;
-  unsigned len;
-} Stack;
+
+typedef enum {
+  SCOPE_TOP_LEVEL = 0,
+  SCOPE_BRACE = 1,
+  SCOPE_PAREN = 2,
+  SCOPE_BRACKET = 3,
+  SCOPE_BRACKET2 = 4,
+} Scope;
+
+typedef Array(Scope) Stack;
 
 static Stack* stack_new(void) {
-  Scope* arr = malloc(TREE_SITTER_SERIALIZATION_BUFFER_SIZE);
-  if (arr == NULL) {
-    debug_print("`stack_new()` failed. Can't allocate scope array.");
-    return NULL;
-  }
-
-  Stack* stack = malloc(sizeof(Stack));
+  Stack* stack = ts_malloc(sizeof(Stack));
   if (stack == NULL) {
     debug_print("`stack_new()` failed. Can't allocate stack.");
     return NULL;
   }
 
-  stack->arr = arr;
-  stack->len = 0;
+  array_init(stack);
   return stack;
 }
 
 static void stack_free(Stack* stack) {
-  free(stack->arr);
-  free(stack);
+  array_delete(stack);
+  ts_free(stack);
 }
 
 static bool stack_push(Stack* stack, Scope scope) {
-  if (stack->len >= TREE_SITTER_SERIALIZATION_BUFFER_SIZE) {
+  if (stack->size >= TREE_SITTER_SERIALIZATION_BUFFER_SIZE) {
     // Return `false` so `scan()` can return `false` and refuse to handle the token.
     // Should only ever happen in pathological cases (i.e. 1025 unmatched opening braces).
     debug_print("`stack_push()` failed. Stack is at maximum capacity.\n");
     return false;
   }
 
-  stack->arr[stack->len] = scope;
-  stack->len++;
-
+  array_push(stack, scope);
   return true;
 }
 
 static Scope stack_peek(Stack* stack) {
-  if (stack->len == 0) {
+  if (stack->size == 0) {
     return SCOPE_TOP_LEVEL;
   } else {
-    return stack->arr[stack->len - 1];
+    return *array_back(stack);
   }
 }
 
 static bool stack_pop(Stack* stack, Scope scope) {
-  if (stack->len == 0) {
+  if (stack->size == 0) {
     // Return `false` so `scan()` can return `false` and refuse to handle the token
 #ifndef _HAS_SANITIZER
     debug_print("`stack_pop()` failed. Stack is empty, nothing to pop.\n");
@@ -129,14 +112,13 @@ static bool stack_pop(Stack* stack, Scope scope) {
     return false;
   }
 
-  Scope x = stack_peek(stack);
-  stack->len--;
+  Scope x = array_pop(stack);
 
   if (x != scope) {
     // Return `false` so `scan()` can return `false` and refuse to handle the token
 #ifndef _HAS_SANITIZER
     debug_print(
-        "`stack_pop()` failed. Actual scope '%c' does not match expected scope '%c'.\n",
+        "`stack_pop()` failed. Actual scope %d does not match expected scope %d.\n",
         x,
         scope
     );
@@ -148,18 +130,18 @@ static bool stack_pop(Stack* stack, Scope scope) {
 }
 
 static unsigned stack_serialize(Stack* stack, char* buffer) {
-  unsigned len = stack->len;
+  unsigned len = stack->size;
   if (len > 0) {
-    memcpy(buffer, stack->arr, len);
+    memcpy(buffer, stack->contents, len);
   }
   return len;
 }
 
 static void stack_deserialize(Stack* stack, const char* buffer, unsigned len) {
   if (len > 0) {
-    memcpy(stack->arr, buffer, len);
+    memcpy(stack->contents, buffer, len);
   }
-  stack->len = len;
+  stack->size = len;
 }
 
 static inline bool stack_exists(void* stack) {
