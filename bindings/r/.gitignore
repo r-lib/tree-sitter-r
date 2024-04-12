@@ -2,3 +2,5 @@ compile_commands.json
 .cache/
 src/parser.c
 src/scanner.c
+src/tree_sitter/alloc.h
+src/tree_sitter/array.h

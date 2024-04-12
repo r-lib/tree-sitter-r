@@ -21,6 +21,13 @@ static inline void debug_print(const char* fmt, ...) {
 #define debug_print(...)
 #endif
 
+// NOTE: libFuzzer produces random input which results in too many logs
+#if defined(__has_feature)
+#if __has_feature(address_sanitizer)
+#define _HAS_SANITIZER
+#endif
+#endif
+
 enum TokenType {
   NEWLINE,
   SEMICOLON,
@@ -116,7 +123,9 @@ static Scope stack_peek(Stack* stack) {
 static bool stack_pop(Stack* stack, Scope scope) {
   if (stack->len == 0) {
     // Return `false` so `scan()` can return `false` and refuse to handle the token
+#ifndef _HAS_SANITIZER
     debug_print("`stack_pop()` failed. Stack is empty, nothing to pop.\n");
+#endif
     return false;
   }
 
@@ -125,11 +134,13 @@ static bool stack_pop(Stack* stack, Scope scope) {
 
   if (x != scope) {
     // Return `false` so `scan()` can return `false` and refuse to handle the token
+#ifndef _HAS_SANITIZER
     debug_print(
         "`stack_pop()` failed. Actual scope '%c' does not match expected scope '%c'.\n",
         x,
         scope
     );
+#endif
     return false;
   }
 
