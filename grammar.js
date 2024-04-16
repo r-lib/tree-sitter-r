@@ -153,7 +153,7 @@ module.exports = grammar({
 
   extras: $ => [
     $.comment,
-    /\s/
+    $._whitespace
   ],
 
   externals: $ => [
@@ -182,7 +182,7 @@ module.exports = grammar({
     function_definition: $ => withPrec(PREC.FUNCTION_OR_LOOP, seq(
       field("name", choice("\\", "function")),
       field("parameters", $.parameters),
-      repeat($._newline),
+      repeat(choice($._newline, $._whitespace)),
       optional(field("body", $._expression))
     )),
 
@@ -216,13 +216,14 @@ module.exports = grammar({
     // Control flow.
     if_statement: $ => withPrec(PREC.IF, seq(
       "if",
-      repeat($._newline),
+      repeat(choice($._newline, $._whitespace)),
       $._open_parenthesis,
       field("condition", $._expression),
       $._close_parenthesis,
-      repeat($._newline),
+      repeat(choice($._newline, $._whitespace)),
       field("consequence", $._expression),
-      // No `repeat($._newline)` here. Specially handled in the scanner instead.
+      // No `repeat(choice($._newline, $._whitespace))` here.
+      // Specially handled in the scanner instead.
       optional(seq(
         $._else, 
         field("alternative", $._expression)
@@ -231,29 +232,29 @@ module.exports = grammar({
 
     for_statement: $ => withPrec(PREC.FUNCTION_OR_LOOP, seq(
       "for",
-      repeat($._newline),
+      repeat(choice($._newline, $._whitespace)),
       $._open_parenthesis,
       field("variable", $.identifier),
       "in",
       field("sequence", $._expression),
       $._close_parenthesis,
-      repeat($._newline),
+      repeat(choice($._newline, $._whitespace)),
       optional(field("body", $._expression))
     )),
 
     while_statement: $ => withPrec(PREC.FUNCTION_OR_LOOP, seq(
       "while",
-      repeat($._newline),
+      repeat(choice($._newline, $._whitespace)),
       $._open_parenthesis,
       field("condition", $._expression),
       $._close_parenthesis,
-      repeat($._newline),
+      repeat(choice($._newline, $._whitespace)),
       optional(field("body", $._expression))
     )),
 
     repeat_statement: $ => withPrec(PREC.FUNCTION_OR_LOOP, seq(
       "repeat",
-      repeat($._newline),
+      repeat(choice($._newline, $._whitespace)),
       optional(field("body", $._expression))
     )),
 
@@ -347,7 +348,7 @@ module.exports = grammar({
 
       return choice(...table.map(([operator, prec]) => prec.ASSOC(prec.RANK, seq(
         field("operator", operator), 
-        repeat($._newline),
+        repeat(choice($._newline, $._whitespace)),
         field("rhs", $._expression)
       ))))
     },
@@ -402,7 +403,7 @@ module.exports = grammar({
       return choice(...table.map(([operator, prec]) => prec.ASSOC(prec.RANK, seq(
         field("lhs", $._expression), 
         field("operator", operator), 
-        repeat($._newline), 
+        repeat(choice($._newline, $._whitespace)),
         field("rhs", $._expression)
       ))))
     },
@@ -417,7 +418,7 @@ module.exports = grammar({
       return choice(...table.map(([operator, prec]) => prec.ASSOC(prec.RANK, seq(
         field("lhs", $._expression), 
         field("operator", operator), 
-        repeat($._newline), 
+        repeat(choice($._newline, $._whitespace)),
         optional(field("rhs", $._string_or_identifier))
       ))))
     },
@@ -535,6 +536,8 @@ module.exports = grammar({
 
     // Comments.
     comment: $ => /#.*/,
+
+    _whitespace: $ => /\s/,
 
     // Commas. We include these in the AST so we can figure out the
     // argument call position. This is necessary given how R tolerates
