@@ -9,3 +9,9 @@ fn <- function() {
   # ^ reference.call
   #        ^ reference.call
 }
+
+pkg::exported(mtcars, x = 1)
+#      ^ reference.call
+
+pkg:::internal(mtcars, x = 1)
+#      ^ reference.call

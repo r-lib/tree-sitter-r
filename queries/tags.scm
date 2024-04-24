@@ -13,3 +13,9 @@
 (call
     function: (identifier) @name
 ) @reference.call
+
+(call
+    function: (namespace_operator
+        rhs: (identifier) @name
+    )
+) @reference.call
