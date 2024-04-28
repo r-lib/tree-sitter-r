@@ -2275,7 +2275,7 @@
               },
               {
                 "type": "PATTERN",
-                "value": "u{[0-9a-fA-F]+}"
+                "value": "u\\{[0-9a-fA-F]+\\}"
               }
             ]
           }
@@ -2313,4 +2313,3 @@
   "inline": [],
   "supertypes": []
 }
-
