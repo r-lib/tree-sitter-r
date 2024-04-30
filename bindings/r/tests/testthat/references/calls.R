@@ -77,3 +77,10 @@ f(,y=)
 1
 2
 }
+
+# https://github.com/r-lib/tree-sitter-r/issues/44
+{
+  1
+2
+  3
+}
