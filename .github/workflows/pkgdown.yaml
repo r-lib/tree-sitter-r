@@ -47,5 +47,4 @@ jobs:
         with:
           clean: false
           branch: gh-pages
-          folder: docs
-        working-directory: bindings/r
+          folder: bindings/r/docs
