@@ -3,3 +3,4 @@
 ^.clang-format$
 ^compile_commands.json$
 ^.vscode$
+^bootstrap.R$

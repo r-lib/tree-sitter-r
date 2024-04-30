@@ -1,21 +1,26 @@
 # Assumes that you have forked tree-sitter-r in its entirety, but your
 # current working directory is `tree-sitter-r/bindings/r/`.
-update <- function() {
-  header <- normalizePath(file.path("..", "..", "src", "tree_sitter", "parser.h"), mustWork = TRUE)
-  parser <- normalizePath(file.path("..", "..", "src", "parser.c"), mustWork = TRUE)
-  scanner <- normalizePath(file.path("..", "..", "src", "scanner.c"), mustWork = TRUE)
+sync <- function() {
+  upstream <- normalizePath(file.path("..", "..", "src"), mustWork = TRUE)
 
-  to_header <- file.path(".", "src", "tree_sitter", "parser.h")
-  to_parser <- file.path(".", "src", "parser.c")
-  to_scanner <- file.path(".", "src", "scanner.c")
+  header <- normalizePath(file.path(upstream, "tree_sitter", "parser.h"), mustWork = TRUE)
+  parser <- normalizePath(file.path(upstream, "parser.c"), mustWork = TRUE)
+  scanner <- normalizePath(file.path(upstream, "scanner.c"), mustWork = TRUE)
 
-  if (!dir.exists(file.path(".", "src"))) {
+  dir_src <- file.path(".", "src")
+  dir_tree_sitter <- file.path(dir_src, "tree_sitter")
+
+  to_header <- file.path(dir_tree_sitter, "parser.h")
+  to_parser <- file.path(dir_src, "parser.c")
+  to_scanner <- file.path(dir_src, "scanner.c")
+
+  if (!dir.exists(dir_src)) {
     message("Creating `src/` directory")
-    dir.create(file.path(".", "src"))
+    dir.create(dir_src)
   }
-  if (!dir.exists(file.path(".", "src", "tree_sitter"))) {
+  if (!dir.exists(dir_tree_sitter)) {
     message("Creating `src/tree_sitter/` directory")
-    dir.create(file.path(".", "src", "tree_sitter"))
+    dir.create(dir_tree_sitter)
   }
 
   header_needs_update <- needs_update(header, to_header)
@@ -37,7 +42,9 @@ update <- function() {
   }
 
   if (header_needs_update || parser_needs_update || scanner_needs_update) {
-    message("Run `load_all()` again to recompile with updated source files.")
+    message("If using `load_all()`, call it again to recompile with updated source files.")
+  } else {
+    message("All upstream tree-sitter files were up to date.")
   }
 
   invisible()
@@ -54,3 +61,6 @@ needs_update <- function(from, to) {
 
   isTRUE(from_modified > to_modified)
 }
+
+# Run it!
+sync()
