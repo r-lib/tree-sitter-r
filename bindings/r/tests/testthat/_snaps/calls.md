@@ -740,4 +740,26 @@
       2
       }
       
+      S-Expression
+      (comment [(19, 0), (19, 50)])
+      
+      Text
+      # https://github.com/r-lib/tree-sitter-r/issues/44
+      
+      S-Expression
+      (braced_expression [(20, 0), (24, 1)]
+        "{" [(20, 0), (20, 1)]
+        body: (float [(21, 2), (21, 3)])
+        body: (float [(22, 0), (22, 1)])
+        body: (float [(23, 2), (23, 3)])
+        "}" [(24, 0), (24, 1)]
+      )
+      
+      Text
+      {
+        1
+      2
+        3
+      }
+      
 
