@@ -30,6 +30,12 @@ jobs:
         with:
           use-public-rspm: true
 
+      - name: Bootstrap
+        run: |
+          source("bootstrap.R")
+        shell: Rscript {0}
+        working-directory: bindings/r
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           working-directory: bindings/r
