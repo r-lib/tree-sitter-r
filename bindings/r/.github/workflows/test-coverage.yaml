@@ -23,6 +23,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
+          working-directory: bindings/r
           extra-packages: any::covr
           needs: coverage
 
@@ -34,6 +35,7 @@ jobs:
             install_path = file.path(normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/"), "package")
           )
         shell: Rscript {0}
+        working-directory: bindings/r
 
       - name: Show testthat output
         if: always()
