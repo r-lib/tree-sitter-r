@@ -28,7 +28,9 @@
         "R",
         "r"
       ],
-      "first-line-regex": "#!.*\\bRscript$"
+      "first-line-regex": "#!.*\\bRscript$",
+      "highlights": "queries/highlights.scm",
+      "tags": "queries/tags.scm"
     }
   ]
 }
