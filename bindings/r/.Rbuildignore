@@ -3,3 +3,7 @@
 ^.clang-format$
 ^compile_commands.json$
 ^.vscode$
+^bootstrap.R$
+^\.github$
+^codecov\.yml$
+^README\.Rmd$
