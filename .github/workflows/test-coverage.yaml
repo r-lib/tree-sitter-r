@@ -27,6 +27,12 @@ jobs:
           extra-packages: any::covr
           needs: coverage
 
+      - name: Bootstrap
+        run: |
+          source("bootstrap.R")
+        shell: Rscript {0}
+        working-directory: bindings/r
+
       - name: Test coverage
         run: |
           covr::codecov(
