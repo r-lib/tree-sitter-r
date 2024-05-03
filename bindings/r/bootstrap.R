@@ -63,6 +63,7 @@ sync_with_upstream_one <- function(upstream, destination) {
   if (update) {
     message(sprintf("`%s` is out of date, updating.", shortname))
     file.copy(upstream, destination, overwrite = TRUE)
+    patch_pragmas(destination)
   }
 
   update
@@ -102,6 +103,13 @@ needs_update <- function(upstream, destination) {
   destination_modified <- file.info(destination)$mtime
 
   isTRUE(upstream_modified > destination_modified)
+}
+
+# For CRAN
+patch_pragmas <- function(path) {
+  lines <- readLines(path)
+  lines <- gsub("#pragma", "# pragma", lines)
+  writeLines(lines, path)
 }
 
 # Run it!
