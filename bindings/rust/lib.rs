@@ -50,4 +50,32 @@ mod tests {
             .set_language(&super::language())
             .expect("Error loading R language");
     }
+
+    // See https://github.com/tree-sitter/tree-sitter/issues/2767
+    #[test]
+    fn test_tree_cursor() {
+        let mut parser = tree_sitter::Parser::new();
+        parser.set_language(&super::language()).unwrap();
+
+        // This is an `identifier`
+        let text = "foo";
+
+        let tree = parser.parse(text, None).unwrap();
+
+        let mut cursor = tree.walk();
+        assert_eq!(cursor.node().kind(), "program");
+
+        // program -> identifier
+        assert!(cursor.goto_first_child());
+        assert_eq!(cursor.node().kind(), "identifier");
+        assert_eq!(cursor.node().utf8_text(text.as_bytes()).unwrap(), "foo");
+
+        assert!(!cursor.goto_first_child());
+        assert_eq!(cursor.node().kind(), "identifier");
+        assert_eq!(cursor.node().utf8_text(text.as_bytes()).unwrap(), "foo");
+
+        assert!(!cursor.goto_last_child());
+        assert_eq!(cursor.node().kind(), "identifier");
+        assert_eq!(cursor.node().utf8_text(text.as_bytes()).unwrap(), "foo");
+    }
 }
