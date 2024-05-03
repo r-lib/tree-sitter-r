@@ -1,12 +1,17 @@
 {
   "name": "tree-sitter-r",
   "version": "0.20.1",
+  "license": "MIT",
   "description": "R grammar for tree-sitter",
+  "repository": "github:r-lib/tree-sitter-r",
   "main": "bindings/node",
   "types": "bindings/node",
+  "author": "Kevin Ushey <kevin@posit.co>",
   "keywords": [
-    "parser",
-    "lexer"
+    "incremental",
+    "parsing",
+    "tree-sitter",
+    "r"
   ],
   "files": [
     "grammar.js",
@@ -16,14 +21,12 @@
     "queries/*",
     "src/**"
   ],
-  "author": "Kevin Ushey",
-  "license": "MIT",
   "dependencies": {
-    "node-addon-api": "^7.1.0",
+    "node-addon-api": "^8.0.0",
     "node-gyp-build": "^4.8.0"
   },
   "peerDependencies": {
-    "tree-sitter": "^0.21.0"
+    "tree-sitter": "^0.21.1"
   },
   "peerDependenciesMeta": {
     "tree_sitter": {
@@ -31,13 +34,13 @@
     }
   },
   "devDependencies": {
-    "tree-sitter": "^0.20",
-    "tree-sitter-cli": "^0.20",
+    "tree-sitter-cli": "^0.22.2",
     "prebuildify": "^6.0.0"
   },
   "scripts": {
-    "build": "tree-sitter generate && tree-sitter build-wasm",
-    "playground": "tree-sitter generate && tree-sitter build-wasm && tree-sitter playground",
+    "build": "tree-sitter generate --no-bindings",
+    "prestart": "tree-sitter build --wasm -o tree-sitter-r.wasm",
+    "start": "tree-sitter playground",
     "test": "tree-sitter test",
     "install": "node-gyp-build",
     "prebuildify": "prebuildify --napi --strip"
@@ -49,6 +52,7 @@
         "R",
         "r"
       ],
+      "injection-regex": "^[Rr]$",
       "first-line-regex": "#!.*\\bRscript$",
       "highlights": "queries/highlights.scm",
       "tags": "queries/tags.scm"
