@@ -8,6 +8,9 @@ fn main() {
         .flag_if_supported("-Wno-unused-but-set-variable")
         .flag_if_supported("-Wno-trigraphs");
 
+    #[cfg(target_env = "msvc")]
+    c_config.flag("-utf-8");
+
     let parser_path = src_dir.join("parser.c");
     let scanner_path = src_dir.join("scanner.c");
     println!("cargo:rerun-if-changed={}", parser_path.to_str().unwrap());
