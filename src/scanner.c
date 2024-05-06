@@ -1,6 +1,7 @@
 #include <string.h>  // memcpy()
 #include <wctype.h>  // iswspace()
 
+#include "tree_sitter/alloc.h"
 #include "tree_sitter/parser.h"
 
 // Uncomment if debugging for extra output during parsing. Note that we can't
@@ -69,13 +70,13 @@ typedef struct {
 } Stack;
 
 static Stack* stack_new(void) {
-  Scope* arr = malloc(TREE_SITTER_SERIALIZATION_BUFFER_SIZE);
+  Scope* arr = ts_malloc(TREE_SITTER_SERIALIZATION_BUFFER_SIZE);
   if (arr == NULL) {
     debug_print("`stack_new()` failed. Can't allocate scope array.");
     return NULL;
   }
 
-  Stack* stack = malloc(sizeof(Stack));
+  Stack* stack = ts_malloc(sizeof(Stack));
   if (stack == NULL) {
     debug_print("`stack_new()` failed. Can't allocate stack.");
     return NULL;
@@ -87,8 +88,8 @@ static Stack* stack_new(void) {
 }
 
 static void stack_free(Stack* stack) {
-  free(stack->arr);
-  free(stack);
+  ts_free(stack->arr);
+  ts_free(stack);
 }
 
 static bool stack_push(Stack* stack, Scope scope) {
