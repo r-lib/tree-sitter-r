@@ -21,6 +21,10 @@ dist/
 *.egg-info
 *.whl
 
+# R artifacts
+*.Rcheck/
+*.tar.gz
+
 # C artifacts
 *.a
 *.so
