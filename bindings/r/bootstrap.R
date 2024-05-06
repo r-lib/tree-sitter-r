@@ -1,3 +1,5 @@
+#!/usr/bin/env Rscript
+
 # Update this list if more tree-sitter files are required
 files <- c(
   file.path("tree_sitter", "alloc.h"),
