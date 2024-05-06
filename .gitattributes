@@ -1,0 +1,17 @@
+* text=auto eol=lf
+
+src/*.json linguist-generated
+src/parser.c linguist-generated
+src/tree_sitter/* linguist-generated
+
+bindings/** linguist-generated
+binding.gyp linguist-generated
+setup.py linguist-generated
+Makefile linguist-generated
+Package.swift linguist-generated
+
+# Exclude `bindings/r` and `bindings/rust` from the set of folders
+# that don't automatically show diffs on GitHub. The diffs here are
+# typically meaningful for us right now.
+bindings/r/** -linguist-generated
+bindings/rust/** -linguist-generated
