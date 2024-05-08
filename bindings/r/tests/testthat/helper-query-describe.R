@@ -1,4 +1,6 @@
 expect_describe_it_captures <- function(parent_desc, desc, captures) {
+  skip_if_not_installed("treesitter")
+  
   # make sure we captured something
   expect_gt(length(captures$node), 0)
 
