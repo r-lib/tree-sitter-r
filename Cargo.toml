@@ -1,7 +1,7 @@
 [package]
 name = "tree-sitter-r"
 description = "R grammar for the tree-sitter parsing library"
-version = "0.19.5"
+version = "0.21.0"
 authors = [
     "Jim Hester <jim.hester@rstudio.com>"
 ]
@@ -23,7 +23,7 @@ include = [
 path = "bindings/rust/lib.rs"
 
 [dependencies]
-tree-sitter = ">= 0.20, < 0.21"
+tree-sitter = "0.21.0"
 
 [build-dependencies]
 cc = "1.0"
