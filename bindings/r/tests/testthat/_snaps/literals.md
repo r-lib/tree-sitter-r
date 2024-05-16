@@ -86,122 +86,6 @@
       foo
       
 
-# strings
-
-    Code
-      node_children_print(node)
-    Output
-      S-Expression
-      (string [(1, 0), (1, 5)])
-      
-      Text
-      "foo"
-      
-      S-Expression
-      (string [(2, 0), (2, 10)])
-      
-      Text
-      "foo\"bar"
-      
-      S-Expression
-      (string [(3, 0), (3, 7)])
-      
-      Text
-      "foo\ "
-      
-      S-Expression
-      (string [(4, 0), (5, 1)])
-      
-      Text
-      "foo\
-      "
-      
-      S-Expression
-      (string [(6, 0), (6, 4)])
-      
-      Text
-      "\""
-      
-      S-Expression
-      (string [(7, 0), (7, 5)])
-      
-      Text
-      'foo'
-      
-      S-Expression
-      (string [(8, 0), (8, 10)])
-      
-      Text
-      'foo\'bar'
-      
-      S-Expression
-      (string [(9, 0), (9, 7)])
-      
-      Text
-      'foo\ '
-      
-      S-Expression
-      (string [(10, 0), (11, 1)])
-      
-      Text
-      'foo\
-      '
-      
-      S-Expression
-      (string [(12, 0), (12, 4)])
-      
-      Text
-      '\''
-      
-      S-Expression
-      (string [(13, 0), (13, 3)])
-      
-      Text
-      "#"
-      
-      S-Expression
-      (string [(14, 0), (14, 3)])
-      
-      Text
-      '#'
-      
-
-# raw strings
-
-    Code
-      node_children_print(node)
-    Output
-      S-Expression
-      (string [(1, 0), (1, 15)])
-      
-      Text
-      r"(raw string)"
-      
-      S-Expression
-      (string [(2, 0), (2, 23)])
-      
-      Text
-      R"{another raw string}"
-      
-      S-Expression
-      (string [(3, 0), (3, 34)])
-      
-      Text
-      R"--[yet another ]- raw string]--"
-      
-      S-Expression
-      (call [(4, 0), (4, 3)]
-        function: (identifier [(4, 0), (4, 1)])
-        arguments: (arguments [(4, 1), (4, 3)]
-          "(" [(4, 1), (4, 2)]
-          ")" [(4, 2), (4, 3)]
-        )
-      )
-      
-      Text
-      r()
-      
-
 # comments
 
     Code
@@ -214,13 +98,21 @@
       # a comment'
       
       S-Expression
-      (string [(3, 0), (3, 17)])
+      (string [(3, 0), (3, 17)]
+        "'" [(3, 0), (3, 1)]
+        content: (string_content [(3, 1), (3, 16)])
+        "'" [(3, 16), (3, 17)]
+      )
       
       Text
       '# not a comment'
       
       S-Expression
-      (string [(6, 0), (7, 22)])
+      (string [(6, 0), (7, 22)]
+        "'" [(6, 0), (6, 1)]
+        content: (string_content [(6, 1), (7, 21)])
+        "'" [(7, 21), (7, 22)]
+      )
       
       Text
       '
