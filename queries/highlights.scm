@@ -12,6 +12,7 @@
 
 ;; Strings
 (string)  @string
+(string (string_content (escape_sequence) @string.escape))
 
 ;; Parameters
 (parameters (parameter name: (identifier) @variable.parameter))
