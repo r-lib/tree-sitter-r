@@ -1067,7 +1067,8 @@ switch(foo,
         value: (float))
       (comma)
       argument: (argument
-        name: (string)
+        name: (string
+          content: (string_content))
         value: (float))
       (comma)
       argument: (argument
@@ -1110,7 +1111,8 @@ foo$bar()$baz[[1]]$bam
     arguments: (arguments))
   (extract_operator
     lhs: (identifier)
-    rhs: (string))
+    rhs: (string
+      content: (string_content)))
   (extract_operator
     lhs: (subset2
       function: (extract_operator
@@ -1163,7 +1165,8 @@ foo@"bar"
     (arguments))
   (extract_operator
     (identifier)
-    (string)))
+    (string
+      (string_content))))
 
 ================================================================================
 Slot No RHS
@@ -1508,7 +1511,8 @@ f(,y=)
     function: (identifier)
     arguments: (arguments
       argument: (argument
-        name: (string))
+        name: (string
+          content: (string_content)))
       (comma)))
   (call
     function: (identifier)
@@ -1723,7 +1727,8 @@ a$b?c
   (binary_operator
     lhs: (extract_operator
       lhs: (identifier)
-      rhs: (string))
+      rhs: (string
+        content: (string_content)))
     rhs: (na))
   (extract_operator
     lhs: (namespace_operator

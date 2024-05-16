@@ -61,7 +61,11 @@
       (extract_operator [(5, 0), (5, 9)]
         lhs: (identifier [(5, 0), (5, 3)])
         operator: "$" [(5, 3), (5, 4)]
-        rhs: (string [(5, 4), (5, 9)])
+        rhs: (string [(5, 4), (5, 9)]
+          "\"" [(5, 4), (5, 5)]
+          content: (string_content [(5, 5), (5, 8)])
+          "\"" [(5, 8), (5, 9)]
+        )
       )
       
       Text
@@ -166,7 +170,11 @@
       (extract_operator [(4, 0), (4, 9)]
         lhs: (identifier [(4, 0), (4, 3)])
         operator: "@" [(4, 3), (4, 4)]
-        rhs: (string [(4, 4), (4, 9)])
+        rhs: (string [(4, 4), (4, 9)]
+          "\"" [(4, 4), (4, 5)]
+          content: (string_content [(4, 5), (4, 8)])
+          "\"" [(4, 8), (4, 9)]
+        )
       )
       
       Text

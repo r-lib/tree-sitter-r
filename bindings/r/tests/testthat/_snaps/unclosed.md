@@ -4,8 +4,12 @@
       node_children_print(node)
     Output
       S-Expression
-      (ERROR [(1, 0), (2, 0)]
-        (ERROR [(1, 0), (2, 0)])
+      (string [(1, 0), (2, 0)]
+        "\"" [(1, 0), (1, 1)]
+        content: (string_content [(1, 1), (2, 0)]
+          (escape_sequence [(1, 1), (1, 3)])
+        )
+        "\"" [(2, 0), (2, 0)]
       )
       
       Text
@@ -19,8 +23,12 @@
       node_children_print(node)
     Output
       S-Expression
-      (ERROR [(1, 0), (3, 0)]
-        (ERROR [(1, 0), (3, 0)])
+      (string [(1, 0), (3, 0)]
+        "'" [(1, 0), (1, 1)]
+        content: (string_content [(1, 1), (3, 0)]
+          (escape_sequence [(1, 1), (1, 3)])
+        )
+        "'" [(3, 0), (3, 0)]
       )
       
       Text

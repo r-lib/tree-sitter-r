@@ -432,7 +432,11 @@
         lhs: (extract_operator [(1, 0), (1, 5)]
           lhs: (identifier [(1, 0), (1, 1)])
           operator: "$" [(1, 1), (1, 2)]
-          rhs: (string [(1, 2), (1, 5)])
+          rhs: (string [(1, 2), (1, 5)]
+            "\"" [(1, 2), (1, 3)]
+            content: (string_content [(1, 3), (1, 4)])
+            "\"" [(1, 4), (1, 5)]
+          )
         )
         operator: "^" [(1, 5), (1, 6)]
         rhs: (na [(1, 6), (1, 8)]
