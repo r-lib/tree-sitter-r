@@ -2468,24 +2468,6 @@
       "type": "PATTERN",
       "value": "`((?:\\\\(.|\\n))|[^`\\\\])*`"
     },
-    "dot_dot_i": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PATTERN",
-        "value": "[.][.]\\d+"
-      }
-    },
-    "dots": {
-      "type": "TOKEN",
-      "content": {
-        "type": "STRING",
-        "value": "..."
-      }
-    },
-    "return": {
-      "type": "STRING",
-      "value": "return"
-    },
     "next": {
       "type": "STRING",
       "value": "next"
@@ -2538,6 +2520,17 @@
           "value": "NA_character_"
         }
       ]
+    },
+    "dots": {
+      "type": "STRING",
+      "value": "..."
+    },
+    "dot_dot_i": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[.][.]\\d+"
+      }
     },
     "_expression": {
       "type": "CHOICE",
@@ -2620,18 +2613,6 @@
         },
         {
           "type": "SYMBOL",
-          "name": "dot_dot_i"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "dots"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "return"
-        },
-        {
-          "type": "SYMBOL",
           "name": "next"
         },
         {
@@ -2661,6 +2642,14 @@
         {
           "type": "SYMBOL",
           "name": "na"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "dots"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "dot_dot_i"
         },
         {
           "type": "SYMBOL",

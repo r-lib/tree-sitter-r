@@ -73,7 +73,7 @@
           ")" [(7, 13), (7, 14)]
         )
         body: (call [(7, 15), (7, 24)]
-          function: (return [(7, 15), (7, 21)])
+          function: (identifier [(7, 15), (7, 21)])
           arguments: (arguments [(7, 21), (7, 24)]
             "(" [(7, 21), (7, 22)]
             argument: (argument [(7, 22), (7, 23)]
