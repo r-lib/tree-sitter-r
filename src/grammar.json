@@ -2409,7 +2409,7 @@
             "members": [
               {
                 "type": "PATTERN",
-                "value": "[^0-7xuU]"
+                "value": "[^0-9xuU]"
               },
               {
                 "type": "PATTERN",
