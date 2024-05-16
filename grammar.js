@@ -505,12 +505,18 @@ module.exports = grammar({
     )),
 
     // Identifiers.
+    // NOTE: `_` isn't a valid way to start an R identifier, but we are a little
+    // lax here and parse it anyways. One reason is because want to support a lone `_` as
+    // the pipe placeholder identifier. It could be included as a separate `"_"` choice,
+    // but then `_foo` parses as two identifiers: `_` and `foo`, making it impossible to
+    // check that `_foo` is an invalid identifier. It seems simpler to parse `_foo` as a
+    // single identifier, and then let downstream consumers do further checks on the
+    // validity as needed (#71).
     identifier: $ => choice(
-      token("_"), 
       $._identifier, 
       $._quoted_identifier
     ),
-    _identifier: $ => /[\p{XID_Start}.][\p{XID_Continue}.]*/,
+    _identifier: $ => /[\p{XID_Start}._][\p{XID_Continue}.]*/,
     _quoted_identifier: $ => /`((?:\\(.|\n))|[^`\\])*`/,
 
     // Keywords.

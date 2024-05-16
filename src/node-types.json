@@ -3454,10 +3454,6 @@
     "named": false
   },
   {
-    "type": "_",
-    "named": false
-  },
-  {
     "type": "break",
     "named": true
   },

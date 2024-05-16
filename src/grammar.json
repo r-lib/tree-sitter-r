@@ -2468,13 +2468,6 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "TOKEN",
-          "content": {
-            "type": "STRING",
-            "value": "_"
-          }
-        },
-        {
           "type": "SYMBOL",
           "name": "_identifier"
         },
@@ -2486,7 +2479,7 @@
     },
     "_identifier": {
       "type": "PATTERN",
-      "value": "[\\p{XID_Start}.][\\p{XID_Continue}.]*"
+      "value": "[\\p{XID_Start}._][\\p{XID_Continue}.]*"
     },
     "_quoted_identifier": {
       "type": "PATTERN",
