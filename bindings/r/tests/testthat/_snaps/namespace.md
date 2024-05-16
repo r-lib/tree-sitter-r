@@ -30,11 +30,11 @@
           rhs: (identifier [(3, 5), (3, 8)])
         )
         arguments: (arguments [(3, 8), (3, 11)]
-          "(" [(3, 8), (3, 9)]
+          open: "(" [(3, 8), (3, 9)]
           argument: (argument [(3, 9), (3, 10)]
             value: (float [(3, 9), (3, 10)])
           )
-          ")" [(3, 10), (3, 11)]
+          close: ")" [(3, 10), (3, 11)]
         )
       )
       
@@ -74,11 +74,11 @@
           rhs: (identifier [(3, 6), (3, 9)])
         )
         arguments: (arguments [(3, 9), (3, 12)]
-          "(" [(3, 9), (3, 10)]
+          open: "(" [(3, 9), (3, 10)]
           argument: (argument [(3, 10), (3, 11)]
             value: (float [(3, 10), (3, 11)])
           )
-          ")" [(3, 11), (3, 12)]
+          close: ")" [(3, 11), (3, 12)]
         )
       )
       
@@ -119,14 +119,14 @@
       (call [(5, 0), (5, 16)]
         function: (identifier [(5, 0), (5, 7)])
         arguments: (arguments [(5, 7), (5, 16)]
-          "(" [(5, 7), (5, 8)]
+          open: "(" [(5, 7), (5, 8)]
           argument: (argument [(5, 8), (5, 15)]
             value: (namespace_operator [(5, 8), (5, 15)]
               lhs: (identifier [(5, 8), (5, 13)])
               operator: "::" [(5, 13), (5, 15)]
             )
           )
-          ")" [(5, 15), (5, 16)]
+          close: ")" [(5, 15), (5, 16)]
         )
       )
       
@@ -137,8 +137,8 @@
       (call [(7, 0), (7, 9)]
         function: (identifier [(7, 0), (7, 7)])
         arguments: (arguments [(7, 7), (7, 9)]
-          "(" [(7, 7), (7, 8)]
-          ")" [(7, 8), (7, 9)]
+          open: "(" [(7, 7), (7, 8)]
+          close: ")" [(7, 8), (7, 9)]
         )
       )
       

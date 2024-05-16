@@ -7,11 +7,11 @@
       (subset [(1, 0), (1, 8)]
         function: (identifier [(1, 0), (1, 3)])
         arguments: (arguments [(1, 3), (1, 8)]
-          "[" [(1, 3), (1, 4)]
+          open: "[" [(1, 3), (1, 4)]
           argument: (argument [(1, 4), (1, 7)]
             value: (identifier [(1, 4), (1, 7)])
           )
-          "]" [(1, 7), (1, 8)]
+          close: "]" [(1, 7), (1, 8)]
         )
       )
       
@@ -22,7 +22,7 @@
       (subset [(2, 0), (2, 9)]
         function: (identifier [(2, 0), (2, 3)])
         arguments: (arguments [(2, 3), (2, 9)]
-          "[" [(2, 3), (2, 4)]
+          open: "[" [(2, 3), (2, 4)]
           argument: (argument [(2, 4), (2, 5)]
             value: (float [(2, 4), (2, 5)])
           )
@@ -30,7 +30,7 @@
           argument: (argument [(2, 7), (2, 8)]
             value: (float [(2, 7), (2, 8)])
           )
-          "]" [(2, 8), (2, 9)]
+          close: "]" [(2, 8), (2, 9)]
         )
       )
       
@@ -41,12 +41,12 @@
       (subset [(3, 0), (3, 8)]
         function: (identifier [(3, 0), (3, 3)])
         arguments: (arguments [(3, 3), (3, 8)]
-          "[" [(3, 3), (3, 4)]
+          open: "[" [(3, 3), (3, 4)]
           argument: (argument [(3, 4), (3, 5)]
             value: (float [(3, 4), (3, 5)])
           )
           (comma [(3, 5), (3, 6)])
-          "]" [(3, 7), (3, 8)]
+          close: "]" [(3, 7), (3, 8)]
         )
       )
       
@@ -57,13 +57,13 @@
       (subset [(4, 0), (4, 9)]
         function: (identifier [(4, 0), (4, 3)])
         arguments: (arguments [(4, 3), (4, 9)]
-          "[" [(4, 3), (4, 4)]
+          open: "[" [(4, 3), (4, 4)]
           argument: (argument [(4, 4), (4, 5)]
             value: (float [(4, 4), (4, 5)])
           )
           (comma [(4, 5), (4, 6)])
           (comma [(4, 6), (4, 7)])
-          "]" [(4, 8), (4, 9)]
+          close: "]" [(4, 8), (4, 9)]
         )
       )
       
@@ -74,7 +74,7 @@
       (subset [(5, 0), (5, 9)]
         function: (identifier [(5, 0), (5, 3)])
         arguments: (arguments [(5, 3), (5, 9)]
-          "[" [(5, 3), (5, 4)]
+          open: "[" [(5, 3), (5, 4)]
           argument: (argument [(5, 4), (5, 5)]
             value: (float [(5, 4), (5, 5)])
           )
@@ -83,7 +83,7 @@
           argument: (argument [(5, 7), (5, 8)]
             value: (float [(5, 7), (5, 8)])
           )
-          "]" [(5, 8), (5, 9)]
+          close: "]" [(5, 8), (5, 9)]
         )
       )
       
@@ -94,7 +94,7 @@
       (subset [(6, 0), (6, 15)]
         function: (identifier [(6, 0), (6, 3)])
         arguments: (arguments [(6, 3), (6, 15)]
-          "[" [(6, 3), (6, 4)]
+          open: "[" [(6, 3), (6, 4)]
           argument: (argument [(6, 4), (6, 7)]
             name: (identifier [(6, 4), (6, 5)])
             "=" [(6, 5), (6, 6)]
@@ -111,7 +111,7 @@
           argument: (argument [(6, 13), (6, 14)]
             value: (float [(6, 13), (6, 14)])
           )
-          "]" [(6, 14), (6, 15)]
+          close: "]" [(6, 14), (6, 15)]
         )
       )
       
@@ -122,8 +122,8 @@
       (subset [(7, 0), (7, 5)]
         function: (identifier [(7, 0), (7, 3)])
         arguments: (arguments [(7, 3), (7, 5)]
-          "[" [(7, 3), (7, 4)]
-          "]" [(7, 4), (7, 5)]
+          open: "[" [(7, 3), (7, 4)]
+          close: "]" [(7, 4), (7, 5)]
         )
       )
       
@@ -140,11 +140,11 @@
       (subset2 [(1, 0), (1, 8)]
         function: (identifier [(1, 0), (1, 3)])
         arguments: (arguments [(1, 3), (1, 8)]
-          "[[" [(1, 3), (1, 5)]
+          open: "[[" [(1, 3), (1, 5)]
           argument: (argument [(1, 5), (1, 6)]
             value: (identifier [(1, 5), (1, 6)])
           )
-          "]]" [(1, 6), (1, 8)]
+          close: "]]" [(1, 6), (1, 8)]
         )
       )
       
@@ -155,7 +155,7 @@
       (subset2 [(2, 0), (2, 11)]
         function: (identifier [(2, 0), (2, 3)])
         arguments: (arguments [(2, 3), (2, 11)]
-          "[[" [(2, 3), (2, 5)]
+          open: "[[" [(2, 3), (2, 5)]
           argument: (argument [(2, 5), (2, 6)]
             value: (identifier [(2, 5), (2, 6)])
           )
@@ -163,7 +163,7 @@
           argument: (argument [(2, 8), (2, 9)]
             value: (identifier [(2, 8), (2, 9)])
           )
-          "]]" [(2, 9), (2, 11)]
+          close: "]]" [(2, 9), (2, 11)]
         )
       )
       
@@ -174,12 +174,12 @@
       (subset2 [(3, 0), (3, 9)]
         function: (identifier [(3, 0), (3, 3)])
         arguments: (arguments [(3, 3), (3, 9)]
-          "[[" [(3, 3), (3, 5)]
+          open: "[[" [(3, 3), (3, 5)]
           argument: (argument [(3, 5), (3, 6)]
             value: (identifier [(3, 5), (3, 6)])
           )
           (comma [(3, 6), (3, 7)])
-          "]]" [(3, 7), (3, 9)]
+          close: "]]" [(3, 7), (3, 9)]
         )
       )
       
@@ -190,13 +190,13 @@
       (subset2 [(4, 0), (4, 10)]
         function: (identifier [(4, 0), (4, 3)])
         arguments: (arguments [(4, 3), (4, 10)]
-          "[[" [(4, 3), (4, 5)]
+          open: "[[" [(4, 3), (4, 5)]
           argument: (argument [(4, 5), (4, 6)]
             value: (identifier [(4, 5), (4, 6)])
           )
           (comma [(4, 6), (4, 7)])
           (comma [(4, 7), (4, 8)])
-          "]]" [(4, 8), (4, 10)]
+          close: "]]" [(4, 8), (4, 10)]
         )
       )
       
@@ -207,7 +207,7 @@
       (subset2 [(5, 0), (5, 11)]
         function: (identifier [(5, 0), (5, 3)])
         arguments: (arguments [(5, 3), (5, 11)]
-          "[[" [(5, 3), (5, 5)]
+          open: "[[" [(5, 3), (5, 5)]
           argument: (argument [(5, 5), (5, 6)]
             value: (identifier [(5, 5), (5, 6)])
           )
@@ -216,7 +216,7 @@
           argument: (argument [(5, 8), (5, 9)]
             value: (identifier [(5, 8), (5, 9)])
           )
-          "]]" [(5, 9), (5, 11)]
+          close: "]]" [(5, 9), (5, 11)]
         )
       )
       
@@ -227,8 +227,8 @@
       (subset2 [(6, 0), (6, 7)]
         function: (identifier [(6, 0), (6, 3)])
         arguments: (arguments [(6, 3), (6, 7)]
-          "[[" [(6, 3), (6, 5)]
-          "]]" [(6, 5), (6, 7)]
+          open: "[[" [(6, 3), (6, 5)]
+          close: "]]" [(6, 5), (6, 7)]
         )
       )
       
@@ -245,20 +245,20 @@
       (subset2 [(1, 0), (1, 9)]
         function: (identifier [(1, 0), (1, 1)])
         arguments: (arguments [(1, 1), (1, 9)]
-          "[[" [(1, 1), (1, 3)]
+          open: "[[" [(1, 1), (1, 3)]
           argument: (argument [(1, 3), (1, 7)]
             value: (subset [(1, 3), (1, 7)]
               function: (identifier [(1, 3), (1, 4)])
               arguments: (arguments [(1, 4), (1, 7)]
-                "[" [(1, 4), (1, 5)]
+                open: "[" [(1, 4), (1, 5)]
                 argument: (argument [(1, 5), (1, 6)]
                   value: (float [(1, 5), (1, 6)])
                 )
-                "]" [(1, 6), (1, 7)]
+                close: "]" [(1, 6), (1, 7)]
               )
             )
           )
-          "]]" [(1, 7), (1, 9)]
+          close: "]]" [(1, 7), (1, 9)]
         )
       )
       
@@ -269,20 +269,20 @@
       (subset [(2, 0), (2, 9)]
         function: (identifier [(2, 0), (2, 1)])
         arguments: (arguments [(2, 1), (2, 9)]
-          "[" [(2, 1), (2, 2)]
+          open: "[" [(2, 1), (2, 2)]
           argument: (argument [(2, 2), (2, 8)]
             value: (subset2 [(2, 2), (2, 8)]
               function: (identifier [(2, 2), (2, 3)])
               arguments: (arguments [(2, 3), (2, 8)]
-                "[[" [(2, 3), (2, 5)]
+                open: "[[" [(2, 3), (2, 5)]
                 argument: (argument [(2, 5), (2, 6)]
                   value: (float [(2, 5), (2, 6)])
                 )
-                "]]" [(2, 6), (2, 8)]
+                close: "]]" [(2, 6), (2, 8)]
               )
             )
           )
-          "]" [(2, 8), (2, 9)]
+          close: "]" [(2, 8), (2, 9)]
         )
       )
       
@@ -299,7 +299,7 @@
       (call [(1, 0), (6, 1)]
         function: (identifier [(1, 0), (1, 6)])
         arguments: (arguments [(1, 6), (6, 1)]
-          "(" [(1, 6), (1, 7)]
+          open: "(" [(1, 6), (1, 7)]
           argument: (argument [(1, 7), (1, 10)]
             value: (identifier [(1, 7), (1, 10)])
           )
@@ -328,7 +328,7 @@
           argument: (argument [(5, 2), (5, 3)]
             value: (float [(5, 2), (5, 3)])
           )
-          ")" [(6, 0), (6, 1)]
+          close: ")" [(6, 0), (6, 1)]
         )
       )
       
@@ -350,8 +350,8 @@
       (call [(1, 0), (1, 3)]
         function: (identifier [(1, 0), (1, 1)])
         arguments: (arguments [(1, 1), (1, 3)]
-          "(" [(1, 1), (1, 2)]
-          ")" [(1, 2), (1, 3)]
+          open: "(" [(1, 1), (1, 2)]
+          close: ")" [(1, 2), (1, 3)]
         )
       )
       
@@ -362,11 +362,11 @@
       (call [(2, 0), (2, 4)]
         function: (identifier [(2, 0), (2, 1)])
         arguments: (arguments [(2, 1), (2, 4)]
-          "(" [(2, 1), (2, 2)]
+          open: "(" [(2, 1), (2, 2)]
           argument: (argument [(2, 2), (2, 3)]
             value: (identifier [(2, 2), (2, 3)])
           )
-          ")" [(2, 3), (2, 4)]
+          close: ")" [(2, 3), (2, 4)]
         )
       )
       
@@ -377,7 +377,7 @@
       (call [(3, 0), (3, 6)]
         function: (identifier [(3, 0), (3, 1)])
         arguments: (arguments [(3, 1), (3, 6)]
-          "(" [(3, 1), (3, 2)]
+          open: "(" [(3, 1), (3, 2)]
           argument: (argument [(3, 2), (3, 5)]
             value: (binary_operator [(3, 2), (3, 5)]
               lhs: (float [(3, 2), (3, 3)])
@@ -385,7 +385,7 @@
               rhs: (float [(3, 4), (3, 5)])
             )
           )
-          ")" [(3, 5), (3, 6)]
+          close: ")" [(3, 5), (3, 6)]
         )
       )
       
@@ -396,7 +396,7 @@
       (call [(4, 0), (4, 8)]
         function: (identifier [(4, 0), (4, 1)])
         arguments: (arguments [(4, 1), (4, 8)]
-          "(" [(4, 1), (4, 2)]
+          open: "(" [(4, 1), (4, 2)]
           argument: (argument [(4, 2), (4, 7)]
             value: (binary_operator [(4, 2), (4, 7)]
               lhs: (float [(4, 2), (4, 3)])
@@ -404,7 +404,7 @@
               rhs: (float [(4, 6), (4, 7)])
             )
           )
-          ")" [(4, 7), (4, 8)]
+          close: ")" [(4, 7), (4, 8)]
         )
       )
       
@@ -415,12 +415,12 @@
       (call [(5, 0), (5, 6)]
         function: (identifier [(5, 0), (5, 1)])
         arguments: (arguments [(5, 1), (5, 6)]
-          "(" [(5, 1), (5, 2)]
+          open: "(" [(5, 1), (5, 2)]
           argument: (argument [(5, 2), (5, 3)]
             value: (identifier [(5, 2), (5, 3)])
           )
           (comma [(5, 3), (5, 4)])
-          ")" [(5, 5), (5, 6)]
+          close: ")" [(5, 5), (5, 6)]
         )
       )
       
@@ -431,7 +431,7 @@
       (call [(6, 0), (6, 7)]
         function: (identifier [(6, 0), (6, 1)])
         arguments: (arguments [(6, 1), (6, 7)]
-          "(" [(6, 1), (6, 2)]
+          open: "(" [(6, 1), (6, 2)]
           argument: (argument [(6, 2), (6, 3)]
             value: (identifier [(6, 2), (6, 3)])
           )
@@ -440,7 +440,7 @@
           argument: (argument [(6, 5), (6, 6)]
             value: (identifier [(6, 5), (6, 6)])
           )
-          ")" [(6, 6), (6, 7)]
+          close: ")" [(6, 6), (6, 7)]
         )
       )
       
@@ -451,7 +451,7 @@
       (call [(7, 0), (7, 7)]
         function: (identifier [(7, 0), (7, 1)])
         arguments: (arguments [(7, 1), (7, 7)]
-          "(" [(7, 1), (7, 2)]
+          open: "(" [(7, 1), (7, 2)]
           argument: (argument [(7, 2), (7, 3)]
             value: (identifier [(7, 2), (7, 3)])
           )
@@ -459,7 +459,7 @@
           argument: (argument [(7, 5), (7, 6)]
             value: (identifier [(7, 5), (7, 6)])
           )
-          ")" [(7, 6), (7, 7)]
+          close: ")" [(7, 6), (7, 7)]
         )
       )
       
@@ -470,7 +470,7 @@
       (call [(8, 0), (8, 11)]
         function: (identifier [(8, 0), (8, 1)])
         arguments: (arguments [(8, 1), (8, 11)]
-          "(" [(8, 1), (8, 2)]
+          open: "(" [(8, 1), (8, 2)]
           argument: (argument [(8, 2), (8, 3)]
             value: (identifier [(8, 2), (8, 3)])
           )
@@ -480,7 +480,7 @@
             "=" [(8, 7), (8, 8)]
             value: (float [(8, 9), (8, 10)])
           )
-          ")" [(8, 10), (8, 11)]
+          close: ")" [(8, 10), (8, 11)]
         )
       )
       
@@ -491,7 +491,7 @@
       (call [(9, 0), (9, 12)]
         function: (identifier [(9, 0), (9, 1)])
         arguments: (arguments [(9, 1), (9, 12)]
-          "(" [(9, 1), (9, 2)]
+          open: "(" [(9, 1), (9, 2)]
           argument: (argument [(9, 2), (9, 11)]
             name: (identifier [(9, 2), (9, 3)])
             "=" [(9, 4), (9, 5)]
@@ -501,7 +501,7 @@
               rhs: (float [(9, 10), (9, 11)])
             )
           )
-          ")" [(9, 11), (9, 12)]
+          close: ")" [(9, 11), (9, 12)]
         )
       )
       
@@ -512,7 +512,7 @@
       (call [(10, 0), (10, 9)]
         function: (identifier [(10, 0), (10, 1)])
         arguments: (arguments [(10, 1), (10, 9)]
-          "(" [(10, 1), (10, 2)]
+          open: "(" [(10, 1), (10, 2)]
           argument: (argument [(10, 2), (10, 3)]
             value: (identifier [(10, 2), (10, 3)])
           )
@@ -521,7 +521,7 @@
             name: (identifier [(10, 5), (10, 6)])
             "=" [(10, 7), (10, 8)]
           )
-          ")" [(10, 8), (10, 9)]
+          close: ")" [(10, 8), (10, 9)]
         )
       )
       
@@ -532,12 +532,12 @@
       (call [(11, 0), (11, 11)]
         function: (identifier [(11, 0), (11, 1)])
         arguments: (arguments [(11, 1), (11, 11)]
-          "(" [(11, 1), (11, 2)]
+          open: "(" [(11, 1), (11, 2)]
           argument: (argument [(11, 2), (11, 10)]
             value: (call [(11, 2), (11, 10)]
               function: (identifier [(11, 2), (11, 4)])
               arguments: (arguments [(11, 4), (11, 10)]
-                "(" [(11, 4), (11, 5)]
+                open: "(" [(11, 4), (11, 5)]
                 argument: (argument [(11, 5), (11, 6)]
                   value: (identifier [(11, 5), (11, 6)])
                 )
@@ -545,11 +545,11 @@
                 argument: (argument [(11, 8), (11, 9)]
                   value: (identifier [(11, 8), (11, 9)])
                 )
-                ")" [(11, 9), (11, 10)]
+                close: ")" [(11, 9), (11, 10)]
               )
             )
           )
-          ")" [(11, 10), (11, 11)]
+          close: ")" [(11, 10), (11, 11)]
         )
       )
       
@@ -560,9 +560,9 @@
       (call [(12, 0), (12, 4)]
         function: (identifier [(12, 0), (12, 1)])
         arguments: (arguments [(12, 1), (12, 4)]
-          "(" [(12, 1), (12, 2)]
+          open: "(" [(12, 1), (12, 2)]
           (comma [(12, 2), (12, 3)])
-          ")" [(12, 3), (12, 4)]
+          close: ")" [(12, 3), (12, 4)]
         )
       )
       
@@ -573,12 +573,12 @@
       (call [(13, 0), (13, 5)]
         function: (identifier [(13, 0), (13, 1)])
         arguments: (arguments [(13, 1), (13, 5)]
-          "(" [(13, 1), (13, 2)]
+          open: "(" [(13, 1), (13, 2)]
           argument: (argument [(13, 2), (13, 3)]
             value: (identifier [(13, 2), (13, 3)])
           )
           (comma [(13, 3), (13, 4)])
-          ")" [(13, 4), (13, 5)]
+          close: ")" [(13, 4), (13, 5)]
         )
       )
       
@@ -589,12 +589,12 @@
       (call [(14, 0), (14, 5)]
         function: (identifier [(14, 0), (14, 1)])
         arguments: (arguments [(14, 1), (14, 5)]
-          "(" [(14, 1), (14, 2)]
+          open: "(" [(14, 1), (14, 2)]
           (comma [(14, 2), (14, 3)])
           argument: (argument [(14, 3), (14, 4)]
             value: (identifier [(14, 3), (14, 4)])
           )
-          ")" [(14, 4), (14, 5)]
+          close: ")" [(14, 4), (14, 5)]
         )
       )
       
@@ -605,13 +605,13 @@
       (call [(15, 0), (15, 6)]
         function: (identifier [(15, 0), (15, 1)])
         arguments: (arguments [(15, 1), (15, 6)]
-          "(" [(15, 1), (15, 2)]
+          open: "(" [(15, 1), (15, 2)]
           argument: (argument [(15, 2), (15, 4)]
             name: (identifier [(15, 2), (15, 3)])
             "=" [(15, 3), (15, 4)]
           )
           (comma [(15, 4), (15, 5)])
-          ")" [(15, 5), (15, 6)]
+          close: ")" [(15, 5), (15, 6)]
         )
       )
       
@@ -622,7 +622,7 @@
       (call [(16, 0), (16, 8)]
         function: (identifier [(16, 0), (16, 1)])
         arguments: (arguments [(16, 1), (16, 8)]
-          "(" [(16, 1), (16, 2)]
+          open: "(" [(16, 1), (16, 2)]
           argument: (argument [(16, 2), (16, 6)]
             name: (string [(16, 2), (16, 5)]
               "\"" [(16, 2), (16, 3)]
@@ -632,7 +632,7 @@
             "=" [(16, 5), (16, 6)]
           )
           (comma [(16, 6), (16, 7)])
-          ")" [(16, 7), (16, 8)]
+          close: ")" [(16, 7), (16, 8)]
         )
       )
       
@@ -643,13 +643,13 @@
       (call [(17, 0), (17, 10)]
         function: (identifier [(17, 0), (17, 1)])
         arguments: (arguments [(17, 1), (17, 10)]
-          "(" [(17, 1), (17, 2)]
+          open: "(" [(17, 1), (17, 2)]
           argument: (argument [(17, 2), (17, 7)]
             name: (dots [(17, 2), (17, 5)])
             "=" [(17, 6), (17, 7)]
           )
           (comma [(17, 8), (17, 9)])
-          ")" [(17, 9), (17, 10)]
+          close: ")" [(17, 9), (17, 10)]
         )
       )
       
@@ -660,13 +660,13 @@
       (call [(18, 0), (18, 6)]
         function: (identifier [(18, 0), (18, 1)])
         arguments: (arguments [(18, 1), (18, 6)]
-          "(" [(18, 1), (18, 2)]
+          open: "(" [(18, 1), (18, 2)]
           (comma [(18, 2), (18, 3)])
           argument: (argument [(18, 3), (18, 5)]
             name: (identifier [(18, 3), (18, 4)])
             "=" [(18, 4), (18, 5)]
           )
-          ")" [(18, 5), (18, 6)]
+          close: ")" [(18, 5), (18, 6)]
         )
       )
       
