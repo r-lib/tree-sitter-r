@@ -56,6 +56,11 @@
 // ---------------------------------------------------------------------------------------
 
 const PREC = {
+  // #
+  // NOTE: If we don't put comments at a negative rank, then `"#"` will treat the `#` as
+  // the start of a comment rather than being part of the string.
+  COMMENT: { ASSOC: prec, RANK: -1}, 
+
   // {, (
   // NOTE: If we understand correctly, brace and parenthesis blocks are given the same
   // precedence as all other general expressions. Note that they are not tagged with an
@@ -446,14 +451,58 @@ module.exports = grammar({
     _float_literal: $ => choice($._hex_literal, $._number_literal),
 
     // Strings.
-    // Regex is: "Between two quote characters, allow either backslash followed by any
-    // character (i.e. escape sequence) or any character except that quote character or
-    // a bare backtick."
     string: $ => choice(
       $._raw_string_literal,
-      /'((?:\\(.|\n))|[^'\\])*'/,
-      /"((?:\\(.|\n))|[^"\\])*"/,
+      $._single_quoted_string,
+      $._double_quoted_string
     ),
+
+    // TODO: Raw string contents, something like this, where `_raw_string_open`,
+    // `_raw_string_close`, and `_raw_string_content` are externals.
+    // _raw_string_literal: $ => seq(
+    //   $._raw_string_open,
+    //   optional(field("content", alias($._raw_string_content, $.string_content))),
+    //   $._raw_string_close
+    // ),
+
+    // Explanation is:
+    // - Between two quote characters, allow either:
+    //   - Anything except `'` (or `"`) or `\`
+    //   - An escape sequence
+    _single_quoted_string: $ => seq(
+      '\'',
+      optional(field("content", alias($._single_quoted_string_content, $.string_content))),
+      '\''
+    ),
+
+    _double_quoted_string: $ => seq(
+      '"',
+      optional(field("content", alias($._double_quoted_string_content, $.string_content))),
+      '"'
+    ),
+
+    _single_quoted_string_content: $ => repeat1(choice(
+      /[^'\\]+/,
+      $.escape_sequence
+    )),
+
+    _double_quoted_string_content: $ => repeat1(choice(
+      /[^"\\]+/,
+      $.escape_sequence
+    )),
+
+    escape_sequence: $ => token.immediate(seq(
+      '\\',
+      choice(
+        /[^0-9xuU]/,
+        /[0-7]{1,3}/,
+        /x[0-9a-fA-F]{1,2}/,
+        /u[0-9a-fA-F]{1,4}/,
+        /u\{[0-9a-fA-F]{1,4}\}/,
+        /U[0-9a-fA-F]{1,8}/,
+        /U\{[0-9a-fA-F]{1,8}\}/
+      )
+    )),
 
     // Identifiers.
     identifier: $ => choice(
@@ -534,7 +583,7 @@ module.exports = grammar({
     ),
 
     // Comments.
-    comment: $ => /#.*/,
+    comment: $ => token(withPrec(PREC.COMMENT, /#.*/)),
 
     // Commas. We include these in the AST so we can figure out the
     // argument call position. This is necessary given how R tolerates

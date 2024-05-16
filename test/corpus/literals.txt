@@ -55,35 +55,251 @@ Strings
 ================================================================================
 
 "foo"
-"foo\"bar"
-"foo\ "
-"foo\
-"
-"\""
-'foo'
-'foo\'bar'
-'foo\ '
-'foo\
-'
-'\''
+"foo
+bar"
 "#"
+","
+"}"
+'foo'
+'foo
+bar'
 '#'
+','
+'}'
+
+--------------------------------------------------------------------------------
+
+(program
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content)))
+
+================================================================================
+Strings Without Content
+================================================================================
+
+""
+''
 
 --------------------------------------------------------------------------------
 
 (program
   (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
   (string))
+
+================================================================================
+Strings With Escape Sequences
+================================================================================
+
+"\\"
+"\ "
+"\n"
+"\t"
+"\r"
+
+"\0"
+"\1"
+"\7"
+"\12"
+"\123"
+"\1234"
+
+"\x1"
+"\x01"
+"\x012"
+
+"\u1"
+"\u01"
+"\u001"
+"\u0001"
+"\u00011"
+
+"\u{1}"
+"\u{01}"
+"\u{001}"
+"\u{0001}"
+
+"\U{1}"
+"\U{01}"
+"\U{001}"
+"\U{0001}"
+"\U{00001}"
+"\U{000001}"
+"\U{0000001}"
+"\U{00000001}"
+
+"\U1"
+"\U01"
+"\U001"
+"\U0001"
+"\U00001"
+"\U000001"
+"\U0000001"
+"\U00000001"
+"\U000000011"
+
+"foo\"bar"
+"foo\ "
+"foo\
+"
+"\""
+'\''
+
+--------------------------------------------------------------------------------
+
+(program
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence))))
 
 ================================================================================
 Unclosed Double Quote
@@ -93,8 +309,10 @@ Unclosed Double Quote
 --------------------------------------------------------------------------------
 
 (program
-  (ERROR
-    (UNEXPECTED '\0')))
+  (string
+    (string_content
+      (escape_sequence))
+    (MISSING """)))
 
 ================================================================================
 Unclosed Single Quote
@@ -104,8 +322,10 @@ Unclosed Single Quote
 --------------------------------------------------------------------------------
 
 (program
-  (ERROR
-    (UNEXPECTED '\0')))
+  (string
+    (string_content
+      (escape_sequence))
+    (MISSING "'")))
 
 ================================================================================
 Unclosed Backtick
@@ -152,8 +372,10 @@ Comments
 
 (program
   (comment)
-  (string)
-  (string))
+  (string
+    (string_content))
+  (string
+    (string_content)))
 
 ================================================================================
 Constants
