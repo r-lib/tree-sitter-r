@@ -50,6 +50,7 @@
   "while"
   "repeat"
   "for"
+  (return)
   (next)
   (break)
 ] @keyword

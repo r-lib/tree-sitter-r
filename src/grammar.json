@@ -2468,6 +2468,10 @@
       "type": "PATTERN",
       "value": "`((?:\\\\(.|\\n))|[^`\\\\])*`"
     },
+    "return": {
+      "type": "STRING",
+      "value": "return"
+    },
     "next": {
       "type": "STRING",
       "value": "next"
@@ -2610,6 +2614,10 @@
         {
           "type": "SYMBOL",
           "name": "identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "return"
         },
         {
           "type": "SYMBOL",

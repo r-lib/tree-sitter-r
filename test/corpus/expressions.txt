@@ -60,7 +60,7 @@ function() for(i in 1:5) i
       parameter: (parameter
         name: (identifier)))
     body: (call
-      function: (identifier)
+      function: (return)
       arguments: (arguments
         argument: (argument
           value: (identifier)))))
