@@ -17,5 +17,3 @@ This grammar is available as a [Rust crate on crates.io](https://crates.io/crate
 * [gram.y](https://github.com/wch/r-source/blob/trunk/src/main/gram.y)
 
 [tree-sitter]: https://github.com/tree-sitter/tree-sitter
-
-

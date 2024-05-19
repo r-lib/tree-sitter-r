@@ -60,7 +60,7 @@ test_that("testthat::test_that() is matched", {
     "\"with testthat::\"",
     captures
   )
-  
+
   expect_top_level(captures[["node"]][[1]])
 })
 
