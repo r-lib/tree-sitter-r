@@ -1,20 +1,25 @@
 # ------------------------------------------------------------------------------
 # identifiers
 
-# TODO: `_foo` is recognized as  `_` and `foo` identifiers. Should it be this way?
 foo
 foo2
 foo.bar
 .foo.bar
 .__NAMESPACE__.
 foo_bar
+`_foo`
 `a "literal"`
 `another
 literal \` foo`
 `backslash followed by newline \
 `
 `\``
+# Pipe placeholder
+_
+# Recognized as a single `_foo` identifier, even if invalid R code (#71).
 _foo
+__foo
+_foo_
 
 # ------------------------------------------------------------------------------
 # comments
