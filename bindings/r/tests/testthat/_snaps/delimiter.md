@@ -113,7 +113,7 @@
       (subset2 [(1, 0), (1, 5)]
         function: (identifier [(1, 0), (1, 1)])
         arguments: (arguments [(1, 1), (1, 5)]
-          "[[" [(1, 1), (1, 3)]
+          open: "[[" [(1, 1), (1, 3)]
           argument: (argument [(1, 3), (1, 4)]
             value: (float [(1, 3), (1, 4)])
           )
@@ -122,7 +122,7 @@
               "]" [(1, 4), (1, 5)]
             )
           )
-          "]]" [(1, 5), (1, 5)]
+          close: "]]" [(1, 5), (1, 5)]
         )
       )
       
@@ -169,20 +169,20 @@
       (subset2 [(1, 0), (1, 7)]
         function: (identifier [(1, 0), (1, 1)])
         arguments: (arguments [(1, 1), (1, 7)]
-          "[[" [(1, 1), (1, 3)]
+          open: "[[" [(1, 1), (1, 3)]
           argument: (argument [(1, 3), (1, 7)]
             value: (subset [(1, 3), (1, 7)]
               function: (identifier [(1, 3), (1, 4)])
               arguments: (arguments [(1, 4), (1, 7)]
-                "[" [(1, 4), (1, 5)]
+                open: "[" [(1, 4), (1, 5)]
                 argument: (argument [(1, 5), (1, 6)]
                   value: (float [(1, 5), (1, 6)])
                 )
-                "]" [(1, 6), (1, 7)]
+                close: "]" [(1, 6), (1, 7)]
               )
             )
           )
-          "]]" [(1, 7), (1, 7)]
+          close: "]]" [(1, 7), (1, 7)]
         )
       )
       
@@ -199,16 +199,16 @@
       (subset2 [(1, 0), (1, 8)]
         function: (identifier [(1, 0), (1, 1)])
         arguments: (arguments [(1, 1), (1, 8)]
-          "[[" [(1, 1), (1, 3)]
+          open: "[[" [(1, 1), (1, 3)]
           argument: (argument [(1, 3), (1, 7)]
             value: (subset [(1, 3), (1, 7)]
               function: (identifier [(1, 3), (1, 4)])
               arguments: (arguments [(1, 4), (1, 7)]
-                "[" [(1, 4), (1, 5)]
+                open: "[" [(1, 4), (1, 5)]
                 argument: (argument [(1, 5), (1, 6)]
                   value: (float [(1, 5), (1, 6)])
                 )
-                "]" [(1, 6), (1, 7)]
+                close: "]" [(1, 6), (1, 7)]
               )
             )
           )
@@ -217,7 +217,7 @@
               "]" [(1, 7), (1, 8)]
             )
           )
-          "]]" [(1, 8), (1, 8)]
+          close: "]]" [(1, 8), (1, 8)]
         )
       )
       
