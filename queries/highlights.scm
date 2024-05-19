@@ -39,9 +39,6 @@
 (comma) @punctuation.delimiter
 
 ;; Keywords
-[
-  (return) (next) (break) (null)
-] @keyword
 
 [
   "function"
@@ -53,13 +50,21 @@
   "while"
   "repeat"
   "for"
+  (return)
+  (next)
+  (break)
 ] @keyword
 
 [
-  (inf) (nan) (dots) (true) (false) (na)
+  (true)
+  (false)
+  (null)
+  (inf)
+  (nan)
+  (na)
+  (dots)
+  (dot_dot_i)
 ] @constant.builtin
-
-;; Calls
 
 ;; Error
 (ERROR) @error

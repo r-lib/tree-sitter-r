@@ -513,13 +513,13 @@ module.exports = grammar({
     _identifier: $ => /[\p{XID_Start}.][\p{XID_Continue}.]*/,
     _quoted_identifier: $ => /`((?:\\(.|\n))|[^`\\])*`/,
 
-    // Miscellaneous tokens
-    dot_dot_i: $ => token(/[.][.]\d+/),
-    dots: $ => token("..."),
-
-    // Keywords
-    // NOTE: We only include keywords which aren't included as part of special forms.
-    // In other words, no keywords used in special control-flow constructions.
+    // Keywords.
+    // We define keywords as those contained in `?Reserved`, i.e. it must be a reserved
+    // word in R's parser to be considered here. If a keyword from `?Reserved` is already
+    // mentioned within a wider rule (like "if" and "function"), then it is not included
+    // again here. Grammar consumers can choose to highlight more words as required. We
+    // make a single exception for `return`, which is not in `?Reserved` but is SO special
+    // that we decided to include it as a keyword.
     return: $ => "return",
     next: $ => "next",
     break: $ => "break", 
@@ -528,7 +528,6 @@ module.exports = grammar({
     null: $ => "NULL",
     inf: $ => "Inf",
     nan: $ => "NaN",
-
     na: $ => choice(
       "NA", 
       "NA_integer_", 
@@ -536,6 +535,8 @@ module.exports = grammar({
       "NA_complex_", 
       "NA_character_"
     ),
+    dots: $ => "...",
+    dot_dot_i: $ => token(/[.][.]\d+/),
 
     // A general R expression.
     _expression: $ => choice(
@@ -566,9 +567,6 @@ module.exports = grammar({
 
       $.identifier,
 
-      $.dot_dot_i,
-      $.dots,
-
       $.return,
       $.next,
       $.break,
@@ -578,6 +576,8 @@ module.exports = grammar({
       $.inf,
       $.nan,
       $.na,
+      $.dots,
+      $.dot_dot_i,
 
       $.unmatched_delimiter
     ),
