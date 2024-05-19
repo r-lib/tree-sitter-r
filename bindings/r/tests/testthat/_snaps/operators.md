@@ -633,9 +633,7 @@
             argument: (argument [(1, 14), (1, 19)]
               name: (identifier [(1, 14), (1, 15)])
               "=" [(1, 16), (1, 17)]
-              value: (identifier [(1, 18), (1, 19)]
-                "_" [(1, 18), (1, 19)]
-              )
+              value: (identifier [(1, 18), (1, 19)])
             )
             close: ")" [(1, 19), (1, 20)]
           )
@@ -666,9 +664,7 @@
             argument: (argument [(2, 20), (2, 28)]
               name: (identifier [(2, 20), (2, 24)])
               "=" [(2, 25), (2, 26)]
-              value: (identifier [(2, 27), (2, 28)]
-                "_" [(2, 27), (2, 28)]
-              )
+              value: (identifier [(2, 27), (2, 28)])
             )
             close: ")" [(2, 28), (2, 29)]
           )

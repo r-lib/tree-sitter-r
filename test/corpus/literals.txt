@@ -8,14 +8,19 @@ foo.bar
 .foo.bar
 .__NAMESPACE__.
 foo_bar
+`_foo`
 `a "literal"`
 `another
 literal \` foo`
 `backslash followed by newline \
 `
 `\``
-# Recognized as `_` and `foo` identifiers. Should it be this way?
+# Pipe placeholder
+_
+# Recognized as a single `_foo` identifier, even if invalid R code (#71).
 _foo
+__foo
+_foo_
 
 
 --------------------------------------------------------------------------------
@@ -31,7 +36,11 @@ _foo
   (identifier)
   (identifier)
   (identifier)
+  (identifier)
   (comment)
+  (identifier)
+  (comment)
+  (identifier)
   (identifier)
   (identifier))
 

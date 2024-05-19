@@ -4,46 +4,46 @@
       node_children_print(node)
     Output
       S-Expression
-      (comment [(1, 0), (1, 82)])
-      
-      Text
-      # TODO: `_foo` is recognized as  `_` and `foo` identifiers. Should it be this way?
-      
-      S-Expression
-      (identifier [(2, 0), (2, 3)])
+      (identifier [(1, 0), (1, 3)])
       
       Text
       foo
       
       S-Expression
-      (identifier [(3, 0), (3, 4)])
+      (identifier [(2, 0), (2, 4)])
       
       Text
       foo2
       
       S-Expression
-      (identifier [(4, 0), (4, 7)])
+      (identifier [(3, 0), (3, 7)])
       
       Text
       foo.bar
       
       S-Expression
-      (identifier [(5, 0), (5, 8)])
+      (identifier [(4, 0), (4, 8)])
       
       Text
       .foo.bar
       
       S-Expression
-      (identifier [(6, 0), (6, 15)])
+      (identifier [(5, 0), (5, 15)])
       
       Text
       .__NAMESPACE__.
       
       S-Expression
-      (identifier [(7, 0), (7, 7)])
+      (identifier [(6, 0), (6, 7)])
       
       Text
       foo_bar
+      
+      S-Expression
+      (identifier [(7, 0), (7, 6)])
+      
+      Text
+      `_foo`
       
       S-Expression
       (identifier [(8, 0), (8, 13)])
@@ -72,18 +72,40 @@
       `\``
       
       S-Expression
-      (identifier [(14, 0), (14, 1)]
-        "_" [(14, 0), (14, 1)]
-      )
+      (comment [(14, 0), (14, 18)])
+      
+      Text
+      # Pipe placeholder
+      
+      S-Expression
+      (identifier [(15, 0), (15, 1)])
       
       Text
       _
       
       S-Expression
-      (identifier [(14, 1), (14, 4)])
+      (comment [(16, 0), (16, 73)])
       
       Text
-      foo
+      # Recognized as a single `_foo` identifier, even if invalid R code (#71).
+      
+      S-Expression
+      (identifier [(17, 0), (17, 4)])
+      
+      Text
+      _foo
+      
+      S-Expression
+      (identifier [(18, 0), (18, 5)])
+      
+      Text
+      __foo
+      
+      S-Expression
+      (identifier [(19, 0), (19, 5)])
+      
+      Text
+      _foo_
       
 
 # comments
