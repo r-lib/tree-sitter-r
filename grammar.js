@@ -15,7 +15,7 @@
 
 // ---------------------------------------------------------------------------------------
 // NOTE ON PREC.RIGHT:
-// 
+//
 // A few things in this table are left associative in R's grammar, but we are forced to
 // make them right associative to get the behavior we want. This includes:
 // - $, @
@@ -42,12 +42,12 @@
 // For `unary_operator`, `binary_operator`, `extract_operator`, and `namespace_operator`,
 // the way these have been grouped is based on the semantic definition of each kind of
 // operator group. Specifically:
-// 
+//
 // <unary> <expr>
 // <expr> <binary> <expr>
 // <expr> <extract> <symbol>
 // <symbol> <namespace> <symbol>
-// 
+//
 // In theory, we could have gone further to, say, split out comparison and arithmetic
 // operators from the binary operator group, or split out the pipe as its own rule.
 // However, this is all rather arbitrary, and we decided it was best to stop the grouping
@@ -59,7 +59,7 @@ const PREC = {
   // #
   // NOTE: If we don't put comments at a negative rank, then `"#"` will treat the `#` as
   // the start of a comment rather than being part of the string.
-  COMMENT: { ASSOC: prec, RANK: -1}, 
+  COMMENT: { ASSOC: prec, RANK: -1},
 
   // {, (
   // NOTE: If we understand correctly, brace and parenthesis blocks are given the same
@@ -117,7 +117,7 @@ const PREC = {
 
   // *, /
   MULTIPLY_DIVIDE: { ASSOC: prec.left, RANK: 13 },
-  
+
   // %>%, %<>%, |>
   SPECIAL_OR_PIPE: { ASSOC: prec.left, RANK: 14 },
 
@@ -126,14 +126,14 @@ const PREC = {
 
   // +, -
   UNARY_PLUS_MINUS: { ASSOC: prec.left, RANK: 16 },
-  
+
   // ^, **
   EXPONENTIATE: { ASSOC: prec.right, RANK: 17 },
 
   // $, @
   // NOTE: See `NOTE ON PREC.RIGHT` above
   EXTRACT: { ASSOC: prec.right, RANK: 18 },
-  
+
   // ::, :::
   // NOTE: See `NOTE ON PREC.RIGHT` above
   NAMESPACE: { ASSOC: prec.right, RANK: 19 },
@@ -199,7 +199,7 @@ module.exports = grammar({
     parameters: $ => seq(
       $._open_parenthesis,
       optional(seq(
-        field("parameter", $.parameter), 
+        field("parameter", $.parameter),
         repeat(seq($.comma, field("parameter", $.parameter)))
       )),
       $._close_parenthesis
@@ -211,8 +211,8 @@ module.exports = grammar({
     ),
 
     _parameter_with_default: $ => seq(
-      field("name", $.identifier), 
-      "=", 
+      field("name", $.identifier),
+      "=",
       optional(field("default", $._expression))
     ),
 
@@ -229,7 +229,7 @@ module.exports = grammar({
       field("consequence", $._expression),
       // No `repeat($._newline)` here. Specially handled in the scanner instead.
       optional(seq(
-        $._else, 
+        $._else,
         field("alternative", $._expression)
       ))
     )),
@@ -282,12 +282,12 @@ module.exports = grammar({
     )),
 
     subset: $ => withPrec(PREC.CALL, seq(
-      field("function", $._expression), 
+      field("function", $._expression),
       field("arguments", alias($.subset_arguments, $.arguments))
     )),
 
     subset2: $ => withPrec(PREC.CALL, seq(
-      field("function", $._expression), 
+      field("function", $._expression),
       field("arguments", alias($.subset2_arguments, $.arguments))
     )),
 
@@ -295,18 +295,18 @@ module.exports = grammar({
     // Spaces and newlines between the `()`, `[]`, or `[[]]` are consumed ahead of time
     // by the external scanner.
     call_arguments: $ => seq(
-      field("open", $._open_parenthesis), 
-      repeat($._argument), 
+      field("open", $._open_parenthesis),
+      repeat($._argument),
       field("close", $._close_parenthesis)
     ),
     subset_arguments: $ => seq(
-      field("open", $._open_bracket), 
-      repeat($._argument), 
+      field("open", $._open_bracket),
+      repeat($._argument),
       field("close", $._close_bracket)
     ),
     subset2_arguments: $ => seq(
-      field("open", $._open_bracket2), 
-      repeat($._argument), 
+      field("open", $._open_bracket2),
+      repeat($._argument),
       field("close", $._close_bracket2)
     ),
 
@@ -351,7 +351,7 @@ module.exports = grammar({
       ];
 
       return choice(...table.map(([operator, prec]) => prec.ASSOC(prec.RANK, seq(
-        field("operator", operator), 
+        field("operator", operator),
         repeat($._newline),
         field("rhs", $._expression)
       ))))
@@ -405,9 +405,9 @@ module.exports = grammar({
       ];
 
       return choice(...table.map(([operator, prec]) => prec.ASSOC(prec.RANK, seq(
-        field("lhs", $._expression), 
-        field("operator", operator), 
-        repeat($._newline), 
+        field("lhs", $._expression),
+        field("operator", operator),
+        repeat($._newline),
         field("rhs", $._expression)
       ))))
     },
@@ -420,9 +420,9 @@ module.exports = grammar({
       ];
 
       return choice(...table.map(([operator, prec]) => prec.ASSOC(prec.RANK, seq(
-        field("lhs", $._expression), 
-        field("operator", operator), 
-        repeat($._newline), 
+        field("lhs", $._expression),
+        field("operator", operator),
+        repeat($._newline),
         optional(field("rhs", $._string_or_identifier))
       ))))
     },
@@ -435,8 +435,8 @@ module.exports = grammar({
       ];
 
       return choice(...table.map(([operator, prec]) => prec.ASSOC(prec.RANK, seq(
-        field("lhs", $._string_or_identifier), 
-        field("operator", operator), 
+        field("lhs", $._string_or_identifier),
+        field("operator", operator),
         optional(field("rhs", $._string_or_identifier))
       ))))
     },
@@ -513,7 +513,7 @@ module.exports = grammar({
     // single identifier, and then let downstream consumers do further checks on the
     // validity as needed (#71).
     identifier: $ => choice(
-      $._identifier, 
+      $._identifier,
       $._quoted_identifier
     ),
     _identifier: $ => /[\p{XID_Start}._][\p{XID_Continue}.]*/,
@@ -528,17 +528,17 @@ module.exports = grammar({
     // that we decided to include it as a keyword.
     return: $ => "return",
     next: $ => "next",
-    break: $ => "break", 
+    break: $ => "break",
     true: $ => "TRUE",
     false: $ => "FALSE",
     null: $ => "NULL",
     inf: $ => "Inf",
     nan: $ => "NaN",
     na: $ => choice(
-      "NA", 
-      "NA_integer_", 
-      "NA_real_", 
-      "NA_complex_", 
+      "NA",
+      "NA_integer_",
+      "NA_real_",
+      "NA_complex_",
       "NA_character_"
     ),
     dots: $ => "...",

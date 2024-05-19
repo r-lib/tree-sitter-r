@@ -1,6 +1,6 @@
 expect_test_that_captures <- function(code_source, desc, captures) {
   skip_if_not_installed("treesitter")
-  
+
   # make sure we captured something
   expect_gt(length(captures$node), 0)
 
