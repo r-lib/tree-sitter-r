@@ -12,11 +12,11 @@
         consequence: (call [(2, 2), (2, 8)]
           function: (identifier [(2, 2), (2, 5)])
           arguments: (arguments [(2, 5), (2, 8)]
-            "(" [(2, 5), (2, 6)]
+            open: "(" [(2, 5), (2, 6)]
             argument: (argument [(2, 6), (2, 7)]
               value: (identifier [(2, 6), (2, 7)])
             )
-            ")" [(2, 7), (2, 8)]
+            close: ")" [(2, 7), (2, 8)]
           )
         )
       )
@@ -36,11 +36,11 @@
           body: (call [(5, 2), (5, 8)]
             function: (identifier [(5, 2), (5, 5)])
             arguments: (arguments [(5, 5), (5, 8)]
-              "(" [(5, 5), (5, 6)]
+              open: "(" [(5, 5), (5, 6)]
               argument: (argument [(5, 6), (5, 7)]
                 value: (identifier [(5, 6), (5, 7)])
               )
-              ")" [(5, 7), (5, 8)]
+              close: ")" [(5, 7), (5, 8)]
             )
           )
           body: (identifier [(6, 2), (6, 3)])

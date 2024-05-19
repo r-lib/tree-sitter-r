@@ -1901,7 +1901,7 @@ x[[y[2]
           arguments: (arguments
             argument: (argument
               value: (float)))))
-      (MISSING "]]"))))
+      close: (MISSING "]]"))))
 
 ================================================================================
 Opening Bracket2 and Bracket, Unmatched Closing Bracket
@@ -1923,4 +1923,4 @@ x[[y[2]]
               value: (float)))))
       argument: (argument
         value: (unmatched_delimiter))
-      (MISSING "]]"))))
+      close: (MISSING "]]"))))

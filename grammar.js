@@ -295,19 +295,19 @@ module.exports = grammar({
     // Spaces and newlines between the `()`, `[]`, or `[[]]` are consumed ahead of time
     // by the external scanner.
     call_arguments: $ => seq(
-      $._open_parenthesis, 
+      field("open", $._open_parenthesis), 
       repeat($._argument), 
-      $._close_parenthesis
+      field("close", $._close_parenthesis)
     ),
     subset_arguments: $ => seq(
-      $._open_bracket, 
+      field("open", $._open_bracket), 
       repeat($._argument), 
-      $._close_bracket
+      field("close", $._close_bracket)
     ),
     subset2_arguments: $ => seq(
-      $._open_bracket2, 
+      field("open", $._open_bracket2), 
       repeat($._argument), 
-      $._close_bracket2
+      field("close", $._close_bracket2)
     ),
 
     // Supports `x[1,]` or `x[1,,2]`, so it really is `choice()` rather than `seq()`
