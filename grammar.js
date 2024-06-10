@@ -177,7 +177,7 @@ module.exports = grammar({
     $._external_close_bracket2
   ],
 
-  word: $ => $._identifier,
+  word: $ => $.identifier,
 
   rules: {
     // Top-level rules.
@@ -512,12 +512,24 @@ module.exports = grammar({
     // check that `_foo` is an invalid identifier. It seems simpler to parse `_foo` as a
     // single identifier, and then let downstream consumers do further checks on the
     // validity as needed (#71).
-    identifier: $ => choice(
-      $._identifier,
-      $._quoted_identifier
-    ),
-    _identifier: $ => /[\p{XID_Start}._][\p{XID_Continue}.]*/,
-    _quoted_identifier: $ => /`((?:\\(.|\n))|[^`\\])*`/,
+    // NOTE: Due to the linked tree-sitter bug, if `_identifier` and `_quoted_identifier`
+    // are their own hidden rules, then we can't detect implied `identifier`s as missing
+    // with `ts_node_is_missing()`, essentially making that function useless since
+    // tree-sitter seems to fill in named missing nodes with `identifier` most of the
+    // time. The workaround used here inlines the regexes, and wraps the `choice()` call
+    // in a single terminal `token()` so `identifier` can still be used as the `word` rule.
+    // https://github.com/tree-sitter/tree-sitter/issues/3332
+    identifier: $ => {
+      const _identifier = /[\p{XID_Start}._][\p{XID_Continue}.]*/;
+      const _quoted_identifier = /`((?:\\(.|\n))|[^`\\])*`/;
+
+      return token(
+        choice(
+          _identifier,
+          _quoted_identifier
+        )
+      )
+    },
 
     // Keywords.
     // We define keywords as those contained in `?Reserved`, i.e. it must be a reserved

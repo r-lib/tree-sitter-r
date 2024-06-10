@@ -9,7 +9,7 @@
         content: (string_content [(1, 1), (2, 0)]
           (escape_sequence [(1, 1), (1, 3)])
         )
-        "\"" [(2, 0), (2, 0)]
+        "\"" MISSING [(2, 0), (2, 0)]
       )
       
       Text
@@ -28,7 +28,7 @@
         content: (string_content [(1, 1), (3, 0)]
           (escape_sequence [(1, 1), (1, 3)])
         )
-        "'" [(3, 0), (3, 0)]
+        "'" MISSING [(3, 0), (3, 0)]
       )
       
       Text

@@ -1,6 +1,6 @@
 {
   "name": "r",
-  "word": "_identifier",
+  "word": "identifier",
   "rules": {
     "program": {
       "type": "REPEAT",
@@ -2465,25 +2465,20 @@
       }
     },
     "identifier": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_identifier"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_quoted_identifier"
-        }
-      ]
-    },
-    "_identifier": {
-      "type": "PATTERN",
-      "value": "[\\p{XID_Start}._][\\p{XID_Continue}.]*"
-    },
-    "_quoted_identifier": {
-      "type": "PATTERN",
-      "value": "`((?:\\\\(.|\\n))|[^`\\\\])*`"
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "PATTERN",
+            "value": "[\\p{XID_Start}._][\\p{XID_Continue}.]*"
+          },
+          {
+            "type": "PATTERN",
+            "value": "`((?:\\\\(.|\\n))|[^`\\\\])*`"
+          }
+        ]
+      }
     },
     "return": {
       "type": "STRING",
