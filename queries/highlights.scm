@@ -1,24 +1,20 @@
 ; highlights.scm
 
-;; Comments
-(comment) @comment
+; Literals
 
-;; Numeric literals
-[
- (integer)
- (float)
- (complex)
-] @constant.builtin
+(integer) @number
+(float) @number
+(complex) @number
 
-;; Strings
-(string)  @string
+(string) @string
 (string (string_content (escape_sequence) @string.escape))
 
-;; Parameters
-(parameters (parameter name: (identifier) @variable.parameter))
-(arguments  (argument  name: (identifier) @variable.parameter))
+; Comments
 
-;; Operators
+(comment) @comment
+
+; Operators
+
 [
   "?" ":=" "=" "<-" "<<-" "->" "->>"
   "~" "|>" "||" "|" "&&" "&"
@@ -28,7 +24,8 @@
   "special"
 ] @operator
 
-;; Brackets
+; Punctuation
+
 [
   "("  ")"
   "{"  "}"
@@ -38,26 +35,70 @@
 
 (comma) @punctuation.delimiter
 
-;; Keywords
+; Variables
+
+(identifier) @variable
+
+; Functions
+
+(binary_operator
+    lhs: (identifier) @function
+    operator: "<-"
+    rhs: (function_definition)
+)
+
+(binary_operator
+    lhs: (identifier) @function
+    operator: "="
+    rhs: (function_definition)
+)
+
+; Calls
+
+(call function: (identifier) @function)
+
+; Parameters
+
+(parameters (parameter name: (identifier) @variable.parameter))
+(arguments (argument name: (identifier) @variable.parameter))
+
+; Namespace
+
+(namespace_operator lhs: (identifier) @namespace)
+
+(call
+    function: (namespace_operator rhs: (identifier) @function)
+)
+
+; Keywords
+
+(function_definition name: "function" @keyword.function)
+(function_definition name: "\\" @operator)
 
 [
-  "function"
-] @keyword.function
-
-[
-  "if"
-  "else"
-  "while"
-  "repeat"
-  "for"
+  "in"
   (return)
   (next)
   (break)
 ] @keyword
 
 [
+  "if"
+  "else"
+] @conditional
+
+[
+  "while"
+  "repeat"
+  "for"
+] @repeat
+
+[
   (true)
   (false)
+] @boolean
+
+[
   (null)
   (inf)
   (nan)
@@ -66,5 +107,6 @@
   (dot_dot_i)
 ] @constant.builtin
 
-;; Error
+; Error
+
 (ERROR) @error
