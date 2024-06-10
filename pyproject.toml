@@ -16,7 +16,8 @@ classifiers = [
 ]
 authors = [
     {name = "Kevin Ushey", email = "kevin@posit.co"},
-    {name = "Jim Hester", email = "jim.hester@rstudio.com"}
+    {name = "Jim Hester", email = "james.f.hester@gmail.com"},
+    {name = "Davis Vaughan", email = "davis@posit.co"}
 ]
 requires-python = ">=3.8"
 license.text = "MIT"
