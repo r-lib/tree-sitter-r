@@ -9,7 +9,8 @@ categories = ["parsing", "text-editors"]
 repository = "https://github.com/r-lib/tree-sitter-r"
 authors = [
     "Kevin Ushey <kevin@posit.co>",
-    "Jim Hester <jim.hester@rstudio.com>",
+    "Jim Hester <james.f.hester@gmail.com>",
+    "Davis Vaughan <davis@posit.co>",
 ]
 edition = "2021"
 autoexamples = false
