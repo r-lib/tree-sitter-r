@@ -421,6 +421,9 @@ Integers
 0L
 12L
 0xDEADL
+1e1L
+# Technically, R parses this as a float with a warning, but for our purposes this is good enough
+0.1L
 
 --------------------------------------------------------------------------------
 
@@ -428,6 +431,9 @@ Integers
   (integer)
   (integer)
   (integer)
+  (integer)
+  (integer)
+  (comment)
   (integer))
 
 ================================================================================
