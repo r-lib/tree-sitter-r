@@ -602,9 +602,7 @@ module.exports = grammar({
       $.nan,
       $.na,
       $.dots,
-      $.dot_dot_i,
-
-      $.unmatched_delimiter
+      $.dot_dot_i
     ),
 
     // Comments.
@@ -614,19 +612,6 @@ module.exports = grammar({
     // argument call position. This is necessary given how R tolerates
     // missing arguments in function calls.
     comma: $ => ",",
-
-    // Check for un-matched closing delimiter. This allows us to recover in
-    // cases where the parse tree is temporarily incorrect, e.g. because the
-    // user has removed the opening delimiter associated with some closing delimiter.
-    // This is not the same as, say, `_close_brace`, as the external scanner doesn't
-    // identify these, the typical internal scanner does. It is important for the
-    // underlying string literals to appear in the tree as children of the
-    // `unmatched_delimiter` node so you can tell them apart if you need to.
-    unmatched_delimiter: $ => choice(
-      "}",
-      ")",
-      "]"
-    ),
 
     // This somehow ends up allowing better error recovery
     _string_or_identifier: $ => choice($.string, $.identifier),

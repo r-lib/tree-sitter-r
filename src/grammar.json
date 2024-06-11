@@ -2674,10 +2674,6 @@
         {
           "type": "SYMBOL",
           "name": "dot_dot_i"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "unmatched_delimiter"
         }
       ]
     },
@@ -2695,23 +2691,6 @@
     "comma": {
       "type": "STRING",
       "value": ","
-    },
-    "unmatched_delimiter": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "}"
-        },
-        {
-          "type": "STRING",
-          "value": ")"
-        },
-        {
-          "type": "STRING",
-          "value": "]"
-        }
-      ]
     },
     "_string_or_identifier": {
       "type": "CHOICE",

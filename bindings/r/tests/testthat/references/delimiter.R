@@ -16,8 +16,7 @@
 # ------------------------------------------------------------------------------
 # opening brace, closing parenthesis
 
-# Parenthesis is "not valid" so it isn't matched by the external scanner, and
-# instead falls through to the `unmatched_delimiter` rule in the grammar.
+# Parenthesis is "not valid" so it isn't matched by the external scanner
 {)
 
 # ------------------------------------------------------------------------------
