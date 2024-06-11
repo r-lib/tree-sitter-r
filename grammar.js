@@ -73,6 +73,13 @@ const PREC = {
   // NOTE: See `NOTE ON PREC.RIGHT` above
   BLOCK: { ASSOC: prec.right, RANK: 0 },
 
+  // ..i
+  // NOTE: If we don't put `dot_dot_i` at a positive rank, then `..1` will get
+  // treated as an `identifier` because the rules for `identifier` and
+  // `dot_dot_i` both match `..1`, but `identifier` physically comes first in
+  // the grammar so it will otherwise have prioritiy if both have rank 0.
+  DOT_DOT_I: { ASSOC: prec, RANK: 1 },
+
   // ?
   HELP: { ASSOC: prec.left, RANK: 1 },
 
@@ -554,7 +561,7 @@ module.exports = grammar({
       "NA_character_"
     ),
     dots: $ => "...",
-    dot_dot_i: $ => token(/[.][.]\d+/),
+    dot_dot_i: $ => token(withPrec(PREC.DOT_DOT_I, /[.][.]\d+/)),
 
     // A general R expression.
     _expression: $ => choice(
