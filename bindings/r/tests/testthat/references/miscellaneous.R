@@ -71,10 +71,6 @@ apple
 # expression that it can accept as `condition`, we instead want its error
 # recovery to detect the missing `condition`.
 
-# TODO: In the snapshot test, the `identifier` between the `()` should really
-# show as `MISSING`, but we can't detect that right now due to:
-# https://github.com/tree-sitter/tree-sitter/issues/1043
-
 foo <- function() {
   if ()
 
@@ -103,8 +99,7 @@ blah('foo',
 # motivation for not having `unmatched_delimiter` 3 (#90)
 
 # In this case we want the `{}` to be a matching pair, and for there to be a
-# MISSING rhs of the `+` operator. Again, we currently can't detect it as
-# MISSING due to: https://github.com/tree-sitter/tree-sitter/issues/1043.
+# MISSING rhs of the `+` operator.
 
 {
   ggplot() +

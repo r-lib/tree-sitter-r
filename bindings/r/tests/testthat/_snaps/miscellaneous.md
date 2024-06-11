@@ -568,47 +568,29 @@
       # recovery to detect the missing `condition`.
       
       S-Expression
-      (comment [(6, 0), (6, 77)])
-      
-      Text
-      # TODO: In the snapshot test, the `identifier` between the `()` should really
-      
-      S-Expression
-      (comment [(7, 0), (7, 63)])
-      
-      Text
-      # show as `MISSING`, but we can't detect that right now due to:
-      
-      S-Expression
-      (comment [(8, 0), (8, 56)])
-      
-      Text
-      # https://github.com/tree-sitter/tree-sitter/issues/1043
-      
-      S-Expression
-      (binary_operator [(10, 0), (14, 1)]
-        lhs: (identifier [(10, 0), (10, 3)])
-        operator: "<-" [(10, 4), (10, 6)]
-        rhs: (function_definition [(10, 7), (14, 1)]
-          name: "function" [(10, 7), (10, 15)]
-          parameters: (parameters [(10, 15), (10, 17)]
-            "(" [(10, 15), (10, 16)]
-            ")" [(10, 16), (10, 17)]
+      (binary_operator [(6, 0), (10, 1)]
+        lhs: (identifier [(6, 0), (6, 3)])
+        operator: "<-" [(6, 4), (6, 6)]
+        rhs: (function_definition [(6, 7), (10, 1)]
+          name: "function" [(6, 7), (6, 15)]
+          parameters: (parameters [(6, 15), (6, 17)]
+            "(" [(6, 15), (6, 16)]
+            ")" [(6, 16), (6, 17)]
           )
-          body: (braced_expression [(10, 18), (14, 1)]
-            "{" [(10, 18), (10, 19)]
-            body: (if_statement [(11, 2), (13, 7)]
-              "if" [(11, 2), (11, 4)]
-              "(" [(11, 5), (11, 6)]
-              condition: (identifier MISSING [(11, 6), (11, 6)])
-              ")" [(11, 6), (11, 7)]
-              consequence: (binary_operator [(13, 2), (13, 7)]
-                lhs: (float [(13, 2), (13, 3)])
-                operator: "+" [(13, 4), (13, 5)]
-                rhs: (float [(13, 6), (13, 7)])
+          body: (braced_expression [(6, 18), (10, 1)]
+            "{" [(6, 18), (6, 19)]
+            body: (if_statement [(7, 2), (9, 7)]
+              "if" [(7, 2), (7, 4)]
+              "(" [(7, 5), (7, 6)]
+              condition: (identifier MISSING [(7, 6), (7, 6)])
+              ")" [(7, 6), (7, 7)]
+              consequence: (binary_operator [(9, 2), (9, 7)]
+                lhs: (float [(9, 2), (9, 3)])
+                operator: "+" [(9, 4), (9, 5)]
+                rhs: (float [(9, 6), (9, 7)])
               )
             )
-            "}" [(14, 0), (14, 1)]
+            "}" [(10, 0), (10, 1)]
           )
         )
       )
@@ -728,32 +710,26 @@
       # In this case we want the `{}` to be a matching pair, and for there to be a
       
       S-Expression
-      (comment [(2, 0), (2, 73)])
+      (comment [(2, 0), (2, 34)])
       
       Text
-      # MISSING rhs of the `+` operator. Again, we currently can't detect it as
+      # MISSING rhs of the `+` operator.
       
       S-Expression
-      (comment [(3, 0), (3, 73)])
-      
-      Text
-      # MISSING due to: https://github.com/tree-sitter/tree-sitter/issues/1043.
-      
-      S-Expression
-      (braced_expression [(5, 0), (7, 1)]
-        "{" [(5, 0), (5, 1)]
-        body: (binary_operator [(6, 2), (7, 0)]
-          lhs: (call [(6, 2), (6, 10)]
-            function: (identifier [(6, 2), (6, 8)])
-            arguments: (arguments [(6, 8), (6, 10)]
-              open: "(" [(6, 8), (6, 9)]
-              close: ")" [(6, 9), (6, 10)]
+      (braced_expression [(4, 0), (6, 1)]
+        "{" [(4, 0), (4, 1)]
+        body: (binary_operator [(5, 2), (6, 0)]
+          lhs: (call [(5, 2), (5, 10)]
+            function: (identifier [(5, 2), (5, 8)])
+            arguments: (arguments [(5, 8), (5, 10)]
+              open: "(" [(5, 8), (5, 9)]
+              close: ")" [(5, 9), (5, 10)]
             )
           )
-          operator: "+" [(6, 11), (6, 12)]
-          rhs: (identifier MISSING [(7, 0), (7, 0)])
+          operator: "+" [(5, 11), (5, 12)]
+          rhs: (identifier MISSING [(6, 0), (6, 0)])
         )
-        "}" [(7, 0), (7, 1)]
+        "}" [(6, 0), (6, 1)]
       )
       
       Text
