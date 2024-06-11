@@ -6,11 +6,11 @@
       S-Expression
       (for_statement [(1, 0), (1, 13)]
         "for" [(1, 0), (1, 3)]
-        "(" [(1, 4), (1, 5)]
+        open: "(" [(1, 4), (1, 5)]
         variable: (identifier [(1, 5), (1, 6)])
         "in" [(1, 7), (1, 9)]
         sequence: (identifier [(1, 10), (1, 13)])
-        ")" MISSING [(1, 13), (1, 13)]
+        close: ")" MISSING [(1, 13), (1, 13)]
       )
       
       Text

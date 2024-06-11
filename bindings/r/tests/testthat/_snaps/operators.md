@@ -588,19 +588,19 @@
         operator: "|>" [(7, 2), (7, 4)]
         rhs: (call [(7, 5), (7, 22)]
           function: (braced_expression [(7, 5), (7, 20)]
-            "{" [(7, 5), (7, 6)]
+            open: "{" [(7, 5), (7, 6)]
             body: (function_definition [(7, 6), (7, 19)]
               name: "function" [(7, 6), (7, 14)]
               parameters: (parameters [(7, 14), (7, 17)]
-                "(" [(7, 14), (7, 15)]
+                open: "(" [(7, 14), (7, 15)]
                 parameter: (parameter [(7, 15), (7, 16)]
                   name: (identifier [(7, 15), (7, 16)])
                 )
-                ")" [(7, 16), (7, 17)]
+                close: ")" [(7, 16), (7, 17)]
               )
               body: (identifier [(7, 18), (7, 19)])
             )
-            "}" [(7, 19), (7, 20)]
+            close: "}" [(7, 19), (7, 20)]
           )
           arguments: (arguments [(7, 20), (7, 22)]
             open: "(" [(7, 20), (7, 21)]
@@ -797,13 +797,13 @@
       S-Expression
       (binary_operator [(2, 0), (2, 10)]
         lhs: (parenthesized_expression [(2, 0), (2, 7)]
-          "(" [(2, 0), (2, 1)]
+          open: "(" [(2, 0), (2, 1)]
           body: (binary_operator [(2, 1), (2, 6)]
             lhs: (float [(2, 1), (2, 2)])
             operator: "+" [(2, 3), (2, 4)]
             rhs: (float [(2, 5), (2, 6)])
           )
-          ")" [(2, 6), (2, 7)]
+          close: ")" [(2, 6), (2, 7)]
         )
         operator: ":" [(2, 7), (2, 8)]
         rhs: (unary_operator [(2, 8), (2, 10)]

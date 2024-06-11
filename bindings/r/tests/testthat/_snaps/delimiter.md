@@ -53,8 +53,8 @@
       
       S-Expression
       (braced_expression [(2, 0), (3, 0)]
-        "{" [(2, 0), (2, 1)]
-        (ERROR [(2, 1), (2, 2)]
+        open: "{" [(2, 0), (2, 1)]
+        open: (ERROR [(2, 1), (2, 2)]
           (ERROR [(2, 1), (2, 2)])
         )
       )
@@ -71,7 +71,7 @@
     Output
       S-Expression
       (parenthesized_expression [(1, 0), (1, 1)]
-        "(" [(1, 0), (1, 1)]
+        open: "(" [(1, 0), (1, 1)]
       )
       
       Text
@@ -93,7 +93,7 @@
     Output
       S-Expression
       (parenthesized_expression [(1, 0), (1, 1)]
-        "(" [(1, 0), (1, 1)]
+        open: "(" [(1, 0), (1, 1)]
       )
       
       Text
