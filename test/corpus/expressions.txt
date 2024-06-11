@@ -1796,7 +1796,8 @@ Closing Brace
 --------------------------------------------------------------------------------
 
 (program
-  (unmatched_delimiter))
+  (ERROR
+    (UNEXPECTED '}')))
 
 ================================================================================
 Closing Parenthesis
@@ -1807,7 +1808,8 @@ Closing Parenthesis
 --------------------------------------------------------------------------------
 
 (program
-  (unmatched_delimiter))
+  (ERROR
+    (UNEXPECTED ')')))
 
 ================================================================================
 Closing Bracket
@@ -1818,23 +1820,23 @@ Closing Bracket
 --------------------------------------------------------------------------------
 
 (program
-  (unmatched_delimiter))
+  (ERROR
+    (UNEXPECTED ']')))
 
 ================================================================================
 Opening Brace, Closing Parenthesis
 ================================================================================
 
-# Parenthesis is "not valid" so it isn't matched by the external scanner, and
-# instead falls through to the `)` rule in the grammar.
+# Parenthesis is "not valid" so it isn't matched by the external scanner
 {)
 
 --------------------------------------------------------------------------------
 
 (program
   (comment)
-  (comment)
   (braced_expression
-    (unmatched_delimiter)))
+    (ERROR
+      (UNEXPECTED ')'))))
 
 ================================================================================
 Opening Parenthesis, Closing Brace
@@ -1845,8 +1847,9 @@ Opening Parenthesis, Closing Brace
 --------------------------------------------------------------------------------
 
 (program
-  (parenthesized_expression
-    (unmatched_delimiter)))
+  (parenthesized_expression)
+  (ERROR
+    (UNEXPECTED '}')))
 
 ================================================================================
 Opening Parenthesis, Closing Bracket
@@ -1857,8 +1860,9 @@ Opening Parenthesis, Closing Bracket
 --------------------------------------------------------------------------------
 
 (program
-  (parenthesized_expression
-    (unmatched_delimiter)))
+  (parenthesized_expression)
+  (ERROR
+    (UNEXPECTED ']')))
 
 ================================================================================
 Opening Bracket2, Unmatched Closing Bracket
@@ -1869,14 +1873,9 @@ x[[2]
 --------------------------------------------------------------------------------
 
 (program
-  (subset2
-    (identifier)
-    (arguments
-      (argument
-        (float))
-      (argument
-        (unmatched_delimiter))
-      (MISSING "]]"))))
+  (identifier)
+  (ERROR
+    (UNEXPECTED ']')))
 
 ================================================================================
 Opening Bracket and Bracket2, Unmatched Closing Bracket
@@ -1890,10 +1889,7 @@ x[y[[2]
   (identifier)
   (ERROR
     (identifier)
-    (argument
-      (float))
-    (argument
-      (unmatched_delimiter))))
+    (UNEXPECTED ']')))
 
 ================================================================================
 Opening Bracket2 and Bracket, Matched Closing Bracket
@@ -1924,15 +1920,11 @@ x[[y[2]]
 --------------------------------------------------------------------------------
 
 (program
-  (subset2
-    function: (identifier)
-    arguments: (arguments
-      argument: (argument
-        value: (subset
-          function: (identifier)
-          arguments: (arguments
-            argument: (argument
-              value: (float)))))
-      argument: (argument
-        value: (unmatched_delimiter))
-      close: (MISSING "]]"))))
+  (identifier)
+  (ERROR
+    (subset
+      function: (identifier)
+      arguments: (arguments
+        argument: (argument
+          value: (float))))
+    (UNEXPECTED ']')))
