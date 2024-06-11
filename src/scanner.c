@@ -38,9 +38,12 @@ enum TokenType {
 };
 
 // ---------------------------------------------------------------------------------------
-// Temporary Stack structure until we can use the `<tree_sitter/array.h>` header from
-// tree sitter 1.0.0. Inspired from tree-sitter-julia.
+// Stack structure inspired from tree-sitter-julia
 
+// Important to use `char` as the element storage type. This makes `ts_malloc()`
+// and `memcpy()` calls related to the `Scope` array very straightforward as no
+// `sizeof()` call is needed. An `enum` would be simpler but we don't think it
+// has `char` element storage.
 typedef char Scope;
 
 const Scope SCOPE_TOP_LEVEL = 0;
