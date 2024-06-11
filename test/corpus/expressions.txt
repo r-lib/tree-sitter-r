@@ -866,7 +866,7 @@ else
     1
   }
   # hi there
-  
+
   # another one!
 
   else {
@@ -1813,7 +1813,7 @@ Opening Brace, Closing Parenthesis
 ================================================================================
 
 # Parenthesis is "not valid" so it isn't matched by the external scanner, and
-# instead falls through to the `)` rule in the grammar. 
+# instead falls through to the `)` rule in the grammar.
 {)
 
 --------------------------------------------------------------------------------
