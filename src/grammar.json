@@ -2544,8 +2544,12 @@
     "dot_dot_i": {
       "type": "TOKEN",
       "content": {
-        "type": "PATTERN",
-        "value": "[.][.]\\d+"
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "PATTERN",
+          "value": "[.][.]\\d+"
+        }
       }
     },
     "_expression": {

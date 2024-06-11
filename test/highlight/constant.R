@@ -18,10 +18,8 @@ NA_complex_
 # ^ @constant.builtin
 ...
 # ^ @constant.builtin
-# TODO: This should be `@constant.builtin`, the grammar is wrong:
-# https://github.com/r-lib/tree-sitter-r/issues/114
 ..1
-# ^ @variable
+# ^ @constant.builtin
 
 TRUE
 # ^ @boolean
