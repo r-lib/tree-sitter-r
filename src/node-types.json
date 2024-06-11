@@ -712,6 +712,26 @@
             "named": true
           }
         ]
+      },
+      "close": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "open": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "{",
+            "named": false
+          }
+        ]
       }
     }
   },
@@ -1157,6 +1177,26 @@
           }
         ]
       },
+      "close": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": ")",
+            "named": false
+          }
+        ]
+      },
+      "open": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          }
+        ]
+      },
       "sequence": {
         "multiple": false,
         "required": true,
@@ -1581,6 +1621,16 @@
           }
         ]
       },
+      "close": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": ")",
+            "named": false
+          }
+        ]
+      },
       "condition": {
         "multiple": false,
         "required": true,
@@ -1832,6 +1882,16 @@
             "named": true
           }
         ]
+      },
+      "open": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          }
+        ]
       }
     }
   },
@@ -2043,6 +2103,26 @@
     "type": "parameters",
     "named": true,
     "fields": {
+      "close": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": ")",
+            "named": false
+          }
+        ]
+      },
+      "open": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          }
+        ]
+      },
       "parameter": {
         "multiple": true,
         "required": false,
@@ -2192,6 +2272,26 @@
           {
             "type": "while_statement",
             "named": true
+          }
+        ]
+      },
+      "close": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": ")",
+            "named": false
+          }
+        ]
+      },
+      "open": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
           }
         ]
       }
@@ -3063,6 +3163,16 @@
           }
         ]
       },
+      "close": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": ")",
+            "named": false
+          }
+        ]
+      },
       "condition": {
         "multiple": false,
         "required": true,
@@ -3186,6 +3296,16 @@
           {
             "type": "while_statement",
             "named": true
+          }
+        ]
+      },
+      "open": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
           }
         ]
       }
