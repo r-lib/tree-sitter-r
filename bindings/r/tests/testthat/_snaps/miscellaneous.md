@@ -600,7 +600,7 @@
             body: (if_statement [(11, 2), (13, 7)]
               "if" [(11, 2), (11, 4)]
               "(" [(11, 5), (11, 6)]
-              condition: (identifier [(11, 6), (11, 6)])
+              condition: (identifier MISSING [(11, 6), (11, 6)])
               ")" [(11, 6), (11, 7)]
               consequence: (binary_operator [(13, 2), (13, 7)]
                 lhs: (float [(13, 2), (13, 3)])
@@ -642,16 +642,20 @@
       (call [(4, 0), (14, 1)]
         function: (identifier [(4, 0), (4, 4)])
         arguments: (arguments [(4, 4), (14, 1)]
-          "(" [(4, 4), (4, 5)]
+          open: "(" [(4, 4), (4, 5)]
           argument: (argument [(4, 5), (4, 10)]
-            value: (string [(4, 5), (4, 10)])
+            value: (string [(4, 5), (4, 10)]
+              "'" [(4, 5), (4, 6)]
+              content: (string_content [(4, 6), (4, 9)])
+              "'" [(4, 9), (4, 10)]
+            )
           )
           (comma [(4, 10), (4, 11)])
           argument: (argument [(5, 2), (13, 3)]
             value: (call [(5, 2), (13, 3)]
               function: (identifier [(5, 2), (5, 6)])
               arguments: (arguments [(5, 6), (13, 3)]
-                "(" [(5, 6), (5, 7)]
+                open: "(" [(5, 6), (5, 7)]
                 argument: (argument [(6, 4), (8, 5)]
                   name: (identifier [(6, 4), (6, 7)])
                   "=" [(6, 8), (6, 9)]
@@ -666,9 +670,9 @@
                       body: (if_statement [(7, 6), (8, 0)]
                         "if" [(7, 6), (7, 8)]
                         "(" [(7, 9), (7, 10)]
-                        condition: (identifier [(7, 10), (7, 10)])
+                        condition: (identifier MISSING [(7, 10), (7, 10)])
                         ")" [(7, 10), (7, 11)]
-                        consequence: (identifier [(8, 0), (8, 0)])
+                        consequence: (identifier MISSING [(8, 0), (8, 0)])
                       )
                       "}" [(8, 4), (8, 5)]
                     )
@@ -690,11 +694,11 @@
                     )
                   )
                 )
-                ")" [(13, 2), (13, 3)]
+                close: ")" [(13, 2), (13, 3)]
               )
             )
           )
-          ")" [(14, 0), (14, 1)]
+          close: ")" [(14, 0), (14, 1)]
         )
       )
       
@@ -742,12 +746,12 @@
           lhs: (call [(6, 2), (6, 10)]
             function: (identifier [(6, 2), (6, 8)])
             arguments: (arguments [(6, 8), (6, 10)]
-              "(" [(6, 8), (6, 9)]
-              ")" [(6, 9), (6, 10)]
+              open: "(" [(6, 8), (6, 9)]
+              close: ")" [(6, 9), (6, 10)]
             )
           )
           operator: "+" [(6, 11), (6, 12)]
-          rhs: (identifier [(7, 0), (7, 0)])
+          rhs: (identifier MISSING [(7, 0), (7, 0)])
         )
         "}" [(7, 0), (7, 1)]
       )
