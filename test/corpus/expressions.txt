@@ -11,6 +11,8 @@ function(x, y) return(y)
 
 function(x, ...) f(...)
 
+function(x, ...) ..1 + ..2
+
 function(arg1, arg2 = 2) {}
 
 function(x,
@@ -76,6 +78,16 @@ function() for(i in 1:5) i
       arguments: (arguments
         argument: (argument
           value: (dots)))))
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (identifier))
+      (comma)
+      parameter: (parameter
+        name: (dots)))
+    body: (binary_operator
+      lhs: (dot_dot_i)
+      rhs: (dot_dot_i)))
   (function_definition
     parameters: (parameters
       parameter: (parameter
@@ -866,7 +878,7 @@ else
     1
   }
   # hi there
-  
+
   # another one!
 
   else {
@@ -1813,7 +1825,7 @@ Opening Brace, Closing Parenthesis
 ================================================================================
 
 # Parenthesis is "not valid" so it isn't matched by the external scanner, and
-# instead falls through to the `)` rule in the grammar. 
+# instead falls through to the `)` rule in the grammar.
 {)
 
 --------------------------------------------------------------------------------
