@@ -32,9 +32,9 @@
       
       S-Expression
       (braced_expression [(5, 4), (5, 9)]
-        "{" [(5, 4), (5, 5)]
+        open: "{" [(5, 4), (5, 5)]
         body: (identifier [(5, 5), (5, 8)])
-        "}" [(5, 8), (5, 9)]
+        close: "}" [(5, 8), (5, 9)]
       )
       
       Text
@@ -51,9 +51,9 @@
       
       S-Expression
       (braced_expression [(6, 4), (6, 9)]
-        "{" [(6, 4), (6, 5)]
+        open: "{" [(6, 4), (6, 5)]
         body: (identifier [(6, 5), (6, 8)])
-        "}" [(6, 8), (6, 9)]
+        close: "}" [(6, 8), (6, 9)]
       )
       
       Text
@@ -70,9 +70,9 @@
       
       S-Expression
       (braced_expression [(7, 5), (7, 10)]
-        "{" [(7, 5), (7, 6)]
+        open: "{" [(7, 5), (7, 6)]
         body: (identifier [(7, 6), (7, 9)])
-        "}" [(7, 9), (7, 10)]
+        close: "}" [(7, 9), (7, 10)]
       )
       
       Text
@@ -89,9 +89,9 @@
       
       S-Expression
       (braced_expression [(8, 6), (8, 11)]
-        "{" [(8, 6), (8, 7)]
+        open: "{" [(8, 6), (8, 7)]
         body: (identifier [(8, 7), (8, 10)])
-        "}" [(8, 10), (8, 11)]
+        close: "}" [(8, 10), (8, 11)]
       )
       
       Text
@@ -210,9 +210,9 @@
         "repeat" [(1, 0), (1, 6)]
         body: (if_statement [(1, 7), (1, 33)]
           "if" [(1, 7), (1, 9)]
-          "(" [(1, 10), (1, 11)]
+          open: "(" [(1, 10), (1, 11)]
           condition: (float [(1, 11), (1, 12)])
-          ")" [(1, 12), (1, 13)]
+          close: ")" [(1, 12), (1, 13)]
           consequence: (true [(1, 14), (1, 18)])
           "else" [(1, 19), (1, 23)]
           alternative: (repeat_statement [(1, 24), (1, 33)]
@@ -228,14 +228,14 @@
       S-Expression
       (if_statement [(2, 0), (2, 32)]
         "if" [(2, 0), (2, 2)]
-        "(" [(2, 3), (2, 4)]
+        open: "(" [(2, 3), (2, 4)]
         condition: (true [(2, 4), (2, 8)])
-        ")" [(2, 8), (2, 9)]
+        close: ")" [(2, 8), (2, 9)]
         consequence: (if_statement [(2, 10), (2, 32)]
           "if" [(2, 10), (2, 12)]
-          "(" [(2, 13), (2, 14)]
+          open: "(" [(2, 13), (2, 14)]
           condition: (false [(2, 14), (2, 19)])
-          ")" [(2, 19), (2, 20)]
+          close: ")" [(2, 19), (2, 20)]
           consequence: (float [(2, 21), (2, 22)])
           "else" [(2, 23), (2, 27)]
           alternative: (null [(2, 28), (2, 32)])
@@ -299,9 +299,9 @@
       S-Expression
       (if_statement [(5, 0), (5, 15)]
         "if" [(5, 0), (5, 2)]
-        "(" [(5, 3), (5, 4)]
+        open: "(" [(5, 3), (5, 4)]
         condition: (true [(5, 4), (5, 8)])
-        ")" [(5, 8), (5, 9)]
+        close: ")" [(5, 8), (5, 9)]
         consequence: (false [(5, 10), (5, 15)])
       )
       
@@ -324,19 +324,19 @@
       
       S-Expression
       (parenthesized_expression [(7, 0), (8, 8)]
-        "(" [(7, 0), (7, 1)]
+        open: "(" [(7, 0), (7, 1)]
         body: (if_statement [(7, 1), (8, 7)]
           "if" [(7, 1), (7, 3)]
-          "(" [(7, 4), (7, 5)]
+          open: "(" [(7, 4), (7, 5)]
           condition: (true [(7, 5), (7, 9)])
-          ")" [(7, 9), (7, 10)]
+          close: ")" [(7, 9), (7, 10)]
           consequence: (false [(7, 11), (7, 16)])
           "else" [(8, 0), (8, 4)]
           alternative: (na [(8, 5), (8, 7)]
             "NA" [(8, 5), (8, 7)]
           )
         )
-        ")" [(8, 7), (8, 8)]
+        close: ")" [(8, 7), (8, 8)]
       )
       
       Text
@@ -489,9 +489,9 @@
       
       S-Expression
       (parenthesized_expression [(2, 0), (2, 8)]
-        "(" [(2, 0), (2, 1)]
+        open: "(" [(2, 0), (2, 1)]
         body: (identifier [(2, 1), (2, 7)])
-        ")" [(2, 7), (2, 8)]
+        close: ")" [(2, 7), (2, 8)]
       )
       
       Text
@@ -499,14 +499,14 @@
       
       S-Expression
       (braced_expression [(4, 0), (7, 1)]
-        "{" [(4, 0), (4, 1)]
+        open: "{" [(4, 0), (4, 1)]
         body: (identifier [(5, 2), (5, 7)])
         body: (parenthesized_expression [(6, 2), (6, 10)]
-          "(" [(6, 2), (6, 3)]
+          open: "(" [(6, 2), (6, 3)]
           body: (identifier [(6, 3), (6, 9)])
-          ")" [(6, 9), (6, 10)]
+          close: ")" [(6, 9), (6, 10)]
         )
-        "}" [(7, 0), (7, 1)]
+        close: "}" [(7, 0), (7, 1)]
       )
       
       Text
@@ -517,7 +517,7 @@
       
       S-Expression
       (parenthesized_expression [(9, 0), (12, 1)]
-        "(" [(9, 0), (9, 1)]
+        open: "(" [(9, 0), (9, 1)]
         body: (call [(10, 2), (11, 10)]
           function: (identifier [(10, 2), (10, 7)])
           arguments: (arguments [(11, 2), (11, 10)]
@@ -528,7 +528,7 @@
             close: ")" [(11, 9), (11, 10)]
           )
         )
-        ")" [(12, 0), (12, 1)]
+        close: ")" [(12, 0), (12, 1)]
       )
       
       Text
@@ -574,23 +574,23 @@
         rhs: (function_definition [(6, 7), (10, 1)]
           name: "function" [(6, 7), (6, 15)]
           parameters: (parameters [(6, 15), (6, 17)]
-            "(" [(6, 15), (6, 16)]
-            ")" [(6, 16), (6, 17)]
+            open: "(" [(6, 15), (6, 16)]
+            close: ")" [(6, 16), (6, 17)]
           )
           body: (braced_expression [(6, 18), (10, 1)]
-            "{" [(6, 18), (6, 19)]
+            open: "{" [(6, 18), (6, 19)]
             body: (if_statement [(7, 2), (9, 7)]
               "if" [(7, 2), (7, 4)]
-              "(" [(7, 5), (7, 6)]
+              open: "(" [(7, 5), (7, 6)]
               condition: (identifier MISSING [(7, 6), (7, 6)])
-              ")" [(7, 6), (7, 7)]
+              close: ")" [(7, 6), (7, 7)]
               consequence: (binary_operator [(9, 2), (9, 7)]
                 lhs: (float [(9, 2), (9, 3)])
                 operator: "+" [(9, 4), (9, 5)]
                 rhs: (float [(9, 6), (9, 7)])
               )
             )
-            "}" [(10, 0), (10, 1)]
+            close: "}" [(10, 0), (10, 1)]
           )
         )
       )
@@ -644,19 +644,19 @@
                   value: (function_definition [(6, 10), (8, 5)]
                     name: "function" [(6, 10), (6, 18)]
                     parameters: (parameters [(6, 18), (6, 20)]
-                      "(" [(6, 18), (6, 19)]
-                      ")" [(6, 19), (6, 20)]
+                      open: "(" [(6, 18), (6, 19)]
+                      close: ")" [(6, 19), (6, 20)]
                     )
                     body: (braced_expression [(6, 21), (8, 5)]
-                      "{" [(6, 21), (6, 22)]
+                      open: "{" [(6, 21), (6, 22)]
                       body: (if_statement [(7, 6), (8, 0)]
                         "if" [(7, 6), (7, 8)]
-                        "(" [(7, 9), (7, 10)]
+                        open: "(" [(7, 9), (7, 10)]
                         condition: (identifier MISSING [(7, 10), (7, 10)])
-                        ")" [(7, 10), (7, 11)]
+                        close: ")" [(7, 10), (7, 11)]
                         consequence: (identifier MISSING [(8, 0), (8, 0)])
                       )
-                      "}" [(8, 4), (8, 5)]
+                      close: "}" [(8, 4), (8, 5)]
                     )
                   )
                 )
@@ -667,12 +667,12 @@
                   value: (function_definition [(10, 11), (12, 5)]
                     name: "function" [(10, 11), (10, 19)]
                     parameters: (parameters [(10, 19), (10, 21)]
-                      "(" [(10, 19), (10, 20)]
-                      ")" [(10, 20), (10, 21)]
+                      open: "(" [(10, 19), (10, 20)]
+                      close: ")" [(10, 20), (10, 21)]
                     )
                     body: (braced_expression [(10, 22), (12, 5)]
-                      "{" [(10, 22), (10, 23)]
-                      "}" [(12, 4), (12, 5)]
+                      open: "{" [(10, 22), (10, 23)]
+                      close: "}" [(12, 4), (12, 5)]
                     )
                   )
                 )
@@ -717,7 +717,7 @@
       
       S-Expression
       (braced_expression [(4, 0), (6, 1)]
-        "{" [(4, 0), (4, 1)]
+        open: "{" [(4, 0), (4, 1)]
         body: (binary_operator [(5, 2), (6, 0)]
           lhs: (call [(5, 2), (5, 10)]
             function: (identifier [(5, 2), (5, 8)])
@@ -729,7 +729,7 @@
           operator: "+" [(5, 11), (5, 12)]
           rhs: (identifier MISSING [(6, 0), (6, 0)])
         )
-        "}" [(6, 0), (6, 1)]
+        close: "}" [(6, 0), (6, 1)]
       )
       
       Text
