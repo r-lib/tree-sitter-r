@@ -15,5 +15,5 @@ You can install the development version of treesitter.r from
 
 ``` r
 # install.packages("pak")
-pak::pak("r-lib/tree-sitter-r/bindings/r@next")
+pak::pak("r-lib/tree-sitter-r/bindings/r")
 ```
