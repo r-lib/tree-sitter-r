@@ -1,73 +1,164 @@
+// ---------------------------------------------------------------------------------------
+// R has an operator precedence table defined here:
+// https://github.com/wch/r-source/blob/0a8f53a7ba47463f1c938dd3e2c2acc7a2d3a1c2/src/main/gram.y#L419-L441
+//
+// Our precedence table defined in `PREC` follows the R precedence order pretty closely.
+// However, we sometimes need to adjust the associativity, see `NOTE ON PREC.RIGHT` below.
+//
+// We also don't need the `ELSE` or `PIPEBIND` precedence specifications from the table.
+// We handle `ELSE` within the `if` node using a special external, and `=>` didn't make it
+// into a release version of R (it is off by default) and we think it is unlikely to make
+// a return.
+//
+// Note that if a precedence rank is unspecified in a rule, it can be assumed to be 0.
+// ---------------------------------------------------------------------------------------
 
-// The R 4.2.0 syntax table, from ?Syntax:
+// ---------------------------------------------------------------------------------------
+// NOTE ON PREC.RIGHT:
 //
-//  ':: :::'           access variables in a namespace
-//  '$ @'              component / slot extraction
-//  '[ [['             indexing
-//  '^'                exponentiation (right to left)
-//  '- +'              unary minus and plus
-//  ':'                sequence operator
-//  '%any% |>'         special operators (including '%%' and '%/%')
-//  '* /'              multiply, divide
-//  '+ -'              (binary) add, subtract
-//  '< > <= >= == !='  ordering and comparison
-//  '!'                negation
-//  '&  &&'            and
-//  '| ||'             or
-//  '~'                as in formulae
-//  '-> ->>'           rightwards assignment
-//  '<- <<-'           assignment (right to left)
-//  '='                assignment (right to left)
-//  '?'                help (unary and binary)
+// A few things in this table are left associative in R's grammar, but we are forced to
+// make them right associative to get the behavior we want. This includes:
+// - $, @
+// - ::, :::
 //
-// R also has an operator precedence table defined here:
+// We are forced to do this because we want these nodes to have an `optional()` RHS.
+// While `dplyr::` isn't parsable R code, we want it to be recognized as a `::` node with
+// a known package name, as this helps us generate completions.
 //
-// https://github.com/wch/r-source/blob/36008873fb8ca2af3bdaaff418dbade5f7bce118/src/main/gram.y#L414-L436
+// The trailing `optional()` then means there are two interpretations of `foo::bar`:
+// - [foo::][bar] == [namespace][identifier]
+// - [foo::bar] == [namespace]
 //
-// However, the effective precedence of '?' and '=' is a bit different, as R
-// defines special reduction rules for these operators:
+// We want to force the latter, which means that the namespace rule has to be right
+// associative to "prefer matching a rule that ends later".
 //
-// https://github.com/wch/r-source/blob/36008873fb8ca2af3bdaaff418dbade5f7bce118/src/main/gram.y#L440-L453
+// In practice we don't think this will matter for the rules we've had to swap the order
+// on, since they are typically the only things at their numeric precedence rank.
+// ---------------------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------------------
+// NOTE ON OPERATORS:
 //
-// Rather than try to replicate those reduction rules, we just adjust the
-// operator precedence to match the declared precedence in the R syntax table,
-// while allowing for R's declared precedence differences between certain
-// control flow keywords.
+// For `unary_operator`, `binary_operator`, `extract_operator`, and `namespace_operator`,
+// the way these have been grouped is based on the semantic definition of each kind of
+// operator group. Specifically:
+//
+// <unary> <expr>
+// <expr> <binary> <expr>
+// <expr> <extract> <symbol>
+// <symbol> <namespace> <symbol>
+//
+// In theory, we could have gone further to, say, split out comparison and arithmetic
+// operators from the binary operator group, or split out the pipe as its own rule.
+// However, this is all rather arbitrary, and we decided it was best to stop the grouping
+// at semantic meaning, and let end consumers layer on additional behavior as needed by
+// creating more granular groups based on the `operator` field.
+// ---------------------------------------------------------------------------------------
+
 const PREC = {
-  COMMENT: -1,
-  LOW: 0,
-  WHILE: 0,
-  FOR: 0,
-  REPEAT: 0,
-  IF: 1,
-  ELSE: 2,
-  HELP: 3,
-  EQ_ASSIGN: 4,
-  LEFT_ASSIGN: 5,
-  RIGHT_ASSIGN: 6,
-  TILDE: 7,
-  OR: 8,
-  AND: 9,
-  NOT: 10,
-  REL: 11,
-  PLUS: 12,
-  TIMES: 13,
-  SPECIAL: 14,
-  PIPE: 14,
-  PIPEBIND: 15,
-  COLON: 16,
-  UPLUS: 17,
-  EXP: 18,
-  SUBSET: 19,
-  DOLLAR: 20,
-  NS_GET: 21,
-  CALL: 22,
-  CALL_PIPE: 23,
-  FLOAT: 24
-}
+  // #
+  // NOTE: If we don't put comments at a negative rank, then `"#"` will treat the `#` as
+  // the start of a comment rather than being part of the string.
+  COMMENT: { ASSOC: prec, RANK: -1},
 
-newline = '\n',
-terminator = choice(newline, ';'),
+  // {, (
+  // NOTE: If we understand correctly, brace and parenthesis blocks are given the same
+  // precedence as all other general expressions. Note that they are not tagged with an
+  // explicit `%prec` in the links below, and the last terminal nodes of `}` and `)` do
+  // not have a `%left` or `%right` precedence assigned in the table above (the last
+  // terminal node is how Bison assigns precedence to a rule by default), so we are left
+  // to assume they have default precedence.
+  // https://github.com/wch/r-source/blob/0a8f53a7ba47463f1c938dd3e2c2acc7a2d3a1c2/src/main/gram.y#L467-L468
+  // https://www.gnu.org/software/bison/manual/html_node/How-Precedence.html
+  // NOTE: See `NOTE ON PREC.RIGHT` above
+  BLOCK: { ASSOC: prec.right, RANK: 0 },
+
+  // ..i
+  // NOTE: If we don't put `dot_dot_i` at a positive rank, then `..1` will get
+  // treated as an `identifier` because the rules for `identifier` and
+  // `dot_dot_i` both match `..1`, but `identifier` physically comes first in
+  // the grammar so it will otherwise have prioritiy if both have rank 0.
+  DOT_DOT_I: { ASSOC: prec, RANK: 1 },
+
+  // ?
+  HELP: { ASSOC: prec.left, RANK: 1 },
+
+  // function() {}
+  // while() {}
+  // for() {}
+  // repeat {}
+  // NOTE: See `NOTE ON PREC.RIGHT` above
+  FUNCTION_OR_LOOP: { ASSOC: prec.right, RANK: 2 },
+
+  // if {}
+  IF: { ASSOC: prec.right, RANK: 3 },
+
+  // <-, <<-, :=
+  LEFT_ASSIGN: { ASSOC: prec.right, RANK: 4 },
+
+  // =
+  EQUALS_ASSIGN: { ASSOC: prec.right, RANK: 5 },
+
+  // ->, ->>
+  RIGHT_ASSIGN: { ASSOC: prec.left, RANK: 6 },
+
+  // ~
+  TILDE: { ASSOC: prec.left, RANK: 7 },
+
+  // |, ||
+  OR: { ASSOC: prec.left, RANK: 8 },
+
+  // &, &&
+  AND: { ASSOC: prec.left, RANK: 9 },
+
+  // !
+  UNARY_NOT: { ASSOC: prec.left, RANK: 10 },
+
+  // >, >=, <, <=, ==, !=
+  // NOTE: These are nonassoc in R's grammar, but we have to specify
+  // associativity to generate the grammar, and left seems correct.
+  COMPARISON: { ASSOC: prec.left, RANK: 11 },
+
+  // +, -
+  PLUS_MINUS: { ASSOC: prec.left, RANK: 12 },
+
+  // *, /
+  MULTIPLY_DIVIDE: { ASSOC: prec.left, RANK: 13 },
+
+  // %>%, %<>%, |>
+  SPECIAL_OR_PIPE: { ASSOC: prec.left, RANK: 14 },
+
+  // :
+  COLON: { ASSOC: prec.left, RANK: 15 },
+
+  // +, -
+  UNARY_PLUS_MINUS: { ASSOC: prec.left, RANK: 16 },
+
+  // ^, **
+  EXPONENTIATE: { ASSOC: prec.right, RANK: 17 },
+
+  // $, @
+  // NOTE: See `NOTE ON PREC.RIGHT` above
+  EXTRACT: { ASSOC: prec.right, RANK: 18 },
+
+  // ::, :::
+  // NOTE: See `NOTE ON PREC.RIGHT` above
+  NAMESPACE: { ASSOC: prec.right, RANK: 19 },
+
+  // match(1, 2), [, [[
+  // NOTE: We aren't entirely sure how Bison works for calls and subsets. Practically,
+  // we need calls to have high precedence so things like `function(x, y, z) match(x, y)`
+  // don't get parsed as a call with function `function(x, y, z) match` and arguments of
+  // `(x, y)`. In the Bison grammar, there is no `%prec` specified for these rules, and
+  // the last terminal nodes of `]` and `)` don't have an assigned precedence in the
+  // table, so in theory they have the same precedence as general R expressions, but that
+  // obviously isn't the case. Possibly this has to do with Bison's lookahead that
+  // tree-sitter doesn't do.
+  // https://github.com/wch/r-source/blob/0a8f53a7ba47463f1c938dd3e2c2acc7a2d3a1c2/src/main/gram.y#L501
+  // https://github.com/wch/r-source/blob/0a8f53a7ba47463f1c938dd3e2c2acc7a2d3a1c2/src/main/gram.y#L507-L508
+  // https://github.com/wch/r-source/blob/0a8f53a7ba47463f1c938dd3e2c2acc7a2d3a1c2/src/main/gram.y#L441
+  CALL: { ASSOC: prec.right, RANK: 20 },
+}
 
 module.exports = grammar({
   name: 'r',
@@ -77,357 +168,433 @@ module.exports = grammar({
     /\s/
   ],
 
-  conflicts: ($) => [
-    [$._pipe_rhs_argument, $._argument],
-    [$.pipe_rhs_arguments, $.arguments]
+  externals: $ => [
+    $._newline,
+    $._semicolon,
+    $._raw_string_literal,
+    // Don't use `_external` variants directly. Instead use their aliased versions.
+    $._external_else,
+    $._external_open_parenthesis,
+    $._external_close_parenthesis,
+    $._external_open_brace,
+    $._external_close_brace,
+    $._external_open_bracket,
+    $._external_close_bracket,
+    $._external_open_bracket2,
+    $._external_close_bracket2
   ],
 
-  externals: $ => [
-    $._raw_string_literal
-  ],
+  word: $ => $.identifier,
 
   rules: {
-    program: $ => repeat(seq($._expression, optional(terminator))),
+    // Top-level rules.
+    program: $ => repeat(choice($._expression, $._semicolon, $._newline)),
 
-    _definition: $ => choice(
-      $.function_definition,
-      $.lambda_function
-      // TODO: other kinds of definitions
-    ),
-
-    function_definition: $ => prec.left(PREC.LOW, seq(
-      'function',
-      $.formal_parameters,
-      $._expression
+    // Function definitions.
+    function_definition: $ => withPrec(PREC.FUNCTION_OR_LOOP, seq(
+      field("name", choice("\\", "function")),
+      field("parameters", $.parameters),
+      repeat($._newline),
+      optional(field("body", $._expression))
     )),
 
-    lambda_function: $ => prec.left(PREC.LOW, seq(
-      '\\',
-      $.formal_parameters,
-      $._expression
-    )),
-
-    if: $ => prec.right(PREC.IF, seq(
-      'if',
-      '(',
-      field('condition', $._expression),
-      ')',
-      field('consequence', $._expression),
-      field('alternative', optional(seq('else', $._expression)))
-    )),
-
-    while: $ => prec.left(PREC.WHILE, seq(
-      'while',
-      '(',
-      field('condition', $._expression),
-      ')',
-      field('body', $._expression)
-    )),
-
-    repeat: $ => prec.left(PREC.REPEAT, seq(
-      'repeat',
-      field('body', $._expression)
-    )),
-
-    for: $ => prec.left(PREC.FOR, seq(
-      'for',
-      '(',
-      field('name', $.identifier),
-      'in',
-      field('vector', $._expression),
-      ')',
-      field('body', $._expression)
-    )),
-
-    switch: $ => seq(
-      'switch',
-      '(',
-      field('value', $._expression),
-      ',',
-      field('body', $.arguments),
-      ')'
-    ),
-
-    formal_parameters: $ => seq(
-      '(',
+    // NOTE: We include "(" and ")" as part of the rule here to allow
+    // tree-sitter to create a "parameters" node in the AST even when
+    // no parameters are declared for a function.
+    // Spaces and newlines between the `()` are consumed ahead of time
+    // by the external scanner.
+    parameters: $ => seq(
+      field("open", $._open_parenthesis),
       optional(seq(
-        commaSep1($._formal_parameter),
-        optional(',')
+        field("parameter", $.parameter),
+        repeat(seq($.comma, field("parameter", $.parameter)))
       )),
-      ')'
+      field("close", $._close_parenthesis)
     ),
 
-    default_parameter: $ => seq(
-      field('name', $.identifier),
-      '=',
-      field('value', $._expression)
+    parameter: $ => choice(
+      $._parameter_with_default,
+      $._parameter_without_default
     ),
 
-    _formal_parameter: $ => choice(
-      $.identifier,
-      $.default_parameter,
-      $.dots
+    _parameter_with_default: $ => seq(
+      field("name", $.identifier),
+      "=",
+      optional(field("default", $._expression))
     ),
 
-    block: $ => seq(
-      '{',
-      repeat($._expression),
-      '}'
-    ),
+    _parameter_without_default: $ => field("name", choice($.identifier, $.dots)),
 
-    arguments: $ => repeat1(choice(
-      $._argument, 
-      ',',
+    // Control flow.
+    if_statement: $ => withPrec(PREC.IF, seq(
+      "if",
+      repeat($._newline),
+      field("open", $._open_parenthesis),
+      field("condition", $._expression),
+      field("close", $._close_parenthesis),
+      repeat($._newline),
+      field("consequence", $._expression),
+      // No `repeat($._newline)` here. Specially handled in the scanner instead.
+      optional(seq(
+        $._else,
+        field("alternative", $._expression)
+      ))
     )),
 
-    default_argument: $ => prec.right(seq(
-      field('name', choice($.identifier, $.string, $.dots)),
-      '=',
-      field('value', optional($._expression))
+    for_statement: $ => withPrec(PREC.FUNCTION_OR_LOOP, seq(
+      "for",
+      repeat($._newline),
+      field("open", $._open_parenthesis),
+      field("variable", $.identifier),
+      "in",
+      field("sequence", $._expression),
+      field("close", $._close_parenthesis),
+      repeat($._newline),
+      optional(field("body", $._expression))
     )),
 
-    _argument: $ => prec.left(choice(
-      $._expression,
-      $.default_argument,
+    while_statement: $ => withPrec(PREC.FUNCTION_OR_LOOP, seq(
+      "while",
+      repeat($._newline),
+      field("open", $._open_parenthesis),
+      field("condition", $._expression),
+      field("close", $._close_parenthesis),
+      repeat($._newline),
+      optional(field("body", $._expression))
     )),
 
-    call: $ => prec(PREC.CALL, seq(
-      field('function', $._expression),
-      '(',
-      field('arguments', optional($.arguments)),
-      ')'
+    repeat_statement: $ => withPrec(PREC.FUNCTION_OR_LOOP, seq(
+      "repeat",
+      repeat($._newline),
+      optional(field("body", $._expression))
     )),
 
-    _assignment: $ => choice(
-      $.equals_assignment,
-      $.left_assignment,
-      $.left_assignment2,
-      $.right_assignment,
-      $.super_assignment,
-      $.super_right_assignment,
+    // Blocks.
+    braced_expression: $ => withPrec(PREC.BLOCK, seq(
+      field("open", $._open_brace),
+      repeat(field("body", choice($._expression, $._semicolon, $._newline))),
+      optional(field("close", $._close_brace))
+    )),
+
+    parenthesized_expression: $ => withPrec(PREC.BLOCK, seq(
+      field("open", $._open_parenthesis),
+      repeat(field("body", choice($._expression, $._newline))),
+      optional(field("close", $._close_parenthesis))
+    )),
+
+    // Function calls and subsetting.
+    call: $ => withPrec(PREC.CALL, seq(
+      field("function", $._expression),
+      field("arguments", alias($.call_arguments, $.arguments))
+    )),
+
+    subset: $ => withPrec(PREC.CALL, seq(
+      field("function", $._expression),
+      field("arguments", alias($.subset_arguments, $.arguments))
+    )),
+
+    subset2: $ => withPrec(PREC.CALL, seq(
+      field("function", $._expression),
+      field("arguments", alias($.subset2_arguments, $.arguments))
+    )),
+
+    // The actual matching rules for arguments in each of the above.
+    // Spaces and newlines between the `()`, `[]`, or `[[]]` are consumed ahead of time
+    // by the external scanner.
+    call_arguments: $ => seq(
+      field("open", $._open_parenthesis),
+      repeat($._argument),
+      field("close", $._close_parenthesis)
+    ),
+    subset_arguments: $ => seq(
+      field("open", $._open_bracket),
+      repeat($._argument),
+      field("close", $._close_bracket)
+    ),
+    subset2_arguments: $ => seq(
+      field("open", $._open_bracket2),
+      repeat($._argument),
+      field("close", $._close_bracket2)
     ),
 
-    left_assignment: $ => prec.right(PREC.LEFT_ASSIGN,
-      seq(
-        field('name', $._expression),
-        '<-',
-        field('value', $._expression)
-      )),
-
-    left_assignment2: $ => prec.right(PREC.LEFT_ASSIGN,
-      seq(
-        field('name', $._expression),
-        ':=',
-        field('value', $._expression)
-      )),
-
-    equals_assignment: $ => prec.right(PREC.EQ_ASSIGN,
-      seq(
-        field('name', $._expression),
-        '=',
-        field('value', $._expression)
-      )),
-
-    super_assignment: $ => prec.right(PREC.LEFT_ASSIGN,
-      seq(
-        field('name', $._expression),
-        '<<-',
-        field('value', $._expression)
-      )),
-
-    super_right_assignment: $ => prec.left(PREC.RIGHT_ASSIGN,
-      seq(
-        field('value', $._expression),
-        '->>',
-        field('name', $._expression)
-      )),
-
-    right_assignment: $ => prec.left(PREC.RIGHT_ASSIGN,
-      seq(
-        field('value', $._expression),
-        '->',
-        field('name', $._expression)
-      )),
-
-    brace_list: $ => seq(
-      '{',
-      repeat(
-        seq($._expression, optional(terminator))
-      ),
-      '}'
+    // Supports `x[1,]` or `x[1,,2]`, so it really is `choice()` rather than `seq()`
+    // like in function `parameters`.
+    _argument: $ => choice(
+      $.comma,
+      field("argument", $.argument)
     ),
 
-    paren_list: $ => seq(
-      '(',
-      repeat(
-        $._expression
-      ),
-      ')'
+    // An argument; either named or unnamed.
+    argument: $ => choice(
+      $._argument_named,
+      $._argument_unnamed
     ),
 
-    subset: $ => prec(PREC.SUBSET, seq(
-      $._expression,
-      '[',
-      optional($.arguments),
-      ']'
+    // Since `_argument_unnamed` can be an arbitrary `_expression` (with precedence 0)
+    // which include `dots`, `string`, and `identifier`, there is an ambiguity. We need to
+    // set a higher precedence here to try and match `_argument_named` first. Also, since
+    // it `repeat()`s we need right precedence specified to ensure the optional
+    // `_argument_value` is preferred.
+    _argument_named: $ => prec.right(1, seq(
+      field("name", choice($.dots, $.identifier, $.string)),
+      "=",
+      optional($._argument_value)
     )),
 
-    subset2: $ => prec(PREC.SUBSET, seq(
-      $._expression,
-      '[[',
-      optional($.arguments),
-      ']]'
+    _argument_unnamed: $ => $._argument_value,
+
+    _argument_value: $ => field("value", choice($._expression, $._newline)),
+
+    // Operators
+    // NOTE: See `NOTE ON OPERATORS` above
+    // NOTE: Newlines are allowed after all unary operators
+    unary_operator: $ => {
+      const table = [
+        ["?", PREC.HELP],
+        ["~", PREC.TILDE],
+        ["!", PREC.UNARY_NOT],
+        ["+", PREC.UNARY_PLUS_MINUS],
+        ["-", PREC.UNARY_PLUS_MINUS]
+      ];
+
+      return choice(...table.map(([operator, prec]) => prec.ASSOC(prec.RANK, seq(
+        field("operator", operator),
+        repeat($._newline),
+        field("rhs", $._expression)
+      ))))
+    },
+
+    // NOTE: Expressions are allowed on either side of the operator
+    binary_operator: $ => {
+      const table = [
+        ["?", PREC.HELP],
+
+        ["~", PREC.TILDE],
+
+        ["<-", PREC.LEFT_ASSIGN],
+        ["<<-", PREC.LEFT_ASSIGN],
+        [":=", PREC.LEFT_ASSIGN],
+
+        ["->", PREC.RIGHT_ASSIGN],
+        ["->>", PREC.RIGHT_ASSIGN],
+
+        ["=", PREC.EQUALS_ASSIGN],
+
+        ["|", PREC.OR],
+        ["&", PREC.AND],
+
+        ["||", PREC.OR],
+        ["&&", PREC.AND],
+
+        ["<", PREC.COMPARISON],
+        ["<=", PREC.COMPARISON],
+        [">", PREC.COMPARISON],
+        [">=", PREC.COMPARISON],
+        ["==", PREC.COMPARISON],
+        ["!=", PREC.COMPARISON],
+
+        ["+", PREC.PLUS_MINUS],
+        ["-", PREC.PLUS_MINUS],
+        ["*", PREC.MULTIPLY_DIVIDE],
+        ["/", PREC.MULTIPLY_DIVIDE],
+        ["**", PREC.EXPONENTIATE],
+        ["^", PREC.EXPONENTIATE],
+
+        // Special infix operator
+        // Regex: Between two `%`, anything but another `%`, `\`, or `\n`.
+        // Includes primitives `%%` and `%/%`.
+        // Alias is used for targeting in `highlights.scm`.
+        // TODO: This could probably be fine tuned to disallow more things.
+        [alias(/%[^%\\\n]*%/, "special"), PREC.SPECIAL_OR_PIPE],
+        ["|>", PREC.SPECIAL_OR_PIPE],
+
+        [":", PREC.COLON]
+      ];
+
+      return choice(...table.map(([operator, prec]) => prec.ASSOC(prec.RANK, seq(
+        field("lhs", $._expression),
+        field("operator", operator),
+        repeat($._newline),
+        field("rhs", $._expression)
+      ))))
+    },
+
+    // NOTE: Expression on LHS, string or identifier on RHS
+    extract_operator: $ => {
+      const table = [
+        ["$", PREC.EXTRACT],
+        ["@", PREC.EXTRACT]
+      ];
+
+      return choice(...table.map(([operator, prec]) => prec.ASSOC(prec.RANK, seq(
+        field("lhs", $._expression),
+        field("operator", operator),
+        repeat($._newline),
+        optional(field("rhs", $._string_or_identifier))
+      ))))
+    },
+
+    // NOTE: No newlines are allowed. String or identifier on both LHS and RHS.
+    namespace_operator: $ => {
+      const table = [
+        ["::", PREC.NAMESPACE],
+        [":::", PREC.NAMESPACE]
+      ];
+
+      return choice(...table.map(([operator, prec]) => prec.ASSOC(prec.RANK, seq(
+        field("lhs", $._string_or_identifier),
+        field("operator", operator),
+        optional(field("rhs", $._string_or_identifier))
+      ))))
+    },
+
+    // Numeric literals.
+    integer: $ => seq($._float_literal, "L"),
+    complex: $ => seq($._float_literal, "i"),
+    float: $ => $._float_literal,
+
+    _hex_literal: $ => seq(/0[xX][0-9a-fA-F]+/),
+    _number_literal: $ => /(?:(?:\d+(?:\.\d*)?)|(?:\.\d+))(?:[eE][+-]?\d*)?/,
+    _float_literal: $ => choice($._hex_literal, $._number_literal),
+
+    // Strings.
+    string: $ => choice(
+      $._raw_string_literal,
+      $._single_quoted_string,
+      $._double_quoted_string
+    ),
+
+    // TODO: Raw string contents, something like this, where `_raw_string_open`,
+    // `_raw_string_close`, and `_raw_string_content` are externals.
+    // _raw_string_literal: $ => seq(
+    //   $._raw_string_open,
+    //   optional(field("content", alias($._raw_string_content, $.string_content))),
+    //   $._raw_string_close
+    // ),
+
+    // Explanation is:
+    // - Between two quote characters, allow either:
+    //   - Anything except `'` (or `"`) or `\`
+    //   - An escape sequence
+    _single_quoted_string: $ => seq(
+      '\'',
+      optional(field("content", alias($._single_quoted_string_content, $.string_content))),
+      '\''
+    ),
+
+    _double_quoted_string: $ => seq(
+      '"',
+      optional(field("content", alias($._double_quoted_string_content, $.string_content))),
+      '"'
+    ),
+
+    _single_quoted_string_content: $ => repeat1(choice(
+      /[^'\\]+/,
+      $.escape_sequence
     )),
 
-    dollar: $ => prec.left(PREC.DOLLAR, seq(
-      $._expression,
-      '$',
+    _double_quoted_string_content: $ => repeat1(choice(
+      /[^"\\]+/,
+      $.escape_sequence
+    )),
+
+    escape_sequence: $ => token.immediate(seq(
+      '\\',
       choice(
-        $.identifier,
-        $.string
+        /[^0-9xuU]/,
+        /[0-7]{1,3}/,
+        /x[0-9a-fA-F]{1,2}/,
+        /u[0-9a-fA-F]{1,4}/,
+        /u\{[0-9a-fA-F]{1,4}\}/,
+        /U[0-9a-fA-F]{1,8}/,
+        /U\{[0-9a-fA-F]{1,8}\}/
       )
     )),
 
-    slot: $ => prec.left(PREC.DOLLAR, seq(
-      $._expression,
-      '@',
-      $.identifier
-    )),
+    // Identifiers.
+    // NOTE: `_` isn't a valid way to start an R identifier, but we are a little
+    // lax here and parse it anyways. One reason is because want to support a lone `_` as
+    // the pipe placeholder identifier. It could be included as a separate `"_"` choice,
+    // but then `_foo` parses as two identifiers: `_` and `foo`, making it impossible to
+    // check that `_foo` is an invalid identifier. It seems simpler to parse `_foo` as a
+    // single identifier, and then let downstream consumers do further checks on the
+    // validity as needed (#71).
+    // NOTE: Due to the linked tree-sitter bug, if `_identifier` and `_quoted_identifier`
+    // are their own hidden rules, then we can't detect implied `identifier`s as missing
+    // with `ts_node_is_missing()`, essentially making that function useless since
+    // tree-sitter seems to fill in named missing nodes with `identifier` most of the
+    // time. The workaround used here inlines the regexes, and wraps the `choice()` call
+    // in a single terminal `token()` so `identifier` can still be used as the `word` rule.
+    // https://github.com/tree-sitter/tree-sitter/issues/3332
+    identifier: $ => {
+      const _identifier = /[\p{XID_Start}._][\p{XID_Continue}.]*/;
+      const _quoted_identifier = /`((?:\\(.|\n))|[^`\\])*`/;
 
-    namespace_get: $ => prec.left(PREC.NS_GET, seq(
-      field('namespace', $.identifier),
-      '::',
-      field('function', $.identifier),
-    )),
-
-    namespace_get_internal: $ => prec.left(PREC.NS_GET, seq(
-      field('namespace', $.identifier),
-      ':::',
-      field('function', $.identifier),
-    )),
-
-    help: $ => prec.left(PREC.HELP, seq(
-      $._expression,
-      '?',
-      $._expression
-    )),
-
-    dots: $ => '...',
-
-    placeholder: $ => '_',
-
-    pipe_placeholder_argument: $ => prec.right(seq(
-      field('name', $.identifier),
-      '=',
-      field('value', $.placeholder)
-    )),
-
-    _pipe_rhs_argument: $ => prec.right(choice(
-      $._expression,
-      $.default_argument,
-      alias($.pipe_placeholder_argument, $.default_argument)
-    )),
-
-    pipe_rhs_arguments: $ => repeat1(choice(
-      $._pipe_rhs_argument,
-      ','
-    )),
-
-    // pipe_rhs is a call function
-    pipe_rhs: $ => prec.left(PREC.CALL_PIPE, seq(
-      field('function', $._expression),
-      '(',
-      field('arguments', optional(alias($.pipe_rhs_arguments, $.arguments))),
-      ')'
-    )),
-
-    pipe: $ => prec.left(PREC.PIPE, seq(
-      field('left', $._expression),
-      field('operator', '|>'),
-      field('right', alias($.pipe_rhs, $.call))
-    )),
-
-    unary: $ => {
-      const operators = [
-        [PREC.UPLUS, choice('-', '+')],
-        [PREC.NOT, '!'],
-        [PREC.TILDE, '~'],
-        [PREC.HELP, '?'],
-      ];
-
-      return choice(...operators.map(([precedence, operator]) => prec.left(precedence, seq(
-        field('operator', operator),
-        field('operand', $._expression)
-      ))));
+      return token(
+        choice(
+          _identifier,
+          _quoted_identifier
+        )
+      )
     },
 
-    binary: $ => {
-      const operators = [
-        [prec.left, PREC.PLUS, choice('+', '-')],
-        [prec.left, PREC.TIMES, choice('*', '/')],
-        [prec.right, PREC.EXP, '^'],
-        [prec.left, PREC.REL, choice('<', '>', '<=', '>=', '==', '!=')],
-        [prec.left, PREC.OR, choice('||', '|')],
-        [prec.left, PREC.AND, choice('&&', '&')],
-        [prec.left, PREC.SPECIAL, $.special],
-        [prec.left, PREC.COLON, ':'],
-        [prec.left, PREC.TILDE, '~'],
-      ];
-
-      return choice(...operators.map(([fn, precedence, operator]) => fn(precedence, seq(
-        field('left', $._expression),
-        field('operator', operator),
-        field('right', $._expression)
-      ))));
-    },
-
-    break: $ => 'break',
-
-    next: $ => 'next',
-
-    true: $ => 'TRUE',
-    false: $ => 'FALSE',
-    null: $ => 'NULL',
-    inf: $ => 'Inf',
-    nan: $ => 'NaN',
-
+    // Keywords.
+    // We define keywords as those contained in `?Reserved`, i.e. it must be a reserved
+    // word in R's parser to be considered here. If a keyword from `?Reserved` is already
+    // mentioned within a wider rule (like "if" and "function"), then it is not included
+    // again here. Grammar consumers can choose to highlight more words as required. We
+    // make a single exception for `return`, which is not in `?Reserved` but is SO special
+    // that we decided to include it as a keyword.
+    return: $ => "return",
+    next: $ => "next",
+    break: $ => "break",
+    true: $ => "TRUE",
+    false: $ => "FALSE",
+    null: $ => "NULL",
+    inf: $ => "Inf",
+    nan: $ => "NaN",
     na: $ => choice(
-      'NA',
-      'NA_character_',
-      'NA_complex_',
-      'NA_integer_',
-      'NA_real_'
+      "NA",
+      "NA_integer_",
+      "NA_real_",
+      "NA_complex_",
+      "NA_character_"
     ),
+    dots: $ => "...",
+    dot_dot_i: $ => token(withPrec(PREC.DOT_DOT_I, /[.][.]\d+/)),
 
-    _expression: $ => prec.right(choice(
-      $.identifier,
-      $.integer,
-      $.float,
-      $.complex,
-      $.string,
-      $.call,
+    // A general R expression.
+    _expression: $ => choice(
       $.function_definition,
-      $.lambda_function,
-      $._assignment,
-      $.brace_list,
-      $.paren_list,
-      $.binary,
-      $.unary,
-      $.pipe,
+
+      $.if_statement,
+      $.for_statement,
+      $.while_statement,
+      $.repeat_statement,
+
+      $.braced_expression,
+      $.parenthesized_expression,
+
+      $.call,
       $.subset,
       $.subset2,
-      $.dollar,
-      $.slot,
-      $.namespace_get,
-      $.namespace_get_internal,
-      $.help,
-      $.if,
-      $.for,
-      $.while,
-      $.repeat,
-      $.switch,
-      $.break,
+
+      $.unary_operator,
+      $.binary_operator,
+      $.extract_operator,
+      $.namespace_operator,
+
+      $.integer,
+      $.complex,
+      $.float,
+
+      $.string,
+
+      $.identifier,
+
+      $.return,
       $.next,
+      $.break,
       $.true,
       $.false,
       $.null,
@@ -435,97 +602,35 @@ module.exports = grammar({
       $.nan,
       $.na,
       $.dots,
-      // ';'
-    )),
-
-    identifier: $ =>
-      choice(
-        /[.\p{XID_Start}][._\p{XID_Continue}]*/,
-        seq(
-          '`',
-          repeat(choice(
-            /[^`\\\n]+|\\\r?\n/,
-            $.escape_sequence
-          )),
-          '`'
-        )
-      ),
-
-    integer: $ => token(prec(PREC.FLOAT + 1,
-      seq(
-        choice(
-          seq(
-            choice('0x', '0X'),
-            /[A-Fa-f0-9]+/
-          ),
-          /\d+/
-        ),
-        'L'
-      ))),
-
-    float: $ => {
-      const digits = repeat1(/[0-9]/);
-      const exponent = seq(/[eE][\+-]?/, digits)
-
-      return token(prec.left(PREC.FLOAT,
-        choice(
-          seq(digits, optional('.'), optional(digits), optional(exponent)),
-          seq(optional(digits), '.', digits, optional(exponent)),
-          seq(digits, exponent),
-          seq(
-            choice('0x', '0X'),
-            /[A-Fa-f0-9]+/
-          )
-        )
-      ))
-    },
-
-    complex: $ => seq($.float, 'i'),
-
-    comment: $ => token(prec(PREC.COMMENT, seq('#', /.*/))),
-
-    string: $ => choice(
-      $._raw_string_literal,
-      seq(
-        '"',
-        repeat(choice(
-          /[^"\\\n]+|\\\r?\n/,
-          $.escape_sequence
-        )),
-        '"'
-      ),
-      seq(
-        "'",
-        repeat(choice(
-          /[^'\\\n]+|\\\r?\n/,
-          $.escape_sequence
-        )),
-        "'"
-      )
+      $.dot_dot_i
     ),
 
-    special: $ => seq(
-      '%',
-      repeat(choice(
-        /[^%\\\n]+|\\\r?\n/,
-        $.escape_sequence
-      )),
-      '%'
-    ),
+    // Comments.
+    comment: $ => token(withPrec(PREC.COMMENT, /#.*/)),
 
-    escape_sequence: $ => token.immediate(seq(
-      '\\',
-      choice(
-        /[^xu0-7]/,
-        /[0-7]{1,3}/,
-        /x[0-9a-fA-F]{2}/,
-        /u[0-9a-fA-F]{4}/,
-        /u{[0-9a-fA-F]+}/
-      )
-    ))
+    // Commas. We include these in the AST so we can figure out the
+    // argument call position. This is necessary given how R tolerates
+    // missing arguments in function calls.
+    comma: $ => ",",
+
+    // This somehow ends up allowing better error recovery
+    _string_or_identifier: $ => choice($.string, $.identifier),
+
+    // Provide aliasing of some key externals.
+    // This gives `highlights.scm` something to target for
+    // `@punctuation.bracket` and `@keyword`.
+    _else: $ => alias($._external_else, "else"),
+    _open_parenthesis: $ => alias($._external_open_parenthesis, "("),
+    _close_parenthesis: $ => alias($._external_close_parenthesis, ")"),
+    _open_brace: $ => alias($._external_open_brace, "{"),
+    _close_brace: $ => alias($._external_close_brace, "}"),
+    _open_bracket: $ => alias($._external_open_bracket, "["),
+    _close_bracket: $ => alias($._external_close_bracket, "]"),
+    _open_bracket2: $ => alias($._external_open_bracket2, "[["),
+    _close_bracket2: $ => alias($._external_close_bracket2, "]]")
   }
-});
+})
 
-function commaSep1(rule) {
-  return seq(rule, repeat(seq(',', rule)));
+function withPrec(prec, rule) {
+  return prec.ASSOC(prec.RANK, rule)
 }

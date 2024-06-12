@@ -1,6 +1,6 @@
-============================================
+================================================================================
 Functions
-============================================
+================================================================================
 function() 1
 function() {}
 function(arg1, arg2) {
@@ -11,38 +11,177 @@ function(x, y) return(y)
 
 function(x, ...) f(...)
 
+function(x, ...) ..1 + ..2
+
 function(arg1, arg2 = 2) {}
 
-----
+function(x,
+         y,
+         z = 3) {
+
+}
+
+function()
+
+
+  1
+
+function() function() {}
+
+function(x = function() {}) {}
+
+# With missing RHS in inner function
+function(x = function()) {}
+
+# With no intermediate `{` scope
+function() for(i in 1:5) i
+
+--------------------------------------------------------------------------------
 
 (program
-  (function_definition (formal_parameters) (float))
-  (function_definition (formal_parameters) (brace_list))
   (function_definition
-    (formal_parameters (identifier) (identifier))
-    (brace_list (identifier)))
+    parameters: (parameters)
+    body: (float))
   (function_definition
-    (formal_parameters (identifier) (identifier))
-    (call
-     function: (identifier)
-     arguments: (arguments (identifier))))
+    parameters: (parameters)
+    body: (braced_expression))
   (function_definition
-    (formal_parameters (identifier) (dots))
-    (call 
+    parameters: (parameters
+      parameter: (parameter
+        name: (identifier))
+      (comma)
+      parameter: (parameter
+        name: (identifier)))
+    body: (braced_expression
+      body: (identifier)))
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (identifier))
+      (comma)
+      parameter: (parameter
+        name: (identifier)))
+    body: (call
+      function: (return)
+      arguments: (arguments
+        argument: (argument
+          value: (identifier)))))
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (identifier))
+      (comma)
+      parameter: (parameter
+        name: (dots)))
+    body: (call
       function: (identifier)
       arguments: (arguments
-        (dots))))
+        argument: (argument
+          value: (dots)))))
   (function_definition
-    (formal_parameters
-      (identifier)
-      (default_parameter
+    parameters: (parameters
+      parameter: (parameter
+        name: (identifier))
+      (comma)
+      parameter: (parameter
+        name: (dots)))
+    body: (binary_operator
+      lhs: (dot_dot_i)
+      rhs: (dot_dot_i)))
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (identifier))
+      (comma)
+      parameter: (parameter
         name: (identifier)
-        value: (float)))
-    (brace_list)))
+        default: (float)))
+    body: (braced_expression))
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (identifier))
+      (comma)
+      parameter: (parameter
+        name: (identifier))
+      (comma)
+      parameter: (parameter
+        name: (identifier)
+        default: (float)))
+    body: (braced_expression))
+  (function_definition
+    parameters: (parameters)
+    body: (float))
+  (function_definition
+    parameters: (parameters)
+    body: (function_definition
+      parameters: (parameters)
+      body: (braced_expression)))
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (identifier)
+        default: (function_definition
+          parameters: (parameters)
+          body: (braced_expression))))
+    body: (braced_expression))
+  (comment)
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (identifier)
+        default: (function_definition
+          parameters: (parameters))))
+    body: (braced_expression))
+  (comment)
+  (function_definition
+    parameters: (parameters)
+    body: (for_statement
+      variable: (identifier)
+      sequence: (binary_operator
+        lhs: (float)
+        rhs: (float))
+      body: (identifier))))
 
-=======================
+================================================================================
+Function No Body
+================================================================================
+
+function(x, y)
+
+--------------------------------------------------------------------------------
+
+(program
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (identifier))
+      (comma)
+      parameter: (parameter
+        name: (identifier)))))
+
+================================================================================
+Function No Body With Assignment
+================================================================================
+
+x <- function(x, y)
+
+--------------------------------------------------------------------------------
+
+(program
+  (binary_operator
+    lhs: (identifier)
+    rhs: (function_definition
+      parameters: (parameters
+        parameter: (parameter
+          name: (identifier))
+        (comma)
+        parameter: (parameter
+          name: (identifier))))))
+
+================================================================================
 Lambda Function
-=======================
+================================================================================
 
 a <- \(arg) arg
 b <- \(arg1, arg2) paste0(arg1, arg2)
@@ -50,347 +189,589 @@ c <- \(fun, ...) fun(...)
 1:3 |> {\(x, y = 1) x + y}() |> {\(x) sum(x)}()
 {\(a = 1) a + 1}()
 \() 1 + 2
----
+\()
+
+  1 + 2
+--------------------------------------------------------------------------------
+
 (program
-
-  (left_assignment
-    name: (identifier)
-    value: (lambda_function
-      (formal_parameters (identifier))
+  (binary_operator
+    (identifier)
+    (function_definition
+      (parameters
+        (parameter
+          (identifier)))
       (identifier)))
-
-  (left_assignment
-    name: (identifier)
-    value: (lambda_function
-      (formal_parameters
-        (identifier)
-        (identifier))
-      (call
-        function: (identifier)
-        arguments: (arguments
-          (identifier)
-          (identifier)))))
-
-  (left_assignment
-   name: (identifier)
-   value: (lambda_function
-     (formal_parameters
-       (identifier)
-       (dots))
-     (call
-       function: (identifier)
-       arguments: (arguments (dots)))))
-
-  (pipe
-    left: (pipe
-      left: (binary
-        left: (float)
-        right: (float))
-      right: (call
-        function: (brace_list
-          (lambda_function
-            (formal_parameters
-              (identifier)
-              (default_parameter
-                name: (identifier)
-                value: (float)))
-            (binary
-             left: (identifier)
-             right: (identifier))))))
-    right: (call
-      function: (brace_list
-        (lambda_function
-         (formal_parameters
+  (binary_operator
+    (identifier)
+    (function_definition
+      (parameters
+        (parameter
           (identifier))
-         (call
-           function: (identifier)
-           arguments: (arguments
-             (identifier)))))))
-
+        (comma)
+        (parameter
+          (identifier)))
+      (call
+        (identifier)
+        (arguments
+          (argument
+            (identifier))
+          (comma)
+          (argument
+            (identifier))))))
+  (binary_operator
+    (identifier)
+    (function_definition
+      (parameters
+        (parameter
+          (identifier))
+        (comma)
+        (parameter
+          (dots)))
+      (call
+        (identifier)
+        (arguments
+          (argument
+            (dots))))))
+  (binary_operator
+    (binary_operator
+      (binary_operator
+        (float)
+        (float))
+      (call
+        (braced_expression
+          (function_definition
+            (parameters
+              (parameter
+                (identifier))
+              (comma)
+              (parameter
+                (identifier)
+                (float)))
+            (binary_operator
+              (identifier)
+              (identifier))))
+        (arguments)))
     (call
-      function: (brace_list
-        (lambda_function
-         (formal_parameters
-          (default_parameter
-            name: (identifier)
-            value: (float)))
-         (binary
-          left: (identifier)
-          right: (float)))))
+      (braced_expression
+        (function_definition
+          (parameters
+            (parameter
+              (identifier)))
+          (call
+            (identifier)
+            (arguments
+              (argument
+                (identifier))))))
+      (arguments)))
+  (call
+    (braced_expression
+      (function_definition
+        (parameters
+          (parameter
+            (identifier)
+            (float)))
+        (binary_operator
+          (identifier)
+          (float))))
+    (arguments))
+  (function_definition
+    (parameters)
+    (binary_operator
+      (float)
+      (float)))
+  (function_definition
+    (parameters)
+    (binary_operator
+      (float)
+      (float))))
 
-    (lambda_function
-     (formal_parameters)
-     (binary
-      left: (float)
-      right: (float))))
-
-==========
+================================================================================
 Relational
-==========
+================================================================================
 
 a == b
+a > b
+a < b
+a >= b
+a <= b
+a != b
 
----
+a ==
+  b
+
+--------------------------------------------------------------------------------
+
 (program
-  (binary
-    left: (identifier) right: (identifier)))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (identifier)))
 
-========
-Additive
-========
+================================================================================
+Arithmetic Operator
+================================================================================
 
 a + b
-
----
-
-(program
-  (binary
-    left: (identifier) right: (identifier)))
-
-========
-Multiplicative
-========
-
+a - b
 a * b
+a / b
+a ^ b
+a ** b
 
----
+a +
+  b
 
-(program
-  (binary
-    left: (identifier) right: (identifier)))
+a *
+  b
 
-==============
-Binary operations
-==============
-
-2+2*2
-
----
+--------------------------------------------------------------------------------
 
 (program
-  (binary
-    left: (float)
-    right: (binary
-      left: (float)
-      right: (float))))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (identifier)))
 
-===========
-Unary minus
-===========
+================================================================================
+Unary Operators
+================================================================================
 
+!a
++a
 -a
+foo(!a, +b)
 foo(-a, bar)
 
----
+!
+  a
+-  b
+
+--------------------------------------------------------------------------------
 
 (program
-  (unary operand: (identifier))
+  (unary_operator
+    (identifier))
+  (unary_operator
+    (identifier))
+  (unary_operator
+    (identifier))
   (call
-    function: (identifier)
-    arguments: (arguments
-      (unary operand: (identifier))
-      (identifier))))
+    (identifier)
+    (arguments
+      (argument
+        (unary_operator
+          (identifier)))
+      (comma)
+      (argument
+        (unary_operator
+          (identifier)))))
+  (call
+    (identifier)
+    (arguments
+      (argument
+        (unary_operator
+          (identifier)))
+      (comma)
+      (argument
+        (identifier))))
+  (unary_operator
+    (identifier))
+  (unary_operator
+    (identifier)))
 
-===========
-Binary minus
-===========
-
-foo-a
-
----
-
-(program
-  (binary left: (identifier) right: (identifier)))
-
-
-===================
+================================================================================
 Operator precedence
-===================
+================================================================================
 
-a <= b && c >= d
+2+a*2
+2+a+2
+!a + !b
+a <= 2 && 2 >= d
 a[1] <- foo || bar
 a && b(c) && d
 val <- foo %>% bar(1) %>% baz()
 
----
+--------------------------------------------------------------------------------
 
 (program
+  (binary_operator
+    (float)
+    (binary_operator
+      (identifier)
+      (float)))
+  (binary_operator
+    (binary_operator
+      (float)
+      (identifier))
+    (float))
+  (unary_operator
+    (binary_operator
+      (identifier)
+      (unary_operator
+        (identifier))))
+  (binary_operator
+    (binary_operator
+      (identifier)
+      (float))
+    (binary_operator
+      (float)
+      (identifier)))
+  (binary_operator
+    (subset
+      (identifier)
+      (arguments
+        (argument
+          (float))))
+    (binary_operator
+      (identifier)
+      (identifier)))
+  (binary_operator
+    (binary_operator
+      (identifier)
+      (call
+        (identifier)
+        (arguments
+          (argument
+            (identifier)))))
+    (identifier))
+  (binary_operator
+    (identifier)
+    (binary_operator
+      (binary_operator
+        (identifier)
+        (call
+          (identifier)
+          (arguments
+            (argument
+              (float)))))
+      (call
+        (identifier)
+        (arguments)))))
 
-  (binary
-    left: (binary left: (identifier) right: (identifier))
-    right: (binary left: (identifier) right: (identifier)))
-
-  (left_assignment
-    name: (subset (identifier) (arguments (float)))
-    value: (binary left: (identifier) right: (identifier)))
-
-  (binary
-    left: (binary
-      left: (identifier)
-      right: (call
-        function: (identifier)
-        arguments: (arguments
-          (identifier))))
-    right: (identifier))
-
-  (left_assignment
-    name: (identifier)
-    value: (binary
-      left: (binary
-        left: (identifier)
-        operator: (special)
-        right: (call
-          function: (identifier)
-          arguments: (arguments
-            (float))))
-      operator: (special)
-      right: (call
-        function: (identifier)))))
-
-========
+================================================================================
 Specials
-========
+================================================================================
 
 x %% y
-
+x %/% y
 x %+% y
-
 x %>% y
-
+x %>% 2 %>% z
 x %some text% y
+x %//% y
 
-x %some \% escaped text% y
+# Not specials, but hard to test errors `%\%`, `%%%`
 
----
+--------------------------------------------------------------------------------
 
 (program
-  (binary left: (identifier) operator: (special) right: (identifier))
-  (binary left: (identifier) operator: (special) right: (identifier))
-  (binary left: (identifier) operator: (special) right: (identifier))
-  (binary left: (identifier) operator: (special) right: (identifier))
-  (binary left: (identifier) operator: (special (escape_sequence)) right: (identifier)))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (binary_operator
+      (identifier)
+      (float))
+    (identifier))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (comment))
 
-========
+================================================================================
 Pipe
-========
+================================================================================
 
 x |> print()
+
+x |> foo() %>% bar() |> baz()
 
 x |> foo() |> bar() + baz()
 
 x |> {function(x) x}()
 
----
+--------------------------------------------------------------------------------
 
 (program
-
-  (pipe
-    left: (identifier)
-    right: (call
-      function: (identifier)))
-
-  (binary
-    left: (pipe
-      left: (pipe
-        left: (identifier)
-        right: (call
-          function: (identifier)))
-      right: (call
-        function: (identifier)))
-    right: (call
-      function: (identifier)))
-
-  (pipe
-    left: (identifier)
-    right: (call
-      function: (brace_list
+  (binary_operator
+    (identifier)
+    (call
+      (identifier)
+      (arguments)))
+  (binary_operator
+    (binary_operator
+      (binary_operator
+        (identifier)
+        (call
+          (identifier)
+          (arguments)))
+      (call
+        (identifier)
+        (arguments)))
+    (call
+      (identifier)
+      (arguments)))
+  (binary_operator
+    (binary_operator
+      (binary_operator
+        (identifier)
+        (call
+          (identifier)
+          (arguments)))
+      (call
+        (identifier)
+        (arguments)))
+    (call
+      (identifier)
+      (arguments)))
+  (binary_operator
+    (identifier)
+    (call
+      (braced_expression
         (function_definition
-          (formal_parameters
-           (identifier))
-          (identifier))))))
+          (parameters
+            (parameter
+              (identifier)))
+          (identifier)))
+      (arguments))))
 
-===========
+================================================================================
 Pipe Placeholder
-===========
+================================================================================
 
 foo |> bar(x, y = _)
 foo |> bar() |> baz(data = _)
 
----
+--------------------------------------------------------------------------------
 
 (program
-  (pipe
-    left: (identifier)
-    right: (call
-      function: (identifier)
-      arguments: (arguments
+  (binary_operator
+    (identifier)
+    (call
+      (identifier)
+      (arguments
+        (argument
+          (identifier))
+        (comma)
+        (argument
+          (identifier)
+          (identifier)))))
+  (binary_operator
+    (binary_operator
+      (identifier)
+      (call
         (identifier)
-        (default_argument
-          name: (identifier)
-          value: (placeholder)))))
-  (pipe
-    left: (pipe
-      left: (identifier)
-      right: (call
-        function: (identifier)))
-    right: (call
-      function: (identifier)
-      arguments: (arguments
-        (default_argument
-          name: (identifier)
-          value: (placeholder))))))
+        (arguments)))
+    (call
+      (identifier)
+      (arguments
+        (argument
+          (identifier)
+          (identifier))))))
 
-===========
+================================================================================
 Subset
-===========
+================================================================================
 
 foo[bar]
 foo[1, 2]
 foo[1, ]
+foo[1,, ]
+foo[1,,2]
+foo[x=1,,y=3,4]
 foo[]
 
----
+--------------------------------------------------------------------------------
 
 (program
   (subset
     (identifier)
     (arguments
-     (identifier)))
+      (argument
+        (identifier))))
   (subset
     (identifier)
     (arguments
-      (float)
-      (float)))
+      (argument
+        (float))
+      (comma)
+      (argument
+        (float))))
   (subset
     (identifier)
     (arguments
-      (float)))
+      (argument
+        (float))
+      (comma)))
   (subset
-    (identifier)))
+    (identifier)
+    (arguments
+      (argument
+        (float))
+      (comma)
+      (comma)))
+  (subset
+    (identifier)
+    (arguments
+      (argument
+        (float))
+      (comma)
+      (comma)
+      (argument
+        (float))))
+  (subset
+    (identifier)
+    (arguments
+      (argument
+        (identifier)
+        (float))
+      (comma)
+      (comma)
+      (argument
+        (identifier)
+        (float))
+      (comma)
+      (argument
+        (float))))
+  (subset
+    (identifier)
+    (arguments)))
 
-===========
+================================================================================
 Subset2
-===========
+================================================================================
 
 foo[[x]]
 foo[[x, y]]
+foo[[x,]]
+foo[[x,,]]
+foo[[x,,y]]
 foo[[]]
 
----
+--------------------------------------------------------------------------------
 
 (program
-  (subset2 (identifier)
-  (arguments (identifier)))
-
-  (subset2 (identifier)
-  (arguments (identifier) (identifier)))
-
   (subset2
-    (identifier)))
+    (identifier)
+    (arguments
+      (argument
+        (identifier))))
+  (subset2
+    (identifier)
+    (arguments
+      (argument
+        (identifier))
+      (comma)
+      (argument
+        (identifier))))
+  (subset2
+    (identifier)
+    (arguments
+      (argument
+        (identifier))
+      (comma)))
+  (subset2
+    (identifier)
+    (arguments
+      (argument
+        (identifier))
+      (comma)
+      (comma)))
+  (subset2
+    (identifier)
+    (arguments
+      (argument
+        (identifier))
+      (comma)
+      (comma)
+      (argument
+        (identifier))))
+  (subset2
+    (identifier)
+    (arguments)))
 
-============================================
+================================================================================
+Subset and Subset2 Precedence
+================================================================================
+
+a[[b[1]]]
+a[b[[1]]]
+
+--------------------------------------------------------------------------------
+
+(program
+  (subset2
+    (identifier)
+    (arguments
+      (argument
+        (subset
+          (identifier)
+          (arguments
+            (argument
+              (float)))))))
+  (subset
+    (identifier)
+    (arguments
+      (argument
+        (subset2
+          (identifier)
+          (arguments
+            (argument
+              (float))))))))
+
+================================================================================
 If
-============================================
+================================================================================
 
 if (x)
   log(y)
@@ -400,27 +781,37 @@ if (a.b) {
   d
 }
 
----
+--------------------------------------------------------------------------------
 
 (program
-  (if
+  (if_statement
     condition: (identifier)
-    consequence: (call function: (identifier) arguments: (arguments (identifier))))
-  (if
+    consequence: (call
+      function: (identifier)
+      arguments: (arguments
+        argument: (argument
+          value: (identifier)))))
+  (if_statement
     condition: (identifier)
-    consequence: (brace_list
-      (call
-       function: (identifier)
-       arguments: (arguments (identifier)))
-      (identifier))))
+    consequence: (braced_expression
+      body: (call
+        function: (identifier)
+        arguments: (arguments
+          argument: (argument
+            value: (identifier))))
+      body: (identifier))))
 
-============================================
+================================================================================
 If-else
-============================================
+================================================================================
 
 if (x)
   y else if (a)
   b
+
+if (x)
+  y else if (a)
+  b else d
 
 if (a) {
   c
@@ -429,40 +820,169 @@ if (a) {
   e
 }
 
----
+--------------------------------------------------------------------------------
 
 (program
-  (if
-   condition: (identifier)
-   consequence: (identifier)
-   alternative: (if
-     condition: (identifier)
-     consequence: (identifier)))
+  (if_statement
+    condition: (identifier)
+    consequence: (identifier)
+    alternative: (if_statement
+      condition: (identifier)
+      consequence: (identifier)))
+  (if_statement
+    condition: (identifier)
+    consequence: (identifier)
+    alternative: (if_statement
+      condition: (identifier)
+      consequence: (identifier)
+      alternative: (identifier)))
+  (if_statement
+    condition: (identifier)
+    consequence: (braced_expression
+      body: (identifier)
+      body: (identifier))
+    alternative: (braced_expression
+      body: (identifier))))
 
-  (if
-   condition: (identifier)
-   consequence: (brace_list (identifier) (identifier))
-   alternative: (brace_list (identifier))))
+================================================================================
+Complex If Expression
+================================================================================
 
+# Invalid at top level due to newline before `else`, so not a real if statement
+if (TRUE) {
+  1
+}
+else {
+  2
+}
 
-===
-for
-===
+# Invalid for same reason as above
+if (TRUE)
+  1
+else
+  2
+
+# Valid inside `{` only due to special `else` handling with newlines
+{
+  if (TRUE) {
+    1
+  }
+  else {
+    2
+  }
+}
+
+# Valid with comments in special newline territory
+{
+  if (TRUE) {
+    1
+  }
+  # hi there
+
+  # another one!
+
+  else {
+    2
+  }
+}
+
+--------------------------------------------------------------------------------
+
+(program
+  (comment)
+  (if_statement
+    (true)
+    (braced_expression
+      (float)))
+  (identifier)
+  (braced_expression
+    (float))
+  (comment)
+  (if_statement
+    (true)
+    (float))
+  (identifier)
+  (float)
+  (comment)
+  (braced_expression
+    (if_statement
+      (true)
+      (braced_expression
+        (float))
+      (braced_expression
+        (float))))
+  (comment)
+  (braced_expression
+    (if_statement
+      (true)
+      (braced_expression
+        (float))
+      (comment)
+      (comment)
+      (braced_expression
+        (float)))))
+
+================================================================================
+For
+================================================================================
 
 for (x in y)
   f
 
----
+for (x in 5:6) {
+  for (y in ys) {
+    z
+  }
+}
+
+for (x in y) for (y in z) x + y
+
+--------------------------------------------------------------------------------
 
 (program
-  (for
-    name: (identifier)
-    vector: (identifier)
-    body: (identifier)))
+  (for_statement
+    variable: (identifier)
+    sequence: (identifier)
+    body: (identifier))
+  (for_statement
+    variable: (identifier)
+    sequence: (binary_operator
+      lhs: (float)
+      rhs: (float))
+    body: (braced_expression
+      body: (for_statement
+        variable: (identifier)
+        sequence: (identifier)
+        body: (braced_expression
+          body: (identifier)))))
+  (for_statement
+    variable: (identifier)
+    sequence: (identifier)
+    body: (for_statement
+      variable: (identifier)
+      sequence: (identifier)
+      body: (binary_operator
+        lhs: (identifier)
+        rhs: (identifier)))))
 
-=====
+================================================================================
+For No Body
+================================================================================
+
+for (i in 1:5)
+
+--------------------------------------------------------------------------------
+
+(program
+  (for_statement
+    (identifier)
+    (binary_operator
+      (float)
+      (float))))
+
+================================================================================
 While
-=====
+================================================================================
 while(TRUE)
   bar
 
@@ -475,46 +995,68 @@ while(TRUE)
 while(TRUE)
   next
 
----
+--------------------------------------------------------------------------------
 
 (program
-  (while
+  (while_statement
     condition: (true)
     body: (identifier))
-
-  (while
-    condition: (binary
-      left: (identifier)
-      right: (float))
-    body: (left_assignment
-      name: (identifier)
-      value: (binary
-        left: (identifier)
-        right: (float))))
-
-  (while
+  (while_statement
+    condition: (binary_operator
+      lhs: (identifier)
+      rhs: (float))
+    body: (binary_operator
+      lhs: (identifier)
+      rhs: (binary_operator
+        lhs: (identifier)
+        rhs: (float))))
+  (while_statement
     condition: (true)
     body: (break))
-
-  (while
+  (while_statement
     condition: (true)
     body: (next)))
 
-=====
+================================================================================
+While No Body
+================================================================================
+
+while (a < b)
+
+--------------------------------------------------------------------------------
+
+(program
+  (while_statement
+    (binary_operator
+      (identifier)
+      (identifier))))
+
+================================================================================
 Repeat
-=====
+================================================================================
 
 repeat 1
 
----
+--------------------------------------------------------------------------------
 
 (program
-  (repeat
-    body: (float)))
+  (repeat_statement
+    (float)))
 
-======
+================================================================================
+Repeat No Body
+================================================================================
+
+repeat
+
+--------------------------------------------------------------------------------
+
+(program
+  (repeat_statement))
+
+================================================================================
 Switch
-======
+================================================================================
 
 switch(foo,
   x = 1,
@@ -523,91 +1065,284 @@ switch(foo,
   3
 )
 
----
+--------------------------------------------------------------------------------
 
 (program
-  (switch
-   value: (identifier)
-   body: (arguments
-    (default_argument
-      name: (identifier)
-      value: (float))
-    (default_argument
-      name: (string)
-      value: (float))
-    (default_argument
-      name: (identifier))
-    (float))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (identifier))
+      (comma)
+      argument: (argument
+        name: (identifier)
+        value: (float))
+      (comma)
+      argument: (argument
+        name: (string
+          content: (string_content))
+        value: (float))
+      (comma)
+      argument: (argument
+        name: (identifier))
+      (comma)
+      argument: (argument
+        value: (float)))))
 
-======
+================================================================================
 Dollar
-======
+================================================================================
 
 foo$bar
-
+foo$bar$baz
+foo$bar@baz
+foo$bar()
 foo$"bar"
+foo$bar()$baz[[1]]$bam
 
----
+--------------------------------------------------------------------------------
 
 (program
-  (dollar
-    (identifier) (identifier))
-  (dollar
-    (identifier) (string)))
+  (extract_operator
+    lhs: (identifier)
+    rhs: (identifier))
+  (extract_operator
+    lhs: (extract_operator
+      lhs: (identifier)
+      rhs: (identifier))
+    rhs: (identifier))
+  (extract_operator
+    lhs: (extract_operator
+      lhs: (identifier)
+      rhs: (identifier))
+    rhs: (identifier))
+  (call
+    function: (extract_operator
+      lhs: (identifier)
+      rhs: (identifier))
+    arguments: (arguments))
+  (extract_operator
+    lhs: (identifier)
+    rhs: (string
+      content: (string_content)))
+  (extract_operator
+    lhs: (subset2
+      function: (extract_operator
+        lhs: (call
+          function: (extract_operator
+            lhs: (identifier)
+            rhs: (identifier))
+          arguments: (arguments))
+        rhs: (identifier))
+      arguments: (arguments
+        argument: (argument
+          value: (float))))
+    rhs: (identifier)))
 
-======
+================================================================================
+Dollar No RHS
+================================================================================
+foo$
+
+--------------------------------------------------------------------------------
+
+(program
+  (extract_operator
+    lhs: (identifier)))
+
+================================================================================
 Slot
-======
+================================================================================
 
 foo@bar
+foo@bar$baz
+foo@bar()
+foo@"bar"
 
----
+--------------------------------------------------------------------------------
 
 (program
-  (slot
-    (identifier) (identifier)))
+  (extract_operator
+    (identifier)
+    (identifier))
+  (extract_operator
+    (extract_operator
+      (identifier)
+      (identifier))
+    (identifier))
+  (call
+    (extract_operator
+      (identifier)
+      (identifier))
+    (arguments))
+  (extract_operator
+    (identifier)
+    (string
+      (string_content))))
 
-============================================
+================================================================================
+Slot No RHS
+================================================================================
+foo@
+
+--------------------------------------------------------------------------------
+
+(program
+  (extract_operator
+    lhs: (identifier)))
+
+================================================================================
 Namespace get
-============================================
+================================================================================
 
+foo::
 foo::bar
 foo::bar(1)
 
----
+--------------------------------------------------------------------------------
 
 (program
-  (namespace_get
-    namespace: (identifier)
-    function: (identifier))
+  (namespace_operator
+    lhs: (identifier))
+  (namespace_operator
+    lhs: (identifier)
+    rhs: (identifier))
   (call
-    function: (namespace_get
-     namespace: (identifier)
-     function: (identifier))
-    arguments: (arguments (float))))
+    function: (namespace_operator
+      lhs: (identifier)
+      rhs: (identifier))
+    arguments: (arguments
+      argument: (argument
+        value: (float)))))
 
-============================================
+================================================================================
 Namespace get internal
-============================================
+================================================================================
 
+foo:::
 foo:::bar
 foo:::bar(1)
 
----
+--------------------------------------------------------------------------------
 
 (program
-  (namespace_get_internal
-    namespace: (identifier)
-    function: (identifier))
+  (namespace_operator
+    lhs: (identifier))
+  (namespace_operator
+    lhs: (identifier)
+    rhs: (identifier))
   (call
-    function: (namespace_get_internal
-     namespace: (identifier)
-     function: (identifier))
-    arguments: (arguments (float))))
+    function: (namespace_operator
+      lhs: (identifier)
+      rhs: (identifier))
+    arguments: (arguments
+      argument: (argument
+        value: (float)))))
 
-==========
+================================================================================
+Namespace With Missing RHS
+================================================================================
+# It's nice that `::` allows an optional RHS and enforces that it can only be a
+# string or identifier, so this gives us a pretty clean tree even though it is
+# invalid R code.
+# https://github.com/r-lib/tree-sitter-r/issues/65
+library(dplyr::)
+
+library()
+
+1
+2
+3
+
+--------------------------------------------------------------------------------
+
+(program
+  (comment)
+  (comment)
+  (comment)
+  (comment)
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (namespace_operator
+          lhs: (identifier)))))
+  (call
+    function: (identifier)
+    arguments: (arguments))
+  (float)
+  (float)
+  (float))
+
+================================================================================
+Dollar, At, Namespace, Namespace Internal With Expression RHS
+================================================================================
+# These nodes allows an optional RHS, and the RHS must be a string/identifier,
+# so we nicely get a true node here alongside the braces. Even if that's not
+# parsable R code, it's useful for completions and highlighting.
+foo${bar}
+foo@{bar}
+foo::{bar}
+foo:::{bar}
+
+--------------------------------------------------------------------------------
+
+(program
+  (comment)
+  (comment)
+  (comment)
+  (extract_operator
+    lhs: (identifier))
+  (braced_expression
+    body: (identifier))
+  (extract_operator
+    lhs: (identifier))
+  (braced_expression
+    body: (identifier))
+  (namespace_operator
+    lhs: (identifier))
+  (braced_expression
+    body: (identifier))
+  (namespace_operator
+    lhs: (identifier))
+  (braced_expression
+    body: (identifier)))
+
+================================================================================
+Dollar, At, Namespace, Namespace Internal With `if` RHS
+================================================================================
+# The RHS's of these nodes are restricted to strings and identifiers, and the RHS
+# is optional. This ends up trying to match to an `if_statement` node, leaving the RHS
+# empty, and then the `if_statement` node errors because it doesn't have a `(`. This
+# is actually pretty decent behavior.
+foo$if
+foo@if
+foo::if
+foo:::if
+
+--------------------------------------------------------------------------------
+
+(program
+  (comment)
+  (comment)
+  (comment)
+  (comment)
+  (extract_operator
+    (identifier))
+  (ERROR)
+  (extract_operator
+    (identifier))
+  (ERROR)
+  (namespace_operator
+    (identifier))
+  (ERROR)
+  (namespace_operator
+    (identifier))
+  (ERROR))
+
+================================================================================
 Assignment
-==========
+================================================================================
 
 x <- 1
 x = 1
@@ -618,50 +1353,52 @@ x <<- 1
 x <- y(1)
 y(1) -> x
 
----
+--------------------------------------------------------------------------------
 
 (program
-  (left_assignment
-    name: (identifier)
-    value: (float))
+  (binary_operator
+    lhs: (identifier)
+    rhs: (float))
+  (binary_operator
+    lhs: (identifier)
+    rhs: (float))
+  (binary_operator
+    lhs: (identifier)
+    rhs: (float))
+  (binary_operator
+    lhs: (identifier)
+    rhs: (float))
+  (binary_operator
+    lhs: (float)
+    rhs: (identifier))
+  (binary_operator
+    lhs: (float)
+    rhs: (identifier))
+  (binary_operator
+    lhs: (identifier)
+    rhs: (call
+      function: (identifier)
+      arguments: (arguments
+        argument: (argument
+          value: (float)))))
+  (binary_operator
+    lhs: (call
+      function: (identifier)
+      arguments: (arguments
+        argument: (argument
+          value: (float))))
+    rhs: (identifier)))
 
-  (equals_assignment
-    name: (identifier)
-    value: (float))
-
-  (left_assignment2
-    name: (identifier)
-    value: (float))
-
-  (super_assignment
-   name: (identifier)
-   value: (float))
-
-  (super_right_assignment
-   value: (float)
-   name: (identifier))
-
-  (right_assignment
-   value: (float)
-   name: (identifier))
-
-  (left_assignment
-   name: (identifier)
-   value: (call function: (identifier) arguments: (arguments (float))))
-
-  (right_assignment
-   value: (call function: (identifier) arguments: (arguments (float)))
-   name: (identifier)))
-
-=====
+================================================================================
 Calls
-=====
+================================================================================
 
 f()
 f(x)
 f(1+1)
 f(1 ~ 1)
 f(x, )
+f(x,,y)
 f(x, y)
 f(x, y = 2)
 f(x = 1 + 1)
@@ -675,106 +1412,136 @@ f("x"=,)
 f(... = ,)
 f(,y=)
 
----
+--------------------------------------------------------------------------------
 
 (program
-
-  (call function: (identifier))
-
-  (call
-    function: (identifier)
-    arguments: (arguments (identifier)))
-
-  (call
-   function: (identifier)
-   arguments: (arguments
-     (binary
-       left: (float)
-       right: (float))))
-
-  (call
-   function: (identifier)
-   arguments: (arguments
-     (binary
-       left: (float)
-       right: (float))))
-
-  (call
-    function: (identifier)
-    arguments: (arguments (identifier)))
-
-  (call
-    function: (identifier)
-    arguments: (arguments (identifier) (identifier)))
-
-  (call
-    function: (identifier)
-    arguments: (arguments 
-      (identifier)
-      (default_argument
-        name: (identifier)
-        value: (float))))
-
-  (call
-    function: (identifier)
-    arguments: (arguments
-      (default_argument
-        name: (identifier)
-        value: (binary left: (float) right: (float)))))
-
-  (call
-    function: (identifier)
-    arguments: (arguments 
-      (identifier)
-      (default_argument
-        name: (identifier))))
-
-  (call
-    function: (identifier)
-    arguments: (arguments
-      (call
-       function: (identifier)
-       arguments: (arguments (identifier) (identifier)))))
-
   (call
     function: (identifier)
     arguments: (arguments))
-
-  (call
-    function: (identifier)
-    arguments: (arguments (identifier)))
-
-  (call
-    function: (identifier)
-    arguments: (arguments (identifier)))
-
   (call
     function: (identifier)
     arguments: (arguments
-      (default_argument
+      argument: (argument
+        value: (identifier))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (binary_operator
+          lhs: (float)
+          rhs: (float)))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (binary_operator
+          lhs: (float)
+          rhs: (float)))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (identifier))
+      (comma)))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (identifier))
+      (comma)
+      (comma)
+      argument: (argument
+        value: (identifier))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (identifier))
+      (comma)
+      argument: (argument
+        value: (identifier))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (identifier))
+      (comma)
+      argument: (argument
+        name: (identifier)
+        value: (float))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        name: (identifier)
+        value: (binary_operator
+          lhs: (float)
+          rhs: (float)))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (identifier))
+      (comma)
+      argument: (argument
         name: (identifier))))
-
   (call
     function: (identifier)
     arguments: (arguments
-      (default_argument
-        name: (string))))
-
+      argument: (argument
+        value: (call
+          function: (identifier)
+          arguments: (arguments
+            argument: (argument
+              value: (identifier))
+            (comma)
+            argument: (argument
+              value: (identifier)))))))
   (call
     function: (identifier)
     arguments: (arguments
-      (default_argument
-        name: (dots))))
-
+      (comma)))
   (call
     function: (identifier)
     arguments: (arguments
-      (default_argument
+      argument: (argument
+        value: (identifier))
+      (comma)))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      (comma)
+      argument: (argument
+        value: (identifier))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        name: (identifier))
+      (comma)))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        name: (string
+          content: (string_content)))
+      (comma)))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        name: (dots))
+      (comma)))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      (comma)
+      argument: (argument
         name: (identifier)))))
 
-======
+================================================================================
 Braces
-======
+================================================================================
 
 {}
 
@@ -794,72 +1561,86 @@ Braces
 2
 }
 
----
+--------------------------------------------------------------------------------
 
 (program
-  (brace_list)
-  (brace_list (float))
-  (brace_list (float) (float))
-  (brace_list (float) (float))
-  (brace_list (float) (float))
-  (brace_list (float) (float)))
+  (braced_expression)
+  (braced_expression
+    body: (float))
+  (braced_expression
+    body: (float)
+    body: (float))
+  (braced_expression
+    body: (float)
+    body: (float))
+  (braced_expression
+    body: (float)
+    body: (float))
+  (braced_expression
+    body: (float)
+    body: (float)))
 
-=====
+================================================================================
 Colon
-=====
+================================================================================
 
 1:2
 (1 + 1):-5
 
----
+--------------------------------------------------------------------------------
 
 (program
-  (binary left: (float) right: (float))
+  (binary_operator
+    lhs: (float)
+    rhs: (float))
+  (binary_operator
+    lhs: (parenthesized_expression
+      body: (binary_operator
+        lhs: (float)
+        rhs: (float)))
+    rhs: (unary_operator
+      rhs: (float))))
 
-  (binary
-    left: (paren_list
-      (binary
-        left: (float)
-        right: (float)))
-    right: (unary
-      operand: (float))))
-
-=====
+================================================================================
 Formulas
-=====
+================================================================================
 
 ~x
 y~x
 
----
+--------------------------------------------------------------------------------
 
 (program
+  (unary_operator
+    rhs: (identifier))
+  (binary_operator
+    lhs: (identifier)
+    rhs: (identifier)))
 
-  (unary operand: (identifier))
-
-  (binary left: (identifier) right: (identifier)))
-
-============================================
+================================================================================
 Help Operator
-============================================
+================================================================================
 a ? b
 a ? b <- 1
+?a
 
----
+--------------------------------------------------------------------------------
 
 (program
-  (help
-    (identifier)
-    (identifier))
-  (help
-    (identifier)
-    (left_assignment
-      (identifier)
-      (float))))
+  (binary_operator
+    lhs: (identifier)
+    rhs: (identifier))
+  (binary_operator
+    lhs: (identifier)
+    rhs: (binary_operator
+      lhs: (identifier)
+      rhs: (float)))
+  (unary_operator
+    rhs: (identifier)))
 
-============================================
+================================================================================
 Complex Expressions
-============================================
+================================================================================
 repeat if (1) TRUE else repeat 42
 if (TRUE) if (FALSE) 2 else NULL
 a::b$c[[d]] <- e
@@ -874,97 +1655,276 @@ TRUE <- FALSE ? NA
 TRUE = FALSE ? NA
 TRUE ? FALSE = NA
 
----
+--------------------------------------------------------------------------------
 
 (program
-  (repeat
-    (if
-      (float)
-      (true)
-      (repeat
-        (float))))
-  (if
-    (true)
-    (if
-      (false)
-      (float)
-      (null)))
-  (left_assignment
-    (subset2
-      (dollar
-        (namespace_get
-          (identifier)
-          (identifier))
-       (identifier))
-       (arguments
-        (identifier)))
-    (identifier))
-  (help
-    (help
-      (binary
-        (binary
-          (true)
-          (false))
-        (null))
-      (na))
-    (nan))
-  (if
-    (true)
-    (false))
+  (repeat_statement
+    body: (if_statement
+      condition: (float)
+      consequence: (true)
+      alternative: (repeat_statement
+        body: (float))))
+  (if_statement
+    condition: (true)
+    consequence: (if_statement
+      condition: (false)
+      consequence: (float)
+      alternative: (null)))
+  (binary_operator
+    lhs: (subset2
+      function: (extract_operator
+        lhs: (namespace_operator
+          lhs: (identifier)
+          rhs: (identifier))
+        rhs: (identifier))
+      arguments: (arguments
+        argument: (argument
+          value: (identifier))))
+    rhs: (identifier))
+  (binary_operator
+    lhs: (binary_operator
+      lhs: (binary_operator
+        lhs: (binary_operator
+          lhs: (true)
+          rhs: (false))
+        rhs: (null))
+      rhs: (na))
+    rhs: (nan))
+  (if_statement
+    condition: (true)
+    consequence: (false))
   (identifier)
   (na)
-  (paren_list
-    (if
-      (true)
-      (false)
-      (na)))
-  (help
-    (equals_assignment
-      (identifier)
-      (true))
-    (false))
-  (equals_assignment
-    (left_assignment
-      (true)
-      (false))
-    (na))
-  (help
-    (left_assignment
-      (true)
-      (false))
-    (na))
-  (help
-    (equals_assignment
-      (true)
-      (false))
-    (na))
-  (help
-    (true)
-    (equals_assignment
-      (false)
-      (na))))
+  (parenthesized_expression
+    body: (if_statement
+      condition: (true)
+      consequence: (false)
+      alternative: (na)))
+  (binary_operator
+    lhs: (binary_operator
+      lhs: (identifier)
+      rhs: (true))
+    rhs: (false))
+  (binary_operator
+    lhs: (true)
+    rhs: (binary_operator
+      lhs: (false)
+      rhs: (na)))
+  (binary_operator
+    lhs: (binary_operator
+      lhs: (true)
+      rhs: (false))
+    rhs: (na))
+  (binary_operator
+    lhs: (binary_operator
+      lhs: (true)
+      rhs: (false))
+    rhs: (na))
+  (binary_operator
+    lhs: (true)
+    rhs: (binary_operator
+      lhs: (false)
+      rhs: (na))))
 
-============================================
+================================================================================
 Precedence Tests
-============================================
+================================================================================
 A$"B"^NA
 a::b$c
 a$b?c
 
-----
+--------------------------------------------------------------------------------
+
 (program
-  (binary
-    (dollar
-      (identifier)
-      (string))
-    (na))
-  (dollar
-    (namespace_get
-      (identifier)
-      (identifier))
-    (identifier))
-  (help
-    (dollar
-      (identifier)
-      (identifier))
-    (identifier)))
+  (binary_operator
+    lhs: (extract_operator
+      lhs: (identifier)
+      rhs: (string
+        content: (string_content)))
+    rhs: (na))
+  (extract_operator
+    lhs: (namespace_operator
+      lhs: (identifier)
+      rhs: (identifier))
+    rhs: (identifier))
+  (binary_operator
+    lhs: (extract_operator
+      lhs: (identifier)
+      rhs: (identifier))
+    rhs: (identifier)))
+
+================================================================================
+Newlines
+================================================================================
+
+apple
+(banana)
+
+{
+  apple
+  (banana)
+}
+
+(
+  apple
+  (banana)
+)
+
+--------------------------------------------------------------------------------
+
+(program
+  (identifier)
+  (parenthesized_expression
+    body: (identifier))
+  (braced_expression
+    body: (identifier)
+    body: (parenthesized_expression
+      body: (identifier)))
+  (parenthesized_expression
+    body: (call
+      function: (identifier)
+      arguments: (arguments
+        argument: (argument
+          value: (identifier))))))
+
+================================================================================
+Closing Brace
+================================================================================
+
+}
+
+--------------------------------------------------------------------------------
+
+(program
+  (ERROR
+    (UNEXPECTED '}')))
+
+================================================================================
+Closing Parenthesis
+================================================================================
+
+)
+
+--------------------------------------------------------------------------------
+
+(program
+  (ERROR
+    (UNEXPECTED ')')))
+
+================================================================================
+Closing Bracket
+================================================================================
+
+]
+
+--------------------------------------------------------------------------------
+
+(program
+  (ERROR
+    (UNEXPECTED ']')))
+
+================================================================================
+Opening Brace, Closing Parenthesis
+================================================================================
+
+# Parenthesis is "not valid" so it isn't matched by the external scanner
+{)
+
+--------------------------------------------------------------------------------
+
+(program
+  (comment)
+  (braced_expression
+    (ERROR
+      (UNEXPECTED ')'))))
+
+================================================================================
+Opening Parenthesis, Closing Brace
+================================================================================
+
+(}
+
+--------------------------------------------------------------------------------
+
+(program
+  (parenthesized_expression)
+  (ERROR
+    (UNEXPECTED '}')))
+
+================================================================================
+Opening Parenthesis, Closing Bracket
+================================================================================
+
+(]
+
+--------------------------------------------------------------------------------
+
+(program
+  (parenthesized_expression)
+  (ERROR
+    (UNEXPECTED ']')))
+
+================================================================================
+Opening Bracket2, Unmatched Closing Bracket
+================================================================================
+
+x[[2]
+
+--------------------------------------------------------------------------------
+
+(program
+  (identifier)
+  (ERROR
+    (UNEXPECTED ']')))
+
+================================================================================
+Opening Bracket and Bracket2, Unmatched Closing Bracket
+================================================================================
+
+x[y[[2]
+
+--------------------------------------------------------------------------------
+
+(program
+  (identifier)
+  (ERROR
+    (identifier)
+    (UNEXPECTED ']')))
+
+================================================================================
+Opening Bracket2 and Bracket, Matched Closing Bracket
+================================================================================
+
+x[[y[2]
+
+--------------------------------------------------------------------------------
+
+(program
+  (subset2
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (subset
+          function: (identifier)
+          arguments: (arguments
+            argument: (argument
+              value: (float)))))
+      close: (MISSING "]]"))))
+
+================================================================================
+Opening Bracket2 and Bracket, Unmatched Closing Bracket
+================================================================================
+
+x[[y[2]]
+
+--------------------------------------------------------------------------------
+
+(program
+  (identifier)
+  (ERROR
+    (subset
+      function: (identifier)
+      arguments: (arguments
+        argument: (argument
+          value: (float))))
+    (UNEXPECTED ']')))

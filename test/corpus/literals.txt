@@ -1,89 +1,375 @@
-============================================
+================================================================================
 Identifiers
-============================================
+================================================================================
 
 foo
 foo2
 foo.bar
 .foo.bar
+.__NAMESPACE__.
 foo_bar
+`_foo`
 `a "literal"`
 `another
 literal \` foo`
+`backslash followed by newline \
+`
+`\``
+# Pipe placeholder
+_
+# Recognized as a single `_foo` identifier, even if invalid R code (#71).
 _foo
+__foo
+_foo_
 
 
-----
+--------------------------------------------------------------------------------
 
 (program
- (identifier)
- (identifier)
- (identifier)
- (identifier)
- (identifier)
- (identifier)
- (identifier (escape_sequence))
- (ERROR (placeholder)) (identifier))
+  (identifier)
+  (identifier)
+  (identifier)
+  (identifier)
+  (identifier)
+  (identifier)
+  (identifier)
+  (identifier)
+  (identifier)
+  (identifier)
+  (identifier)
+  (comment)
+  (identifier)
+  (comment)
+  (identifier)
+  (identifier)
+  (identifier))
 
-============================================
+================================================================================
 Unicode Identifiers
-============================================
+================================================================================
 
 你好
 .你.好.
 .你_好.
 
-----
+--------------------------------------------------------------------------------
 
 (program
   (identifier)
   (identifier)
   (identifier))
 
-============================================
+================================================================================
 Strings
-============================================
+================================================================================
 
 "foo"
-"foo\"bar"
-'foo'
-'foo\'bar'
+"foo
+bar"
 "#"
+","
+"}"
+'foo'
+'foo
+bar'
 '#'
+','
+'}'
 
-----
+--------------------------------------------------------------------------------
 
 (program
- (string)
- (string (escape_sequence))
- (string)
- (string (escape_sequence))
- (string)
- (string))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content)))
 
-============================================
+================================================================================
+Strings Without Content
+================================================================================
+
+""
+''
+
+--------------------------------------------------------------------------------
+
+(program
+  (string)
+  (string))
+
+================================================================================
+Strings With Escape Sequences
+================================================================================
+
+"\\"
+"\ "
+"\n"
+"\t"
+"\r"
+
+"\0"
+"\1"
+"\7"
+"\12"
+"\123"
+"\1234"
+
+"\x1"
+"\x01"
+"\x012"
+
+"\u1"
+"\u01"
+"\u001"
+"\u0001"
+"\u00011"
+
+"\u{1}"
+"\u{01}"
+"\u{001}"
+"\u{0001}"
+
+"\U{1}"
+"\U{01}"
+"\U{001}"
+"\U{0001}"
+"\U{00001}"
+"\U{000001}"
+"\U{0000001}"
+"\U{00000001}"
+
+"\U1"
+"\U01"
+"\U001"
+"\U0001"
+"\U00001"
+"\U000001"
+"\U0000001"
+"\U00000001"
+"\U000000011"
+
+"foo\"bar"
+"foo\ "
+"foo\
+"
+"\""
+'\''
+
+--------------------------------------------------------------------------------
+
+(program
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence)))
+  (string
+    (string_content
+      (escape_sequence))))
+
+================================================================================
+Unclosed Double Quote
+================================================================================
+"\"
+
+--------------------------------------------------------------------------------
+
+(program
+  (string
+    (string_content
+      (escape_sequence))
+    (MISSING """)))
+
+================================================================================
+Unclosed Single Quote
+================================================================================
+'\'
+
+--------------------------------------------------------------------------------
+
+(program
+  (string
+    (string_content
+      (escape_sequence))
+    (MISSING "'")))
+
+================================================================================
+Unclosed Backtick
+================================================================================
+`\`
+
+--------------------------------------------------------------------------------
+
+(program
+  (ERROR
+    (UNEXPECTED '\0')))
+
+================================================================================
 Raw Strings
-============================================
+================================================================================
 r"(raw string)"
 R"{another raw string}"
 R"--[yet another ]- raw string]--"
-r"not a raw string"
-r"-(an unclosed raw string"
+r()
 
-----
+--------------------------------------------------------------------------------
 
 (program
   (string)
   (string)
   (string)
-  (identifier) (string)
-  (identifier) (string))
+  (call
+    (identifier)
+    (arguments)))
 
-============================================
+================================================================================
 Comments
-============================================
+================================================================================
 
-# a comment' 
+# a comment'
 
 '# not a comment'
 
@@ -91,16 +377,18 @@ Comments
 '
 # still not a comment'
 
----
+--------------------------------------------------------------------------------
 
 (program
- (comment)
- (string)
- (string))
+  (comment)
+  (string
+    (string_content))
+  (string
+    (string_content)))
 
-========
+================================================================================
 Constants
-========
+================================================================================
 
 TRUE
 FALSE
@@ -112,7 +400,7 @@ NA_real_
 NA_character_
 NA_complex_
 
----
+--------------------------------------------------------------------------------
 
 (program
   (true)
@@ -125,26 +413,32 @@ NA_complex_
   (na)
   (na))
 
-========
+================================================================================
 Integers
-========
+================================================================================
 
 12332L
 0L
 12L
 0xDEADL
+1e1L
+# Technically, R parses this as a float with a warning, but for our purposes this is good enough
+0.1L
 
----
+--------------------------------------------------------------------------------
 
 (program
   (integer)
   (integer)
   (integer)
+  (integer)
+  (integer)
+  (comment)
   (integer))
 
-======
+================================================================================
 Floats
-======
+================================================================================
 
 .66
 .11
@@ -153,7 +447,7 @@ Floats
 0xDEAD
 x <- -.66
 
----
+--------------------------------------------------------------------------------
 
 (program
   (float)
@@ -161,12 +455,14 @@ x <- -.66
   (float)
   (float)
   (float)
+  (binary_operator
+    (identifier)
+    (unary_operator
+      (float))))
 
-(left_assignment (identifier) (unary (float))))
-
-=====================================
+================================================================================
 Scientific Notation Floats
-=====================================
+================================================================================
 
 1e322
 1e-3
@@ -175,7 +471,7 @@ Scientific Notation Floats
 1.e10
 1e10
 
----
+--------------------------------------------------------------------------------
 
 (program
   (float)
@@ -184,3 +480,16 @@ Scientific Notation Floats
   (float)
   (float)
   (float))
+
+================================================================================
+Dot Dot I
+================================================================================
+
+..1
+..10
+
+--------------------------------------------------------------------------------
+
+(program
+  (dot_dot_i)
+  (dot_dot_i))

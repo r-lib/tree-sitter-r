@@ -1,4 +1,42 @@
-node_modules
-build
-*.log
-target
+# Rust artifacts
+target/
+
+# Node artifacts
+build/
+prebuilds/
+node_modules/
+*.tgz
+
+# Swift artifacts
+.build/
+Package.resolved
+
+# Go artifacts
+go.sum
+_obj/
+
+# Python artifacts
+.venv/
+dist/
+*.egg-info
+*.whl
+
+# R artifacts
+*.Rcheck/
+*.tar.gz
+
+# C artifacts
+*.a
+*.so
+*.so.*
+*.dylib
+*.dll
+*.pc
+
+# Example dirs
+/examples/*/
+
+# Grammar volatiles
+*.wasm
+*.obj
+*.o

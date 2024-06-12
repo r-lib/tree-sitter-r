@@ -1,15 +1,19 @@
 [package]
 name = "tree-sitter-r"
 description = "R grammar for the tree-sitter parsing library"
-version = "0.19.5"
-authors = [
-    "Jim Hester <jim.hester@rstudio.com>"
-]
+version = "0.20.1"
 license = "MIT"
-keywords = ["incremental", "parsing", "R"]
+readme = "README.md"
+keywords = ["incremental", "parsing", "tree-sitter", "R"]
 categories = ["parsing", "text-editors"]
 repository = "https://github.com/r-lib/tree-sitter-r"
-edition = "2018"
+authors = [
+    "Kevin Ushey <kevin@posit.co>",
+    "Jim Hester <james.f.hester@gmail.com>",
+    "Davis Vaughan <davis@posit.co>",
+]
+edition = "2021"
+autoexamples = false
 
 build = "bindings/rust/build.rs"
 include = [
@@ -23,7 +27,7 @@ include = [
 path = "bindings/rust/lib.rs"
 
 [dependencies]
-tree-sitter = ">= 0.19, < 0.21"
+tree-sitter = "0.22.5"
 
 [build-dependencies]
-cc = "1.0"
+cc = "1.0.92"

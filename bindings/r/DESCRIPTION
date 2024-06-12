@@ -1,0 +1,24 @@
+Package: treesitter.r
+Title: R Grammar for tree-sitter
+Version: 0.20.1.9000
+Authors@R: c(
+    person("Davis", "Vaughan", , "davis@posit.co", role = c("aut", "cre")),
+    person("Posit Software, PBC", role = c("cph", "fnd"))
+  )
+Description: Provides bindings to an R grammar for tree-sitter, to be used
+    alongside the 'treesitter' package. Tree-sitter builds concrete syntax
+    trees for source files of any language, and can efficiently update
+    those syntax trees as the source file is edited.
+License: MIT + file LICENSE
+Depends:
+    R (>= 4.3.0)
+Suggests:
+    testthat (>= 3.0.0),
+    treesitter
+Config/testthat/edition: 3
+Config/build/bootstrap: TRUE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Remotes:
+    treesitter=DavisVaughan/r-tree-sitter
