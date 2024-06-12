@@ -271,8 +271,8 @@
             body: (float [(28, 4), (28, 5)])
             close: "}" [(29, 2), (29, 3)]
           )
-          consequence: (comment [(30, 2), (30, 12)])
-          consequence: (comment [(32, 2), (32, 16)])
+          (comment [(30, 2), (30, 12)])
+          (comment [(32, 2), (32, 16)])
           "else" [(34, 2), (34, 6)]
           alternative: (braced_expression [(34, 7), (36, 3)]
             open: "{" [(34, 7), (34, 8)]

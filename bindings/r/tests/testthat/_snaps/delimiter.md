@@ -54,7 +54,7 @@
       S-Expression
       (braced_expression [(2, 0), (3, 0)]
         open: "{" [(2, 0), (2, 1)]
-        open: (ERROR [(2, 1), (2, 2)]
+        (ERROR [(2, 1), (2, 2)]
           (ERROR [(2, 1), (2, 2)])
         )
       )
