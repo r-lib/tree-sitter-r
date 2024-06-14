@@ -400,8 +400,7 @@ scan_open_bracket_or_bracket2(TSLexer* lexer, Stack* stack, const bool* valid_sy
   return false;
 }
 
-static inline bool
-scan_close_bracket2(TSLexer* lexer, Stack* stack, Scope scope, TSSymbol symbol) {
+static inline bool scan_close_bracket2(TSLexer* lexer, Stack* stack) {
   // We know the lookahead is the first `]`
   lexer->advance(lexer, false);
 
@@ -442,7 +441,7 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
     // Must check the scope before entering this branch to account for `x[a[[1]]]` where
     // the first `]` occurs when both `]` and `]]` are valid. The scope breaks the tie
     // in favor of this branch.
-    return scan_close_bracket2(lexer, stack, SCOPE_BRACKET2, CLOSE_BRACKET2);
+    return scan_close_bracket2(lexer, stack);
   } else if (valid_symbols[RAW_STRING_LITERAL] && (lexer->lookahead == 'r' || lexer->lookahead == 'R')) {
     return scan_raw_string_literal(lexer);
   } else if (valid_symbols[ELSE] && lexer->lookahead == 'e') {
