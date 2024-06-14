@@ -50,6 +50,7 @@ sync_with_upstream <- function(upstream, destination) {
 
 sync_with_upstream_one <- function(upstream, destination) {
   shortname <- destination
+  is_parser_c <- identical(shortname, file.path("src", "parser.c"))
 
   upstream <- normalizePath(upstream, mustWork = TRUE)
   destination <- normalizePath(destination, mustWork = FALSE)
@@ -65,7 +66,21 @@ sync_with_upstream_one <- function(upstream, destination) {
   if (update) {
     message(sprintf("`%s` is out of date, updating.", shortname))
     file.copy(upstream, destination, overwrite = TRUE)
-    patch_pragmas(destination)
+
+    if (is_parser_c) {
+      patch_pragmas(destination)
+    }
+  }
+
+  if (is_parser_c) {
+    # In the case of `parser.c`, we want to sync up the ABI version with `abi.R` when
+    # developing interactively, but in CI checks and with `pak::pak()` or
+    # `devtools::install_github()`, we just want to check that the ABIs are aligned.
+    if (in_load_all()) {
+      update_abi()
+    } else {
+      check_abi()
+    }
   }
 
   update
@@ -86,6 +101,10 @@ sync_without_upstream <- function(destination) {
       "is moved to the temporary directory?"
     ))
   }
+
+  # When we don't have the parent directory, just check that the preexisting
+  # `R/abi.R` and `src/parser.c` ABIs are in sync.
+  check_abi()
 
   message(paste0(
     "Found required files, ",
@@ -112,6 +131,149 @@ patch_pragmas <- function(path) {
   lines <- readLines(path)
   lines <- gsub("#pragma", "# pragma", lines)
   writeLines(lines, path)
+}
+
+parser_c_path <- function() {
+  path <- file.path(".", "src", "parser.c")
+  normalizePath(path, mustWork = TRUE)
+}
+
+abi_r_path <- function() {
+  path <- file.path(".", "R", "abi.R")
+  normalizePath(path, mustWork = FALSE)
+}
+
+check_abi <- function() {
+  path <- parser_c_path()
+  version <- get_c_abi(path)
+
+  path <- abi_r_path()
+
+  if (!file.exists(path)) {
+    stop("Can't find `R/abi.R` file. Do you need to run `bootstrap.R` locally first?")
+  }
+
+  r_version <- get_r_abi(path)
+
+  if (identical(version, r_version)) {
+    # Synced up
+    return(invisible(NULL))
+  }
+
+  stop(paste(
+    sep = "\n",
+    "`R/abi.R` and `src/parser.c` are out of sync. ",
+    sprintf("`R/abi.R` reports the ABI version as %s.", r_version),
+    sprintf("`src/parser.c` reports the ABI version as %s.", version)
+  ))
+}
+
+update_abi <- function() {
+  path <- parser_c_path()
+  version <- get_c_abi(path)
+
+  path <- abi_r_path()
+
+  if (file.exists(path)) {
+    r_version <- get_r_abi(path)
+
+    if (identical(version, r_version)) {
+      # Already synced up
+      return(invisible(NULL))
+    }
+
+    # ABI has updated
+    message(sprintf(
+      "Existing ABI version is %s, new ABI version is %s, updating.",
+      r_version,
+      version
+    ))
+  } else {
+    message(sprintf(
+      "`abi.R` doesn't exist yet, creating it now with ABI version %s. Make sure to run `devtools::document()`.",
+      version
+    ))
+  }
+
+  write_abi(version)
+}
+
+write_abi <- function(version) {
+  path <- file.path("tools", "abi.R")
+  path <- normalizePath(path, mustWork = TRUE)
+
+  destination <- file.path("R", "abi.R")
+  destination <- normalizePath(destination, mustWork = FALSE)
+
+  lines <- readLines(path)
+  lines <- gsub("LANGUAGE_VERSION", version, lines, fixed = TRUE)
+  writeLines(lines, destination)
+
+  invisible(NULL)
+}
+
+get_r_abi <- function(path) {
+  lines <- readLines(path)
+
+  pattern <- "ABI: (\\d+)"
+  line <- grep(pattern, lines, value = TRUE)
+
+  if (length(line) != 1L) {
+    stop("Can't find `ABI:` line in `abi.R`.")
+  }
+
+  version <- get_one_capture(line, pattern)
+  version <- as.integer(version)
+
+  if (is.na(version)) {
+    stop("Can't parse ABI version from `abi.R`.")
+  }
+
+  version
+}
+
+get_c_abi <- function(path) {
+  # It's a big file!
+  lines <- readLines(path, n = 50L)
+
+  pattern <- "^#define LANGUAGE_VERSION (\\d+)$"
+  line <- grep(pattern, lines, value = TRUE)
+
+  if (length(line) != 1L) {
+    stop("Can't find `LANGUAGE_VERSION` line in `parser.c`.")
+  }
+
+  version <- get_one_capture(line, pattern)
+  version <- as.integer(version)
+
+  if (is.na(version)) {
+    stop("Can't parse `LANGUAGE_VERSION` from `parser.c`.")
+  }
+
+  version
+}
+
+get_one_capture <- function(line, pattern) {
+  # Find positions of matches
+  positions <- regexec(pattern, line)
+
+  # Extract out match content. We only have 1 line, so `[[1L]]`.
+  match <- regmatches(line, positions)[[1L]]
+
+  # Matches are in the form of:
+  # - Element 1 is the whole match
+  # - Element 2 is the first capture group, which is what we care about
+  capture <- match[[2L]]
+
+  if (length(capture) != 1L || !is.character(capture)) {
+    stop("Failed to extract exactly one capture group.")
+  }
+
+  capture
+}
+
+in_load_all <- function() {
+  Sys.getenv("DEVTOOLS_LOAD") == "treesitter.r"
 }
 
 # Run it!
