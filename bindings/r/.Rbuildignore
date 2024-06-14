@@ -6,3 +6,4 @@
 ^bootstrap.R$
 ^codecov\.yml$
 ^README\.Rmd$
+^tools$
