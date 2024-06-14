@@ -64,7 +64,7 @@ dependencies = [
 
 [[package]]
 name = "tree-sitter-r"
-version = "0.20.1"
+version = "1.0.0"
 dependencies = [
  "cc",
  "tree-sitter",

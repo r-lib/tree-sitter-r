@@ -1,4 +1,4 @@
-VERSION := 0.20.1
+VERSION := 1.0.0
 
 LANGUAGE_NAME := tree-sitter-r
 
