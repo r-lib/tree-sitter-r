@@ -5,13 +5,13 @@
 # ---
 # repo: DavisVaughan/r-tree-sitter
 # file: standalone-language.R
-# last-updated: 2024-06-14
+# last-updated: 2024-06-17
 # license: https://unlicense.org
 # ---
 #
 # ## Changelog
 #
-# 2024-06-14:
+# 2024-06-17:
 # - Added `abi` argument.
 #
 # 2024-04-11:
@@ -49,11 +49,16 @@
 #' A `tree_sitter_language` object.
 #'
 #' @noRd
-new_language <- function(pointer, abi, ..., name = NULL) {
+new_language <- function(pointer, ..., abi = NULL, name = NULL) {
   if (typeof(pointer) != "externalptr") {
     stop("`pointer` must be an external pointer.")
   }
 
+  # TODO: Remove `abi` if we ever figure out a better way to check compatibility
+  # with treesitter (probably not likely).
+  if (is.null(abi)) {
+    stop("`abi` currently must be supplied.")
+  }
   if (!is.integer(abi) || length(abi) != 1L || is.na(abi)) {
     stop("`abi` must be a single integer.")
   }
