@@ -8,9 +8,7 @@
 #'
 #' @returns A single integer.
 #'
-#' @export
-#' @examples
-#' abi()
+#' @noRd
 abi <- function() {
   # ABI: 14
   14L
