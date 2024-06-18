@@ -956,6 +956,10 @@ for (x in 5:6) {
 
 for (x in y) for (y in z) x + y
 
+for (x in y
+
+) 1 + 1
+
 --------------------------------------------------------------------------------
 
 (program
@@ -982,7 +986,13 @@ for (x in y) for (y in z) x + y
       sequence: (identifier)
       body: (binary_operator
         lhs: (identifier)
-        rhs: (identifier)))))
+        rhs: (identifier))))
+  (for_statement
+    variable: (identifier)
+    sequence: (identifier)
+    body: (binary_operator
+      lhs: (float)
+      rhs: (float))))
 
 ================================================================================
 For No Body
@@ -994,10 +1004,11 @@ for (i in 1:5)
 
 (program
   (for_statement
-    (identifier)
-    (binary_operator
-      (float)
-      (float))))
+    variable: (identifier)
+    sequence: (binary_operator
+      lhs: (float)
+      rhs: (float))
+    body: (MISSING identifier)))
 
 ================================================================================
 While
@@ -1046,9 +1057,10 @@ while (a < b)
 
 (program
   (while_statement
-    (binary_operator
-      (identifier)
-      (identifier))))
+    condition: (binary_operator
+      lhs: (identifier)
+      rhs: (identifier))
+    body: (MISSING identifier)))
 
 ================================================================================
 Repeat
@@ -1071,7 +1083,8 @@ repeat
 --------------------------------------------------------------------------------
 
 (program
-  (repeat_statement))
+  (repeat_statement
+    body: (MISSING identifier)))
 
 ================================================================================
 Switch
