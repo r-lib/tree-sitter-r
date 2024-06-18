@@ -30,9 +30,6 @@ function() function() {}
 
 function(x = function() {}) {}
 
-# With missing RHS in inner function
-function(x = function()) {}
-
 # With no intermediate `{` scope
 function() for(i in 1:5) i
 
@@ -127,14 +124,6 @@ function() for(i in 1:5) i
     body: (braced_expression))
   (comment)
   (function_definition
-    parameters: (parameters
-      parameter: (parameter
-        name: (identifier)
-        default: (function_definition
-          parameters: (parameters))))
-    body: (braced_expression))
-  (comment)
-  (function_definition
     parameters: (parameters)
     body: (for_statement
       variable: (identifier)
@@ -158,7 +147,8 @@ function(x, y)
         name: (identifier))
       (comma)
       parameter: (parameter
-        name: (identifier)))))
+        name: (identifier)))
+      body: (MISSING identifier)))
 
 ================================================================================
 Function No Body With Assignment
@@ -177,7 +167,22 @@ x <- function(x, y)
           name: (identifier))
         (comma)
         parameter: (parameter
-          name: (identifier))))))
+          name: (identifier)))
+        body: (MISSING identifier))))
+
+================================================================================
+Function No Body Inside Another Function
+================================================================================
+
+function(x = function()) {}
+
+--------------------------------------------------------------------------------
+
+(program
+  (ERROR
+    (identifier)
+    (parameters)
+    (UNEXPECTED ')')))
 
 ================================================================================
 Lambda Function
@@ -886,6 +891,13 @@ else
   }
 }
 
+# Valid. This test ensures we handle the newline after `1 + 1` correctly.
+{
+  if (TRUE)
+
+    1 + 1
+}
+
 --------------------------------------------------------------------------------
 
 (program
@@ -920,6 +932,13 @@ else
       (comment)
       (comment)
       (braced_expression
+        (float))))
+  (comment)
+  (braced_expression
+    (if_statement
+      (true)
+      (binary_operator
+        (float)
         (float)))))
 
 ================================================================================
@@ -1834,9 +1853,8 @@ Opening Brace, Closing Parenthesis
 
 (program
   (comment)
-  (braced_expression
-    (ERROR
-      (UNEXPECTED ')'))))
+  (ERROR
+    (UNEXPECTED ')')))
 
 ================================================================================
 Opening Parenthesis, Closing Brace
@@ -1847,7 +1865,6 @@ Opening Parenthesis, Closing Brace
 --------------------------------------------------------------------------------
 
 (program
-  (parenthesized_expression)
   (ERROR
     (UNEXPECTED '}')))
 
@@ -1860,7 +1877,6 @@ Opening Parenthesis, Closing Bracket
 --------------------------------------------------------------------------------
 
 (program
-  (parenthesized_expression)
   (ERROR
     (UNEXPECTED ']')))
 

@@ -23,15 +23,23 @@
       node_children_print(node)
     Output
       S-Expression
-      (binary_operator [(1, 0), (3, 0)]
-        lhs: (float [(1, 0), (1, 1)])
-        operator: "+" [(1, 2), (1, 3)]
-        rhs: (identifier MISSING [(3, 0), (3, 0)])
+      (braced_expression [(1, 0), (3, 1)]
+        open: "{" [(1, 0), (1, 1)]
+        body: (braced_expression [(1, 1), (3, 1)]
+          open: "{" [(1, 1), (1, 2)]
+          body: (binary_operator [(2, 2), (2, 7)]
+            lhs: (float [(2, 2), (2, 3)])
+            operator: "+" [(2, 4), (2, 5)]
+            rhs: (float [(2, 6), (2, 7)])
+          )
+          close: "}" [(3, 0), (3, 1)]
+        )
+        close: "}" MISSING [(3, 1), (3, 1)]
       )
       
       Text
-      1 +
-      
-      
+      {{
+        1 + 2
+      }
       
 

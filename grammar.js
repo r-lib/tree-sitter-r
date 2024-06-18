@@ -181,7 +181,11 @@ module.exports = grammar({
     $._external_open_bracket,
     $._external_close_bracket,
     $._external_open_bracket2,
-    $._external_close_bracket2
+    $._external_close_bracket2,
+    // If a syntax error is encountered, the first thing to occur is that our external
+    // scanner is called with all symbols marked valid. We really don't want this, so
+    // we include a sentinel external to detect this and decline to handle.
+    $._error_sentinel
   ],
 
   word: $ => $.identifier,
@@ -195,7 +199,7 @@ module.exports = grammar({
       field("name", choice("\\", "function")),
       field("parameters", $.parameters),
       repeat($._newline),
-      optional(field("body", $._expression))
+      field("body", $._expression)
     )),
 
     // NOTE: We include "(" and ")" as part of the rule here to allow
@@ -273,13 +277,13 @@ module.exports = grammar({
     braced_expression: $ => withPrec(PREC.BLOCK, seq(
       field("open", $._open_brace),
       repeat(field("body", choice($._expression, $._semicolon, $._newline))),
-      optional(field("close", $._close_brace))
+      field("close", $._close_brace)
     )),
 
     parenthesized_expression: $ => withPrec(PREC.BLOCK, seq(
       field("open", $._open_parenthesis),
       repeat(field("body", choice($._expression, $._newline))),
-      optional(field("close", $._close_parenthesis))
+      field("close", $._close_parenthesis)
     )),
 
     // Function calls and subsetting.
