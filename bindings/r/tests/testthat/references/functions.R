@@ -28,9 +28,6 @@ function() function() {}
 
 function(x = function() {}) {}
 
-# With missing RHS in inner function
-function(x = function()) {}
-
 # With no intermediate `{` scope
 function() for(i in 1:5) i
 
@@ -43,6 +40,11 @@ function(x, y)
 # function no body with assignment
 
 x <- function(x, y)
+
+# ------------------------------------------------------------------------------
+# function no body inside another function
+
+function(x = function()) {}
 
 # ------------------------------------------------------------------------------
 # lambda function
