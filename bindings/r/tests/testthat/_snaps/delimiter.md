@@ -196,3 +196,28 @@
       [[y[2]]
       
 
+# for no closing `)`
+
+    Code
+      node_children_print(node)
+    Output
+      S-Expression
+      (ERROR [(1, 0), (3, 7)]
+        "for" [(1, 0), (1, 3)]
+        "(" [(1, 4), (1, 5)]
+        (identifier [(1, 5), (1, 6)])
+        "in" [(1, 7), (1, 9)]
+        (binary_operator [(1, 10), (3, 7)]
+          lhs: (identifier [(1, 10), (1, 13)])
+          (ERROR [(3, 2), (3, 3)])
+          operator: "+" [(3, 4), (3, 5)]
+          rhs: (float [(3, 6), (3, 7)])
+        )
+      )
+      
+      Text
+      for (i in vec
+      
+        1 + 1
+      
+
