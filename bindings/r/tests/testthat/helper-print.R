@@ -31,7 +31,7 @@ node_children_print <- function(x) {
   invisible(x)
 }
 
-test_that_tree_sitter <- function(path) {
+test_that_tree_sitter <- function(path, children = TRUE) {
   env <- parent.frame()
 
   path <- testthat::test_path(path)
@@ -60,7 +60,7 @@ test_that_tree_sitter <- function(path) {
     text <- lines[seq(start, end)]
     text <- paste0(text, collapse = "\n")
 
-    # Parse and snapshot children
+    # Parse and snapshot
     expr <- substitute(
       testthat::test_that(desc, {
         testthat::skip_if_not_installed("treesitter")
@@ -71,9 +71,13 @@ test_that_tree_sitter <- function(path) {
         tree <- treesitter::parser_parse(parser, text)
         node <- treesitter::tree_root_node(tree)
 
-        testthat::expect_snapshot(node_children_print(node))
+        if (children) {
+          testthat::expect_snapshot(node_children_print(node))
+        } else {
+          testthat::expect_snapshot(node_print(node))
+        }
       }),
-      list(desc = desc, text = text)
+      list(desc = desc, text = text, children = children)
     )
 
     eval(expr, env)
