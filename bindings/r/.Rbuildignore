@@ -7,3 +7,4 @@
 ^codecov\.yml$
 ^README\.Rmd$
 ^tools$
+^.github$
