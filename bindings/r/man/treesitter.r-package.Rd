@@ -14,6 +14,7 @@ Provides bindings to an 'R' grammar for 'Tree-sitter', to be used alongside the 
 Other contributors:
 \itemize{
   \item Posit Software, PBC [copyright holder, funder]
+  \item Tree-sitter authors (Tree-sitter C headers and parser.c) [copyright holder]
 }
 
 }
