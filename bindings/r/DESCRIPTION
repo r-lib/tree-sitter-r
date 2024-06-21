@@ -15,8 +15,6 @@ Depends:
 Suggests:
     testthat (>= 3.0.0),
     treesitter
-Remotes:
-    treesitter=DavisVaughan/r-tree-sitter
 Config/build/bootstrap: TRUE
 Config/Needs/website: tidyverse/tidytemplate
 Config/testthat/edition: 3
