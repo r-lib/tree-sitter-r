@@ -15,6 +15,7 @@ Depends:
 Suggests:
     testthat (>= 3.0.0),
     treesitter
+Config/Needs/website: tidyverse/tidytemplate
 Config/testthat/edition: 3
 Config/build/bootstrap: TRUE
 Encoding: UTF-8

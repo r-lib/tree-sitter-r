@@ -3,3 +3,4 @@ compile_commands.json
 src/tree_sitter/
 src/parser.c
 src/scanner.c
+docs

@@ -1,0 +1,8 @@
+url: ~
+
+development:
+  mode: auto
+
+template:
+  package: tidytemplate
+  bootstrap: 5
