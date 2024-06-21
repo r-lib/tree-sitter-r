@@ -45,6 +45,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
+          working-directory: bindings/r
           dependencies: '"hard"'
           cache: false
           extra-packages: |
@@ -56,5 +57,6 @@ jobs:
 
       - uses: r-lib/actions/check-r-package@v2
         with:
+          working-directory: bindings/r
           upload-snapshots: true
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
