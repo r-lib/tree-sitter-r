@@ -12,6 +12,8 @@ Description: Provides bindings to an 'R' grammar for 'Tree-sitter', to be
     syntax trees for source files of any language, and can efficiently
     update those syntax trees as the source file is edited.
 License: MIT + file LICENSE
+URL: https://github.com/r-lib/tree-sitter-r
+BugReports: https://github.com/r-lib/tree-sitter-r/issues
 Depends:
     R (>= 4.3.0)
 Suggests:
