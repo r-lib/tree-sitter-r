@@ -4,9 +4,9 @@
 \name{treesitter.r-package}
 \alias{treesitter.r}
 \alias{treesitter.r-package}
-\title{treesitter.r: R Grammar for tree-sitter}
+\title{treesitter.r: 'R' Grammar for 'Tree-Sitter'}
 \description{
-Provides bindings to an R grammar for tree-sitter, to be used alongside the 'treesitter' package. Tree-sitter builds concrete syntax trees for source files of any language, and can efficiently update those syntax trees as the source file is edited.
+Provides bindings to an 'R' grammar for 'Tree-sitter', to be used alongside the 'treesitter' package. 'Tree-sitter' builds concrete syntax trees for source files of any language, and can efficiently update those syntax trees as the source file is edited.
 }
 \author{
 \strong{Maintainer}: Davis Vaughan \email{davis@posit.co}
