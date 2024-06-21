@@ -66,10 +66,7 @@ sync_with_upstream_one <- function(upstream, destination) {
   if (update) {
     message(sprintf("`%s` is out of date, updating.", shortname))
     file.copy(upstream, destination, overwrite = TRUE)
-
-    if (is_parser_c) {
-      patch_pragmas(destination)
-    }
+    patch_pragmas(destination)
   }
 
   if (is_parser_c) {
