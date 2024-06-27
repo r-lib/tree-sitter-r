@@ -715,7 +715,7 @@
       },
       "close": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "}",
@@ -1053,7 +1053,7 @@
     "fields": {
       "body": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "binary_operator",
@@ -1341,7 +1341,7 @@
     "fields": {
       "body": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "binary_operator",
@@ -2277,7 +2277,7 @@
       },
       "close": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": ")",
@@ -2434,7 +2434,7 @@
     "fields": {
       "body": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "binary_operator",
@@ -3039,7 +3039,7 @@
     "fields": {
       "body": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "binary_operator",

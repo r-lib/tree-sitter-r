@@ -1,5 +1,9 @@
 # Changelog
 
+## devel
+
+- Fixed an issue where the `program` node didn't always start at `(0, 0)` (#125).
+
 ## 1.0.1
 
 - Changed tree-sitter dependency from `0.22.6` to `>=0.21.0` to match other grammars and be less restrictive.
