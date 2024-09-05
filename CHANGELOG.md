@@ -2,7 +2,7 @@
 
 ## devel
 
-- Fixed an issue where the `program` node didn't always start at `(0, 0)` (#125).
+- Fixed an issue where the `program` node didn't always start at `(0, 0)` (#132).
 - To align better with the R grammar and to greatly simplify the possible states in the tree-sitter grammar, some fields are no longer optional (#126).
   - The `"body"` field of `function_definition`, `for_statement`, `while_statement`, and `repeat_statement`.
   - The `"close"` field of `braced_expression` and `parenthesized_expression`.
