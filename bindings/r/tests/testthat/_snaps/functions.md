@@ -245,63 +245,30 @@
       function(x = function() {}) {}
       
       S-Expression
-      (comment [(28, 0), (28, 36)])
-      
-      Text
-      # With missing RHS in inner function
-      
-      S-Expression
-      (function_definition [(29, 0), (29, 27)]
-        name: "function" [(29, 0), (29, 8)]
-        parameters: (parameters [(29, 8), (29, 24)]
-          open: "(" [(29, 8), (29, 9)]
-          parameter: (parameter [(29, 9), (29, 23)]
-            name: (identifier [(29, 9), (29, 10)])
-            "=" [(29, 11), (29, 12)]
-            default: (function_definition [(29, 13), (29, 23)]
-              name: "function" [(29, 13), (29, 21)]
-              parameters: (parameters [(29, 21), (29, 23)]
-                open: "(" [(29, 21), (29, 22)]
-                close: ")" [(29, 22), (29, 23)]
-              )
-            )
-          )
-          close: ")" [(29, 23), (29, 24)]
-        )
-        body: (braced_expression [(29, 25), (29, 27)]
-          open: "{" [(29, 25), (29, 26)]
-          close: "}" [(29, 26), (29, 27)]
-        )
-      )
-      
-      Text
-      function(x = function()) {}
-      
-      S-Expression
-      (comment [(31, 0), (31, 32)])
+      (comment [(28, 0), (28, 32)])
       
       Text
       # With no intermediate `{` scope
       
       S-Expression
-      (function_definition [(32, 0), (32, 26)]
-        name: "function" [(32, 0), (32, 8)]
-        parameters: (parameters [(32, 8), (32, 10)]
-          open: "(" [(32, 8), (32, 9)]
-          close: ")" [(32, 9), (32, 10)]
+      (function_definition [(29, 0), (29, 26)]
+        name: "function" [(29, 0), (29, 8)]
+        parameters: (parameters [(29, 8), (29, 10)]
+          open: "(" [(29, 8), (29, 9)]
+          close: ")" [(29, 9), (29, 10)]
         )
-        body: (for_statement [(32, 11), (32, 26)]
-          "for" [(32, 11), (32, 14)]
-          open: "(" [(32, 14), (32, 15)]
-          variable: (identifier [(32, 15), (32, 16)])
-          "in" [(32, 17), (32, 19)]
-          sequence: (binary_operator [(32, 20), (32, 23)]
-            lhs: (float [(32, 20), (32, 21)])
-            operator: ":" [(32, 21), (32, 22)]
-            rhs: (float [(32, 22), (32, 23)])
+        body: (for_statement [(29, 11), (29, 26)]
+          "for" [(29, 11), (29, 14)]
+          open: "(" [(29, 14), (29, 15)]
+          variable: (identifier [(29, 15), (29, 16)])
+          "in" [(29, 17), (29, 19)]
+          sequence: (binary_operator [(29, 20), (29, 23)]
+            lhs: (float [(29, 20), (29, 21)])
+            operator: ":" [(29, 21), (29, 22)]
+            rhs: (float [(29, 22), (29, 23)])
           )
-          close: ")" [(32, 23), (32, 24)]
-          body: (identifier [(32, 25), (32, 26)])
+          close: ")" [(29, 23), (29, 24)]
+          body: (identifier [(29, 25), (29, 26)])
         )
       )
       
@@ -328,6 +295,7 @@
           )
           close: ")" [(1, 13), (1, 14)]
         )
+        body: (identifier MISSING [(2, 0), (2, 0)])
       )
       
       Text
@@ -357,12 +325,47 @@
             )
             close: ")" [(1, 18), (1, 19)]
           )
+          body: (identifier MISSING [(2, 0), (2, 0)])
         )
       )
       
       Text
       x <- function(x, y)
       
+      
+
+# function no body inside another function
+
+    Code
+      node_children_print(node)
+    Output
+      S-Expression
+      (function_definition [(1, 0), (1, 27)]
+        name: "function" [(1, 0), (1, 8)]
+        parameters: (parameters [(1, 8), (1, 24)]
+          open: "(" [(1, 8), (1, 9)]
+          parameter: (parameter [(1, 9), (1, 23)]
+            name: (identifier [(1, 9), (1, 10)])
+            "=" [(1, 11), (1, 12)]
+            default: (function_definition [(1, 13), (1, 23)]
+              name: "function" [(1, 13), (1, 21)]
+              parameters: (parameters [(1, 21), (1, 23)]
+                open: "(" [(1, 21), (1, 22)]
+                close: ")" [(1, 22), (1, 23)]
+              )
+              body: (identifier MISSING [(1, 23), (1, 23)])
+            )
+          )
+          close: ")" [(1, 23), (1, 24)]
+        )
+        body: (braced_expression [(1, 25), (1, 27)]
+          open: "{" [(1, 25), (1, 26)]
+          close: "}" [(1, 26), (1, 27)]
+        )
+      )
+      
+      Text
+      function(x = function()) {}
       
 
 # lambda function

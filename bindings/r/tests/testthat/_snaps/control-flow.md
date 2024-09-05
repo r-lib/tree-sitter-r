@@ -400,6 +400,7 @@
           rhs: (float [(1, 12), (1, 13)])
         )
         close: ")" [(1, 13), (1, 14)]
+        body: (identifier MISSING [(2, 0), (2, 0)])
       )
       
       Text
@@ -492,6 +493,7 @@
           rhs: (identifier [(1, 11), (1, 12)])
         )
         close: ")" [(1, 12), (1, 13)]
+        body: (identifier MISSING [(2, 0), (2, 0)])
       )
       
       Text
@@ -520,11 +522,17 @@
       node_children_print(node)
     Output
       S-Expression
-      (repeat_statement [(1, 0), (1, 6)]
+      (ERROR [(1, 0), (1, 6)]
         "repeat" [(1, 0), (1, 6)]
       )
       
       Text
       repeat
+      
+      S-Expression
+      (comment [(3, 0), (3, 90)])
+      
+      Text
+      # dummy comment to retain a newline after the `repeat` (can remove if we add another test)
       
 
