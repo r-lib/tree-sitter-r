@@ -1,5 +1,11 @@
 # Changelog
 
+## devel
+
+- To align better with the R grammar and to greatly simplify the possible states in the tree-sitter grammar, some fields are no longer optional (#127).
+  - The `"body"` field of `function_definition`, `for_statement`, `while_statement`, and `repeat_statement`.
+  - The `"close"` field of `braced_expression` and `parenthesized_expression`.
+
 ## 1.0.1
 
 - Changed tree-sitter dependency from `0.22.6` to `>=0.21.0` to match other grammars and be less restrictive.
