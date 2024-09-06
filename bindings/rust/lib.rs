@@ -4,10 +4,13 @@
 //! tree-sitter [Parser][], and then use the parser to parse some code:
 //!
 //! ```
-//! let code = "";
+//! let code = r#"
+//! "#;
 //! let mut parser = tree_sitter::Parser::new();
-//! let language = tree_sitter_r::language();
-//! parser.set_language(&language).expect("Error loading R grammar");
+//! let language = tree_sitter_r::LANGUAGE;
+//! parser
+//!     .set_language(&language.into())
+//!     .expect("Error loading R parser");
 //! let tree = parser.parse(code, None).unwrap();
 //! assert!(!tree.root_node().has_error());
 //! ```
@@ -17,18 +20,14 @@
 //! [Parser]: https://docs.rs/tree-sitter/*/tree_sitter/struct.Parser.html
 //! [tree-sitter]: https://tree-sitter.github.io/
 
-use tree_sitter::Language;
+use tree_sitter_language::LanguageFn;
 
 extern "C" {
-    fn tree_sitter_r() -> Language;
+    fn tree_sitter_r() -> *const ();
 }
 
-/// Get the tree-sitter [Language][] for this grammar.
-///
-/// [Language]: https://docs.rs/tree-sitter/*/tree_sitter/struct.Language.html
-pub fn language() -> Language {
-    unsafe { tree_sitter_r() }
-}
+/// The tree-sitter [`LanguageFn`] for this grammar.
+pub const LANGUAGE: LanguageFn = unsafe { LanguageFn::from_raw(tree_sitter_r) };
 
 /// The content of the [`node-types.json`][] file for this grammar.
 ///
@@ -36,9 +35,7 @@ pub fn language() -> Language {
 pub const NODE_TYPES: &str = include_str!("../../src/node-types.json");
 
 pub const HIGHLIGHTS_QUERY: &str = include_str!("../../queries/highlights.scm");
-
 pub const LOCALS_QUERY: &str = include_str!("../../queries/locals.scm");
-
 pub const TAGS_QUERY: &str = include_str!("../../queries/tags.scm");
 
 #[cfg(test)]
@@ -47,15 +44,15 @@ mod tests {
     fn test_can_load_grammar() {
         let mut parser = tree_sitter::Parser::new();
         parser
-            .set_language(&super::language())
-            .expect("Error loading R language");
+            .set_language(&super::LANGUAGE.into())
+            .expect("Error loading R parser");
     }
 
     // See https://github.com/tree-sitter/tree-sitter/issues/2767
     #[test]
     fn test_tree_cursor() {
         let mut parser = tree_sitter::Parser::new();
-        parser.set_language(&super::language()).unwrap();
+        parser.set_language(&super::LANGUAGE.into()).unwrap();
 
         // This is an `identifier`
         let text = "foo";

@@ -2,6 +2,8 @@
 
 ## devel
 
+- Switched to using `tree-sitter-language` in the Rust bindings to remove a dependency on a specific `tree-sitter` crate version (#133).
+
 - Fixed an issue where the `program` node didn't always start at `(0, 0)` (#134).
 
 - To align better with the R grammar and to greatly simplify the possible states in the tree-sitter grammar, some fields are no longer optional (#132).
