@@ -891,6 +891,13 @@ else
   }
 }
 
+# Valid. This test ensures we handle the newline after `1 + 1` correctly (#125).
+{
+  if (TRUE)
+
+    1 + 1
+}
+
 --------------------------------------------------------------------------------
 
 (program
@@ -925,6 +932,13 @@ else
       (comment)
       (comment)
       (braced_expression
+        (float))))
+  (comment)
+  (braced_expression
+    (if_statement
+      (true)
+      (binary_operator
+        (float)
         (float)))))
 
 ================================================================================
