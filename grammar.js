@@ -70,8 +70,7 @@ const PREC = {
   // to assume they have default precedence.
   // https://github.com/wch/r-source/blob/0a8f53a7ba47463f1c938dd3e2c2acc7a2d3a1c2/src/main/gram.y#L467-L468
   // https://www.gnu.org/software/bison/manual/html_node/How-Precedence.html
-  // NOTE: See `NOTE ON PREC.RIGHT` above
-  BLOCK: { ASSOC: prec.right, RANK: 0 },
+  BLOCK: { ASSOC: prec, RANK: 0 },
 
   // ..i
   // NOTE: If we don't put `dot_dot_i` at a positive rank, then `..1` will get
@@ -87,8 +86,7 @@ const PREC = {
   // while() {}
   // for() {}
   // repeat {}
-  // NOTE: See `NOTE ON PREC.RIGHT` above
-  FUNCTION_OR_LOOP: { ASSOC: prec.right, RANK: 2 },
+  FUNCTION_OR_LOOP: { ASSOC: prec.left, RANK: 2 },
 
   // if {}
   IF: { ASSOC: prec.right, RANK: 3 },
@@ -195,7 +193,7 @@ module.exports = grammar({
       field("name", choice("\\", "function")),
       field("parameters", $.parameters),
       repeat($._newline),
-      optional(field("body", $._expression))
+      field("body", $._expression)
     )),
 
     // NOTE: We include "(" and ")" as part of the rule here to allow
@@ -250,7 +248,7 @@ module.exports = grammar({
       field("sequence", $._expression),
       field("close", $._close_parenthesis),
       repeat($._newline),
-      optional(field("body", $._expression))
+      field("body", $._expression)
     )),
 
     while_statement: $ => withPrec(PREC.FUNCTION_OR_LOOP, seq(
@@ -260,26 +258,26 @@ module.exports = grammar({
       field("condition", $._expression),
       field("close", $._close_parenthesis),
       repeat($._newline),
-      optional(field("body", $._expression))
+      field("body", $._expression)
     )),
 
     repeat_statement: $ => withPrec(PREC.FUNCTION_OR_LOOP, seq(
       "repeat",
       repeat($._newline),
-      optional(field("body", $._expression))
+      field("body", $._expression)
     )),
 
     // Blocks.
     braced_expression: $ => withPrec(PREC.BLOCK, seq(
       field("open", $._open_brace),
       repeat(field("body", choice($._expression, $._semicolon, $._newline))),
-      optional(field("close", $._close_brace))
+      field("close", $._close_brace)
     )),
 
     parenthesized_expression: $ => withPrec(PREC.BLOCK, seq(
       field("open", $._open_parenthesis),
       repeat(field("body", choice($._expression, $._newline))),
-      optional(field("close", $._close_parenthesis))
+      field("close", $._close_parenthesis)
     )),
 
     // Function calls and subsetting.

@@ -48,3 +48,10 @@ x[[y[2]
 # opening bracket2 and bracket, unmatched closing bracket
 
 x[[y[2]]
+
+# ------------------------------------------------------------------------------
+# for no closing `)`
+
+for (i in vec
+
+  1 + 1
