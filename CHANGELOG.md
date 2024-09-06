@@ -2,6 +2,8 @@
 
 ## devel
 
+- The internal `_hex_literal` rule was simplified slightly (#138).
+
 ## 1.1.0
 
 - Switched to using `tree-sitter-language` in the Rust bindings to remove a dependency on a specific `tree-sitter` crate version (#133).
