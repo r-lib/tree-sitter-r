@@ -2847,6 +2847,10 @@
     {
       "type": "SYMBOL",
       "name": "_external_close_bracket2"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_error_sentinel"
     }
   ],
   "inline": [],
