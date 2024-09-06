@@ -2277,13 +2277,8 @@
       "name": "_float_literal"
     },
     "_hex_literal": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "PATTERN",
-          "value": "0[xX][0-9a-fA-F]+"
-        }
-      ]
+      "type": "PATTERN",
+      "value": "0[xX][0-9a-fA-F]+"
     },
     "_number_literal": {
       "type": "PATTERN",
