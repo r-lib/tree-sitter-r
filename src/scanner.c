@@ -34,7 +34,8 @@ enum TokenType {
   OPEN_BRACKET,
   CLOSE_BRACKET,
   OPEN_BRACKET2,
-  CLOSE_BRACKET2
+  CLOSE_BRACKET2,
+  ERROR_SENTINEL
 };
 
 // ---------------------------------------------------------------------------------------
@@ -420,7 +421,11 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
   // because each `scan_*()` function calls `advance()` internally, meaning that
   // `lookahead` will no longer be accurate for checking other branches.
 
-  if (valid_symbols[SEMICOLON] && lexer->lookahead == ';') {
+  if (valid_symbols[ERROR_SENTINEL]) {
+    // Decline to handle when in "error recovery" mode. When a syntax error occurs,
+    // tree-sitter calls the external scanner with all `valid_symbols` marked as valid.
+    return false;
+  } else if (valid_symbols[SEMICOLON] && lexer->lookahead == ';') {
     return scan_semicolon(lexer);
   } else if (valid_symbols[OPEN_PAREN] && lexer->lookahead == '(') {
     return scan_open_block(lexer, stack, SCOPE_PAREN, OPEN_PAREN);
