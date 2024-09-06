@@ -1,27 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/dev/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/dev/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>/dev/authors.html</loc>
-  </url>
-  <url>
-    <loc>/dev/index.html</loc>
-  </url>
-  <url>
-    <loc>/dev/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/dev/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/dev/reference/language.html</loc>
-  </url>
-  <url>
-    <loc>/dev/reference/treesitter.r-package.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/dev/LICENSE-text.html</loc></url>
+<url><loc>/dev/LICENSE.html</loc></url>
+<url><loc>/dev/authors.html</loc></url>
+<url><loc>/dev/index.html</loc></url>
+<url><loc>/dev/news/index.html</loc></url>
+<url><loc>/dev/reference/index.html</loc></url>
+<url><loc>/dev/reference/language.html</loc></url>
+<url><loc>/dev/reference/treesitter.r-package.html</loc></url>
 </urlset>
+
