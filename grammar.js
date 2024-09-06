@@ -455,7 +455,7 @@ module.exports = grammar({
     complex: $ => seq($._float_literal, "i"),
     float: $ => $._float_literal,
 
-    _hex_literal: $ => seq(/0[xX][0-9a-fA-F]+/),
+    _hex_literal: $ => /0[xX][0-9a-fA-F]+/,
     _number_literal: $ => /(?:(?:\d+(?:\.\d*)?)|(?:\.\d+))(?:[eE][+-]?\d*)?/,
     _float_literal: $ => choice($._hex_literal, $._number_literal),
 
