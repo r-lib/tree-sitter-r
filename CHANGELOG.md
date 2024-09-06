@@ -2,6 +2,8 @@
 
 ## devel
 
+- Changed tree-sitter dependency from `>=0.21.0` to `0.23.0`, which removes the dependency from the generated parser on a specific tree-sitter version.
+
 - Fixed an issue where the `program` node didn't always start at `(0, 0)` (#134).
 
 - To align better with the R grammar and to greatly simplify the possible states in the tree-sitter grammar, some fields are no longer optional (#132).
