@@ -34,7 +34,8 @@ enum TokenType {
   OPEN_BRACKET,
   CLOSE_BRACKET,
   OPEN_BRACKET2,
-  CLOSE_BRACKET2
+  CLOSE_BRACKET2,
+  ERROR_SENTINEL
 };
 
 // ---------------------------------------------------------------------------------------
@@ -211,10 +212,7 @@ static inline bool scan_else(TSLexer* lexer) {
   return true;
 }
 
-// Due to `consume_whitespace_and_ignored_newlines()`, expect that we are either in
-// a `SCOPE_TOP_LEVEL` or a `SCOPE_BRACE` if we saw a new line at this point.
-static inline bool
-scan_newline_or_else(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
+static inline bool scan_else_with_leading_newlines(TSLexer* lexer) {
   // Advance to the next non-newline, non-space character,
   // we know we have at least 1 newline because this function was called
   while (iswspace(lexer->lookahead)) {
@@ -225,33 +223,32 @@ scan_newline_or_else(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
 
     lexer->advance(lexer, true);
     lexer->mark_end(lexer);
+    lexer->result_symbol = NEWLINE;
   }
 
-  // If the next symbol is a comment, we go ahead and consume the newline as it won't
-  // affect the context, and would otherwise interfere with a situation like below, as
-  // the rogue newline would make it look like we exited the `if` statement, making a
-  // potential `else` node "invalid" in terms of `valid_symbols`.
+  // If the next symbol is a comment, we allow the internal scanner to pick it up.
+  // Due to `mark_end()`, we've skipped past the newlines that would otherwise interfere
+  // with a situation like below, where the rogue newline would make it look like we
+  // exited the `if` statement, making a potential `else` node "invalid" in terms of
+  // `valid_symbols`. Returning `false` seems to make `lexer->result_symbol = NEWLINE`
+  // completely ignored.
   //
-  // if (cond) {
-  // }
-  // # comment
-  // else {
+  // {
+  //   if (cond) {
+  //   }
+  //   # comment
+  //   else {
   //
+  //   }
   // }
   if (lexer->lookahead == '#') {
-    lexer->advance(lexer, true);
     return false;
   }
 
-  // At this point the most recent newline is marked by `mark_end()`, so lock
-  // it in as a result before giving the special `else` case a chance to run.
-  lexer->result_symbol = NEWLINE;
-
-  // If we are inside a `SCOPE_BRACE`, this is an extremely special case where `else`
-  // can follow any number of newlines or whitespace and still be valid.
-  if (valid_symbols[ELSE] && stack_peek(stack) == SCOPE_BRACE && scan_else(lexer)) {
-    return true;
-  }
+  // Give the `ELSE` external scanner a chance to run, otherwise we
+  // return a `NEWLINE` external. Either way we return `true` because
+  // we have found a token of some kind.
+  scan_else(lexer);
 
   return true;
 }
@@ -346,6 +343,13 @@ static inline bool scan_semicolon(TSLexer* lexer) {
   return true;
 }
 
+static inline bool scan_newline(TSLexer* lexer) {
+  lexer->advance(lexer, false);
+  lexer->mark_end(lexer);
+  lexer->result_symbol = NEWLINE;
+  return true;
+}
+
 static inline bool
 scan_open_block(TSLexer* lexer, Stack* stack, Scope scope, TSSymbol symbol) {
   if (!stack_push(stack, scope)) {
@@ -420,7 +424,11 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
   // because each `scan_*()` function calls `advance()` internally, meaning that
   // `lookahead` will no longer be accurate for checking other branches.
 
-  if (valid_symbols[SEMICOLON] && lexer->lookahead == ';') {
+  if (valid_symbols[ERROR_SENTINEL]) {
+    // Decline to handle when in "error recovery" mode. When a syntax error occurs,
+    // tree-sitter calls the external scanner with all `valid_symbols` marked as valid.
+    return false;
+  } else if (valid_symbols[SEMICOLON] && lexer->lookahead == ';') {
     return scan_semicolon(lexer);
   } else if (valid_symbols[OPEN_PAREN] && lexer->lookahead == '(') {
     return scan_open_block(lexer, stack, SCOPE_PAREN, OPEN_PAREN);
@@ -446,8 +454,16 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
     return scan_raw_string_literal(lexer);
   } else if (valid_symbols[ELSE] && lexer->lookahead == 'e') {
     return scan_else(lexer);
+  } else if (valid_symbols[ELSE] && stack_peek(stack) == SCOPE_BRACE && lexer->lookahead == '\n') {
+    // If we are inside a `SCOPE_BRACE`, this is an extremely special case where `else`
+    // can follow any number of newlines or whitespace and still be valid.
+    return scan_else_with_leading_newlines(lexer);
   } else if (valid_symbols[NEWLINE] && lexer->lookahead == '\n') {
-    return scan_newline_or_else(lexer, stack, valid_symbols);
+    // The above condition with `valid_symbols[ELSE]` must be checked first.
+    // Due to `consume_whitespace_and_ignored_newlines()`, expect that we are either in
+    // a `SCOPE_TOP_LEVEL` or a `SCOPE_BRACE` if we saw a new line at this point, which
+    // is when they have contextual meaning and require their own token.
+    return scan_newline(lexer);
   }
 
   return false;

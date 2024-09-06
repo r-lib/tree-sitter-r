@@ -556,47 +556,47 @@
       # `()`. We don't want tree-sitter to think `)` is an `unmatched_delimiter`
       
       S-Expression
-      (comment [(3, 0), (3, 73)])
+      (comment [(3, 0), (3, 76)])
       
       Text
-      # expression that it can accept as `condition`, we instead want its error
+      # expression that it can accept as `condition`, we instead want to report an
       
       S-Expression
-      (comment [(4, 0), (4, 45)])
+      (comment [(4, 0), (4, 44)])
       
       Text
-      # recovery to detect the missing `condition`.
+      # error as close to the `()` as is possible.
       
       S-Expression
-      (binary_operator [(6, 0), (10, 1)]
-        lhs: (identifier [(6, 0), (6, 3)])
-        operator: "<-" [(6, 4), (6, 6)]
-        rhs: (function_definition [(6, 7), (10, 1)]
-          name: "function" [(6, 7), (6, 15)]
-          parameters: (parameters [(6, 15), (6, 17)]
-            open: "(" [(6, 15), (6, 16)]
-            close: ")" [(6, 16), (6, 17)]
-          )
-          body: (braced_expression [(6, 18), (10, 1)]
-            open: "{" [(6, 18), (6, 19)]
-            body: (if_statement [(7, 2), (9, 7)]
-              "if" [(7, 2), (7, 4)]
-              open: "(" [(7, 5), (7, 6)]
-              condition: (identifier MISSING [(7, 6), (7, 6)])
-              close: ")" [(7, 6), (7, 7)]
-              consequence: (binary_operator [(9, 2), (9, 7)]
-                lhs: (float [(9, 2), (9, 3)])
-                operator: "+" [(9, 4), (9, 5)]
-                rhs: (float [(9, 6), (9, 7)])
-              )
-            )
-            close: "}" [(10, 0), (10, 1)]
-          )
+      (identifier [(6, 0), (6, 3)])
+      
+      Text
+      foo
+      
+      S-Expression
+      (ERROR [(6, 4), (10, 1)]
+        "<-" [(6, 4), (6, 6)]
+        "function" [(6, 7), (6, 15)]
+        (parameters [(6, 15), (6, 17)]
+          open: "(" [(6, 15), (6, 16)]
+          close: ")" [(6, 16), (6, 17)]
         )
+        "{" [(6, 18), (6, 19)]
+        "if" [(7, 2), (7, 4)]
+        "(" [(7, 5), (7, 6)]
+        (ERROR [(7, 6), (7, 7)]
+          (ERROR [(7, 6), (7, 7)])
+        )
+        (binary_operator [(9, 2), (9, 7)]
+          lhs: (float [(9, 2), (9, 3)])
+          operator: "+" [(9, 4), (9, 5)]
+          rhs: (float [(9, 6), (9, 7)])
+        )
+        (ERROR [(10, 0), (10, 1)])
       )
       
       Text
-      foo <- function() {
+      <- function() {
         if ()
       
         1 + 1
@@ -615,77 +615,71 @@
       # Same argument as above, but in this case `unmatched_delimiter` made the entire
       
       S-Expression
-      (comment [(2, 0), (2, 24)])
+      (comment [(2, 0), (2, 75)])
       
       Text
-      # program show as ERROR.
+      # program show as ERROR with no sub-ERROR that would allow us to narrow the
       
       S-Expression
-      (call [(4, 0), (14, 1)]
-        function: (identifier [(4, 0), (4, 4)])
-        arguments: (arguments [(4, 4), (14, 1)]
-          open: "(" [(4, 4), (4, 5)]
-          argument: (argument [(4, 5), (4, 10)]
-            value: (string [(4, 5), (4, 10)]
-              "'" [(4, 5), (4, 6)]
-              content: (string_content [(4, 6), (4, 9)])
-              "'" [(4, 9), (4, 10)]
-            )
+      (comment [(3, 0), (3, 8)])
+      
+      Text
+      # scope.
+      
+      S-Expression
+      (identifier [(5, 0), (5, 4)])
+      
+      Text
+      blah
+      
+      S-Expression
+      (ERROR [(5, 4), (15, 1)]
+        "(" [(5, 4), (5, 5)]
+        argument: (argument [(5, 5), (5, 10)]
+          value: (string [(5, 5), (5, 10)]
+            "'" [(5, 5), (5, 6)]
+            content: (string_content [(5, 6), (5, 9)])
+            "'" [(5, 9), (5, 10)]
           )
-          (comma [(4, 10), (4, 11)])
-          argument: (argument [(5, 2), (13, 3)]
-            value: (call [(5, 2), (13, 3)]
-              function: (identifier [(5, 2), (5, 6)])
-              arguments: (arguments [(5, 6), (13, 3)]
-                open: "(" [(5, 6), (5, 7)]
-                argument: (argument [(6, 4), (8, 5)]
-                  name: (identifier [(6, 4), (6, 7)])
-                  "=" [(6, 8), (6, 9)]
-                  value: (function_definition [(6, 10), (8, 5)]
-                    name: "function" [(6, 10), (6, 18)]
-                    parameters: (parameters [(6, 18), (6, 20)]
-                      open: "(" [(6, 18), (6, 19)]
-                      close: ")" [(6, 19), (6, 20)]
-                    )
-                    body: (braced_expression [(6, 21), (8, 5)]
-                      open: "{" [(6, 21), (6, 22)]
-                      body: (if_statement [(7, 6), (8, 0)]
-                        "if" [(7, 6), (7, 8)]
-                        open: "(" [(7, 9), (7, 10)]
-                        condition: (identifier MISSING [(7, 10), (7, 10)])
-                        close: ")" [(7, 10), (7, 11)]
-                        consequence: (identifier MISSING [(8, 0), (8, 0)])
-                      )
-                      close: "}" [(8, 4), (8, 5)]
-                    )
-                  )
-                )
-                (comma [(8, 5), (8, 6)])
-                argument: (argument [(10, 4), (12, 5)]
-                  name: (identifier [(10, 4), (10, 8)])
-                  "=" [(10, 9), (10, 10)]
-                  value: (function_definition [(10, 11), (12, 5)]
-                    name: "function" [(10, 11), (10, 19)]
-                    parameters: (parameters [(10, 19), (10, 21)]
-                      open: "(" [(10, 19), (10, 20)]
-                      close: ")" [(10, 20), (10, 21)]
-                    )
-                    body: (braced_expression [(10, 22), (12, 5)]
-                      open: "{" [(10, 22), (10, 23)]
-                      close: "}" [(12, 4), (12, 5)]
-                    )
-                  )
-                )
-                close: ")" [(13, 2), (13, 3)]
-              )
-            )
-          )
-          close: ")" [(14, 0), (14, 1)]
         )
+        (comma [(5, 10), (5, 11)])
+        (identifier [(6, 2), (6, 6)])
+        "(" [(6, 6), (6, 7)]
+        (identifier [(7, 4), (7, 7)])
+        "=" [(7, 8), (7, 9)]
+        "function" [(7, 10), (7, 18)]
+        (parameters [(7, 18), (7, 20)]
+          open: "(" [(7, 18), (7, 19)]
+          close: ")" [(7, 19), (7, 20)]
+        )
+        "{" [(7, 21), (7, 22)]
+        "if" [(8, 6), (8, 8)]
+        "(" [(8, 9), (8, 10)]
+        (ERROR [(8, 10), (9, 6)]
+          (ERROR [(8, 10), (9, 5)])
+          (comma [(9, 5), (9, 6)])
+        )
+        (binary_operator [(11, 4), (13, 5)]
+          lhs: (identifier [(11, 4), (11, 8)])
+          operator: "=" [(11, 9), (11, 10)]
+          rhs: (function_definition [(11, 11), (13, 5)]
+            name: "function" [(11, 11), (11, 19)]
+            parameters: (parameters [(11, 19), (11, 21)]
+              open: "(" [(11, 19), (11, 20)]
+              close: ")" [(11, 20), (11, 21)]
+            )
+            body: (braced_expression [(11, 22), (13, 5)]
+              open: "{" [(11, 22), (11, 23)]
+              close: "}" [(13, 4), (13, 5)]
+            )
+          )
+        )
+        ")" [(14, 2), (14, 3)]
+        (ERROR [(15, 0), (15, 1)])
       )
       
       Text
-      blah('foo',
+      ('foo',
         list(
           foo = function() {
             if ()
@@ -704,32 +698,41 @@
       node_children_print(node)
     Output
       S-Expression
-      (comment [(1, 0), (1, 76)])
+      (comment [(1, 0), (1, 79)])
       
       Text
-      # In this case we want the `{}` to be a matching pair, and for there to be a
+      # In this case we ideally want the `{}` to be a matching pair, and for there to
       
       S-Expression
-      (comment [(2, 0), (2, 34)])
+      (comment [(2, 0), (2, 76)])
       
       Text
-      # MISSING rhs of the `+` operator.
+      # be a MISSING rhs of the `+` operator. This has proven difficult though, so
       
       S-Expression
-      (braced_expression [(4, 0), (6, 1)]
-        open: "{" [(4, 0), (4, 1)]
-        body: (binary_operator [(5, 2), (6, 0)]
-          lhs: (call [(5, 2), (5, 10)]
-            function: (identifier [(5, 2), (5, 8)])
-            arguments: (arguments [(5, 8), (5, 10)]
-              open: "(" [(5, 8), (5, 9)]
-              close: ")" [(5, 9), (5, 10)]
-            )
+      (comment [(3, 0), (3, 79)])
+      
+      Text
+      # instead we end up reporting the `}` as a syntax error using a narrowly scoped
+      
+      S-Expression
+      (comment [(4, 0), (4, 13)])
+      
+      Text
+      # ERROR node.
+      
+      S-Expression
+      (ERROR [(6, 0), (8, 1)]
+        "{" [(6, 0), (6, 1)]
+        (call [(7, 2), (7, 10)]
+          function: (identifier [(7, 2), (7, 8)])
+          arguments: (arguments [(7, 8), (7, 10)]
+            open: "(" [(7, 8), (7, 9)]
+            close: ")" [(7, 9), (7, 10)]
           )
-          operator: "+" [(5, 11), (5, 12)]
-          rhs: (identifier MISSING [(6, 0), (6, 0)])
         )
-        close: "}" [(6, 0), (6, 1)]
+        "+" [(7, 11), (7, 12)]
+        (ERROR [(8, 0), (8, 1)])
       )
       
       Text

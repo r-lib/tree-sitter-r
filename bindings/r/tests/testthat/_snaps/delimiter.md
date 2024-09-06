@@ -52,17 +52,13 @@
       # Parenthesis is "not valid" so it isn't matched by the external scanner
       
       S-Expression
-      (braced_expression [(2, 0), (3, 0)]
-        open: "{" [(2, 0), (2, 1)]
-        (ERROR [(2, 1), (2, 2)]
-          (ERROR [(2, 1), (2, 2)])
-        )
-        close: "}" MISSING [(3, 0), (3, 0)]
+      (ERROR [(2, 0), (2, 2)]
+        "{" [(2, 0), (2, 1)]
+        (ERROR [(2, 1), (2, 2)])
       )
       
       Text
       {)
-      
       
 
 # opening parenthesis, closing brace

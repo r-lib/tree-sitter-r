@@ -179,14 +179,10 @@ function(x = function()) {}
 --------------------------------------------------------------------------------
 
 (program
-  (function_definition
-    parameters: (parameters
-      parameter: (parameter
-        name: (identifier)
-        default: (function_definition
-          parameters: (parameters)
-          body: (MISSING identifier))))
-    body: (braced_expression)))
+  (ERROR
+    (identifier)
+    (parameters)
+    (UNEXPECTED ')')))
 
 ================================================================================
 Lambda Function
@@ -895,6 +891,13 @@ else
   }
 }
 
+# Valid. This test ensures we handle the newline after `1 + 1` correctly (#125).
+{
+  if (TRUE)
+
+    1 + 1
+}
+
 --------------------------------------------------------------------------------
 
 (program
@@ -929,6 +932,13 @@ else
       (comment)
       (comment)
       (braced_expression
+        (float))))
+  (comment)
+  (braced_expression
+    (if_statement
+      (true)
+      (binary_operator
+        (float)
         (float)))))
 
 ================================================================================
@@ -1856,10 +1866,8 @@ Opening Brace, Closing Parenthesis
 
 (program
   (comment)
-  (braced_expression
-    (ERROR
-      (UNEXPECTED ')'))
-    (MISSING "}")))
+  (ERROR
+    (UNEXPECTED ')')))
 
 ================================================================================
 Opening Parenthesis, Closing Brace
