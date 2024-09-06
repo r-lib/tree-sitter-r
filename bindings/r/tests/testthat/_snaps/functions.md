@@ -340,28 +340,17 @@
       node_children_print(node)
     Output
       S-Expression
-      (function_definition [(1, 0), (1, 27)]
-        name: "function" [(1, 0), (1, 8)]
-        parameters: (parameters [(1, 8), (1, 24)]
-          open: "(" [(1, 8), (1, 9)]
-          parameter: (parameter [(1, 9), (1, 23)]
-            name: (identifier [(1, 9), (1, 10)])
-            "=" [(1, 11), (1, 12)]
-            default: (function_definition [(1, 13), (1, 23)]
-              name: "function" [(1, 13), (1, 21)]
-              parameters: (parameters [(1, 21), (1, 23)]
-                open: "(" [(1, 21), (1, 22)]
-                close: ")" [(1, 22), (1, 23)]
-              )
-              body: (identifier MISSING [(1, 23), (1, 23)])
-            )
-          )
-          close: ")" [(1, 23), (1, 24)]
+      (ERROR [(1, 0), (1, 27)]
+        "function" [(1, 0), (1, 8)]
+        "(" [(1, 8), (1, 9)]
+        (identifier [(1, 9), (1, 10)])
+        "=" [(1, 11), (1, 12)]
+        "function" [(1, 13), (1, 21)]
+        (parameters [(1, 21), (1, 23)]
+          open: "(" [(1, 21), (1, 22)]
+          close: ")" [(1, 22), (1, 23)]
         )
-        body: (braced_expression [(1, 25), (1, 27)]
-          open: "{" [(1, 25), (1, 26)]
-          close: "}" [(1, 26), (1, 27)]
-        )
+        (ERROR [(1, 23), (1, 27)])
       )
       
       Text

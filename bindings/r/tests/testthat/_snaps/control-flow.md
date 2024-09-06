@@ -522,17 +522,15 @@
       node_children_print(node)
     Output
       S-Expression
-      (ERROR [(1, 0), (1, 6)]
+      (repeat_statement [(1, 0), (3, 90)]
         "repeat" [(1, 0), (1, 6)]
+        (comment [(3, 0), (3, 90)])
+        body: (identifier MISSING [(3, 90), (3, 90)])
       )
       
       Text
       repeat
       
-      S-Expression
-      (comment [(3, 0), (3, 90)])
-      
-      Text
       # dummy comment to retain a newline after the `repeat` (can remove if we add another test)
       
 

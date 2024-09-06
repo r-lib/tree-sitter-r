@@ -179,14 +179,10 @@ function(x = function()) {}
 --------------------------------------------------------------------------------
 
 (program
-  (function_definition
-    parameters: (parameters
-      parameter: (parameter
-        name: (identifier)
-        default: (function_definition
-          parameters: (parameters)
-          body: (MISSING identifier))))
-    body: (braced_expression)))
+  (ERROR
+    (identifier)
+    (parameters)
+    (UNEXPECTED ')')))
 
 ================================================================================
 Lambda Function
@@ -1856,10 +1852,8 @@ Opening Brace, Closing Parenthesis
 
 (program
   (comment)
-  (braced_expression
-    (ERROR
-      (UNEXPECTED ')'))
-    (MISSING "}")))
+  (ERROR
+    (UNEXPECTED ')')))
 
 ================================================================================
 Opening Parenthesis, Closing Brace
