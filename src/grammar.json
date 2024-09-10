@@ -263,6 +263,13 @@
                     "name": "_else"
                   },
                   {
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_newline"
+                    }
+                  },
+                  {
                     "type": "FIELD",
                     "name": "alternative",
                     "content": {

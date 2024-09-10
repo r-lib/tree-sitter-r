@@ -239,6 +239,7 @@ module.exports = grammar({
       // No `repeat($._newline)` here. Specially handled in the scanner instead.
       optional(seq(
         $._else,
+        repeat($._newline),
         field("alternative", $._expression)
       ))
     )),
