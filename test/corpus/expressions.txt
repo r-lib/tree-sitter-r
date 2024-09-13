@@ -898,6 +898,38 @@ else
     1 + 1
 }
 
+# Valid. Newlines are allowed between the `else` and the `alternative`, even at top level (#141).
+if (TRUE) {
+  1
+} else
+{
+  2
+}
+
+# Valid. Same as above but in `{ }` so it is valid no matter where the newlines are.
+{
+  if (TRUE) {
+    1
+  } else
+  {
+    2
+  }
+}
+
+# Valid. Newlines and comments are allowed between the `else` and the `alternative`, even at top level.
+if (TRUE) {
+  1
+} else
+
+# do this alternative
+{
+  2
+}
+
+# Valid. Newlines are allowed between the `else` and the `alternative`, even at top level.
+if (TRUE) 1 else
+  2
+
 --------------------------------------------------------------------------------
 
 (program
@@ -939,7 +971,35 @@ else
       (true)
       (binary_operator
         (float)
-        (float)))))
+        (float))))
+  (comment)
+  (if_statement
+    (true)
+    (braced_expression
+      (float))
+    (braced_expression
+      (float)))
+  (comment)
+  (braced_expression
+    (if_statement
+      (true)
+      (braced_expression
+        (float))
+      (braced_expression
+        (float))))
+  (comment)
+  (if_statement
+    (true)
+    (braced_expression
+      (float))
+    (comment)
+    (braced_expression
+      (float)))
+  (comment)
+  (if_statement
+    (true)
+    (float)
+    (float)))
 
 ================================================================================
 For

@@ -297,6 +297,165 @@
         }
       }
       
+      S-Expression
+      (comment [(39, 0), (39, 80)])
+      
+      Text
+      # Valid. This test ensures we handle the newline after `1 + 1` correctly (#125).
+      
+      S-Expression
+      (braced_expression [(40, 0), (44, 1)]
+        open: "{" [(40, 0), (40, 1)]
+        body: (if_statement [(41, 2), (43, 9)]
+          "if" [(41, 2), (41, 4)]
+          open: "(" [(41, 5), (41, 6)]
+          condition: (true [(41, 6), (41, 10)])
+          close: ")" [(41, 10), (41, 11)]
+          consequence: (binary_operator [(43, 4), (43, 9)]
+            lhs: (float [(43, 4), (43, 5)])
+            operator: "+" [(43, 6), (43, 7)]
+            rhs: (float [(43, 8), (43, 9)])
+          )
+        )
+        close: "}" [(44, 0), (44, 1)]
+      )
+      
+      Text
+      {
+        if (TRUE)
+      
+          1 + 1
+      }
+      
+      S-Expression
+      (comment [(46, 0), (46, 97)])
+      
+      Text
+      # Valid. Newlines are allowed between the `else` and the `alternative`, even at top level (#141).
+      
+      S-Expression
+      (if_statement [(47, 0), (52, 1)]
+        "if" [(47, 0), (47, 2)]
+        open: "(" [(47, 3), (47, 4)]
+        condition: (true [(47, 4), (47, 8)])
+        close: ")" [(47, 8), (47, 9)]
+        consequence: (braced_expression [(47, 10), (49, 1)]
+          open: "{" [(47, 10), (47, 11)]
+          body: (float [(48, 2), (48, 3)])
+          close: "}" [(49, 0), (49, 1)]
+        )
+        "else" [(49, 2), (49, 6)]
+        alternative: (braced_expression [(50, 0), (52, 1)]
+          open: "{" [(50, 0), (50, 1)]
+          body: (float [(51, 2), (51, 3)])
+          close: "}" [(52, 0), (52, 1)]
+        )
+      )
+      
+      Text
+      if (TRUE) {
+        1
+      } else
+      {
+        2
+      }
+      
+      S-Expression
+      (comment [(54, 0), (54, 84)])
+      
+      Text
+      # Valid. Same as above but in `{ }` so it is valid no matter where the newlines are.
+      
+      S-Expression
+      (braced_expression [(55, 0), (62, 1)]
+        open: "{" [(55, 0), (55, 1)]
+        body: (if_statement [(56, 2), (61, 3)]
+          "if" [(56, 2), (56, 4)]
+          open: "(" [(56, 5), (56, 6)]
+          condition: (true [(56, 6), (56, 10)])
+          close: ")" [(56, 10), (56, 11)]
+          consequence: (braced_expression [(56, 12), (58, 3)]
+            open: "{" [(56, 12), (56, 13)]
+            body: (float [(57, 4), (57, 5)])
+            close: "}" [(58, 2), (58, 3)]
+          )
+          "else" [(58, 4), (58, 8)]
+          alternative: (braced_expression [(59, 2), (61, 3)]
+            open: "{" [(59, 2), (59, 3)]
+            body: (float [(60, 4), (60, 5)])
+            close: "}" [(61, 2), (61, 3)]
+          )
+        )
+        close: "}" [(62, 0), (62, 1)]
+      )
+      
+      Text
+      {
+        if (TRUE) {
+          1
+        } else
+        {
+          2
+        }
+      }
+      
+      S-Expression
+      (comment [(64, 0), (64, 103)])
+      
+      Text
+      # Valid. Newlines and comments are allowed between the `else` and the `alternative`, even at top level.
+      
+      S-Expression
+      (if_statement [(65, 0), (72, 1)]
+        "if" [(65, 0), (65, 2)]
+        open: "(" [(65, 3), (65, 4)]
+        condition: (true [(65, 4), (65, 8)])
+        close: ")" [(65, 8), (65, 9)]
+        consequence: (braced_expression [(65, 10), (67, 1)]
+          open: "{" [(65, 10), (65, 11)]
+          body: (float [(66, 2), (66, 3)])
+          close: "}" [(67, 0), (67, 1)]
+        )
+        "else" [(67, 2), (67, 6)]
+        (comment [(69, 0), (69, 21)])
+        alternative: (braced_expression [(70, 0), (72, 1)]
+          open: "{" [(70, 0), (70, 1)]
+          body: (float [(71, 2), (71, 3)])
+          close: "}" [(72, 0), (72, 1)]
+        )
+      )
+      
+      Text
+      if (TRUE) {
+        1
+      } else
+      
+      # do this alternative
+      {
+        2
+      }
+      
+      S-Expression
+      (comment [(74, 0), (74, 90)])
+      
+      Text
+      # Valid. Newlines are allowed between the `else` and the `alternative`, even at top level.
+      
+      S-Expression
+      (if_statement [(75, 0), (76, 3)]
+        "if" [(75, 0), (75, 2)]
+        open: "(" [(75, 3), (75, 4)]
+        condition: (true [(75, 4), (75, 8)])
+        close: ")" [(75, 8), (75, 9)]
+        consequence: (float [(75, 10), (75, 11)])
+        "else" [(75, 12), (75, 16)]
+        alternative: (float [(76, 2), (76, 3)])
+      )
+      
+      Text
+      if (TRUE) 1 else
+        2
+      
 
 # for
 
