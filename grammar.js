@@ -195,6 +195,7 @@ module.exports = grammar({
     // Function definitions.
     function_definition: $ => withPrec(PREC.FUNCTION_OR_LOOP, seq(
       field("name", choice("\\", "function")),
+      repeat($._newline),
       field("parameters", $.parameters),
       repeat($._newline),
       field("body", $._expression)

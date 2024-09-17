@@ -191,21 +191,80 @@
         1
       
       S-Expression
-      (function_definition [(24, 0), (24, 24)]
+      (function_definition [(24, 0), (25, 8)]
         name: "function" [(24, 0), (24, 8)]
-        parameters: (parameters [(24, 8), (24, 10)]
-          open: "(" [(24, 8), (24, 9)]
-          close: ")" [(24, 9), (24, 10)]
+        parameters: (parameters [(25, 0), (25, 2)]
+          open: "(" [(25, 0), (25, 1)]
+          close: ")" [(25, 1), (25, 2)]
         )
-        body: (function_definition [(24, 11), (24, 24)]
-          name: "function" [(24, 11), (24, 19)]
-          parameters: (parameters [(24, 19), (24, 21)]
-            open: "(" [(24, 19), (24, 20)]
-            close: ")" [(24, 20), (24, 21)]
+        body: (binary_operator [(25, 3), (25, 8)]
+          lhs: (float [(25, 3), (25, 4)])
+          operator: "+" [(25, 5), (25, 6)]
+          rhs: (float [(25, 7), (25, 8)])
+        )
+      )
+      
+      Text
+      function
+      () 1 + 1
+      
+      S-Expression
+      (function_definition [(27, 0), (29, 8)]
+        name: "function" [(27, 0), (27, 8)]
+        parameters: (parameters [(29, 0), (29, 2)]
+          open: "(" [(29, 0), (29, 1)]
+          close: ")" [(29, 1), (29, 2)]
+        )
+        body: (binary_operator [(29, 3), (29, 8)]
+          lhs: (float [(29, 3), (29, 4)])
+          operator: "+" [(29, 5), (29, 6)]
+          rhs: (float [(29, 7), (29, 8)])
+        )
+      )
+      
+      Text
+      function
+      
+      () 1 + 1
+      
+      S-Expression
+      (function_definition [(31, 0), (35, 8)]
+        name: "function" [(31, 0), (31, 8)]
+        (comment [(33, 0), (33, 24)])
+        parameters: (parameters [(35, 0), (35, 2)]
+          open: "(" [(35, 0), (35, 1)]
+          close: ")" [(35, 1), (35, 2)]
+        )
+        body: (binary_operator [(35, 3), (35, 8)]
+          lhs: (float [(35, 3), (35, 4)])
+          operator: "+" [(35, 5), (35, 6)]
+          rhs: (float [(35, 7), (35, 8)])
+        )
+      )
+      
+      Text
+      function
+      
+      # this important comment
+      
+      () 1 + 1
+      
+      S-Expression
+      (function_definition [(37, 0), (37, 24)]
+        name: "function" [(37, 0), (37, 8)]
+        parameters: (parameters [(37, 8), (37, 10)]
+          open: "(" [(37, 8), (37, 9)]
+          close: ")" [(37, 9), (37, 10)]
+        )
+        body: (function_definition [(37, 11), (37, 24)]
+          name: "function" [(37, 11), (37, 19)]
+          parameters: (parameters [(37, 19), (37, 21)]
+            open: "(" [(37, 19), (37, 20)]
+            close: ")" [(37, 20), (37, 21)]
           )
-          body: (braced_expression [(24, 22), (24, 24)]
-            open: "{" [(24, 22), (24, 23)]
-            close: "}" [(24, 23), (24, 24)]
+          body: (braced_expression [(37, 22), (37, 24)]
+            open: "{" [(37, 22), (37, 23)]
+            close: "}" [(37, 23), (37, 24)]
           )
         )
       )
@@ -214,30 +273,30 @@
       function() function() {}
       
       S-Expression
-      (function_definition [(26, 0), (26, 30)]
-        name: "function" [(26, 0), (26, 8)]
-        parameters: (parameters [(26, 8), (26, 27)]
-          open: "(" [(26, 8), (26, 9)]
-          parameter: (parameter [(26, 9), (26, 26)]
-            name: (identifier [(26, 9), (26, 10)])
-            "=" [(26, 11), (26, 12)]
-            default: (function_definition [(26, 13), (26, 26)]
-              name: "function" [(26, 13), (26, 21)]
-              parameters: (parameters [(26, 21), (26, 23)]
-                open: "(" [(26, 21), (26, 22)]
-                close: ")" [(26, 22), (26, 23)]
+      (function_definition [(39, 0), (39, 30)]
+        name: "function" [(39, 0), (39, 8)]
+        parameters: (parameters [(39, 8), (39, 27)]
+          open: "(" [(39, 8), (39, 9)]
+          parameter: (parameter [(39, 9), (39, 26)]
+            name: (identifier [(39, 9), (39, 10)])
+            "=" [(39, 11), (39, 12)]
+            default: (function_definition [(39, 13), (39, 26)]
+              name: "function" [(39, 13), (39, 21)]
+              parameters: (parameters [(39, 21), (39, 23)]
+                open: "(" [(39, 21), (39, 22)]
+                close: ")" [(39, 22), (39, 23)]
               )
-              body: (braced_expression [(26, 24), (26, 26)]
-                open: "{" [(26, 24), (26, 25)]
-                close: "}" [(26, 25), (26, 26)]
+              body: (braced_expression [(39, 24), (39, 26)]
+                open: "{" [(39, 24), (39, 25)]
+                close: "}" [(39, 25), (39, 26)]
               )
             )
           )
-          close: ")" [(26, 26), (26, 27)]
+          close: ")" [(39, 26), (39, 27)]
         )
-        body: (braced_expression [(26, 28), (26, 30)]
-          open: "{" [(26, 28), (26, 29)]
-          close: "}" [(26, 29), (26, 30)]
+        body: (braced_expression [(39, 28), (39, 30)]
+          open: "{" [(39, 28), (39, 29)]
+          close: "}" [(39, 29), (39, 30)]
         )
       )
       
@@ -245,30 +304,30 @@
       function(x = function() {}) {}
       
       S-Expression
-      (comment [(28, 0), (28, 32)])
+      (comment [(41, 0), (41, 32)])
       
       Text
       # With no intermediate `{` scope
       
       S-Expression
-      (function_definition [(29, 0), (29, 26)]
-        name: "function" [(29, 0), (29, 8)]
-        parameters: (parameters [(29, 8), (29, 10)]
-          open: "(" [(29, 8), (29, 9)]
-          close: ")" [(29, 9), (29, 10)]
+      (function_definition [(42, 0), (42, 26)]
+        name: "function" [(42, 0), (42, 8)]
+        parameters: (parameters [(42, 8), (42, 10)]
+          open: "(" [(42, 8), (42, 9)]
+          close: ")" [(42, 9), (42, 10)]
         )
-        body: (for_statement [(29, 11), (29, 26)]
-          "for" [(29, 11), (29, 14)]
-          open: "(" [(29, 14), (29, 15)]
-          variable: (identifier [(29, 15), (29, 16)])
-          "in" [(29, 17), (29, 19)]
-          sequence: (binary_operator [(29, 20), (29, 23)]
-            lhs: (float [(29, 20), (29, 21)])
-            operator: ":" [(29, 21), (29, 22)]
-            rhs: (float [(29, 22), (29, 23)])
+        body: (for_statement [(42, 11), (42, 26)]
+          "for" [(42, 11), (42, 14)]
+          open: "(" [(42, 14), (42, 15)]
+          variable: (identifier [(42, 15), (42, 16)])
+          "in" [(42, 17), (42, 19)]
+          sequence: (binary_operator [(42, 20), (42, 23)]
+            lhs: (float [(42, 20), (42, 21)])
+            operator: ":" [(42, 21), (42, 22)]
+            rhs: (float [(42, 22), (42, 23)])
           )
-          close: ")" [(29, 23), (29, 24)]
-          body: (identifier [(29, 25), (29, 26)])
+          close: ")" [(42, 23), (42, 24)]
+          body: (identifier [(42, 25), (42, 26)])
         )
       )
       
@@ -596,5 +655,35 @@
       \()
       
         1 + 2
+      
+      S-Expression
+      (comment [(11, 0), (11, 88)])
+      
+      Text
+      # Not currently allowed by the parser, but we think it will be and is just an oversight.
+      
+      S-Expression
+      (comment [(12, 0), (12, 167)])
+      
+      Text
+      # `'\\'` would need to be included alongside `FUNCTION` here https://github.com/wch/r-source/blob/802121c877837926a6bc2a930b3da749b537258b/src/main/gram.y#L3898-L3901.
+      
+      S-Expression
+      (function_definition [(13, 0), (14, 8)]
+        name: "\\" [(13, 0), (13, 1)]
+        parameters: (parameters [(14, 0), (14, 2)]
+          open: "(" [(14, 0), (14, 1)]
+          close: ")" [(14, 1), (14, 2)]
+        )
+        body: (binary_operator [(14, 3), (14, 8)]
+          lhs: (float [(14, 3), (14, 4)])
+          operator: "+" [(14, 5), (14, 6)]
+          rhs: (float [(14, 7), (14, 8)])
+        )
+      )
+      
+      Text
+      \
+      () 1 + 1
       
 
