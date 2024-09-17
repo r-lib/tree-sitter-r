@@ -418,6 +418,20 @@ a *
     (identifier)))
 
 ================================================================================
+Not An Arithmetic Operator
+================================================================================
+
+a
+  + b
+
+--------------------------------------------------------------------------------
+
+(program
+  (identifier)
+  (unary_operator
+    (identifier)))
+
+================================================================================
 Unary Operators
 ================================================================================
 
@@ -828,6 +842,13 @@ if (a.b) {
   d
 }
 
+if (
+  x <
+  y
+) {
+  z
+}
+
 --------------------------------------------------------------------------------
 
 (program
@@ -846,6 +867,12 @@ if (a.b) {
         arguments: (arguments
           argument: (argument
             value: (identifier))))
+      body: (identifier)))
+  (if_statement
+    condition: (binary_operator
+      lhs: (identifier)
+      rhs: (identifier))
+    consequence: (braced_expression
       body: (identifier))))
 
 ================================================================================
@@ -1475,6 +1502,41 @@ foo:::if
   (ERROR))
 
 ================================================================================
+Dollar, At, Namespace, Namespace Internal With Newline Before Operator
+================================================================================
+
+# Newlines are not allowed before the operator, so none of these are valid
+x
+$y
+
+x
+@y
+
+x
+::y
+
+x
+:::y
+
+--------------------------------------------------------------------------------
+
+(program
+  (comment)
+  (identifier)
+  (ERROR)
+  (identifier)
+  (identifier)
+  (ERROR)
+  (identifier)
+  (identifier)
+  (ERROR)
+  (identifier)
+  (identifier)
+  (ERROR)
+  (identifier)
+)
+
+================================================================================
 Assignment
 ================================================================================
 
@@ -1672,6 +1734,39 @@ f(,y=)
       (comma)
       argument: (argument
         name: (identifier)))))
+
+================================================================================
+Not A Call, Subset, Or Subset2
+================================================================================
+
+f
+(x)
+
+foo
+[bar]
+
+foo
+[[x]]
+
+--------------------------------------------------------------------------------
+
+(program
+  (identifier)
+  (parenthesized_expression
+    body: (identifier))
+  (identifier)
+  (ERROR
+    (UNEXPECTED '['))
+  (identifier)
+  (ERROR
+    (UNEXPECTED ']'))
+  (identifier)
+  (ERROR
+    (UNEXPECTED '['))
+  (identifier)
+  (ERROR
+    (UNEXPECTED ']'))
+)
 
 ================================================================================
 Braces

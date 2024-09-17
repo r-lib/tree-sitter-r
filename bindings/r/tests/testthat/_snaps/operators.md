@@ -163,6 +163,27 @@
         b
       
 
+# not an arithmetic operator
+
+    Code
+      node_children_print(node)
+    Output
+      S-Expression
+      (identifier [(1, 0), (1, 1)])
+      
+      Text
+      a
+      
+      S-Expression
+      (unary_operator [(2, 2), (2, 5)]
+        operator: "+" [(2, 2), (2, 3)]
+        rhs: (identifier [(2, 4), (2, 5)])
+      )
+      
+      Text
+      + b
+      
+
 # unary
 
     Code

@@ -24,6 +24,22 @@ foo::if
 foo:::if
 
 # ------------------------------------------------------------------------------
+# dollar, at, namespace, namespace internal with newline before operator
+
+# Newlines are not allowed before the operator, so none of these are valid
+x
+$y
+
+x
+@y
+
+x
+::y
+
+x
+:::y
+
+# ------------------------------------------------------------------------------
 # complex expressions
 
 repeat if (1) TRUE else repeat 42
