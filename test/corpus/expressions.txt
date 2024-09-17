@@ -828,6 +828,13 @@ if (a.b) {
   d
 }
 
+if (
+  x <
+  y
+) {
+  z
+}
+
 --------------------------------------------------------------------------------
 
 (program
@@ -846,6 +853,12 @@ if (a.b) {
         arguments: (arguments
           argument: (argument
             value: (identifier))))
+      body: (identifier)))
+  (if_statement
+    condition: (binary_operator
+      lhs: (identifier)
+      rhs: (identifier))
+    consequence: (braced_expression
       body: (identifier))))
 
 ================================================================================
