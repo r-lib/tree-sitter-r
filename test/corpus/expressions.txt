@@ -1502,6 +1502,41 @@ foo:::if
   (ERROR))
 
 ================================================================================
+Dollar, At, Namespace, Namespace Internal With Newline Before Operator
+================================================================================
+
+# Newlines are not allowed before the operator, so none of these are valid
+x
+$y
+
+x
+@y
+
+x
+::y
+
+x
+:::y
+
+--------------------------------------------------------------------------------
+
+(program
+  (comment)
+  (identifier)
+  (ERROR)
+  (identifier)
+  (identifier)
+  (ERROR)
+  (identifier)
+  (identifier)
+  (ERROR)
+  (identifier)
+  (identifier)
+  (ERROR)
+  (identifier)
+)
+
+================================================================================
 Assignment
 ================================================================================
 
