@@ -674,6 +674,84 @@
       f(,y=)
       
 
+# not a call, subset, or subset2
+
+    Code
+      node_children_print(node)
+    Output
+      S-Expression
+      (identifier [(1, 0), (1, 1)])
+      
+      Text
+      f
+      
+      S-Expression
+      (parenthesized_expression [(2, 0), (2, 3)]
+        open: "(" [(2, 0), (2, 1)]
+        body: (identifier [(2, 1), (2, 2)])
+        close: ")" [(2, 2), (2, 3)]
+      )
+      
+      Text
+      (x)
+      
+      S-Expression
+      (identifier [(4, 0), (4, 3)])
+      
+      Text
+      foo
+      
+      S-Expression
+      (ERROR [(5, 0), (5, 1)]
+        (ERROR [(5, 0), (5, 1)])
+      )
+      
+      Text
+      [
+      
+      S-Expression
+      (identifier [(5, 1), (5, 4)])
+      
+      Text
+      bar
+      
+      S-Expression
+      (ERROR [(5, 4), (5, 5)]
+        (ERROR [(5, 4), (5, 5)])
+      )
+      
+      Text
+      ]
+      
+      S-Expression
+      (identifier [(7, 0), (7, 3)])
+      
+      Text
+      foo
+      
+      S-Expression
+      (ERROR [(8, 0), (8, 2)]
+        (ERROR [(8, 0), (8, 2)])
+      )
+      
+      Text
+      [[
+      
+      S-Expression
+      (identifier [(8, 2), (8, 3)])
+      
+      Text
+      x
+      
+      S-Expression
+      (ERROR [(8, 3), (8, 5)]
+        (ERROR [(8, 3), (8, 5)])
+      )
+      
+      Text
+      ]]
+      
+
 # braces
 
     Code

@@ -54,6 +54,31 @@
         d
       }
       
+      S-Expression
+      (if_statement [(9, 0), (14, 1)]
+        "if" [(9, 0), (9, 2)]
+        open: "(" [(9, 3), (9, 4)]
+        condition: (binary_operator [(10, 2), (11, 3)]
+          lhs: (identifier [(10, 2), (10, 3)])
+          operator: "<" [(10, 4), (10, 5)]
+          rhs: (identifier [(11, 2), (11, 3)])
+        )
+        close: ")" [(12, 0), (12, 1)]
+        consequence: (braced_expression [(12, 2), (14, 1)]
+          open: "{" [(12, 2), (12, 3)]
+          body: (identifier [(13, 2), (13, 3)])
+          close: "}" [(14, 0), (14, 1)]
+        )
+      )
+      
+      Text
+      if (
+        x <
+        y
+      ) {
+        z
+      }
+      
 
 # if else
 
