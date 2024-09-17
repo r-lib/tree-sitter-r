@@ -55,6 +55,18 @@
 // creating more granular groups based on the `operator` field.
 // ---------------------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------------------
+// NOTE ON NEWLINES BETWEEN PARENTHESES:
+//
+// Typically, we handle newlines explicitly in the R grammar, as they often do have
+// contextual meaning.
+//
+// However, the external scanner will proactively consume `\n` if we are within a scope
+// defined by a `(`, `[`, or `[[`. This is why you don't see `repeat($.newline)` within
+// the `parameters` node, or after the `(` of an `if_statement` node - newlines will have
+// been consumed already!
+// ---------------------------------------------------------------------------------------
+
 const PREC = {
   // #
   // NOTE: If we don't put comments at a negative rank, then `"#"` will treat the `#` as
@@ -204,8 +216,7 @@ module.exports = grammar({
     // NOTE: We include "(" and ")" as part of the rule here to allow
     // tree-sitter to create a "parameters" node in the AST even when
     // no parameters are declared for a function.
-    // Spaces and newlines between the `()` are consumed ahead of time
-    // by the external scanner.
+    // NOTE: See `NOTE ON NEWLINES BETWEEN PARENTHESES` above
     parameters: $ => seq(
       field("open", $._open_parenthesis),
       optional(seq(
@@ -229,6 +240,7 @@ module.exports = grammar({
     _parameter_without_default: $ => field("name", choice($.identifier, $.dots)),
 
     // Control flow.
+    // NOTE: See `NOTE ON NEWLINES BETWEEN PARENTHESES` above
     if_statement: $ => withPrec(PREC.IF, seq(
       "if",
       repeat($._newline),
@@ -245,6 +257,7 @@ module.exports = grammar({
       ))
     )),
 
+    // NOTE: See `NOTE ON NEWLINES BETWEEN PARENTHESES` above
     for_statement: $ => withPrec(PREC.FUNCTION_OR_LOOP, seq(
       "for",
       repeat($._newline),
@@ -257,6 +270,7 @@ module.exports = grammar({
       field("body", $._expression)
     )),
 
+    // NOTE: See `NOTE ON NEWLINES BETWEEN PARENTHESES` above
     while_statement: $ => withPrec(PREC.FUNCTION_OR_LOOP, seq(
       "while",
       repeat($._newline),
@@ -280,6 +294,11 @@ module.exports = grammar({
       field("close", $._close_brace)
     )),
 
+    // NOTE: See `NOTE ON NEWLINES BETWEEN PARENTHESES` above
+    // TODO: I think the `$._newline` usage here is unnecessary, as newlines will be
+    // consumed by the scanner. In that case, we should probably limit it to 1 expression
+    // too, since you can't actually have multiple bodies in a parenthesized expression.
+    // https://github.com/r-lib/tree-sitter-r/issues/144
     parenthesized_expression: $ => withPrec(PREC.BLOCK, seq(
       field("open", $._open_parenthesis),
       repeat(field("body", choice($._expression, $._newline))),
@@ -303,8 +322,7 @@ module.exports = grammar({
     )),
 
     // The actual matching rules for arguments in each of the above.
-    // Spaces and newlines between the `()`, `[]`, or `[[]]` are consumed ahead of time
-    // by the external scanner.
+    // NOTE: See `NOTE ON NEWLINES BETWEEN PARENTHESES` above
     call_arguments: $ => seq(
       field("open", $._open_parenthesis),
       repeat($._argument),
