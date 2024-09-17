@@ -26,6 +26,19 @@ function()
 
   1
 
+function
+() 1 + 1
+
+function
+
+() 1 + 1
+
+function
+
+# this important comment
+
+() 1 + 1
+
 function() function() {}
 
 function(x = function() {}) {}
@@ -111,6 +124,22 @@ function() for(i in 1:5) i
     body: (float))
   (function_definition
     parameters: (parameters)
+    body: (binary_operator
+      lhs: (float)
+      rhs: (float)))
+  (function_definition
+    parameters: (parameters)
+    body: (binary_operator
+      lhs: (float)
+      rhs: (float)))
+  (function_definition
+    (comment)
+    parameters: (parameters)
+    body: (binary_operator
+      lhs: (float)
+      rhs: (float)))
+  (function_definition
+    parameters: (parameters)
     body: (function_definition
       parameters: (parameters)
       body: (braced_expression)))
@@ -148,7 +177,7 @@ function(x, y)
       (comma)
       parameter: (parameter
         name: (identifier)))
-      body: (MISSING identifier)))
+    body: (MISSING identifier)))
 
 ================================================================================
 Function No Body With Assignment
@@ -168,7 +197,7 @@ x <- function(x, y)
         (comma)
         parameter: (parameter
           name: (identifier)))
-        body: (MISSING identifier))))
+      body: (MISSING identifier))))
 
 ================================================================================
 Function No Body Inside Another Function
@@ -197,6 +226,12 @@ c <- \(fun, ...) fun(...)
 \()
 
   1 + 2
+
+# Not currently allowed by the parser, but we think it will be and is just an oversight.
+# `'\\'` would need to be included alongside `FUNCTION` here https://github.com/wch/r-source/blob/802121c877837926a6bc2a930b3da749b537258b/src/main/gram.y#L3898-L3901.
+\
+() 1 + 1
+
 --------------------------------------------------------------------------------
 
 (program
@@ -285,6 +320,13 @@ c <- \(fun, ...) fun(...)
     (binary_operator
       (float)
       (float)))
+  (function_definition
+    (parameters)
+    (binary_operator
+      (float)
+      (float)))
+  (comment)
+  (comment)
   (function_definition
     (parameters)
     (binary_operator

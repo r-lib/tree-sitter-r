@@ -2,6 +2,8 @@
 
 ## devel
 
+- Newlines after `function` but before the `()` are again allowed (#145).
+
 - Newlines are now allowed after an `else` but before the `alternative` (#141).
 
 - The internal `_hex_literal` rule was simplified slightly (#138).
