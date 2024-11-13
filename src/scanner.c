@@ -23,6 +23,7 @@ static inline void debug_print(const char* fmt, ...) {
 #endif
 
 enum TokenType {
+  START,
   NEWLINE,
   SEMICOLON,
   RAW_STRING_LITERAL,
@@ -417,6 +418,22 @@ static inline bool scan_close_bracket2(TSLexer* lexer, Stack* stack) {
 }
 
 static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
+  if (valid_symbols[ERROR_SENTINEL]) {
+    // Decline to handle when in "error recovery" mode. When a syntax error occurs,
+    // tree-sitter calls the external scanner with all `valid_symbols` marked as valid.
+    return false;
+  }
+
+  if (valid_symbols[START]) {
+    // The `START` symbol is only valid at the very beginning of a file before we
+    // have seen any tokens. We emit this zero width symbol to force the `program`
+    // node to open at position `(0, 0)`, regardless of how much leading whitespace
+    // (including both `' '` and `\r`) there may be before our first "real" token.
+    // This ensures the AST spans the entire file, which consumers of it rely on (#151).
+    lexer->result_symbol = START;
+    return true;
+  }
+
   consume_whitespace_and_ignored_newlines(lexer, stack);
 
   // Purposefully structured as a series of exclusive if statements to
@@ -424,11 +441,7 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
   // because each `scan_*()` function calls `advance()` internally, meaning that
   // `lookahead` will no longer be accurate for checking other branches.
 
-  if (valid_symbols[ERROR_SENTINEL]) {
-    // Decline to handle when in "error recovery" mode. When a syntax error occurs,
-    // tree-sitter calls the external scanner with all `valid_symbols` marked as valid.
-    return false;
-  } else if (valid_symbols[SEMICOLON] && lexer->lookahead == ';') {
+  if (valid_symbols[SEMICOLON] && lexer->lookahead == ';') {
     return scan_semicolon(lexer);
   } else if (valid_symbols[OPEN_PAREN] && lexer->lookahead == '(') {
     return scan_open_block(lexer, stack, SCOPE_PAREN, OPEN_PAREN);
