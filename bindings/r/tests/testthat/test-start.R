@@ -42,4 +42,13 @@ test_that("`program` always starts at `(0, 0)`", {
 
   # Leading newlines (Windows)
   test_program_position("\r\n\r\nx", treesitter::point(2, 1), 5)
+
+  # Leading whitespace before comment
+  test_program_position("  # hi", treesitter::point(0, 6), 6)
+
+  # Leading newlines before comment (Unix)
+  test_program_position("\n\n# hi", treesitter::point(2, 4), 6)
+
+  # Leading newlines before comment (Windows)
+  test_program_position("\r\n\r\n# hi", treesitter::point(2, 4), 8)
 })
