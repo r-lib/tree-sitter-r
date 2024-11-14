@@ -2,6 +2,8 @@
 
 ## devel
 
+- Fixed another issue where the `program` node didn't start at `(0, 0)` if there was leading whitespace before the first token (#151).
+
 - Newlines after `function` but before the `()` are again allowed (#145).
 
 - Newlines are now allowed after an `else` but before the `alternative` (#141).

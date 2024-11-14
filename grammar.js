@@ -179,6 +179,7 @@ module.exports = grammar({
   ],
 
   externals: $ => [
+    $._start,
     $._newline,
     $._semicolon,
     $._raw_string_literal,
@@ -202,7 +203,11 @@ module.exports = grammar({
 
   rules: {
     // Top-level rules.
-    program: $ => repeat(choice($._expression, $._semicolon, $._newline)),
+    // The zero width `$._start` ensures that `program` starts at `(0, 0)`.
+    program: $ => seq(
+        $._start,
+        repeat(choice($._expression, $._semicolon, $._newline))
+    ),
 
     // Function definitions.
     function_definition: $ => withPrec(PREC.FUNCTION_OR_LOOP, seq(
