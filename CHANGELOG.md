@@ -2,6 +2,8 @@
 
 ## devel
 
+- `fn(a b)` is now correctly parsed as an error rather than as two sequential arguments (#140).
+
 - Fixed another issue where the `program` node didn't start at `(0, 0)` if there was leading whitespace before the first token (#151).
 
 - Newlines after `function` but before the `()` are again allowed (#145).
