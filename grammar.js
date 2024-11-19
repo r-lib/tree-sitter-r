@@ -299,14 +299,11 @@ module.exports = grammar({
       field("close", $._close_brace)
     )),
 
+    // NOTE: R requires exactly 1 expression within parentheses
     // NOTE: See `NOTE ON NEWLINES BETWEEN PARENTHESES` above
-    // TODO: I think the `$._newline` usage here is unnecessary, as newlines will be
-    // consumed by the scanner. In that case, we should probably limit it to 1 expression
-    // too, since you can't actually have multiple bodies in a parenthesized expression.
-    // https://github.com/r-lib/tree-sitter-r/issues/144
     parenthesized_expression: $ => withPrec(PREC.BLOCK, seq(
       field("open", $._open_parenthesis),
-      repeat(field("body", choice($._expression, $._newline))),
+      field("body", $._expression),
       field("close", $._close_parenthesis)
     )),
 
