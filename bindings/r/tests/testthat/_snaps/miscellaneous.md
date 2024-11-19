@@ -725,62 +725,128 @@
       blah
       
       S-Expression
-      (ERROR [(5, 4), (15, 1)]
-        "(" [(5, 4), (5, 5)]
-        argument: (argument [(5, 5), (5, 10)]
-          value: (string [(5, 5), (5, 10)]
-            "'" [(5, 5), (5, 6)]
-            content: (string_content [(5, 6), (5, 9)])
-            "'" [(5, 9), (5, 10)]
-          )
+      "(" [(5, 4), (5, 5)]
+      
+      Text
+      (
+      
+      S-Expression
+      (argument [(5, 5), (5, 10)]
+        value: (string [(5, 5), (5, 10)]
+          "'" [(5, 5), (5, 6)]
+          content: (string_content [(5, 6), (5, 9)])
+          "'" [(5, 9), (5, 10)]
         )
-        (comma [(5, 10), (5, 11)])
-        (identifier [(6, 2), (6, 6)])
-        "(" [(6, 6), (6, 7)]
-        (identifier [(7, 4), (7, 7)])
-        "=" [(7, 8), (7, 9)]
-        "function" [(7, 10), (7, 18)]
-        (parameters [(7, 18), (7, 20)]
-          open: "(" [(7, 18), (7, 19)]
-          close: ")" [(7, 19), (7, 20)]
-        )
-        "{" [(7, 21), (7, 22)]
-        "if" [(8, 6), (8, 8)]
-        "(" [(8, 9), (8, 10)]
-        (ERROR [(8, 10), (9, 6)]
-          (ERROR [(8, 10), (9, 5)])
-          (comma [(9, 5), (9, 6)])
-        )
-        (binary_operator [(11, 4), (13, 5)]
-          lhs: (identifier [(11, 4), (11, 8)])
-          operator: "=" [(11, 9), (11, 10)]
-          rhs: (function_definition [(11, 11), (13, 5)]
-            name: "function" [(11, 11), (11, 19)]
-            parameters: (parameters [(11, 19), (11, 21)]
-              open: "(" [(11, 19), (11, 20)]
-              close: ")" [(11, 20), (11, 21)]
-            )
-            body: (braced_expression [(11, 22), (13, 5)]
-              open: "{" [(11, 22), (11, 23)]
-              close: "}" [(13, 4), (13, 5)]
-            )
-          )
-        )
-        ")" [(14, 2), (14, 3)]
-        (ERROR [(15, 0), (15, 1)])
       )
       
       Text
-      ('foo',
-        list(
-          foo = function() {
-            if ()
+      'foo'
+      
+      S-Expression
+      (comma [(5, 10), (5, 11)])
+      
+      Text
+      ,
+      
+      S-Expression
+      (identifier [(6, 2), (6, 6)])
+      
+      Text
+      list
+      
+      S-Expression
+      "(" [(6, 6), (6, 7)]
+      
+      Text
+      (
+      
+      S-Expression
+      (identifier [(7, 4), (7, 7)])
+      
+      Text
+      foo
+      
+      S-Expression
+      "=" [(7, 8), (7, 9)]
+      
+      Text
+      =
+      
+      S-Expression
+      "function" [(7, 10), (7, 18)]
+      
+      Text
+      function
+      
+      S-Expression
+      (parameters [(7, 18), (7, 20)]
+        open: "(" [(7, 18), (7, 19)]
+        close: ")" [(7, 19), (7, 20)]
+      )
+      
+      Text
+      ()
+      
+      S-Expression
+      "{" [(7, 21), (7, 22)]
+      
+      Text
+      {
+      
+      S-Expression
+      "if" [(8, 6), (8, 8)]
+      
+      Text
+      if
+      
+      S-Expression
+      "(" [(8, 9), (8, 10)]
+      
+      Text
+      (
+      
+      S-Expression
+      (ERROR [(8, 10), (9, 6)]
+        (ERROR [(8, 10), (9, 5)])
+        (comma [(9, 5), (9, 6)])
+      )
+      
+      Text
+      )
           },
       
-          foo2 = function() {
+      S-Expression
+      (binary_operator [(11, 4), (13, 5)]
+        lhs: (identifier [(11, 4), (11, 8)])
+        operator: "=" [(11, 9), (11, 10)]
+        rhs: (function_definition [(11, 11), (13, 5)]
+          name: "function" [(11, 11), (11, 19)]
+          parameters: (parameters [(11, 19), (11, 21)]
+            open: "(" [(11, 19), (11, 20)]
+            close: ")" [(11, 20), (11, 21)]
+          )
+          body: (braced_expression [(11, 22), (13, 5)]
+            open: "{" [(11, 22), (11, 23)]
+            close: "}" [(13, 4), (13, 5)]
+          )
+        )
+      )
+      
+      Text
+      foo2 = function() {
       
           }
-        )
+      
+      S-Expression
+      ")" [(14, 2), (14, 3)]
+      
+      Text
+      )
+      
+      S-Expression
+      (ERROR [(15, 0), (15, 1)])
+      
+      Text
       )
       
 
