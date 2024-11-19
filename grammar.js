@@ -327,28 +327,40 @@ module.exports = grammar({
     )),
 
     // The actual matching rules for arguments in each of the above.
+    //
+    // Complicated by the fact that we want to support any number
+    // of sequential commas, but two arguments must be separated
+    // by at least one comma.
+    //
+    // We accomplish this by using `delimSep1()`, but we make the
+    // actual `rule` itself `optional()`.
+    //
+    // # Allowed
+    // fn()
+    // fn(,)
+    // fn(,,)
+    // fn(a)
+    // fn(a, b)
+    // fn(,,a,,b,,)
+    //
+    // # Not allowed
+    // fn(a b)
+    //
     // NOTE: See `NOTE ON NEWLINES BETWEEN PARENTHESES` above
     call_arguments: $ => seq(
       field("open", $._open_parenthesis),
-      repeat($._argument),
+      delimSep1(optional(field("argument", $.argument)), $.comma),
       field("close", $._close_parenthesis)
     ),
     subset_arguments: $ => seq(
       field("open", $._open_bracket),
-      repeat($._argument),
+      delimSep1(optional(field("argument", $.argument)), $.comma),
       field("close", $._close_bracket)
     ),
     subset2_arguments: $ => seq(
       field("open", $._open_bracket2),
-      repeat($._argument),
+      delimSep1(optional(field("argument", $.argument)), $.comma),
       field("close", $._close_bracket2)
-    ),
-
-    // Supports `x[1,]` or `x[1,,2]`, so it really is `choice()` rather than `seq()`
-    // like in function `parameters`.
-    _argument: $ => choice(
-      $.comma,
-      field("argument", $.argument)
     ),
 
     // An argument; either named or unnamed.
@@ -659,4 +671,14 @@ module.exports = grammar({
 
 function withPrec(prec, rule) {
   return prec.ASSOC(prec.RANK, rule)
+}
+
+// Creates a rule to match one or more of the `rule`s separated by a `delim`
+//
+// Used in argument list generation
+function delimSep1(rule, delim) {
+  return seq(
+    rule,
+    repeat(seq(delim, rule))
+  )
 }
