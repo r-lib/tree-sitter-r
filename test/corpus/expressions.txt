@@ -1999,7 +1999,7 @@ foo[[, x y]]
         value: (identifier)))))
 
 ================================================================================
-Braces
+Braced Expression
 ================================================================================
 
 {}
@@ -2038,6 +2038,98 @@ Braces
   (braced_expression
     body: (float)
     body: (float)))
+
+================================================================================
+Parenthesized Expression
+================================================================================
+
+(1)
+((1))
+(1 + 1)
+(fn(a, b))
+fn((a), (b))
+(function() {
+  body
+})
+
+--------------------------------------------------------------------------------
+
+(program
+  (parenthesized_expression
+    (float))
+  (parenthesized_expression
+    (parenthesized_expression
+      (float)))
+  (parenthesized_expression
+    (binary_operator
+      (float)
+      (float)))
+  (parenthesized_expression
+    (call
+      (identifier)
+      (arguments
+        (argument
+          (identifier))
+        (comma)
+        (argument
+          (identifier)))))
+  (call
+    (identifier)
+    (arguments
+      (argument
+        (parenthesized_expression
+          (identifier)))
+      (comma)
+      (argument
+        (parenthesized_expression
+          (identifier)))))
+  (parenthesized_expression
+    (function_definition
+      (parameters)
+      (braced_expression
+        (identifier)))))
+
+================================================================================
+Not A Parenthesized Expression 1
+================================================================================
+
+()
+
+--------------------------------------------------------------------------------
+
+(program
+  (ERROR
+    (UNEXPECTED ')')))
+
+================================================================================
+Not A Parenthesized Expression 2
+================================================================================
+
+(
+  1
+  2
+)
+
+--------------------------------------------------------------------------------
+
+(program
+  (parenthesized_expression
+    (ERROR)
+    (float)))
+
+================================================================================
+Not A Parenthesized Expression 3
+================================================================================
+
+(1; 2)
+
+--------------------------------------------------------------------------------
+
+(program
+  (parenthesized_expression
+    (ERROR
+      (UNEXPECTED ';'))
+    (float)))
 
 ================================================================================
 Colon
