@@ -3,6 +3,10 @@
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
     },
+    "[plaintext]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true
+    },
     "files.trimTrailingWhitespace": true,
     "files.trimFinalNewlines": true,
     "files.insertFinalNewline": true,
