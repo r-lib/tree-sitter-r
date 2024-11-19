@@ -2,6 +2,8 @@
 
 ## devel
 
+- `parenthesized_expression` has been simplified to better align with R's parser. Specifically, it now expects exactly 1 required `body` expression, rather than allowing zero or more optional expressions (#144).
+
 - `fn(a b)` is now correctly parsed as an error rather than as two sequential arguments (#140).
 
 - Fixed another issue where the `program` node didn't start at `(0, 0)` if there was leading whitespace before the first token (#151).
