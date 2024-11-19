@@ -752,6 +752,189 @@
       ]]
       
 
+# not a call, subset, or subset2 due to sequential arguments
+
+    Code
+      node_children_print(node)
+    Output
+      S-Expression
+      (call [(1, 0), (1, 6)]
+        function: (identifier [(1, 0), (1, 1)])
+        arguments: (arguments [(1, 1), (1, 6)]
+          open: "(" [(1, 1), (1, 2)]
+          (ERROR [(1, 2), (1, 3)]
+            (identifier [(1, 2), (1, 3)])
+          )
+          argument: (argument [(1, 4), (1, 5)]
+            value: (identifier [(1, 4), (1, 5)])
+          )
+          close: ")" [(1, 5), (1, 6)]
+        )
+      )
+      
+      Text
+      f(x y)
+      
+      S-Expression
+      (subset [(2, 0), (2, 8)]
+        function: (identifier [(2, 0), (2, 3)])
+        arguments: (arguments [(2, 3), (2, 8)]
+          open: "[" [(2, 3), (2, 4)]
+          (ERROR [(2, 4), (2, 5)]
+            (identifier [(2, 4), (2, 5)])
+          )
+          argument: (argument [(2, 6), (2, 7)]
+            value: (identifier [(2, 6), (2, 7)])
+          )
+          close: "]" [(2, 7), (2, 8)]
+        )
+      )
+      
+      Text
+      foo[x y]
+      
+      S-Expression
+      (subset2 [(3, 0), (3, 10)]
+        function: (identifier [(3, 0), (3, 3)])
+        arguments: (arguments [(3, 3), (3, 10)]
+          open: "[[" [(3, 3), (3, 5)]
+          (ERROR [(3, 5), (3, 6)]
+            (identifier [(3, 5), (3, 6)])
+          )
+          argument: (argument [(3, 7), (3, 8)]
+            value: (identifier [(3, 7), (3, 8)])
+          )
+          close: "]]" [(3, 8), (3, 10)]
+        )
+      )
+      
+      Text
+      foo[[x y]]
+      
+      S-Expression
+      (call [(5, 0), (5, 9)]
+        function: (identifier [(5, 0), (5, 1)])
+        arguments: (arguments [(5, 1), (5, 9)]
+          open: "(" [(5, 1), (5, 2)]
+          argument: (argument [(5, 2), (5, 3)]
+            value: (identifier [(5, 2), (5, 3)])
+          )
+          (comma [(5, 3), (5, 4)])
+          (ERROR [(5, 5), (5, 6)]
+            (identifier [(5, 5), (5, 6)])
+          )
+          argument: (argument [(5, 7), (5, 8)]
+            value: (identifier [(5, 7), (5, 8)])
+          )
+          close: ")" [(5, 8), (5, 9)]
+        )
+      )
+      
+      Text
+      f(x, y z)
+      
+      S-Expression
+      (subset [(6, 0), (6, 11)]
+        function: (identifier [(6, 0), (6, 3)])
+        arguments: (arguments [(6, 3), (6, 11)]
+          open: "[" [(6, 3), (6, 4)]
+          argument: (argument [(6, 4), (6, 5)]
+            value: (identifier [(6, 4), (6, 5)])
+          )
+          (comma [(6, 5), (6, 6)])
+          (ERROR [(6, 7), (6, 8)]
+            (identifier [(6, 7), (6, 8)])
+          )
+          argument: (argument [(6, 9), (6, 10)]
+            value: (identifier [(6, 9), (6, 10)])
+          )
+          close: "]" [(6, 10), (6, 11)]
+        )
+      )
+      
+      Text
+      foo[x, y z]
+      
+      S-Expression
+      (subset2 [(7, 0), (7, 13)]
+        function: (identifier [(7, 0), (7, 3)])
+        arguments: (arguments [(7, 3), (7, 13)]
+          open: "[[" [(7, 3), (7, 5)]
+          argument: (argument [(7, 5), (7, 6)]
+            value: (identifier [(7, 5), (7, 6)])
+          )
+          (comma [(7, 6), (7, 7)])
+          (ERROR [(7, 8), (7, 9)]
+            (identifier [(7, 8), (7, 9)])
+          )
+          argument: (argument [(7, 10), (7, 11)]
+            value: (identifier [(7, 10), (7, 11)])
+          )
+          close: "]]" [(7, 11), (7, 13)]
+        )
+      )
+      
+      Text
+      foo[[x, y z]]
+      
+      S-Expression
+      (call [(9, 0), (9, 8)]
+        function: (identifier [(9, 0), (9, 1)])
+        arguments: (arguments [(9, 1), (9, 8)]
+          open: "(" [(9, 1), (9, 2)]
+          (comma [(9, 2), (9, 3)])
+          (ERROR [(9, 4), (9, 5)]
+            (identifier [(9, 4), (9, 5)])
+          )
+          argument: (argument [(9, 6), (9, 7)]
+            value: (identifier [(9, 6), (9, 7)])
+          )
+          close: ")" [(9, 7), (9, 8)]
+        )
+      )
+      
+      Text
+      f(, x y)
+      
+      S-Expression
+      (subset [(10, 0), (10, 10)]
+        function: (identifier [(10, 0), (10, 3)])
+        arguments: (arguments [(10, 3), (10, 10)]
+          open: "[" [(10, 3), (10, 4)]
+          (comma [(10, 4), (10, 5)])
+          (ERROR [(10, 6), (10, 7)]
+            (identifier [(10, 6), (10, 7)])
+          )
+          argument: (argument [(10, 8), (10, 9)]
+            value: (identifier [(10, 8), (10, 9)])
+          )
+          close: "]" [(10, 9), (10, 10)]
+        )
+      )
+      
+      Text
+      foo[, x y]
+      
+      S-Expression
+      (subset2 [(11, 0), (11, 12)]
+        function: (identifier [(11, 0), (11, 3)])
+        arguments: (arguments [(11, 3), (11, 12)]
+          open: "[[" [(11, 3), (11, 5)]
+          (comma [(11, 5), (11, 6)])
+          (ERROR [(11, 7), (11, 8)]
+            (identifier [(11, 7), (11, 8)])
+          )
+          argument: (argument [(11, 9), (11, 10)]
+            value: (identifier [(11, 9), (11, 10)])
+          )
+          close: "]]" [(11, 10), (11, 12)]
+        )
+      )
+      
+      Text
+      foo[[, x y]]
+      
+
 # braces
 
     Code

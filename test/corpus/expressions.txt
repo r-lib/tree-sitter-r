@@ -1904,6 +1904,101 @@ foo
 )
 
 ================================================================================
+Not A Call, Subset, Or Subset2 Due To Sequential Arguments
+================================================================================
+
+f(x y)
+foo[x y]
+foo[[x y]]
+
+f(x, y z)
+foo[x, y z]
+foo[[x, y z]]
+
+f(, x y)
+foo[, x y]
+foo[[, x y]]
+
+--------------------------------------------------------------------------------
+
+(program
+  (call
+    function: (identifier)
+    arguments: (arguments
+      (ERROR
+        (identifier))
+      argument: (argument
+        value: (identifier))))
+  (subset
+    function: (identifier)
+    arguments: (arguments
+      (ERROR
+        (identifier))
+      argument: (argument
+        value: (identifier))))
+  (subset2
+    function: (identifier)
+    arguments: (arguments
+      (ERROR
+        (identifier))
+      argument: (argument
+        value: (identifier))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (identifier))
+      (comma)
+      (ERROR
+        (identifier))
+      argument: (argument
+        value: (identifier))))
+  (subset
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (identifier))
+      (comma)
+      (ERROR
+        (identifier))
+      argument: (argument
+        value: (identifier))))
+  (subset2
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (identifier))
+      (comma)
+      (ERROR
+        (identifier))
+      argument: (argument
+        value: (identifier))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      (comma)
+      (ERROR
+        (identifier))
+      argument: (argument
+        value: (identifier))))
+  (subset
+    function: (identifier)
+    arguments: (arguments
+      (comma)
+      (ERROR
+        (identifier))
+      argument: (argument
+        value: (identifier))))
+  (subset2
+    function: (identifier)
+    arguments: (arguments
+      (comma)
+      (ERROR
+        (identifier))
+      argument: (argument
+        value: (identifier)))))
+
+================================================================================
 Braces
 ================================================================================
 
