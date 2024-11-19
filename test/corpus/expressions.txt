@@ -684,17 +684,83 @@ foo |> bar() |> baz(data = _)
 Subset
 ================================================================================
 
+foo[]
+foo[,]
+foo[,,]
+foo[x,]
+foo[x,,]
+foo[,x]
+foo[,,x]
+foo[x,,y]
+foo[,,x,,y,,]
+
 foo[bar]
 foo[1, 2]
-foo[1, ]
-foo[1,, ]
-foo[1,,2]
 foo[x=1,,y=3,4]
-foo[]
 
 --------------------------------------------------------------------------------
 
 (program
+  (subset
+    (identifier)
+    (arguments))
+  (subset
+    (identifier)
+    (arguments
+      (comma)))
+  (subset
+    (identifier)
+    (arguments
+      (comma)
+      (comma)))
+  (subset
+    (identifier)
+    (arguments
+      (argument
+        (identifier))
+      (comma)))
+  (subset
+    (identifier)
+    (arguments
+      (argument
+        (identifier))
+      (comma)
+      (comma)))
+  (subset
+    (identifier)
+    (arguments
+      (comma)
+      (argument
+        (identifier))))
+  (subset
+    (identifier)
+    (arguments
+      (comma)
+      (comma)
+      (argument
+        (identifier))))
+  (subset
+    (identifier)
+    (arguments
+      (argument
+        (identifier))
+      (comma)
+      (comma)
+      (argument
+        (identifier))))
+  (subset
+    (identifier)
+    (arguments
+      (comma)
+      (comma)
+      (argument
+        (identifier))
+      (comma)
+      (comma)
+      (argument
+        (identifier))
+      (comma)
+      (comma)))
   (subset
     (identifier)
     (arguments
@@ -712,28 +778,6 @@ foo[]
     (identifier)
     (arguments
       (argument
-        (float))
-      (comma)))
-  (subset
-    (identifier)
-    (arguments
-      (argument
-        (float))
-      (comma)
-      (comma)))
-  (subset
-    (identifier)
-    (arguments
-      (argument
-        (float))
-      (comma)
-      (comma)
-      (argument
-        (float))))
-  (subset
-    (identifier)
-    (arguments
-      (argument
         (identifier)
         (float))
       (comma)
@@ -743,38 +787,42 @@ foo[]
         (float))
       (comma)
       (argument
-        (float))))
-  (subset
-    (identifier)
-    (arguments)))
+        (float)))))
 
 ================================================================================
 Subset2
 ================================================================================
 
-foo[[x]]
-foo[[x, y]]
+foo[[]]
+foo[[,]]
+foo[[,,]]
 foo[[x,]]
 foo[[x,,]]
+foo[[,x]]
+foo[[,,x]]
 foo[[x,,y]]
-foo[[]]
+foo[[,,x,,y,,]]
+
+foo[[x]]
+foo[[x, y]]
+foo[[1, 2]]
+foo[[x=1,,y=3,4]]
 
 --------------------------------------------------------------------------------
 
 (program
   (subset2
     (identifier)
-    (arguments
-      (argument
-        (identifier))))
+    (arguments))
   (subset2
     (identifier)
     (arguments
-      (argument
-        (identifier))
+      (comma)))
+  (subset2
+    (identifier)
+    (arguments
       (comma)
-      (argument
-        (identifier))))
+      (comma)))
   (subset2
     (identifier)
     (arguments
@@ -791,6 +839,19 @@ foo[[]]
   (subset2
     (identifier)
     (arguments
+      (comma)
+      (argument
+        (identifier))))
+  (subset2
+    (identifier)
+    (arguments
+      (comma)
+      (comma)
+      (argument
+        (identifier))))
+  (subset2
+    (identifier)
+    (arguments
       (argument
         (identifier))
       (comma)
@@ -799,7 +860,52 @@ foo[[]]
         (identifier))))
   (subset2
     (identifier)
-    (arguments)))
+    (arguments
+      (comma)
+      (comma)
+      (argument
+        (identifier))
+      (comma)
+      (comma)
+      (argument
+        (identifier))
+      (comma)
+      (comma)))
+  (subset2
+    (identifier)
+    (arguments
+      (argument
+        (identifier))))
+  (subset2
+    (identifier)
+    (arguments
+      (argument
+        (identifier))
+      (comma)
+      (argument
+        (identifier))))
+  (subset2
+    (identifier)
+    (arguments
+      (argument
+        (float))
+      (comma)
+      (argument
+        (float))))
+  (subset2
+    (identifier)
+    (arguments
+      (argument
+        (identifier)
+        (float))
+      (comma)
+      (comma)
+      (argument
+        (identifier)
+        (float))
+      (comma)
+      (argument
+        (float)))))
 
 ================================================================================
 Subset and Subset2 Precedence
@@ -1533,8 +1639,7 @@ x
   (identifier)
   (identifier)
   (ERROR)
-  (identifier)
-)
+  (identifier))
 
 ================================================================================
 Assignment
@@ -1590,23 +1695,27 @@ Calls
 ================================================================================
 
 f()
+f(,)
+f(,,)
+f(x,)
+f(x,,)
+f(,x)
+f(,,x)
+f(x,,y)
+f(,,x,,y,,)
+f(x=,)
+f("x"=,)
+f(... = ,)
+f(,y=)
+
 f(x)
 f(1+1)
 f(1 ~ 1)
-f(x, )
-f(x,,y)
 f(x, y)
 f(x, y = 2)
 f(x = 1 + 1)
 f(x, y =)
 f(f2(x, y))
-f(,)
-f(x,)
-f(,y)
-f(x=,)
-f("x"=,)
-f(... = ,)
-f(,y=)
 
 --------------------------------------------------------------------------------
 
@@ -1617,22 +1726,12 @@ f(,y=)
   (call
     function: (identifier)
     arguments: (arguments
-      argument: (argument
-        value: (identifier))))
+      (comma)))
   (call
     function: (identifier)
     arguments: (arguments
-      argument: (argument
-        value: (binary_operator
-          lhs: (float)
-          rhs: (float)))))
-  (call
-    function: (identifier)
-    arguments: (arguments
-      argument: (argument
-        value: (binary_operator
-          lhs: (float)
-          rhs: (float)))))
+      (comma)
+      (comma)))
   (call
     function: (identifier)
     arguments: (arguments
@@ -1645,9 +1744,86 @@ f(,y=)
       argument: (argument
         value: (identifier))
       (comma)
+      (comma)))
+  (call
+    function: (identifier)
+    arguments: (arguments
       (comma)
       argument: (argument
         value: (identifier))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      (comma)
+      (comma)
+      argument: (argument
+        value: (identifier))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (identifier))
+      (comma)
+      (comma)
+      argument: (argument
+        value: (identifier))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      (comma)
+      (comma)
+      argument: (argument
+        value: (identifier))
+      (comma)
+      (comma)
+      argument: (argument
+        value: (identifier))
+      (comma)
+      (comma)))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        name: (identifier))
+      (comma)))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        name: (string
+          content: (string_content)))
+      (comma)))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        name: (dots))
+      (comma)))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      (comma)
+      argument: (argument
+        name: (identifier))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (identifier))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (binary_operator
+          lhs: (float)
+          rhs: (float)))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (binary_operator
+          lhs: (float)
+          rhs: (float)))))
   (call
     function: (identifier)
     arguments: (arguments
@@ -1692,48 +1868,7 @@ f(,y=)
               value: (identifier))
             (comma)
             argument: (argument
-              value: (identifier)))))))
-  (call
-    function: (identifier)
-    arguments: (arguments
-      (comma)))
-  (call
-    function: (identifier)
-    arguments: (arguments
-      argument: (argument
-        value: (identifier))
-      (comma)))
-  (call
-    function: (identifier)
-    arguments: (arguments
-      (comma)
-      argument: (argument
-        value: (identifier))))
-  (call
-    function: (identifier)
-    arguments: (arguments
-      argument: (argument
-        name: (identifier))
-      (comma)))
-  (call
-    function: (identifier)
-    arguments: (arguments
-      argument: (argument
-        name: (string
-          content: (string_content)))
-      (comma)))
-  (call
-    function: (identifier)
-    arguments: (arguments
-      argument: (argument
-        name: (dots))
-      (comma)))
-  (call
-    function: (identifier)
-    arguments: (arguments
-      (comma)
-      argument: (argument
-        name: (identifier)))))
+              value: (identifier))))))))
 
 ================================================================================
 Not A Call, Subset, Or Subset2
