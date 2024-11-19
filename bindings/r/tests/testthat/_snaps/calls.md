@@ -935,7 +935,7 @@
       foo[[, x y]]
       
 
-# braces
+# braced expression
 
     Code
       node_children_print(node)
@@ -1030,5 +1030,176 @@
       2
         3
       }
+      
+
+# parenthesized expression
+
+    Code
+      node_children_print(node)
+    Output
+      S-Expression
+      (parenthesized_expression [(1, 0), (1, 3)]
+        open: "(" [(1, 0), (1, 1)]
+        body: (float [(1, 1), (1, 2)])
+        close: ")" [(1, 2), (1, 3)]
+      )
+      
+      Text
+      (1)
+      
+      S-Expression
+      (parenthesized_expression [(2, 0), (2, 5)]
+        open: "(" [(2, 0), (2, 1)]
+        body: (parenthesized_expression [(2, 1), (2, 4)]
+          open: "(" [(2, 1), (2, 2)]
+          body: (float [(2, 2), (2, 3)])
+          close: ")" [(2, 3), (2, 4)]
+        )
+        close: ")" [(2, 4), (2, 5)]
+      )
+      
+      Text
+      ((1))
+      
+      S-Expression
+      (parenthesized_expression [(3, 0), (3, 7)]
+        open: "(" [(3, 0), (3, 1)]
+        body: (binary_operator [(3, 1), (3, 6)]
+          lhs: (float [(3, 1), (3, 2)])
+          operator: "+" [(3, 3), (3, 4)]
+          rhs: (float [(3, 5), (3, 6)])
+        )
+        close: ")" [(3, 6), (3, 7)]
+      )
+      
+      Text
+      (1 + 1)
+      
+      S-Expression
+      (parenthesized_expression [(4, 0), (4, 10)]
+        open: "(" [(4, 0), (4, 1)]
+        body: (call [(4, 1), (4, 9)]
+          function: (identifier [(4, 1), (4, 3)])
+          arguments: (arguments [(4, 3), (4, 9)]
+            open: "(" [(4, 3), (4, 4)]
+            argument: (argument [(4, 4), (4, 5)]
+              value: (identifier [(4, 4), (4, 5)])
+            )
+            (comma [(4, 5), (4, 6)])
+            argument: (argument [(4, 7), (4, 8)]
+              value: (identifier [(4, 7), (4, 8)])
+            )
+            close: ")" [(4, 8), (4, 9)]
+          )
+        )
+        close: ")" [(4, 9), (4, 10)]
+      )
+      
+      Text
+      (fn(a, b))
+      
+      S-Expression
+      (call [(5, 0), (5, 12)]
+        function: (identifier [(5, 0), (5, 2)])
+        arguments: (arguments [(5, 2), (5, 12)]
+          open: "(" [(5, 2), (5, 3)]
+          argument: (argument [(5, 3), (5, 6)]
+            value: (parenthesized_expression [(5, 3), (5, 6)]
+              open: "(" [(5, 3), (5, 4)]
+              body: (identifier [(5, 4), (5, 5)])
+              close: ")" [(5, 5), (5, 6)]
+            )
+          )
+          (comma [(5, 6), (5, 7)])
+          argument: (argument [(5, 8), (5, 11)]
+            value: (parenthesized_expression [(5, 8), (5, 11)]
+              open: "(" [(5, 8), (5, 9)]
+              body: (identifier [(5, 9), (5, 10)])
+              close: ")" [(5, 10), (5, 11)]
+            )
+          )
+          close: ")" [(5, 11), (5, 12)]
+        )
+      )
+      
+      Text
+      fn((a), (b))
+      
+      S-Expression
+      (parenthesized_expression [(6, 0), (8, 2)]
+        open: "(" [(6, 0), (6, 1)]
+        body: (function_definition [(6, 1), (8, 1)]
+          name: "function" [(6, 1), (6, 9)]
+          parameters: (parameters [(6, 9), (6, 11)]
+            open: "(" [(6, 9), (6, 10)]
+            close: ")" [(6, 10), (6, 11)]
+          )
+          body: (braced_expression [(6, 12), (8, 1)]
+            open: "{" [(6, 12), (6, 13)]
+            body: (identifier [(7, 2), (7, 6)])
+            close: "}" [(8, 0), (8, 1)]
+          )
+        )
+        close: ")" [(8, 1), (8, 2)]
+      )
+      
+      Text
+      (function() {
+        body
+      })
+      
+
+# not a parenthesized expression 1
+
+    Code
+      node_children_print(node)
+    Output
+      S-Expression
+      (ERROR [(1, 0), (1, 2)]
+        "(" [(1, 0), (1, 1)]
+        (ERROR [(1, 1), (1, 2)])
+      )
+      
+      Text
+      ()
+      
+
+# not a parenthesized expression 2
+
+    Code
+      node_children_print(node)
+    Output
+      S-Expression
+      (parenthesized_expression [(1, 0), (4, 1)]
+        open: "(" [(1, 0), (1, 1)]
+        (ERROR [(2, 2), (2, 3)])
+        body: (float [(3, 2), (3, 3)])
+        close: ")" [(4, 0), (4, 1)]
+      )
+      
+      Text
+      (
+        1
+        2
+      )
+      
+
+# not a parenthesized expression 3
+
+    Code
+      node_children_print(node)
+    Output
+      S-Expression
+      (parenthesized_expression [(1, 0), (1, 6)]
+        open: "(" [(1, 0), (1, 1)]
+        (ERROR [(1, 1), (1, 3)]
+          (ERROR [(1, 2), (1, 3)])
+        )
+        body: (float [(1, 4), (1, 5)])
+        close: ")" [(1, 5), (1, 6)]
+      )
+      
+      Text
+      (1; 2)
       
 

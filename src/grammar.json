@@ -525,23 +525,11 @@
             }
           },
           {
-            "type": "REPEAT",
+            "type": "FIELD",
+            "name": "body",
             "content": {
-              "type": "FIELD",
-              "name": "body",
-              "content": {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "_expression"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "_newline"
-                  }
-                ]
-              }
+              "type": "SYMBOL",
+              "name": "_expression"
             }
           },
           {
