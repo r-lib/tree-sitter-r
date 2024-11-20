@@ -128,6 +128,12 @@ for (x in 5:6) {
 
 for (x in y) for (y in z) x + y
 
+# `...` as the `variable`
+for (... in 1:2) print(get("..."))
+
+# `..i` as the `variable`
+for (..1 in 1:2) print(get("..1"))
+
 # ------------------------------------------------------------------------------
 # for no body
 

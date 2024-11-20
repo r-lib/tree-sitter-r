@@ -1231,6 +1231,12 @@ for (x in y
 
 ) 1 + 1
 
+# `...` as the `variable`
+for (... in 1:2) print(get("..."))
+
+# `..i` as the `variable`
+for (..1 in 1:2) print(get("..1"))
+
 --------------------------------------------------------------------------------
 
 (program
@@ -1263,7 +1269,39 @@ for (x in y
     sequence: (identifier)
     body: (binary_operator
       lhs: (float)
-      rhs: (float))))
+      rhs: (float)))
+  (comment)
+  (for_statement
+    variable: (dots)
+    sequence: (binary_operator
+      lhs: (float)
+      rhs: (float))
+    body: (call
+      function: (identifier)
+      arguments: (arguments
+        argument: (argument
+          value: (call
+            function: (identifier)
+            arguments: (arguments
+              argument: (argument
+                value: (string
+                  content: (string_content)))))))))
+  (comment)
+  (for_statement
+    variable: (dot_dot_i)
+    sequence: (binary_operator
+      lhs: (float)
+      rhs: (float))
+    body: (call
+      function: (identifier)
+      arguments: (arguments
+        argument: (argument
+          value: (call
+            function: (identifier)
+            arguments: (arguments
+              argument: (argument
+                value: (string
+                  content: (string_content))))))))))
 
 ================================================================================
 For No Body
