@@ -884,17 +884,8 @@
       "type": "FIELD",
       "name": "value",
       "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "_expression"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "_newline"
-          }
-        ]
+        "type": "SYMBOL",
+        "name": "_expression"
       }
     },
     "unary_operator": {
