@@ -1555,6 +1555,12 @@ Namespace get
 foo::
 foo::bar
 foo::bar(1)
+foo::...
+foo::..1
+...::foo
+..1::foo
+...::...
+..1::..1
 
 --------------------------------------------------------------------------------
 
@@ -1570,7 +1576,25 @@ foo::bar(1)
       rhs: (identifier))
     arguments: (arguments
       argument: (argument
-        value: (float)))))
+        value: (float))))
+  (namespace_operator
+    lhs: (identifier)
+    rhs: (dots))
+  (namespace_operator
+    lhs: (identifier)
+    rhs: (dot_dot_i))
+  (namespace_operator
+    lhs: (dots)
+    rhs: (identifier))
+  (namespace_operator
+    lhs: (dot_dot_i)
+    rhs: (identifier))
+  (namespace_operator
+    lhs: (dots)
+    rhs: (dots))
+  (namespace_operator
+    lhs: (dot_dot_i)
+    rhs: (dot_dot_i)))
 
 ================================================================================
 Namespace get internal
@@ -1579,6 +1603,12 @@ Namespace get internal
 foo:::
 foo:::bar
 foo:::bar(1)
+foo:::...
+foo:::..1
+...:::foo
+..1:::foo
+...:::...
+..1:::..1
 
 --------------------------------------------------------------------------------
 
@@ -1594,7 +1624,25 @@ foo:::bar(1)
       rhs: (identifier))
     arguments: (arguments
       argument: (argument
-        value: (float)))))
+        value: (float))))
+  (namespace_operator
+    lhs: (identifier)
+    rhs: (dots))
+  (namespace_operator
+    lhs: (identifier)
+    rhs: (dot_dot_i))
+  (namespace_operator
+    lhs: (dots)
+    rhs: (identifier))
+  (namespace_operator
+    lhs: (dot_dot_i)
+    rhs: (identifier))
+  (namespace_operator
+    lhs: (dots)
+    rhs: (dots))
+  (namespace_operator
+    lhs: (dot_dot_i)
+    rhs: (dot_dot_i)))
 
 ================================================================================
 Namespace With Missing RHS
