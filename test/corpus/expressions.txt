@@ -1440,6 +1440,8 @@ foo$bar@baz
 foo$bar()
 foo$"bar"
 foo$bar()$baz[[1]]$bam
+foo$...
+foo$..1
 
 --------------------------------------------------------------------------------
 
@@ -1478,7 +1480,13 @@ foo$bar()$baz[[1]]$bam
       arguments: (arguments
         argument: (argument
           value: (float))))
-    rhs: (identifier)))
+    rhs: (identifier))
+  (extract_operator
+    lhs: (identifier)
+    rhs: (dots))
+  (extract_operator
+    lhs: (identifier)
+    rhs: (dot_dot_i)))
 
 ================================================================================
 Dollar No RHS
@@ -1499,6 +1507,8 @@ foo@bar
 foo@bar$baz
 foo@bar()
 foo@"bar"
+foo@...
+foo@..1
 
 --------------------------------------------------------------------------------
 
@@ -1519,7 +1529,13 @@ foo@"bar"
   (extract_operator
     (identifier)
     (string
-      (string_content))))
+      (string_content)))
+  (extract_operator
+    (identifier)
+    (dots))
+  (extract_operator
+    (identifier)
+    (dot_dot_i)))
 
 ================================================================================
 Slot No RHS
