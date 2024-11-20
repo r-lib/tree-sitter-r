@@ -1,4 +1,274 @@
 ================================================================================
+Function No Body With Assignment
+================================================================================
+
+x <- function(x, y)
+
+--------------------------------------------------------------------------------
+
+(program
+  (binary_operator
+    lhs: (identifier)
+    rhs: (function_definition
+      parameters: (parameters
+        parameter: (parameter
+          name: (identifier))
+        (comma)
+        parameter: (parameter
+          name: (identifier)))
+      body: (MISSING identifier))))
+
+================================================================================
+Function No Body Inside Another Function
+================================================================================
+
+function(x = function()) {}
+
+--------------------------------------------------------------------------------
+
+(program
+  (ERROR
+    (identifier)
+    (parameters)
+    (UNEXPECTED ')')))
+
+================================================================================
+Not A Call, Subset, Or Subset2
+================================================================================
+
+f
+(x)
+
+foo
+[bar]
+
+foo
+[[x]]
+
+--------------------------------------------------------------------------------
+
+(program
+  (identifier)
+  (parenthesized_expression
+    body: (identifier))
+  (identifier)
+  (ERROR
+    (UNEXPECTED '['))
+  (identifier)
+  (ERROR
+    (UNEXPECTED ']'))
+  (identifier)
+  (ERROR
+    (UNEXPECTED '['))
+  (identifier)
+  (ERROR
+    (UNEXPECTED ']'))
+)
+
+================================================================================
+Not A Call, Subset, Or Subset2 Due To Sequential Arguments
+================================================================================
+
+f(x y)
+foo[x y]
+foo[[x y]]
+
+f(x, y z)
+foo[x, y z]
+foo[[x, y z]]
+
+f(, x y)
+foo[, x y]
+foo[[, x y]]
+
+--------------------------------------------------------------------------------
+
+(program
+  (call
+    function: (identifier)
+    arguments: (arguments
+      (ERROR
+        (identifier))
+      argument: (argument
+        value: (identifier))))
+  (subset
+    function: (identifier)
+    arguments: (arguments
+      (ERROR
+        (identifier))
+      argument: (argument
+        value: (identifier))))
+  (subset2
+    function: (identifier)
+    arguments: (arguments
+      (ERROR
+        (identifier))
+      argument: (argument
+        value: (identifier))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (identifier))
+      (comma)
+      (ERROR
+        (identifier))
+      argument: (argument
+        value: (identifier))))
+  (subset
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (identifier))
+      (comma)
+      (ERROR
+        (identifier))
+      argument: (argument
+        value: (identifier))))
+  (subset2
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (identifier))
+      (comma)
+      (ERROR
+        (identifier))
+      argument: (argument
+        value: (identifier))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      (comma)
+      (ERROR
+        (identifier))
+      argument: (argument
+        value: (identifier))))
+  (subset
+    function: (identifier)
+    arguments: (arguments
+      (comma)
+      (ERROR
+        (identifier))
+      argument: (argument
+        value: (identifier))))
+  (subset2
+    function: (identifier)
+    arguments: (arguments
+      (comma)
+      (ERROR
+        (identifier))
+      argument: (argument
+        value: (identifier)))))
+
+================================================================================
+Not A Parenthesized Expression 1
+================================================================================
+
+()
+
+--------------------------------------------------------------------------------
+
+(program
+  (ERROR
+    (UNEXPECTED ')')))
+
+================================================================================
+Not A Parenthesized Expression 2
+================================================================================
+
+(
+  1
+  2
+)
+
+--------------------------------------------------------------------------------
+
+(program
+  (parenthesized_expression
+    (ERROR)
+    (float)))
+
+================================================================================
+Not A Parenthesized Expression 3
+================================================================================
+
+(1; 2)
+
+--------------------------------------------------------------------------------
+
+(program
+  (parenthesized_expression
+    (ERROR
+      (UNEXPECTED ';'))
+    (float)))
+
+================================================================================
+Dollar, At, Namespace, Namespace Internal With `if` RHS
+================================================================================
+# The RHS's of these nodes are restricted to strings and identifiers, and the RHS
+# is optional. This ends up trying to match to an `if_statement` node, leaving the RHS
+# empty, and then the `if_statement` node errors because it doesn't have a `(`. This
+# is actually pretty decent behavior.
+foo$if
+foo@if
+foo::if
+foo:::if
+
+--------------------------------------------------------------------------------
+
+(program
+  (comment)
+  (comment)
+  (comment)
+  (comment)
+  (extract_operator
+    (identifier))
+  (ERROR)
+  (extract_operator
+    (identifier))
+  (ERROR)
+  (namespace_operator
+    (identifier))
+  (ERROR)
+  (namespace_operator
+    (identifier))
+  (ERROR))
+
+================================================================================
+Dollar, At, Namespace, Namespace Internal With Newline Before Operator
+================================================================================
+
+# Newlines are not allowed before the operator, so none of these are valid
+x
+$y
+
+x
+@y
+
+x
+::y
+
+x
+:::y
+
+--------------------------------------------------------------------------------
+
+(program
+  (comment)
+  (identifier)
+  (ERROR)
+  (identifier)
+  (identifier)
+  (ERROR)
+  (identifier)
+  (identifier)
+  (ERROR)
+  (identifier)
+  (identifier)
+  (ERROR)
+  (identifier))
+
+================================================================================
 Closing Brace
 ================================================================================
 
