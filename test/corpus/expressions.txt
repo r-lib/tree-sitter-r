@@ -9,10 +9,6 @@ function(arg1, arg2) {
 
 function(x, y) return(y)
 
-function(x, ...) f(...)
-
-function(x, ...) ..1 + ..2
-
 function(arg1, arg2 = 2) {}
 
 function(x,
@@ -82,28 +78,6 @@ function() for(i in 1:5) i
         name: (identifier))
       (comma)
       parameter: (parameter
-        name: (dots)))
-    body: (call
-      function: (identifier)
-      arguments: (arguments
-        argument: (argument
-          value: (dots)))))
-  (function_definition
-    parameters: (parameters
-      parameter: (parameter
-        name: (identifier))
-      (comma)
-      parameter: (parameter
-        name: (dots)))
-    body: (binary_operator
-      lhs: (dot_dot_i)
-      rhs: (dot_dot_i)))
-  (function_definition
-    parameters: (parameters
-      parameter: (parameter
-        name: (identifier))
-      (comma)
-      parameter: (parameter
         name: (identifier)
         default: (float)))
     body: (braced_expression))
@@ -160,6 +134,102 @@ function() for(i in 1:5) i
         lhs: (float)
         rhs: (float))
       body: (identifier))))
+
+================================================================================
+Function Dots And Dot Dot I
+================================================================================
+
+# Dots as parameter without default
+function(...) { list(...) }
+
+# Dots as parameter with default
+function(... = 1) { get("...") }
+
+# `..i` as parameter without default
+function(..1) { get("..1") }
+
+# `..i` as parameter with default
+function(..1 = 1) { get("..1") }
+
+# Miscellaneous
+function(x, ...) f(...)
+function(x, ...) ..1 + ..2
+
+--------------------------------------------------------------------------------
+
+(program
+  (comment)
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (dots)))
+    body: (braced_expression
+      body: (call
+        function: (identifier)
+        arguments: (arguments
+          argument: (argument
+            value: (dots))))))
+  (comment)
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (dots)
+        default: (float)))
+    body: (braced_expression
+      body: (call
+        function: (identifier)
+        arguments: (arguments
+          argument: (argument
+            value: (string
+              content: (string_content)))))))
+  (comment)
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (dot_dot_i)))
+    body: (braced_expression
+      body: (call
+        function: (identifier)
+        arguments: (arguments
+          argument: (argument
+            value: (string
+              content: (string_content)))))))
+  (comment)
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (dot_dot_i)
+        default: (float)))
+    body: (braced_expression
+      body: (call
+        function: (identifier)
+        arguments: (arguments
+          argument: (argument
+            value: (string
+              content: (string_content)))))))
+  (comment)
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (identifier))
+      (comma)
+      parameter: (parameter
+        name: (dots)))
+    body: (call
+      function: (identifier)
+      arguments: (arguments
+        argument: (argument
+          value: (dots)))))
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (identifier))
+      (comma)
+      parameter: (parameter
+        name: (dots)))
+    body: (binary_operator
+      lhs: (dot_dot_i)
+      rhs: (dot_dot_i))))
 
 ================================================================================
 Function No Body
