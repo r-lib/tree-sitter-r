@@ -2,6 +2,8 @@
 
 ## devel
 
+- `...` and `..1` are now supported in more places, such as `x$...` and `x@..1` (#148).
+
 - `parenthesized_expression` has been simplified to better align with R's parser. Specifically, it now expects exactly 1 required `body` expression, rather than allowing zero or more optional expressions (#144).
 
 - `fn(a b)` is now correctly parsed as an error rather than as two sequential arguments (#140).
