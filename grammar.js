@@ -376,7 +376,7 @@ module.exports = grammar({
 
     _argument_unnamed: $ => $._argument_value,
 
-    _argument_value: $ => field("value", choice($._expression, $._newline)),
+    _argument_value: $ => field("value", $._expression),
 
     // Operators
     // NOTE: See `NOTE ON OPERATORS` above
