@@ -640,16 +640,91 @@
       f("x"=,)
       
       S-Expression
-      (call [(17, 0), (17, 10)]
+      (call [(17, 0), (17, 6)]
         function: (identifier [(17, 0), (17, 1)])
-        arguments: (arguments [(17, 1), (17, 10)]
+        arguments: (arguments [(17, 1), (17, 6)]
           open: "(" [(17, 1), (17, 2)]
-          argument: (argument [(17, 2), (17, 7)]
-            name: (dots [(17, 2), (17, 5)])
-            "=" [(17, 6), (17, 7)]
+          (comma [(17, 2), (17, 3)])
+          argument: (argument [(17, 3), (17, 5)]
+            name: (identifier [(17, 3), (17, 4)])
+            "=" [(17, 4), (17, 5)]
           )
-          (comma [(17, 8), (17, 9)])
-          close: ")" [(17, 9), (17, 10)]
+          close: ")" [(17, 5), (17, 6)]
+        )
+      )
+      
+      Text
+      f(,y=)
+      
+      S-Expression
+      (comment [(19, 0), (19, 36)])
+      
+      Text
+      # Dots as unnamed and named argument
+      
+      S-Expression
+      (call [(20, 0), (20, 6)]
+        function: (identifier [(20, 0), (20, 1)])
+        arguments: (arguments [(20, 1), (20, 6)]
+          open: "(" [(20, 1), (20, 2)]
+          argument: (argument [(20, 2), (20, 5)]
+            value: (dots [(20, 2), (20, 5)])
+          )
+          close: ")" [(20, 5), (20, 6)]
+        )
+      )
+      
+      Text
+      f(...)
+      
+      S-Expression
+      (call [(21, 0), (21, 11)]
+        function: (identifier [(21, 0), (21, 1)])
+        arguments: (arguments [(21, 1), (21, 11)]
+          open: "(" [(21, 1), (21, 2)]
+          (comma [(21, 2), (21, 3)])
+          argument: (argument [(21, 4), (21, 7)]
+            value: (dots [(21, 4), (21, 7)])
+          )
+          (comma [(21, 7), (21, 8)])
+          argument: (argument [(21, 9), (21, 10)]
+            value: (float [(21, 9), (21, 10)])
+          )
+          close: ")" [(21, 10), (21, 11)]
+        )
+      )
+      
+      Text
+      f(, ..., 1)
+      
+      S-Expression
+      (call [(22, 0), (22, 10)]
+        function: (identifier [(22, 0), (22, 1)])
+        arguments: (arguments [(22, 1), (22, 10)]
+          open: "(" [(22, 1), (22, 2)]
+          argument: (argument [(22, 2), (22, 9)]
+            name: (dots [(22, 2), (22, 5)])
+            "=" [(22, 6), (22, 7)]
+            value: (float [(22, 8), (22, 9)])
+          )
+          close: ")" [(22, 9), (22, 10)]
+        )
+      )
+      
+      Text
+      f(... = 1)
+      
+      S-Expression
+      (call [(23, 0), (23, 10)]
+        function: (identifier [(23, 0), (23, 1)])
+        arguments: (arguments [(23, 1), (23, 10)]
+          open: "(" [(23, 1), (23, 2)]
+          argument: (argument [(23, 2), (23, 7)]
+            name: (dots [(23, 2), (23, 5)])
+            "=" [(23, 6), (23, 7)]
+          )
+          (comma [(23, 8), (23, 9)])
+          close: ")" [(23, 9), (23, 10)]
         )
       )
       
@@ -657,21 +732,113 @@
       f(... = ,)
       
       S-Expression
-      (call [(18, 0), (18, 6)]
-        function: (identifier [(18, 0), (18, 1)])
-        arguments: (arguments [(18, 1), (18, 6)]
-          open: "(" [(18, 1), (18, 2)]
-          (comma [(18, 2), (18, 3)])
-          argument: (argument [(18, 3), (18, 5)]
-            name: (identifier [(18, 3), (18, 4)])
-            "=" [(18, 4), (18, 5)]
+      (call [(24, 0), (24, 12)]
+        function: (identifier [(24, 0), (24, 1)])
+        arguments: (arguments [(24, 1), (24, 12)]
+          open: "(" [(24, 1), (24, 2)]
+          argument: (argument [(24, 2), (24, 11)]
+            name: (dots [(24, 2), (24, 5)])
+            "=" [(24, 6), (24, 7)]
+            value: (dots [(24, 8), (24, 11)])
           )
-          close: ")" [(18, 5), (18, 6)]
+          close: ")" [(24, 11), (24, 12)]
         )
       )
       
       Text
-      f(,y=)
+      f(... = ...)
+      
+      S-Expression
+      (comment [(26, 0), (26, 37)])
+      
+      Text
+      # `..i` as unnamed and named argument
+      
+      S-Expression
+      (call [(27, 0), (27, 6)]
+        function: (identifier [(27, 0), (27, 1)])
+        arguments: (arguments [(27, 1), (27, 6)]
+          open: "(" [(27, 1), (27, 2)]
+          argument: (argument [(27, 2), (27, 5)]
+            value: (dot_dot_i [(27, 2), (27, 5)])
+          )
+          close: ")" [(27, 5), (27, 6)]
+        )
+      )
+      
+      Text
+      f(..1)
+      
+      S-Expression
+      (call [(28, 0), (28, 11)]
+        function: (identifier [(28, 0), (28, 1)])
+        arguments: (arguments [(28, 1), (28, 11)]
+          open: "(" [(28, 1), (28, 2)]
+          (comma [(28, 2), (28, 3)])
+          argument: (argument [(28, 4), (28, 7)]
+            value: (dot_dot_i [(28, 4), (28, 7)])
+          )
+          (comma [(28, 7), (28, 8)])
+          argument: (argument [(28, 9), (28, 10)]
+            value: (float [(28, 9), (28, 10)])
+          )
+          close: ")" [(28, 10), (28, 11)]
+        )
+      )
+      
+      Text
+      f(, ..1, 1)
+      
+      S-Expression
+      (call [(29, 0), (29, 10)]
+        function: (identifier [(29, 0), (29, 1)])
+        arguments: (arguments [(29, 1), (29, 10)]
+          open: "(" [(29, 1), (29, 2)]
+          argument: (argument [(29, 2), (29, 9)]
+            name: (dot_dot_i [(29, 2), (29, 5)])
+            "=" [(29, 6), (29, 7)]
+            value: (float [(29, 8), (29, 9)])
+          )
+          close: ")" [(29, 9), (29, 10)]
+        )
+      )
+      
+      Text
+      f(..1 = 1)
+      
+      S-Expression
+      (call [(30, 0), (30, 10)]
+        function: (identifier [(30, 0), (30, 1)])
+        arguments: (arguments [(30, 1), (30, 10)]
+          open: "(" [(30, 1), (30, 2)]
+          argument: (argument [(30, 2), (30, 7)]
+            name: (dot_dot_i [(30, 2), (30, 5)])
+            "=" [(30, 6), (30, 7)]
+          )
+          (comma [(30, 8), (30, 9)])
+          close: ")" [(30, 9), (30, 10)]
+        )
+      )
+      
+      Text
+      f(..1 = ,)
+      
+      S-Expression
+      (call [(31, 0), (31, 12)]
+        function: (identifier [(31, 0), (31, 1)])
+        arguments: (arguments [(31, 1), (31, 12)]
+          open: "(" [(31, 1), (31, 2)]
+          argument: (argument [(31, 2), (31, 11)]
+            name: (dot_dot_i [(31, 2), (31, 5)])
+            "=" [(31, 6), (31, 7)]
+            value: (dot_dot_i [(31, 8), (31, 11)])
+          )
+          close: ")" [(31, 11), (31, 12)]
+        )
+      )
+      
+      Text
+      f(..1 = ..1)
       
 
 # not a call, subset, or subset2

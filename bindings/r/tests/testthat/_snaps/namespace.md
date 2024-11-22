@@ -41,6 +41,66 @@
       Text
       foo::bar(1)
       
+      S-Expression
+      (namespace_operator [(4, 0), (4, 8)]
+        lhs: (identifier [(4, 0), (4, 3)])
+        operator: "::" [(4, 3), (4, 5)]
+        rhs: (dots [(4, 5), (4, 8)])
+      )
+      
+      Text
+      foo::...
+      
+      S-Expression
+      (namespace_operator [(5, 0), (5, 8)]
+        lhs: (identifier [(5, 0), (5, 3)])
+        operator: "::" [(5, 3), (5, 5)]
+        rhs: (dot_dot_i [(5, 5), (5, 8)])
+      )
+      
+      Text
+      foo::..1
+      
+      S-Expression
+      (namespace_operator [(6, 0), (6, 8)]
+        lhs: (dots [(6, 0), (6, 3)])
+        operator: "::" [(6, 3), (6, 5)]
+        rhs: (identifier [(6, 5), (6, 8)])
+      )
+      
+      Text
+      ...::foo
+      
+      S-Expression
+      (namespace_operator [(7, 0), (7, 8)]
+        lhs: (dot_dot_i [(7, 0), (7, 3)])
+        operator: "::" [(7, 3), (7, 5)]
+        rhs: (identifier [(7, 5), (7, 8)])
+      )
+      
+      Text
+      ..1::foo
+      
+      S-Expression
+      (namespace_operator [(8, 0), (8, 8)]
+        lhs: (dots [(8, 0), (8, 3)])
+        operator: "::" [(8, 3), (8, 5)]
+        rhs: (dots [(8, 5), (8, 8)])
+      )
+      
+      Text
+      ...::...
+      
+      S-Expression
+      (namespace_operator [(9, 0), (9, 8)]
+        lhs: (dot_dot_i [(9, 0), (9, 3)])
+        operator: "::" [(9, 3), (9, 5)]
+        rhs: (dot_dot_i [(9, 5), (9, 8)])
+      )
+      
+      Text
+      ..1::..1
+      
 
 # namespace internal
 
@@ -84,6 +144,66 @@
       
       Text
       foo:::bar(1)
+      
+      S-Expression
+      (namespace_operator [(4, 0), (4, 9)]
+        lhs: (identifier [(4, 0), (4, 3)])
+        operator: ":::" [(4, 3), (4, 6)]
+        rhs: (dots [(4, 6), (4, 9)])
+      )
+      
+      Text
+      foo:::...
+      
+      S-Expression
+      (namespace_operator [(5, 0), (5, 9)]
+        lhs: (identifier [(5, 0), (5, 3)])
+        operator: ":::" [(5, 3), (5, 6)]
+        rhs: (dot_dot_i [(5, 6), (5, 9)])
+      )
+      
+      Text
+      foo:::..1
+      
+      S-Expression
+      (namespace_operator [(6, 0), (6, 9)]
+        lhs: (dots [(6, 0), (6, 3)])
+        operator: ":::" [(6, 3), (6, 6)]
+        rhs: (identifier [(6, 6), (6, 9)])
+      )
+      
+      Text
+      ...:::foo
+      
+      S-Expression
+      (namespace_operator [(7, 0), (7, 9)]
+        lhs: (dot_dot_i [(7, 0), (7, 3)])
+        operator: ":::" [(7, 3), (7, 6)]
+        rhs: (identifier [(7, 6), (7, 9)])
+      )
+      
+      Text
+      ..1:::foo
+      
+      S-Expression
+      (namespace_operator [(8, 0), (8, 9)]
+        lhs: (dots [(8, 0), (8, 3)])
+        operator: ":::" [(8, 3), (8, 6)]
+        rhs: (dots [(8, 6), (8, 9)])
+      )
+      
+      Text
+      ...:::...
+      
+      S-Expression
+      (namespace_operator [(9, 0), (9, 9)]
+        lhs: (dot_dot_i [(9, 0), (9, 3)])
+        operator: ":::" [(9, 3), (9, 6)]
+        rhs: (dot_dot_i [(9, 6), (9, 9)])
+      )
+      
+      Text
+      ..1:::..1
       
 
 # namespace missing rhs

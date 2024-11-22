@@ -8,6 +8,10 @@
         "required": false,
         "types": [
           {
+            "type": "dot_dot_i",
+            "named": true
+          },
+          {
             "type": "dots",
             "named": true
           },
@@ -1031,6 +1035,14 @@
         "required": false,
         "types": [
           {
+            "type": "dot_dot_i",
+            "named": true
+          },
+          {
+            "type": "dots",
+            "named": true
+          },
+          {
             "type": "identifier",
             "named": true
           },
@@ -1327,6 +1339,14 @@
         "multiple": false,
         "required": true,
         "types": [
+          {
+            "type": "dot_dot_i",
+            "named": true
+          },
+          {
+            "type": "dots",
+            "named": true
+          },
           {
             "type": "identifier",
             "named": true
@@ -1914,6 +1934,14 @@
         "required": true,
         "types": [
           {
+            "type": "dot_dot_i",
+            "named": true
+          },
+          {
+            "type": "dots",
+            "named": true
+          },
+          {
             "type": "identifier",
             "named": true
           },
@@ -1941,6 +1969,14 @@
         "multiple": false,
         "required": false,
         "types": [
+          {
+            "type": "dot_dot_i",
+            "named": true
+          },
+          {
+            "type": "dots",
+            "named": true
+          },
           {
             "type": "identifier",
             "named": true
@@ -2087,6 +2123,10 @@
         "multiple": false,
         "required": true,
         "types": [
+          {
+            "type": "dot_dot_i",
+            "named": true
+          },
           {
             "type": "dots",
             "named": true

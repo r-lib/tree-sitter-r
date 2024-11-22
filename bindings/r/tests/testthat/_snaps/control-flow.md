@@ -566,6 +566,98 @@
       Text
       for (x in y) for (y in z) x + y
       
+      S-Expression
+      (comment [(12, 0), (12, 25)])
+      
+      Text
+      # `...` as the `variable`
+      
+      S-Expression
+      (for_statement [(13, 0), (13, 34)]
+        "for" [(13, 0), (13, 3)]
+        open: "(" [(13, 4), (13, 5)]
+        variable: (dots [(13, 5), (13, 8)])
+        "in" [(13, 9), (13, 11)]
+        sequence: (binary_operator [(13, 12), (13, 15)]
+          lhs: (float [(13, 12), (13, 13)])
+          operator: ":" [(13, 13), (13, 14)]
+          rhs: (float [(13, 14), (13, 15)])
+        )
+        close: ")" [(13, 15), (13, 16)]
+        body: (call [(13, 17), (13, 34)]
+          function: (identifier [(13, 17), (13, 22)])
+          arguments: (arguments [(13, 22), (13, 34)]
+            open: "(" [(13, 22), (13, 23)]
+            argument: (argument [(13, 23), (13, 33)]
+              value: (call [(13, 23), (13, 33)]
+                function: (identifier [(13, 23), (13, 26)])
+                arguments: (arguments [(13, 26), (13, 33)]
+                  open: "(" [(13, 26), (13, 27)]
+                  argument: (argument [(13, 27), (13, 32)]
+                    value: (string [(13, 27), (13, 32)]
+                      "\"" [(13, 27), (13, 28)]
+                      content: (string_content [(13, 28), (13, 31)])
+                      "\"" [(13, 31), (13, 32)]
+                    )
+                  )
+                  close: ")" [(13, 32), (13, 33)]
+                )
+              )
+            )
+            close: ")" [(13, 33), (13, 34)]
+          )
+        )
+      )
+      
+      Text
+      for (... in 1:2) print(get("..."))
+      
+      S-Expression
+      (comment [(15, 0), (15, 25)])
+      
+      Text
+      # `..i` as the `variable`
+      
+      S-Expression
+      (for_statement [(16, 0), (16, 34)]
+        "for" [(16, 0), (16, 3)]
+        open: "(" [(16, 4), (16, 5)]
+        variable: (dot_dot_i [(16, 5), (16, 8)])
+        "in" [(16, 9), (16, 11)]
+        sequence: (binary_operator [(16, 12), (16, 15)]
+          lhs: (float [(16, 12), (16, 13)])
+          operator: ":" [(16, 13), (16, 14)]
+          rhs: (float [(16, 14), (16, 15)])
+        )
+        close: ")" [(16, 15), (16, 16)]
+        body: (call [(16, 17), (16, 34)]
+          function: (identifier [(16, 17), (16, 22)])
+          arguments: (arguments [(16, 22), (16, 34)]
+            open: "(" [(16, 22), (16, 23)]
+            argument: (argument [(16, 23), (16, 33)]
+              value: (call [(16, 23), (16, 33)]
+                function: (identifier [(16, 23), (16, 26)])
+                arguments: (arguments [(16, 26), (16, 33)]
+                  open: "(" [(16, 26), (16, 27)]
+                  argument: (argument [(16, 27), (16, 32)]
+                    value: (string [(16, 27), (16, 32)]
+                      "\"" [(16, 27), (16, 28)]
+                      content: (string_content [(16, 28), (16, 31)])
+                      "\"" [(16, 31), (16, 32)]
+                    )
+                  )
+                  close: ")" [(16, 32), (16, 33)]
+                )
+              )
+            )
+            close: ")" [(16, 33), (16, 34)]
+          )
+        )
+      )
+      
+      Text
+      for (..1 in 1:2) print(get("..1"))
+      
 
 # for no body
 

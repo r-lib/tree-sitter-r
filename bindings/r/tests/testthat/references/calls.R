@@ -54,8 +54,21 @@ f(x,)
 f(,y)
 f(x=,)
 f("x"=,)
-f(... = ,)
 f(,y=)
+
+# Dots as unnamed and named argument
+f(...)
+f(, ..., 1)
+f(... = 1)
+f(... = ,)
+f(... = ...)
+
+# `..i` as unnamed and named argument
+f(..1)
+f(, ..1, 1)
+f(..1 = 1)
+f(..1 = ,)
+f(..1 = ..1)
 
 # ------------------------------------------------------------------------------
 # not a call, subset, or subset2

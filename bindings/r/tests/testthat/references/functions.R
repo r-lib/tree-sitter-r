@@ -9,8 +9,6 @@ function(arg1, arg2) {
 
 function(x, y) return(y)
 
-function(x, ...) f(...)
-
 function(arg1, arg2 = 2) {}
 
 function(x,
@@ -43,6 +41,25 @@ function(x = function() {}) {}
 
 # With no intermediate `{` scope
 function() for(i in 1:5) i
+
+# ------------------------------------------------------------------------------
+# function dots and dot dot i
+
+# Dots as parameter without default
+function(...) { list(...) }
+
+# Dots as parameter with default
+function(... = 1) { get("...") }
+
+# `..i` as parameter without default
+function(..1) { get("..1") }
+
+# `..i` as parameter with default
+function(..1 = 1) { get("..1") }
+
+# Miscellaneous
+function(x, ...) f(...)
+function(x, ...) ..1 + ..2
 
 # ------------------------------------------------------------------------------
 # function no body

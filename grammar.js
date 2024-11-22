@@ -237,12 +237,14 @@ module.exports = grammar({
     ),
 
     _parameter_with_default: $ => seq(
-      field("name", $.identifier),
+      $._parameter_name,
       "=",
       optional(field("default", $._expression))
     ),
 
-    _parameter_without_default: $ => field("name", choice($.identifier, $.dots)),
+    _parameter_without_default: $ => $._parameter_name,
+
+    _parameter_name: $ => field("name", $._identifier_or_dots_or_dot_dot_i),
 
     // Control flow.
     // NOTE: See `NOTE ON NEWLINES BETWEEN PARENTHESES` above
@@ -267,7 +269,7 @@ module.exports = grammar({
       "for",
       repeat($._newline),
       field("open", $._open_parenthesis),
-      field("variable", $.identifier),
+      field("variable", $._identifier_or_dots_or_dot_dot_i),
       "in",
       field("sequence", $._expression),
       field("close", $._close_parenthesis),
@@ -366,16 +368,11 @@ module.exports = grammar({
       $._argument_unnamed
     ),
 
-    // Since `_argument_unnamed` can be an arbitrary `_expression` (with precedence 0)
-    // which include `dots`, `string`, and `identifier`, there is an ambiguity. We need to
-    // set a higher precedence here to try and match `_argument_named` first. Also, since
-    // it `repeat()`s we need right precedence specified to ensure the optional
-    // `_argument_value` is preferred.
-    _argument_named: $ => prec.right(1, seq(
-      field("name", choice($.dots, $.identifier, $.string)),
+    _argument_named: $ => seq(
+      field("name", $._argument_name_string_or_identifier_or_dots_or_dot_dot_i),
       "=",
       optional($._argument_value)
-    )),
+    ),
 
     _argument_unnamed: $ => $._argument_value,
 
@@ -455,7 +452,7 @@ module.exports = grammar({
       ))))
     },
 
-    // NOTE: Expression on LHS, string or identifier on RHS
+    // NOTE: Expression on LHS, string/identifier/dots/dot_dot_i on RHS
     extract_operator: $ => {
       const table = [
         ["$", PREC.EXTRACT],
@@ -466,11 +463,11 @@ module.exports = grammar({
         field("lhs", $._expression),
         field("operator", operator),
         repeat($._newline),
-        optional(field("rhs", $._string_or_identifier))
+        optional(field("rhs", $._string_or_identifier_or_dots_or_dot_dot_i))
       ))))
     },
 
-    // NOTE: No newlines are allowed. String or identifier on both LHS and RHS.
+    // NOTE: No newlines are allowed. String/identifier/dots/dot_dot_i on both LHS and RHS.
     namespace_operator: $ => {
       const table = [
         ["::", PREC.NAMESPACE],
@@ -478,9 +475,9 @@ module.exports = grammar({
       ];
 
       return choice(...table.map(([operator, prec]) => prec.ASSOC(prec.RANK, seq(
-        field("lhs", $._string_or_identifier),
+        field("lhs", $._string_or_identifier_or_dots_or_dot_dot_i),
         field("operator", operator),
-        optional(field("rhs", $._string_or_identifier))
+        optional(field("rhs", $._string_or_identifier_or_dots_or_dot_dot_i))
       ))))
     },
 
@@ -573,6 +570,50 @@ module.exports = grammar({
       )
     },
 
+    // Identifier-ish, but useful enough to be their own nodes
+    dots: $ => "...",
+    dot_dot_i: $ => token(withPrec(PREC.DOT_DOT_I, /[.][.]\d+/)),
+
+    // NOTE: Technically R allows `...` and `..1` anywhere we want an `$.identifier`,
+    // but practically it can be useful for downstream consumers to have separate
+    // nodes for these particular constructs. Our compromise is to keep these as separate
+    // nodes, but then use this in most places we want an identifier.
+    _identifier_or_dots_or_dot_dot_i: $ => choice(
+      $.identifier,
+      $.dots,
+      $.dot_dot_i
+    ),
+
+    // NOTE: Having this as an actual node (rather than inlining the `choice()`) somehow
+    // ends up allowing better error recovery in a few cases
+    _string_or_identifier_or_dots_or_dot_dot_i: $ => choice(
+      $.string,
+      $.identifier,
+      $.dots,
+      $.dot_dot_i
+    ),
+
+    // NOTE: This is exactly `_string_or_identifier_or_dots_or_dot_dot_i` but with
+    // a precedence of 1. It seems like we have to set the `prec(1, )` on the `choice()`
+    // directly, we can't reuse `_string_or_identifier_or_dots_or_dot_dot_i` here
+    // otherwise `tree-sitter generate` throws an unresolved conflict error.
+    //
+    // This is only for use in `_argument_named`.
+    //
+    // Since `_argument_unnamed` can be an arbitrary `_expression` (with precedence 0)
+    // which includes `string`, `identifier`, `dots`, and `dot_dot_i`, there is an
+    // ambiguity between:
+    // - Starting the `value` of an `_argument_unnamed`
+    // - Starting the `name` of an `_argument_named`
+    //
+    // We set a higher precedence here to try and match `_argument_named` first.
+    _argument_name_string_or_identifier_or_dots_or_dot_dot_i: $ => prec(1, choice(
+      $.string,
+      $.identifier,
+      $.dots,
+      $.dot_dot_i
+    )),
+
     // Keywords.
     // We define keywords as those contained in `?Reserved`, i.e. it must be a reserved
     // word in R's parser to be considered here. If a keyword from `?Reserved` is already
@@ -595,8 +636,6 @@ module.exports = grammar({
       "NA_complex_",
       "NA_character_"
     ),
-    dots: $ => "...",
-    dot_dot_i: $ => token(withPrec(PREC.DOT_DOT_I, /[.][.]\d+/)),
 
     // A general R expression.
     _expression: $ => choice(
@@ -626,6 +665,8 @@ module.exports = grammar({
       $.string,
 
       $.identifier,
+      $.dots,
+      $.dot_dot_i,
 
       $.return,
       $.next,
@@ -635,9 +676,7 @@ module.exports = grammar({
       $.null,
       $.inf,
       $.nan,
-      $.na,
-      $.dots,
-      $.dot_dot_i
+      $.na
     ),
 
     // Comments.
@@ -647,9 +686,6 @@ module.exports = grammar({
     // argument call position. This is necessary given how R tolerates
     // missing arguments in function calls.
     comma: $ => ",",
-
-    // This somehow ends up allowing better error recovery
-    _string_or_identifier: $ => choice($.string, $.identifier),
 
     // Provide aliasing of some key externals.
     // This gives `highlights.scm` something to target for

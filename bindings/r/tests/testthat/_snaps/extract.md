@@ -104,6 +104,26 @@
       Text
       foo$bar()$baz[[1]]$bam
       
+      S-Expression
+      (extract_operator [(7, 0), (7, 7)]
+        lhs: (identifier [(7, 0), (7, 3)])
+        operator: "$" [(7, 3), (7, 4)]
+        rhs: (dots [(7, 4), (7, 7)])
+      )
+      
+      Text
+      foo$...
+      
+      S-Expression
+      (extract_operator [(8, 0), (8, 7)]
+        lhs: (identifier [(8, 0), (8, 3)])
+        operator: "$" [(8, 3), (8, 4)]
+        rhs: (dot_dot_i [(8, 4), (8, 7)])
+      )
+      
+      Text
+      foo$..1
+      
 
 # dollar no rhs
 
@@ -179,6 +199,26 @@
       
       Text
       foo@"bar"
+      
+      S-Expression
+      (extract_operator [(5, 0), (5, 7)]
+        lhs: (identifier [(5, 0), (5, 3)])
+        operator: "@" [(5, 3), (5, 4)]
+        rhs: (dots [(5, 4), (5, 7)])
+      )
+      
+      Text
+      foo@...
+      
+      S-Expression
+      (extract_operator [(6, 0), (6, 7)]
+        lhs: (identifier [(6, 0), (6, 3)])
+        operator: "@" [(6, 3), (6, 4)]
+        rhs: (dot_dot_i [(6, 4), (6, 7)])
+      )
+      
+      Text
+      foo@..1
       
 
 # slot no rhs

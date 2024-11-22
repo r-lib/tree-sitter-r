@@ -9,10 +9,6 @@ function(arg1, arg2) {
 
 function(x, y) return(y)
 
-function(x, ...) f(...)
-
-function(x, ...) ..1 + ..2
-
 function(arg1, arg2 = 2) {}
 
 function(x,
@@ -82,28 +78,6 @@ function() for(i in 1:5) i
         name: (identifier))
       (comma)
       parameter: (parameter
-        name: (dots)))
-    body: (call
-      function: (identifier)
-      arguments: (arguments
-        argument: (argument
-          value: (dots)))))
-  (function_definition
-    parameters: (parameters
-      parameter: (parameter
-        name: (identifier))
-      (comma)
-      parameter: (parameter
-        name: (dots)))
-    body: (binary_operator
-      lhs: (dot_dot_i)
-      rhs: (dot_dot_i)))
-  (function_definition
-    parameters: (parameters
-      parameter: (parameter
-        name: (identifier))
-      (comma)
-      parameter: (parameter
         name: (identifier)
         default: (float)))
     body: (braced_expression))
@@ -162,6 +136,102 @@ function() for(i in 1:5) i
       body: (identifier))))
 
 ================================================================================
+Function Dots And Dot Dot I
+================================================================================
+
+# Dots as parameter without default
+function(...) { list(...) }
+
+# Dots as parameter with default
+function(... = 1) { get("...") }
+
+# `..i` as parameter without default
+function(..1) { get("..1") }
+
+# `..i` as parameter with default
+function(..1 = 1) { get("..1") }
+
+# Miscellaneous
+function(x, ...) f(...)
+function(x, ...) ..1 + ..2
+
+--------------------------------------------------------------------------------
+
+(program
+  (comment)
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (dots)))
+    body: (braced_expression
+      body: (call
+        function: (identifier)
+        arguments: (arguments
+          argument: (argument
+            value: (dots))))))
+  (comment)
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (dots)
+        default: (float)))
+    body: (braced_expression
+      body: (call
+        function: (identifier)
+        arguments: (arguments
+          argument: (argument
+            value: (string
+              content: (string_content)))))))
+  (comment)
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (dot_dot_i)))
+    body: (braced_expression
+      body: (call
+        function: (identifier)
+        arguments: (arguments
+          argument: (argument
+            value: (string
+              content: (string_content)))))))
+  (comment)
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (dot_dot_i)
+        default: (float)))
+    body: (braced_expression
+      body: (call
+        function: (identifier)
+        arguments: (arguments
+          argument: (argument
+            value: (string
+              content: (string_content)))))))
+  (comment)
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (identifier))
+      (comma)
+      parameter: (parameter
+        name: (dots)))
+    body: (call
+      function: (identifier)
+      arguments: (arguments
+        argument: (argument
+          value: (dots)))))
+  (function_definition
+    parameters: (parameters
+      parameter: (parameter
+        name: (identifier))
+      (comma)
+      parameter: (parameter
+        name: (dots)))
+    body: (binary_operator
+      lhs: (dot_dot_i)
+      rhs: (dot_dot_i))))
+
+================================================================================
 Function No Body
 ================================================================================
 
@@ -178,40 +248,6 @@ function(x, y)
       parameter: (parameter
         name: (identifier)))
     body: (MISSING identifier)))
-
-================================================================================
-Function No Body With Assignment
-================================================================================
-
-x <- function(x, y)
-
---------------------------------------------------------------------------------
-
-(program
-  (binary_operator
-    lhs: (identifier)
-    rhs: (function_definition
-      parameters: (parameters
-        parameter: (parameter
-          name: (identifier))
-        (comma)
-        parameter: (parameter
-          name: (identifier)))
-      body: (MISSING identifier))))
-
-================================================================================
-Function No Body Inside Another Function
-================================================================================
-
-function(x = function()) {}
-
---------------------------------------------------------------------------------
-
-(program
-  (ERROR
-    (identifier)
-    (parameters)
-    (UNEXPECTED ')')))
 
 ================================================================================
 Lambda Function
@@ -1195,6 +1231,12 @@ for (x in y
 
 ) 1 + 1
 
+# `...` as the `variable`
+for (... in 1:2) print(get("..."))
+
+# `..i` as the `variable`
+for (..1 in 1:2) print(get("..1"))
+
 --------------------------------------------------------------------------------
 
 (program
@@ -1227,7 +1269,39 @@ for (x in y
     sequence: (identifier)
     body: (binary_operator
       lhs: (float)
-      rhs: (float))))
+      rhs: (float)))
+  (comment)
+  (for_statement
+    variable: (dots)
+    sequence: (binary_operator
+      lhs: (float)
+      rhs: (float))
+    body: (call
+      function: (identifier)
+      arguments: (arguments
+        argument: (argument
+          value: (call
+            function: (identifier)
+            arguments: (arguments
+              argument: (argument
+                value: (string
+                  content: (string_content)))))))))
+  (comment)
+  (for_statement
+    variable: (dot_dot_i)
+    sequence: (binary_operator
+      lhs: (float)
+      rhs: (float))
+    body: (call
+      function: (identifier)
+      arguments: (arguments
+        argument: (argument
+          value: (call
+            function: (identifier)
+            arguments: (arguments
+              argument: (argument
+                value: (string
+                  content: (string_content))))))))))
 
 ================================================================================
 For No Body
@@ -1366,6 +1440,8 @@ foo$bar@baz
 foo$bar()
 foo$"bar"
 foo$bar()$baz[[1]]$bam
+foo$...
+foo$..1
 
 --------------------------------------------------------------------------------
 
@@ -1404,7 +1480,13 @@ foo$bar()$baz[[1]]$bam
       arguments: (arguments
         argument: (argument
           value: (float))))
-    rhs: (identifier)))
+    rhs: (identifier))
+  (extract_operator
+    lhs: (identifier)
+    rhs: (dots))
+  (extract_operator
+    lhs: (identifier)
+    rhs: (dot_dot_i)))
 
 ================================================================================
 Dollar No RHS
@@ -1425,6 +1507,8 @@ foo@bar
 foo@bar$baz
 foo@bar()
 foo@"bar"
+foo@...
+foo@..1
 
 --------------------------------------------------------------------------------
 
@@ -1445,7 +1529,13 @@ foo@"bar"
   (extract_operator
     (identifier)
     (string
-      (string_content))))
+      (string_content)))
+  (extract_operator
+    (identifier)
+    (dots))
+  (extract_operator
+    (identifier)
+    (dot_dot_i)))
 
 ================================================================================
 Slot No RHS
@@ -1465,6 +1555,12 @@ Namespace get
 foo::
 foo::bar
 foo::bar(1)
+foo::...
+foo::..1
+...::foo
+..1::foo
+...::...
+..1::..1
 
 --------------------------------------------------------------------------------
 
@@ -1480,7 +1576,25 @@ foo::bar(1)
       rhs: (identifier))
     arguments: (arguments
       argument: (argument
-        value: (float)))))
+        value: (float))))
+  (namespace_operator
+    lhs: (identifier)
+    rhs: (dots))
+  (namespace_operator
+    lhs: (identifier)
+    rhs: (dot_dot_i))
+  (namespace_operator
+    lhs: (dots)
+    rhs: (identifier))
+  (namespace_operator
+    lhs: (dot_dot_i)
+    rhs: (identifier))
+  (namespace_operator
+    lhs: (dots)
+    rhs: (dots))
+  (namespace_operator
+    lhs: (dot_dot_i)
+    rhs: (dot_dot_i)))
 
 ================================================================================
 Namespace get internal
@@ -1489,6 +1603,12 @@ Namespace get internal
 foo:::
 foo:::bar
 foo:::bar(1)
+foo:::...
+foo:::..1
+...:::foo
+..1:::foo
+...:::...
+..1:::..1
 
 --------------------------------------------------------------------------------
 
@@ -1504,7 +1624,25 @@ foo:::bar(1)
       rhs: (identifier))
     arguments: (arguments
       argument: (argument
-        value: (float)))))
+        value: (float))))
+  (namespace_operator
+    lhs: (identifier)
+    rhs: (dots))
+  (namespace_operator
+    lhs: (identifier)
+    rhs: (dot_dot_i))
+  (namespace_operator
+    lhs: (dots)
+    rhs: (identifier))
+  (namespace_operator
+    lhs: (dot_dot_i)
+    rhs: (identifier))
+  (namespace_operator
+    lhs: (dots)
+    rhs: (dots))
+  (namespace_operator
+    lhs: (dot_dot_i)
+    rhs: (dot_dot_i)))
 
 ================================================================================
 Namespace With Missing RHS
@@ -1576,72 +1714,6 @@ foo:::{bar}
     body: (identifier)))
 
 ================================================================================
-Dollar, At, Namespace, Namespace Internal With `if` RHS
-================================================================================
-# The RHS's of these nodes are restricted to strings and identifiers, and the RHS
-# is optional. This ends up trying to match to an `if_statement` node, leaving the RHS
-# empty, and then the `if_statement` node errors because it doesn't have a `(`. This
-# is actually pretty decent behavior.
-foo$if
-foo@if
-foo::if
-foo:::if
-
---------------------------------------------------------------------------------
-
-(program
-  (comment)
-  (comment)
-  (comment)
-  (comment)
-  (extract_operator
-    (identifier))
-  (ERROR)
-  (extract_operator
-    (identifier))
-  (ERROR)
-  (namespace_operator
-    (identifier))
-  (ERROR)
-  (namespace_operator
-    (identifier))
-  (ERROR))
-
-================================================================================
-Dollar, At, Namespace, Namespace Internal With Newline Before Operator
-================================================================================
-
-# Newlines are not allowed before the operator, so none of these are valid
-x
-$y
-
-x
-@y
-
-x
-::y
-
-x
-:::y
-
---------------------------------------------------------------------------------
-
-(program
-  (comment)
-  (identifier)
-  (ERROR)
-  (identifier)
-  (identifier)
-  (ERROR)
-  (identifier)
-  (identifier)
-  (ERROR)
-  (identifier)
-  (identifier)
-  (ERROR)
-  (identifier))
-
-================================================================================
 Assignment
 ================================================================================
 
@@ -1705,7 +1777,6 @@ f(x,,y)
 f(,,x,,y,,)
 f(x=,)
 f("x"=,)
-f(... = ,)
 f(,y=)
 
 f(x)
@@ -1716,6 +1787,20 @@ f(x, y = 2)
 f(x = 1 + 1)
 f(x, y =)
 f(f2(x, y))
+
+# Dots as unnamed and named argument
+f(...)
+f(, ..., 1)
+f(... = 1)
+f(... = ,)
+f(... = ...)
+
+# `..i` as unnamed and named argument
+f(..1)
+f(, ..1, 1)
+f(..1 = 1)
+f(..1 = ,)
+f(..1 = ..1)
 
 --------------------------------------------------------------------------------
 
@@ -1796,12 +1881,6 @@ f(f2(x, y))
   (call
     function: (identifier)
     arguments: (arguments
-      argument: (argument
-        name: (dots))
-      (comma)))
-  (call
-    function: (identifier)
-    arguments: (arguments
       (comma)
       argument: (argument
         name: (identifier))))
@@ -1868,135 +1947,73 @@ f(f2(x, y))
               value: (identifier))
             (comma)
             argument: (argument
-              value: (identifier))))))))
-
-================================================================================
-Not A Call, Subset, Or Subset2
-================================================================================
-
-f
-(x)
-
-foo
-[bar]
-
-foo
-[[x]]
-
---------------------------------------------------------------------------------
-
-(program
-  (identifier)
-  (parenthesized_expression
-    body: (identifier))
-  (identifier)
-  (ERROR
-    (UNEXPECTED '['))
-  (identifier)
-  (ERROR
-    (UNEXPECTED ']'))
-  (identifier)
-  (ERROR
-    (UNEXPECTED '['))
-  (identifier)
-  (ERROR
-    (UNEXPECTED ']'))
-)
-
-================================================================================
-Not A Call, Subset, Or Subset2 Due To Sequential Arguments
-================================================================================
-
-f(x y)
-foo[x y]
-foo[[x y]]
-
-f(x, y z)
-foo[x, y z]
-foo[[x, y z]]
-
-f(, x y)
-foo[, x y]
-foo[[, x y]]
-
---------------------------------------------------------------------------------
-
-(program
-  (call
-    function: (identifier)
-    arguments: (arguments
-      (ERROR
-        (identifier))
-      argument: (argument
-        value: (identifier))))
-  (subset
-    function: (identifier)
-    arguments: (arguments
-      (ERROR
-        (identifier))
-      argument: (argument
-        value: (identifier))))
-  (subset2
-    function: (identifier)
-    arguments: (arguments
-      (ERROR
-        (identifier))
-      argument: (argument
-        value: (identifier))))
+              value: (identifier)))))))
+  (comment)
   (call
     function: (identifier)
     arguments: (arguments
       argument: (argument
-        value: (identifier))
-      (comma)
-      (ERROR
-        (identifier))
-      argument: (argument
-        value: (identifier))))
-  (subset
-    function: (identifier)
-    arguments: (arguments
-      argument: (argument
-        value: (identifier))
-      (comma)
-      (ERROR
-        (identifier))
-      argument: (argument
-        value: (identifier))))
-  (subset2
-    function: (identifier)
-    arguments: (arguments
-      argument: (argument
-        value: (identifier))
-      (comma)
-      (ERROR
-        (identifier))
-      argument: (argument
-        value: (identifier))))
+        value: (dots))))
   (call
     function: (identifier)
     arguments: (arguments
       (comma)
-      (ERROR
-        (identifier))
       argument: (argument
-        value: (identifier))))
-  (subset
+        value: (dots))
+      (comma)
+      argument: (argument
+        value: (float))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        name: (dots)
+        value: (float))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        name: (dots))
+      (comma)))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        name: (dots)
+        value: (dots))))
+  (comment)
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (dot_dot_i))))
+  (call
     function: (identifier)
     arguments: (arguments
       (comma)
-      (ERROR
-        (identifier))
       argument: (argument
-        value: (identifier))))
-  (subset2
+        value: (dot_dot_i))
+      (comma)
+      argument: (argument
+        value: (float))))
+  (call
     function: (identifier)
     arguments: (arguments
-      (comma)
-      (ERROR
-        (identifier))
       argument: (argument
-        value: (identifier)))))
+        name: (dot_dot_i)
+        value: (float))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        name: (dot_dot_i))
+      (comma)))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        name: (dot_dot_i)
+        value: (dot_dot_i)))))
 
 ================================================================================
 Braced Expression
@@ -2088,48 +2105,6 @@ fn((a), (b))
       (parameters)
       (braced_expression
         (identifier)))))
-
-================================================================================
-Not A Parenthesized Expression 1
-================================================================================
-
-()
-
---------------------------------------------------------------------------------
-
-(program
-  (ERROR
-    (UNEXPECTED ')')))
-
-================================================================================
-Not A Parenthesized Expression 2
-================================================================================
-
-(
-  1
-  2
-)
-
---------------------------------------------------------------------------------
-
-(program
-  (parenthesized_expression
-    (ERROR)
-    (float)))
-
-================================================================================
-Not A Parenthesized Expression 3
-================================================================================
-
-(1; 2)
-
---------------------------------------------------------------------------------
-
-(program
-  (parenthesized_expression
-    (ERROR
-      (UNEXPECTED ';'))
-    (float)))
 
 ================================================================================
 Colon
@@ -2337,142 +2312,3 @@ apple
       arguments: (arguments
         argument: (argument
           value: (identifier))))))
-
-================================================================================
-Closing Brace
-================================================================================
-
-}
-
---------------------------------------------------------------------------------
-
-(program
-  (ERROR
-    (UNEXPECTED '}')))
-
-================================================================================
-Closing Parenthesis
-================================================================================
-
-)
-
---------------------------------------------------------------------------------
-
-(program
-  (ERROR
-    (UNEXPECTED ')')))
-
-================================================================================
-Closing Bracket
-================================================================================
-
-]
-
---------------------------------------------------------------------------------
-
-(program
-  (ERROR
-    (UNEXPECTED ']')))
-
-================================================================================
-Opening Brace, Closing Parenthesis
-================================================================================
-
-# Parenthesis is "not valid" so it isn't matched by the external scanner
-{)
-
---------------------------------------------------------------------------------
-
-(program
-  (comment)
-  (ERROR
-    (UNEXPECTED ')')))
-
-================================================================================
-Opening Parenthesis, Closing Brace
-================================================================================
-
-(}
-
---------------------------------------------------------------------------------
-
-(program
-  (ERROR
-    (UNEXPECTED '}')))
-
-================================================================================
-Opening Parenthesis, Closing Bracket
-================================================================================
-
-(]
-
---------------------------------------------------------------------------------
-
-(program
-  (ERROR
-    (UNEXPECTED ']')))
-
-================================================================================
-Opening Bracket2, Unmatched Closing Bracket
-================================================================================
-
-x[[2]
-
---------------------------------------------------------------------------------
-
-(program
-  (identifier)
-  (ERROR
-    (UNEXPECTED ']')))
-
-================================================================================
-Opening Bracket and Bracket2, Unmatched Closing Bracket
-================================================================================
-
-x[y[[2]
-
---------------------------------------------------------------------------------
-
-(program
-  (identifier)
-  (ERROR
-    (identifier)
-    (UNEXPECTED ']')))
-
-================================================================================
-Opening Bracket2 and Bracket, Matched Closing Bracket
-================================================================================
-
-x[[y[2]
-
---------------------------------------------------------------------------------
-
-(program
-  (subset2
-    function: (identifier)
-    arguments: (arguments
-      argument: (argument
-        value: (subset
-          function: (identifier)
-          arguments: (arguments
-            argument: (argument
-              value: (float)))))
-      close: (MISSING "]]"))))
-
-================================================================================
-Opening Bracket2 and Bracket, Unmatched Closing Bracket
-================================================================================
-
-x[[y[2]]
-
---------------------------------------------------------------------------------
-
-(program
-  (identifier)
-  (ERROR
-    (subset
-      function: (identifier)
-      arguments: (arguments
-        argument: (argument
-          value: (float))))
-    (UNEXPECTED ']')))
