@@ -10,6 +10,18 @@
     rhs: (function_definition)
 ) @definition.function
 
+(binary_operator
+    lhs: (string) @name
+    operator: "<-"
+    rhs: (function_definition)
+) @definition.function
+
+(binary_operator
+    lhs: (string) @name
+    operator: "="
+    rhs: (function_definition)
+) @definition.function
+
 (call
     function: (identifier) @name
 ) @reference.call

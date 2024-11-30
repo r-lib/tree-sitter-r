@@ -1,14 +1,38 @@
 fn <- function() {
-# <- definition.function  
+# <- definition.function
 }
 
 fn = function() {
-# <- definition.function  
+# <- definition.function
 }
-  
+
 fn <- function(a, b) {
-# <- definition.function   
+# <- definition.function
 
   bar <- function() {}
-  # ^ definition.function  
+  # ^ definition.function
+}
+
+"fn" <- function() {
+# <- definition.function
+}
+
+"fn" = function() {
+# <- definition.function
+}
+
+'fn' <- function() {
+# <- definition.function
+}
+
+'fn' = function() {
+# <- definition.function
+}
+
+`fn` <- function() {
+# <- definition.function
+}
+
+`fn` = function() {
+# <- definition.function
 }
