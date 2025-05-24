@@ -1,14 +1,24 @@
 * text=auto eol=lf
 
+# Generated source files
 src/*.json linguist-generated
 src/parser.c linguist-generated
 src/tree_sitter/* linguist-generated
 
-bindings/** linguist-generated
-binding.gyp linguist-generated
-setup.py linguist-generated
-Makefile linguist-generated
-Package.swift linguist-generated
+# C bindings
+bindings/c/* linguist-generated
+
+# Node.js bindings
+bindings/node/* linguist-generated
+
+# Python bindings
+bindings/python/** linguist-generated
+
+# Go bindings
+bindings/go/* linguist-generated
+
+# Swift bindings
+bindings/swift/** linguist-generated
 
 # Exclude `bindings/r` and `bindings/rust` from the set of folders
 # that don't automatically show diffs on GitHub. The diffs here are
