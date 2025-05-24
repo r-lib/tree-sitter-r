@@ -42,18 +42,5 @@
     "prestart": "tree-sitter build --wasm",
     "start": "tree-sitter playground",
     "test": "node --test bindings/node/*_test.js"
-  },
-  "tree-sitter": [
-    {
-      "scope": "source.R",
-      "file-types": [
-        "R",
-        "r"
-      ],
-      "injection-regex": "^[Rr]$",
-      "first-line-regex": "#!.*\\bRscript$",
-      "highlights": "queries/highlights.scm",
-      "tags": "queries/tags.scm"
-    }
-  ]
+  }
 }
