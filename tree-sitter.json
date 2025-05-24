@@ -21,12 +21,12 @@
     "description": "R grammar for tree-sitter",
     "authors": [
       {
-        "name": "Kevin Ushey",
-        "email": "kevin@posit.co"
-      },
-      {
         "name": "Davis Vaughan",
         "email": "davis@posit.co"
+      },
+      {
+        "name": "Kevin Ushey",
+        "email": "kevin@posit.co"
       }
     ],
     "links": {
