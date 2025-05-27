@@ -2,6 +2,8 @@
 
 ## devel
 
+- Removed an unnecessary `optional()` from `_parameter_with_default` (#161).
+
 - Fixed an issue related to closing brackets in raw strings (#162).
 
 - Changed a number of internal files to match tree-sitter v0.24.7 recommendations (#169).

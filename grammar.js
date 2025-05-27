@@ -236,10 +236,13 @@ module.exports = grammar({
       $._parameter_without_default
     ),
 
+    // Note that the default is required if we see an `=`,
+    // i.e. `function(x = ) {}` is not valid R code and does
+    // not parse (#161).
     _parameter_with_default: $ => seq(
       $._parameter_name,
       "=",
-      optional(field("default", $._expression))
+      field("default", $._expression)
     ),
 
     _parameter_without_default: $ => $._parameter_name,
@@ -368,6 +371,9 @@ module.exports = grammar({
       $._argument_unnamed
     ),
 
+    // Note that the value is optional, i.e. both of these are valid:
+    // fn(a = 1)
+    // fn(a = )
     _argument_named: $ => seq(
       field("name", $._argument_name_string_or_identifier_or_dots_or_dot_dot_i),
       "=",
