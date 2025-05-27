@@ -8,21 +8,31 @@ expect_describe_it_captures <- function(parent_desc, desc, captures) {
   expect_contains(
     captures$name,
     c(
-      "parent_call", "parent_function", "parent_desc",
-      "call", "function", "desc"
+      "parent_call",
+      "parent_function",
+      "parent_desc",
+      "call",
+      "function",
+      "desc"
     )
   )
 
   expect_equal(
-    treesitter::node_text(captures[["node"]][[which(captures$name == "parent_function")]]),
+    treesitter::node_text(captures[["node"]][[which(
+      captures$name == "parent_function"
+    )]]),
     "describe"
   )
   expect_equal(
-    treesitter::node_text(captures[["node"]][[which(captures$name == "parent_desc")]]),
+    treesitter::node_text(captures[["node"]][[which(
+      captures$name == "parent_desc"
+    )]]),
     parent_desc
   )
   expect_equal(
-    treesitter::node_text(captures[["node"]][[which(captures$name == "function")]]),
+    treesitter::node_text(captures[["node"]][[which(
+      captures$name == "function"
+    )]]),
     "it"
   )
   expect_equal(

@@ -15,7 +15,10 @@ test_that("`program` always starts at `(0, 0)`", {
     # Root node is `program`
     node <- treesitter::tree_root_node(tree)
 
-    expect_identical(treesitter::node_start_point(node), treesitter::point(0, 0))
+    expect_identical(
+      treesitter::node_start_point(node),
+      treesitter::point(0, 0)
+    )
     expect_identical(treesitter::node_end_point(node), end_point)
 
     expect_identical(treesitter::node_start_byte(node), 0)
