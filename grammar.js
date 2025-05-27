@@ -516,15 +516,15 @@ module.exports = grammar({
     //   - Anything except `'` (or `"`) or `\`
     //   - An escape sequence
     _single_quoted_string: $ => seq(
-      '\'',
+      field("open", '\''),
       optional(field("content", alias($._single_quoted_string_content, $.string_content))),
-      '\''
+      field("close", '\'')
     ),
 
     _double_quoted_string: $ => seq(
-      '"',
+      field("open", '"'),
       optional(field("content", alias($._double_quoted_string_content, $.string_content))),
-      '"'
+      field("close", '"')
     ),
 
     _single_quoted_string_content: $ => repeat1(choice(
