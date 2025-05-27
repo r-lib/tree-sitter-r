@@ -506,9 +506,9 @@ module.exports = grammar({
     // TODO: Raw string contents, something like this, where `_raw_string_open`,
     // `_raw_string_close`, and `_raw_string_content` are externals.
     // _raw_string_literal: $ => seq(
-    //   $._raw_string_open,
+    //   field("open", $._raw_string_open),
     //   optional(field("content", alias($._raw_string_content, $.string_content))),
-    //   $._raw_string_close
+    //   field("close", $._raw_string_close)
     // ),
 
     // Explanation is:
