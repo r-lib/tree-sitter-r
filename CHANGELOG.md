@@ -2,6 +2,8 @@
 
 ## devel
 
+- Added `"open"` and `"close"` fields to single and double quoted `string`s (#139).
+
 - Removed an unnecessary `optional()` from `_parameter_with_default` (#161).
 
 - Fixed an issue related to closing brackets in raw strings (#162).

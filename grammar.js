@@ -506,9 +506,9 @@ module.exports = grammar({
     // TODO: Raw string contents, something like this, where `_raw_string_open`,
     // `_raw_string_close`, and `_raw_string_content` are externals.
     // _raw_string_literal: $ => seq(
-    //   $._raw_string_open,
+    //   field("open", $._raw_string_open),
     //   optional(field("content", alias($._raw_string_content, $.string_content))),
-    //   $._raw_string_close
+    //   field("close", $._raw_string_close)
     // ),
 
     // Explanation is:
@@ -516,15 +516,15 @@ module.exports = grammar({
     //   - Anything except `'` (or `"`) or `\`
     //   - An escape sequence
     _single_quoted_string: $ => seq(
-      '\'',
+      field("open", '\''),
       optional(field("content", alias($._single_quoted_string_content, $.string_content))),
-      '\''
+      field("close", '\'')
     ),
 
     _double_quoted_string: $ => seq(
-      '"',
+      field("open", '"'),
       optional(field("content", alias($._double_quoted_string_content, $.string_content))),
-      '"'
+      field("close", '"')
     ),
 
     _single_quoted_string_content: $ => repeat1(choice(
