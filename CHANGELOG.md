@@ -2,6 +2,8 @@
 
 ## devel
 
+- Changed a number of internal files to match tree-sitter v0.24.7 recommendations (#169).
+
 - `...` and `..1` are now supported in more places, such as `x$...` and `x@..1` (#148).
 
 - `parenthesized_expression` has been simplified to better align with R's parser. Specifically, it now expects exactly 1 required `body` expression, rather than allowing zero or more optional expressions (#144).
