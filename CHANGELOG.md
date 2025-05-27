@@ -2,6 +2,8 @@
 
 ## devel
 
+- Fixed an issue related to closing brackets in raw strings (#162).
+
 - Changed a number of internal files to match tree-sitter v0.24.7 recommendations (#169).
 
 - `...` and `..1` are now supported in more places, such as `x$...` and `x@..1` (#148).
