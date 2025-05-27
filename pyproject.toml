@@ -9,17 +9,16 @@ version = "1.1.0"
 keywords = ["incremental", "parsing", "tree-sitter", "r"]
 classifiers = [
   "Intended Audience :: Developers",
-  "License :: OSI Approved :: MIT License",
   "Topic :: Software Development :: Compilers",
   "Topic :: Text Processing :: Linguistic",
-  "Typing :: Typed"
+  "Typing :: Typed",
 ]
 authors = [
-    {name = "Kevin Ushey", email = "kevin@posit.co"},
-    {name = "Jim Hester", email = "james.f.hester@gmail.com"},
-    {name = "Davis Vaughan", email = "davis@posit.co"}
+  { name = "Kevin Ushey", email = "kevin@posit.co" },
+  { name = "Jim Hester", email = "james.f.hester@gmail.com" },
+  { name = "Davis Vaughan", email = "davis@posit.co" },
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 license.text = "MIT"
 readme = "README.md"
 
@@ -30,5 +29,5 @@ Homepage = "https://github.com/r-lib/tree-sitter-r"
 core = ["tree-sitter~=0.23"]
 
 [tool.cibuildwheel]
-build = "cp38-*"
+build = "cp39-*"
 build-frontend = "build"

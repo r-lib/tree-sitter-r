@@ -2,6 +2,5 @@
     "[c]": {
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
-    },
-    "scm.showHistoryGraph": false
+    }
 }

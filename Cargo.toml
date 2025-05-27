@@ -1,10 +1,10 @@
 [package]
 name = "tree-sitter-r"
-description = "R grammar for the tree-sitter parsing library"
+description = "R grammar for tree-sitter"
 version = "1.1.0"
 license = "MIT"
 readme = "README.md"
-keywords = ["incremental", "parsing", "tree-sitter", "R"]
+keywords = ["incremental", "parsing", "tree-sitter", "r"]
 categories = ["parsing", "text-editors"]
 repository = "https://github.com/r-lib/tree-sitter-r"
 authors = [
@@ -17,20 +17,21 @@ autoexamples = false
 
 build = "bindings/rust/build.rs"
 include = [
-  "bindings/rust/*",
-  "grammar.js",
-  "queries/*",
-  "src/*",
+    "bindings/rust/*",
+    "grammar.js",
+    "queries/*",
+    "src/*",
+    "tree-sitter.json",
 ]
 
 [lib]
 path = "bindings/rust/lib.rs"
 
 [dependencies]
-tree-sitter-language = "0.1.0"
-
-[dev-dependencies]
-tree-sitter = "0.23"
+tree-sitter-language = "0.1"
 
 [build-dependencies]
-cc = "1.0.92"
+cc = "1.1.22"
+
+[dev-dependencies]
+tree-sitter = "0.24.7"
