@@ -281,10 +281,10 @@ static inline bool scan_else_with_leading_newlines(TSLexer* lexer) {
 }
 
 static inline bool scan_raw_string_literal(TSLexer* lexer) {
-  // scan a raw string literal; see R source code for implementation:
+  // Scan a raw string literal; see R source code for implementation:
   // https://github.com/wch/r-source/blob/52b730f217c12ba3d95dee0cd1f330d1977b5ea3/src/main/gram.y#L3102
 
-  // raw string literals can start with either 'r' or 'R'
+  // Raw string literals can start with either 'r' or 'R'
   lexer->mark_end(lexer);
   char prefix = lexer->lookahead;
   if (prefix != 'r' && prefix != 'R') {
@@ -292,21 +292,21 @@ static inline bool scan_raw_string_literal(TSLexer* lexer) {
   }
   lexer->advance(lexer, false);
 
-  // check for quote character
-  char quote = lexer->lookahead;
-  if (quote != '"' && quote != '\'') {
+  // Check for quote character
+  char closing_quote = lexer->lookahead;
+  if (closing_quote != '"' && closing_quote != '\'') {
     return false;
   }
   lexer->advance(lexer, false);
 
-  // start counting '-' characters
+  // Start counting '-' characters
   int hyphen_count = 0;
   while (lexer->lookahead == '-') {
     lexer->advance(lexer, false);
     hyphen_count += 1;
   }
 
-  // check for an opening bracket, and figure out
+  // Check for an opening bracket, and figure out
   // the corresponding closing bracket
   char opening_bracket = lexer->lookahead;
   char closing_bracket = 0;
@@ -323,42 +323,77 @@ static inline bool scan_raw_string_literal(TSLexer* lexer) {
     return false;
   }
 
-  // we're in the body of the raw string; start looping until
-  // we find the matching closing bracket
-  for (; lexer->lookahead != 0; lexer->advance(lexer, false)) {
-    // consume a closing bracket
+  // We're in the body of the raw string, start looping until
+  // we find the matching `closing_bracket -> hyphens -> quote` sequence
+  //
+  // We purposefully only `advance()` on known non-closing sequence elements at the
+  // very beginning in the `!= closing_bracket` check (#162).
+  //
+  // Consider the following:
+  //
+  // r"(())"
+  //     ^^
+  //     ||
+  //     || 2) Which advances us to `)`. But this isn't a `"`, so we should loop around
+  //     ||    without advancing past the `)`.
+  //     | 1) This looks like it might be a closing `)`.
+  //
+  // If we also called `advance()` in the `!= closing_quote` branch, we'd skip past the
+  // `)` and we'd fail to recognize the raw string.
+  //
+  // Same logic applies to:
+  //
+  // r"-())-"
+  //     ^^
+  //     ||
+  //     || 2) Which advances us to `)`. But this isn't a `-`, so we should loop around
+  //     ||    without advancing past the `)`.
+  //     | 1) This looks like it might be a closing `)`.
+  //
+  // If we also called `advance()` in the `!matched_hyphens` branch, we'd skip past the
+  // `)` and we'd fail to recognize the raw string.
+  while (!lexer->eof(lexer)) {
     if (lexer->lookahead != closing_bracket) {
+      // Consume an arbitrary string part
+      lexer->advance(lexer, false);
       continue;
     }
+
+    // Consume a closing bracket
     lexer->advance(lexer, false);
 
-    // consume hyphens
-    bool hyphens_ok = true;
+    // Try and consume `hyphen_count` hyphens in a row
+    // (Start "matched" for the case of 0 hyphens)
+    bool matched_hyphens = true;
+
     for (int i = 0; i < hyphen_count; i++) {
       if (lexer->lookahead != '-') {
-        hyphens_ok = false;
+        matched_hyphens = false;
         break;
       }
+
+      // Consume a hyphen
       lexer->advance(lexer, false);
     }
 
-    if (!hyphens_ok) {
+    if (!matched_hyphens) {
       continue;
     }
 
-    // consume a closing quote character
-    if (lexer->lookahead != quote) {
+    if (lexer->lookahead != closing_quote) {
       continue;
     }
+
+    // Consume a closing quote character
     lexer->advance(lexer, false);
 
-    // success!
+    // Success!
     lexer->mark_end(lexer);
     lexer->result_symbol = RAW_STRING_LITERAL;
     return true;
   }
 
-  // if we get here, this implies we hit eof (and so we have
+  // If we get here, this implies we hit eof (and so we have
   // an unclosed raw string)
   return false;
 }

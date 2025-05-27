@@ -797,11 +797,97 @@
       R"--[yet another ]- raw string]--"
       
       S-Expression
-      (call [(4, 0), (4, 3)]
-        function: (identifier [(4, 0), (4, 1)])
-        arguments: (arguments [(4, 1), (4, 3)]
-          open: "(" [(4, 1), (4, 2)]
-          close: ")" [(4, 2), (4, 3)]
+      (string [(5, 0), (5, 6)])
+      
+      Text
+      r"(")"
+      
+      S-Expression
+      (string [(6, 0), (6, 7)])
+      
+      Text
+      r"("")"
+      
+      S-Expression
+      (string [(7, 0), (7, 6)])
+      
+      Text
+      r"(')"
+      
+      S-Expression
+      (string [(8, 0), (8, 7)])
+      
+      Text
+      r"('')"
+      
+      S-Expression
+      (string [(10, 0), (10, 8)])
+      
+      Text
+      r"-(-)-"
+      
+      S-Expression
+      (string [(11, 0), (11, 9)])
+      
+      Text
+      r"-()-)-"
+      
+      S-Expression
+      (string [(12, 0), (12, 12)])
+      
+      Text
+      r"--()-")--"
+      
+      S-Expression
+      (string [(14, 0), (14, 9)])
+      
+      Text
+      r"( () )"
+      
+      S-Expression
+      (string [(15, 0), (15, 7)])
+      
+      Text
+      r"(())"
+      
+      S-Expression
+      (string [(16, 0), (16, 8)])
+      
+      Text
+      r"( ())"
+      
+      S-Expression
+      (string [(17, 0), (17, 8)])
+      
+      Text
+      r"(() )"
+      
+      S-Expression
+      (string [(18, 0), (18, 8)])
+      
+      Text
+      r"-())-"
+      
+      S-Expression
+      (string [(19, 0), (19, 11)])
+      
+      Text
+      r"-(())-)-"
+      
+      S-Expression
+      (string [(21, 0), (23, 2)])
+      
+      Text
+      r"(raw
+      string
+      )"
+      
+      S-Expression
+      (call [(25, 0), (25, 3)]
+        function: (identifier [(25, 0), (25, 1)])
+        arguments: (arguments [(25, 1), (25, 3)]
+          open: "(" [(25, 1), (25, 2)]
+          close: ")" [(25, 2), (25, 3)]
         )
       )
       
