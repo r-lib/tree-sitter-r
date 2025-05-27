@@ -103,4 +103,25 @@ bar"
 r"(raw string)"
 R"{another raw string}"
 R"--[yet another ]- raw string]--"
+
+r"(")"
+r"("")"
+r"(')"
+r"('')"
+
+r"-(-)-"
+r"-()-)-"
+r"--()-")--"
+
+r"( () )"
+r"(())"
+r"( ())"
+r"(() )"
+r"-())-"
+r"-(())-)-"
+
+r"(raw
+string
+)"
+
 r()
