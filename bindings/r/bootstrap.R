@@ -42,7 +42,9 @@ sync_with_upstream <- function(upstream, destination) {
   }
 
   if (any_updated) {
-    message("If using `load_all()`, call it again to recompile with updated source files.")
+    message(
+      "If using `load_all()`, call it again to recompile with updated source files."
+    )
   } else {
     message("All parent tree-sitter files were up to date.")
   }
@@ -147,7 +149,9 @@ check_abi <- function() {
   path <- abi_r_path()
 
   if (!file.exists(path)) {
-    stop("Can't find `R/abi.R` file. Do you need to run `bootstrap.R` locally first?")
+    stop(
+      "Can't find `R/abi.R` file. Do you need to run `bootstrap.R` locally first?"
+    )
   }
 
   r_version <- get_r_abi(path)
