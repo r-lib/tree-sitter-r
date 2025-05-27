@@ -23,7 +23,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up tree-sitter
-        uses: tree-sitter/setup-action/cli@v1
+        uses: tree-sitter/setup-action/cli@v2
+        with:
+          tree-sitter-ref: v0.24.7
 
       - name: Run parser and binding tests (tree-sitter test)
         uses: tree-sitter/parser-test-action@v2
