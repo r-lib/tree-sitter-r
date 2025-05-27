@@ -5,11 +5,11 @@
     Output
       S-Expression
       (string [(1, 0), (2, 0)]
-        "\"" [(1, 0), (1, 1)]
+        open: "\"" [(1, 0), (1, 1)]
         content: (string_content [(1, 1), (2, 0)]
           (escape_sequence [(1, 1), (1, 3)])
         )
-        "\"" MISSING [(2, 0), (2, 0)]
+        close: "\"" MISSING [(2, 0), (2, 0)]
       )
       
       Text
@@ -24,11 +24,11 @@
     Output
       S-Expression
       (string [(1, 0), (3, 0)]
-        "'" [(1, 0), (1, 1)]
+        open: "'" [(1, 0), (1, 1)]
         content: (string_content [(1, 1), (3, 0)]
           (escape_sequence [(1, 1), (1, 3)])
         )
-        "'" MISSING [(3, 0), (3, 0)]
+        close: "'" MISSING [(3, 0), (3, 0)]
       )
       
       Text
