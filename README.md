@@ -16,3 +16,36 @@ This grammar is available as a [Rust crate on crates.io](https://crates.io/crate
 
 - [The R Draft Spec](https://cran.r-project.org/doc/manuals/r-release/R-lang.pdf)
 - [gram.y](https://github.com/wch/r-source/blob/trunk/src/main/gram.y)
+
+## Known deviations
+
+This section describes known deviations from the R grammar.
+
+### `]]` as a literal token
+
+The following is valid R syntax, note how `]]` has been split over multiple lines.
+
+```r
+x[["a"]
+]
+```
+
+This applies to `]]`, but not to `[[`, for example, this is not valid R syntax:
+
+```r
+x[
+["a"]]
+```
+
+The technical reason for this is that [in the grammar](https://github.com/wch/r-source/blob/988774e05497bcf2cfac47bfbec59d551432e3fb/src/main/gram.y#L508) R treats `[[` as a single token, but `]]` is treated as two individual `]` tokens.
+Treating `]]` as two individual `]` tokens allows whitespace, newlines, and even comments to appear between the two `]` tokens:
+
+```r
+x[["a"] # comment
+]
+```
+
+While we'd like to precisely support the R grammar, it is also extremely useful to treat all of `(`, `)`, `[`, `]`, `[[`, and `]]` as literal tokens when using the tree-sitter grammar.
+This allows you to treat call, subset, and subset2 nodes in the same way, since they all have exactly the same node structure.
+
+Because treating `]]` as a literal token is so useful, and because we've never seen any R code "in the wild" written this way, this grammar does not allow whitespace, newlines, or comments between the two `]` tokens.
