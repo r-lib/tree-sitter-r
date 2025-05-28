@@ -20,6 +20,10 @@
             "named": true
           },
           {
+            "type": "null",
+            "named": true
+          },
+          {
             "type": "string",
             "named": true
           }
