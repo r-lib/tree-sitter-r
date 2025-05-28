@@ -2,6 +2,8 @@
 
 ## devel
 
+- Binary exponents are now supported in hexadecimal constants (#159).
+
 - `NULL` is now allowed as a function call argument name (#164).
 
 - Added `"open"` and `"close"` fields to single and double quoted `string`s (#139).
