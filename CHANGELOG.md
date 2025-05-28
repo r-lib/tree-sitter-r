@@ -2,6 +2,8 @@
 
 ## devel
 
+- `NULL` is now allowed as a function call argument name (#164).
+
 - Added `"open"` and `"close"` fields to single and double quoted `string`s (#139).
 
 - Removed an unnecessary `optional()` from `_parameter_with_default` (#161).
