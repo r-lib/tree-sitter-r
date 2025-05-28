@@ -238,14 +238,6 @@
       Text
       12L
       
-      S-Expression
-      (integer [(4, 0), (4, 7)]
-        "L" [(4, 6), (4, 7)]
-      )
-      
-      Text
-      0xDEADL
-      
 
 # floats
 
@@ -277,23 +269,201 @@
       .1234
       
       S-Expression
-      (float [(5, 0), (5, 6)])
-      
-      Text
-      0xDEAD
-      
-      S-Expression
-      (binary_operator [(6, 0), (6, 9)]
-        lhs: (identifier [(6, 0), (6, 1)])
-        operator: "<-" [(6, 2), (6, 4)]
-        rhs: (unary_operator [(6, 5), (6, 9)]
-          operator: "-" [(6, 5), (6, 6)]
-          rhs: (float [(6, 6), (6, 9)])
+      (binary_operator [(5, 0), (5, 9)]
+        lhs: (identifier [(5, 0), (5, 1)])
+        operator: "<-" [(5, 2), (5, 4)]
+        rhs: (unary_operator [(5, 5), (5, 9)]
+          operator: "-" [(5, 5), (5, 6)]
+          rhs: (float [(5, 6), (5, 9)])
         )
       )
       
       Text
       x <- -.66
+      
+
+# hexadecimal
+
+    Code
+      node_children_print(node)
+    Output
+      S-Expression
+      (comment [(1, 0), (1, 12)])
+      
+      Text
+      # `x` vs `X`
+      
+      S-Expression
+      (float [(2, 0), (2, 5)])
+      
+      Text
+      0x123
+      
+      S-Expression
+      (float [(3, 0), (3, 5)])
+      
+      Text
+      0X123
+      
+      S-Expression
+      (comment [(5, 0), (5, 21)])
+      
+      Text
+      # Numbers and letters
+      
+      S-Expression
+      (float [(6, 0), (6, 6)])
+      
+      Text
+      0xDEAD
+      
+      S-Expression
+      (float [(7, 0), (7, 6)])
+      
+      Text
+      0XDEAD
+      
+      S-Expression
+      (float [(8, 0), (8, 7)])
+      
+      Text
+      0x1f2F3
+      
+      S-Expression
+      (float [(9, 0), (9, 7)])
+      
+      Text
+      0X1f2F3
+      
+      S-Expression
+      (comment [(11, 0), (11, 12)])
+      
+      Text
+      # `p` vs `P`
+      
+      S-Expression
+      (float [(12, 0), (12, 5)])
+      
+      Text
+      0x0p0
+      
+      S-Expression
+      (float [(13, 0), (13, 5)])
+      
+      Text
+      0x0P0
+      
+      S-Expression
+      (float [(14, 0), (14, 7)])
+      
+      Text
+      0x0p123
+      
+      S-Expression
+      (float [(15, 0), (15, 7)])
+      
+      Text
+      0x0P123
+      
+      S-Expression
+      (comment [(17, 0), (17, 13)])
+      
+      Text
+      # `+` and `-`
+      
+      S-Expression
+      (float [(18, 0), (18, 6)])
+      
+      Text
+      0x0p+0
+      
+      S-Expression
+      (float [(19, 0), (19, 6)])
+      
+      Text
+      0x0p-0
+      
+      S-Expression
+      (float [(20, 0), (20, 8)])
+      
+      Text
+      0x0p+123
+      
+      S-Expression
+      (float [(21, 0), (21, 8)])
+      
+      Text
+      0x0p-123
+      
+      S-Expression
+      (comment [(23, 0), (23, 13)])
+      
+      Text
+      # As integers
+      
+      S-Expression
+      (integer [(24, 0), (24, 6)]
+        "L" [(24, 5), (24, 6)]
+      )
+      
+      Text
+      0x123L
+      
+      S-Expression
+      (integer [(25, 0), (25, 6)]
+        "L" [(25, 5), (25, 6)]
+      )
+      
+      Text
+      0X123L
+      
+      S-Expression
+      (integer [(26, 0), (26, 7)]
+        "L" [(26, 6), (26, 7)]
+      )
+      
+      Text
+      0xDEADL
+      
+      S-Expression
+      (integer [(27, 0), (27, 7)]
+        "L" [(27, 6), (27, 7)]
+      )
+      
+      Text
+      0XDEADL
+      
+      S-Expression
+      (integer [(28, 0), (28, 6)]
+        "L" [(28, 5), (28, 6)]
+      )
+      
+      Text
+      0x0p0L
+      
+      S-Expression
+      (integer [(29, 0), (29, 6)]
+        "L" [(29, 5), (29, 6)]
+      )
+      
+      Text
+      0x0P0L
+      
+      S-Expression
+      (integer [(30, 0), (30, 7)]
+        "L" [(30, 6), (30, 7)]
+      )
+      
+      Text
+      0x0p+0L
+      
+      S-Expression
+      (integer [(31, 0), (31, 7)]
+        "L" [(31, 6), (31, 7)]
+      )
+      
+      Text
+      0x0p-0L
       
 
 # scientific notation floats

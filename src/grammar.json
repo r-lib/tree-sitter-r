@@ -2356,7 +2356,7 @@
     },
     "_hex_literal": {
       "type": "PATTERN",
-      "value": "0[xX][0-9a-fA-F]+"
+      "value": "0[xX][0-9a-fA-F]+([pP][+-]?[0-9]+)?"
     },
     "_number_literal": {
       "type": "PATTERN",
