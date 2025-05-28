@@ -848,7 +848,7 @@
           "name": "name",
           "content": {
             "type": "SYMBOL",
-            "name": "_argument_name_string_or_identifier_or_dots_or_dot_dot_i"
+            "name": "_argument_name_string_or_identifier_or_dots_or_dot_dot_i_or_null"
           }
         },
         {
@@ -2622,7 +2622,7 @@
         }
       ]
     },
-    "_argument_name_string_or_identifier_or_dots_or_dot_dot_i": {
+    "_argument_name_string_or_identifier_or_dots_or_dot_dot_i_or_null": {
       "type": "PREC",
       "value": 1,
       "content": {
@@ -2643,6 +2643,10 @@
           {
             "type": "SYMBOL",
             "name": "dot_dot_i"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "null"
           }
         ]
       }

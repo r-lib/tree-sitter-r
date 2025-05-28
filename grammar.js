@@ -375,7 +375,7 @@ module.exports = grammar({
     // fn(a = 1)
     // fn(a = )
     _argument_named: $ => seq(
-      field("name", $._argument_name_string_or_identifier_or_dots_or_dot_dot_i),
+      field("name", $._argument_name_string_or_identifier_or_dots_or_dot_dot_i_or_null),
       "=",
       optional($._argument_value)
     ),
@@ -583,7 +583,7 @@ module.exports = grammar({
     // NOTE: Technically R allows `...` and `..1` anywhere we want an `$.identifier`,
     // but practically it can be useful for downstream consumers to have separate
     // nodes for these particular constructs. Our compromise is to keep these as separate
-    // nodes, but then use this in most places we want an identifier.
+    // nodes, but then use this in most places we want an identifier (#157).
     _identifier_or_dots_or_dot_dot_i: $ => choice(
       $.identifier,
       $.dots,
@@ -599,25 +599,38 @@ module.exports = grammar({
       $.dot_dot_i
     ),
 
-    // NOTE: This is exactly `_string_or_identifier_or_dots_or_dot_dot_i` but with
-    // a precedence of 1. It seems like we have to set the `prec(1, )` on the `choice()`
-    // directly, we can't reuse `_string_or_identifier_or_dots_or_dot_dot_i` here
-    // otherwise `tree-sitter generate` throws an unresolved conflict error.
+    // NOTE: This is only for use in `_argument_named`
     //
-    // This is only for use in `_argument_named`.
+    // This is extremely similar to `_string_or_identifier_or_dots_or_dot_dot_i`,
+    // but there are two differences outlined below
     //
-    // Since `_argument_unnamed` can be an arbitrary `_expression` (with precedence 0)
-    // which includes `string`, `identifier`, `dots`, and `dot_dot_i`, there is an
-    // ambiguity between:
+    // # Usage of `prec(1, )`
+    //
+    // Since `_argument_unnamed` can be an arbitrary `_expression` (with
+    // precedence 0) which includes `string`, `identifier`, `dots`, `dot_dot_i`,
+    // and `null`, there is an ambiguity between:
     // - Starting the `value` of an `_argument_unnamed`
     // - Starting the `name` of an `_argument_named`
     //
     // We set a higher precedence here to try and match `_argument_named` first.
-    _argument_name_string_or_identifier_or_dots_or_dot_dot_i: $ => prec(1, choice(
+    //
+    // It seems like we have to set the `prec(1, )` on the `choice()` directly,
+    // we can't reuse `_string_or_identifier_or_dots_or_dot_dot_i` here
+    // otherwise `tree-sitter generate` throws an unresolved conflict error.
+    //
+    // # Inclusion of `null`
+    //
+    // Since the beginning of R, `NULL` has surprisingly been allowed in
+    // function argument name position, like `fn(NULL = 1)` and `fn(NULL = )`.
+    // This is surprising because numeric constants like `NA` and `Inf` are not
+    // allowed here, and `NULL` isn't specially allowed anywhere else you might
+    // expect it to be special cased, like `x$NULL` or `function(NULL) {}` (#164).
+    _argument_name_string_or_identifier_or_dots_or_dot_dot_i_or_null: $ => prec(1, choice(
       $.string,
       $.identifier,
       $.dots,
-      $.dot_dot_i
+      $.dot_dot_i,
+      $.null
     )),
 
     // Keywords.

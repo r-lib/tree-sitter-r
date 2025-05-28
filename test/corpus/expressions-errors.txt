@@ -406,3 +406,19 @@ x[[y[2]]
         argument: (argument
           value: (float))))
     (UNEXPECTED ']')))
+
+================================================================================
+Calls With NA As Argument Name
+================================================================================
+
+# Unlike `NULL`, other keywords like `NA` aren't allowed here
+fn(NA = )
+
+--------------------------------------------------------------------------------
+
+(program
+  (comment)
+  (identifier)
+  (ERROR
+    (na)
+    (UNEXPECTED ')')))
