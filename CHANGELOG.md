@@ -2,6 +2,8 @@
 
 ## devel
 
+- `tags.scm` now tags function definitions with a string name as `@definition.function` (#147, @MichaelChirico).
+
 - Binary exponents are now supported in hexadecimal constants (#159).
 
 - `NULL` is now allowed as a function call argument name (#164).
