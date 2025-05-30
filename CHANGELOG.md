@@ -2,6 +2,8 @@
 
 ## devel
 
+- `highlights.scm` now includes `!` as an `@operator`.
+
 - `tags.scm` now tags function definitions with a string name as `@definition.function` (#147, @MichaelChirico).
 
 - Binary exponents are now supported in hexadecimal constants (#159).
