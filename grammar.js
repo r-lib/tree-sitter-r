@@ -619,13 +619,13 @@ module.exports = grammar({
 
     // NOTE: This is the actual "identifier" used throughout the grammar. R
     // treats `...` and `..i` exactly the same as any other `identifier`
-    // throughout the R grammar. In theory, we'd collapse `dots` and `dot_dot_i`
-    // into `identifier`, but downstream consumers sometimes highlight `dots`
-    // and `dot_dot_i` differently than other identifiers. We also considered
-    // nesting `dots` and `dot_dot_i` as children under `identifier`, but that
-    // is complicated by the fact that we use `identifier` as the `word`, so it
-    // needs to be a token. Plus that would be a breaking change that isn't
-    // worth it (#157, #176).
+    // throughout the R grammar. In theory, we could collapse `dots` and
+    // `dot_dot_i` into `identifier`, but downstream consumers sometimes
+    // highlight `dots` and `dot_dot_i` differently than other identifiers. This
+    // is supported by the fact that `...` and `..i` are "reserved words" in R,
+    // see `?Reserved`. We also considered nesting `dots` and `dot_dot_i` as
+    // children under `identifier`, but that is complicated by the fact that we
+    // use `identifier` as the `word`, so it needs to be a token (#157, #176).
     _identifier: $ => choice(
       $.dots,
       $.dot_dot_i,
