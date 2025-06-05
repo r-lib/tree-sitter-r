@@ -22,7 +22,12 @@ Unlike some other tree-sitter grammars, the R grammar's release version is not t
 
     -   After merging, do NOT call `usethis::use_github_release()`. We are going to create our own git tag
 
--   Create an push a git tag for the version, i.e. `git push origin tag vX.Y.Z` where the leading `v` does matter
+-   Create an push a git tag for the version (the leading `v` does matter):
+
+    ```
+    git tag vX.Y.Z
+    git push upstream tag vX.Y.Z
+    ```
 
     -   This will kick off `publish.yaml` for the GitHub Release, the npm package release, and the Rust crate release
 
