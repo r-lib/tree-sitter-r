@@ -16,11 +16,15 @@ Unlike some other tree-sitter grammars, the R grammar's release version is not t
 
 -   Push and open a PR
 
--   Follow the release procedure for each bindings
+-   Follow the release procedure for R, as it is manual
 
--   Merge the PR, we don't bump to a development version
+-   Merge the PR
 
--   After merging, using `usethis::use_github_release()` will create a git tag for the sources at this point in time
+    -   After merging, do NOT call `usethis::use_github_release()`. We are going to create our own git tag
+
+-   Create an push a git tag for the version, i.e. `git push origin tag vX.Y.Z` where the leading `v` does matter
+
+    -   This will kick off `publish.yaml` for the GitHub Release, the npm package release, and the Rust crate release
 
 ## R package
 
@@ -57,7 +61,7 @@ Davis is the main owner of the crate, but Kevin also has publish rights.
 
 -   `cargo publish --dry-run` will do a dry run before submitting
 
--   `cargo publish` to actually release
+-   The `publish.yaml` CI will actually run `cargo publish` for you. It runs <https://github.com/tree-sitter/workflows/blob/main/.github/workflows/package-crates.yml>. Note that we have a `CARGO_REGISTRY_TOKEN` token that expires after 1 year and may need to be refreshed.
 
 ## Npm package
 
@@ -84,8 +88,8 @@ We use [nvm](https://github.com/nvm-sh/nvm) for npm version management. The npm 
 
 -   `npm publish --dry-run` will do a dry run
 
--   `npm publish` will actually publish
+-   The `publish.yaml` CI will actually run `npm publish` for you. It runs <https://github.com/tree-sitter/workflows/blob/main/.github/workflows/package-npm.yml>. Note that we have a `NODE_AUTH_TOKEN` token that expires after 1 year and may need to be refreshed.
 
-You may need to login to npm through the command line first, use `npm login` for that.
+    -   Note that this builds the WASM binary along with "prebuilds" for each platform, so it does more than just `npm publish`.
 
 We publish as an [unscoped public package](https://docs.npmjs.com/creating-and-publishing-unscoped-public-packages) because that seems to be what other tree-sitter grammars do as well.
