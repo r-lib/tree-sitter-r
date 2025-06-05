@@ -2,6 +2,8 @@
 
 ## devel
 
+## 1.2.0
+
 - Added `"open"` and `"close"` fields to single and double quoted `string`s (#139).
 
 - Fixed an issue related to closing brackets in raw strings (#162).
