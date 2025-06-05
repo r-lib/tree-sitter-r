@@ -4,6 +4,24 @@
 
 Unlike some other tree-sitter grammars, the R grammar's release version is not tied to the tree-sitter version. Instead, we just use standard semantic versioning. We released 1.0.0 when we merged the longstanding `next` branch into `main`, and then we froze `main-old` for people to pin to if they are slow to update.
 
+## Flow
+
+-   Create an `rc/x-y-z` branch
+
+-   Update all binding versions to the new version
+
+-   Polish CHANGELOG
+
+-   Update CHANGELOG's `## devel` to the new version, go ahead and add a new `## devel` header
+
+-   Push and open a PR
+
+-   Follow the release procedure for each bindings
+
+-   Merge the PR, we don't bump to a development version
+
+-   After merging, using `usethis::use_github_release()` will create a git tag for the sources at this point in time
+
 ## R package
 
 <https://cran.r-project.org/web/packages/treesitter.r/index.html>
@@ -14,6 +32,7 @@ The {treesitter.r} package is relatively simple. It just provides `language()` a
 
 -   Decide if you also need to release [{treesitter}](https://github.com/DavisVaughan/r-tree-sitter).
 -   Ensure you `devtools::load_all()` twice to ensure that `bootstrap.R` runs and pulls updated files into `src/` and updates any ABI changes.
+-   Update `NEWS.md` to mention the update and point to the changelog.
 -   Run `devtools::check()` to ensure tests are still passing.
 -   Run `devtools::release()` to do a standard R package release if all looks good.
     -   Use the same version as the Rust crate and the npm package.
