@@ -1,7 +1,7 @@
 [package]
 name = "tree-sitter-r"
 description = "R grammar for tree-sitter"
-version = "1.1.0"
+version = "1.2.0"
 license = "MIT"
 readme = "README.md"
 keywords = ["incremental", "parsing", "tree-sitter", "r"]

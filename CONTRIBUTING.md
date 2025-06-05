@@ -4,6 +4,28 @@
 
 Unlike some other tree-sitter grammars, the R grammar's release version is not tied to the tree-sitter version. Instead, we just use standard semantic versioning. We released 1.0.0 when we merged the longstanding `next` branch into `main`, and then we froze `main-old` for people to pin to if they are slow to update.
 
+## Flow
+
+-   Create an `rc/x-y-z` branch
+
+-   Update all binding versions to the new version
+
+-   Polish CHANGELOG
+
+-   Update CHANGELOG's `## devel` to the new version, go ahead and add a new `## devel` header
+
+-   Push and open a PR
+
+-   Follow the release procedure for R, as it is manual
+
+-   Merge the PR
+
+    -   After merging, do NOT call `usethis::use_github_release()`. We are going to create our own git tag
+
+-   Create an push a git tag for the version, i.e. `git push origin tag vX.Y.Z` where the leading `v` does matter
+
+    -   This will kick off `publish.yaml` for the GitHub Release, the npm package release, and the Rust crate release
+
 ## R package
 
 <https://cran.r-project.org/web/packages/treesitter.r/index.html>
@@ -14,6 +36,7 @@ The {treesitter.r} package is relatively simple. It just provides `language()` a
 
 -   Decide if you also need to release [{treesitter}](https://github.com/DavisVaughan/r-tree-sitter).
 -   Ensure you `devtools::load_all()` twice to ensure that `bootstrap.R` runs and pulls updated files into `src/` and updates any ABI changes.
+-   Update `NEWS.md` to mention the update and point to the changelog.
 -   Run `devtools::check()` to ensure tests are still passing.
 -   Run `devtools::release()` to do a standard R package release if all looks good.
     -   Use the same version as the Rust crate and the npm package.
@@ -38,7 +61,7 @@ Davis is the main owner of the crate, but Kevin also has publish rights.
 
 -   `cargo publish --dry-run` will do a dry run before submitting
 
--   `cargo publish` to actually release
+-   The `publish.yaml` CI will actually run `cargo publish` for you. It runs <https://github.com/tree-sitter/workflows/blob/main/.github/workflows/package-crates.yml>. Note that we have a `CARGO_REGISTRY_TOKEN` token that expires after 1 year and may need to be refreshed.
 
 ## Npm package
 
@@ -65,8 +88,8 @@ We use [nvm](https://github.com/nvm-sh/nvm) for npm version management. The npm 
 
 -   `npm publish --dry-run` will do a dry run
 
--   `npm publish` will actually publish
+-   The `publish.yaml` CI will actually run `npm publish` for you. It runs <https://github.com/tree-sitter/workflows/blob/main/.github/workflows/package-npm.yml>. Note that we have a `NODE_AUTH_TOKEN` token that expires after 1 year and may need to be refreshed.
 
-You may need to login to npm through the command line first, use `npm login` for that.
+    -   Note that this builds the WASM binary along with "prebuilds" for each platform, so it does more than just `npm publish`.
 
 We publish as an [unscoped public package](https://docs.npmjs.com/creating-and-publishing-unscoped-public-packages) because that seems to be what other tree-sitter grammars do as well.
