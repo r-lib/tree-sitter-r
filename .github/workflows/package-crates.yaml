@@ -1,0 +1,70 @@
+# https://github.com/tree-sitter/workflows/blob/main/.github/workflows/package-crates.yml
+
+name: Publish package (crates.io)
+
+on:
+  workflow_call:
+    inputs:
+      package-name:
+        description: The name of the package
+        default: ${{github.event.repository.name}}
+        type: string
+      environment-name:
+        description: The name of the environment
+        default: crates
+        type: string
+      rust-toolchain:
+        description: The Rust toolchain
+        default: ${{vars.RUST_TOOLCHAIN || 'stable'}}
+        type: string
+      generate:
+        description: Generate the parser artifacts
+        default: false
+        type: boolean
+      abi-version:
+        description: The tree-sitter ABI version
+        default: "15"
+        type: string
+    secrets:
+      CARGO_REGISTRY_TOKEN:
+        description: An authentication token for crates.io
+        required: true
+
+jobs:
+  package:
+    name: Publish Rust package
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{inputs.environment-name}}
+      url: https://crates.io/crates/${{inputs.package-name}}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: ${{inputs.rust-toolchain}}
+      - name: Set up tree-sitter CLI
+        if: ${{inputs.generate}}
+        uses: tree-sitter/setup-action/cli@v2
+      - name: Install dependencies
+        run: |-
+          JQ_SCRIPT='.dependencies | del(."node-addon-api", ."node-gyp-build") | length > 0'
+          if jq -e "$JQ_SCRIPT" package.json >/dev/null; then
+            npm i --ignore-scripts --omit dev --omit peer --omit optional
+          fi
+      - name: Regenerate parser
+        if: ${{inputs.generate}}
+        run: |
+          while read -r grammar; do
+            grammar_dir=$(dirname "$grammar")
+            cd "$grammar_dir"
+            tree-sitter generate
+            cd - > /dev/null
+          done < <(find . -name grammar.js -not -path './node_modules/*' -not -path './.build/*')
+        env:
+          TREE_SITTER_ABI_VERSION: ${{inputs.abi-version}}
+      - name: Publish to crates.io
+        run: cargo publish
+        env:
+          CARGO_REGISTRY_TOKEN: ${{secrets.CARGO_REGISTRY_TOKEN}}

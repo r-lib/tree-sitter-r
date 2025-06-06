@@ -11,20 +11,23 @@ permissions:
 
 jobs:
   github:
-    uses: tree-sitter/workflows/.github/workflows/release.yml@main
+    uses: ./.github/workflows/release.yaml
+    # uses: tree-sitter/workflows/.github/workflows/release.yml@main
     with:
       generate: false
       attestations: true
       abi-version: "14"
   npm:
-    uses: tree-sitter/workflows/.github/workflows/package-npm.yml@main
+    uses: ./.github/workflows/package-npm.yaml
+    # uses: tree-sitter/workflows/.github/workflows/package-npm.yml@main
     secrets:
       NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
     with:
       generate: false
       abi-version: "14"
   crates:
-    uses: tree-sitter/workflows/.github/workflows/package-crates.yml@main
+    uses: ./.github/workflows/package-crates.yaml
+    # uses: tree-sitter/workflows/.github/workflows/package-crates.yml@main
     secrets:
       CARGO_REGISTRY_TOKEN: ${{secrets.CARGO_REGISTRY_TOKEN}}
     with:
