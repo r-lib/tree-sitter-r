@@ -1,5 +1,5 @@
 {
-  "name": "tree-sitter-r",
+  "name": "@davisvaughan/tree-sitter-r",
   "version": "1.2.0",
   "description": "R grammar for tree-sitter",
   "repository": {
