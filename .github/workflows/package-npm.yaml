@@ -158,6 +158,9 @@ jobs:
         continue-on-error: true
         run: mv -v prebuilds/*.wasm .
       - name: Publish to npm
-        run: npm publish
+        # This is the only thing we change, because we currently publish a scoped package,
+        # so we need `--access public` because scoped packages are private by default (#41)
+        run: npm publish --access public
+        # run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
