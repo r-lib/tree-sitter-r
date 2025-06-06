@@ -12,6 +12,14 @@ You'll also want the [R package providing bindings to tree-sitter](https://davis
 
 This grammar is available as a [Rust crate on crates.io](https://crates.io/crates/tree-sitter-r).
 
+## Node bindings
+
+This grammar is available as an [npm package](https://www.npmjs.com/package/@davisvaughan/tree-sitter-r).
+
+Note that it is currently listed as a scoped package under the name `@davisvaughan/tree-sitter-r`.
+We are working with the npm team to gain ownership of the `tree-sitter-r` package.
+Once that happens, we will move the npm package there instead.
+
 ## References
 
 - [The R Draft Spec](https://cran.r-project.org/doc/manuals/r-release/R-lang.pdf)

@@ -14,6 +14,8 @@ Unlike some other tree-sitter grammars, the R grammar's release version is not t
 
 -   Update CHANGELOG's `## devel` to the new version, go ahead and add a new `## devel` header
 
+-   Sync `package-npm.yaml`, `package-crates.yaml`, and `release.yaml` with [upstream tree-sitter versions](https://github.com/tree-sitter/workflows/blob/main/.github/workflows).
+
 -   Push and open a PR
 
 -   Follow the release procedure for R, as it is manual
@@ -66,11 +68,13 @@ Davis is the main owner of the crate, but Kevin also has publish rights.
 
 -   `cargo publish --dry-run` will do a dry run before submitting
 
--   The `publish.yaml` CI will actually run `cargo publish` for you. It runs <https://github.com/tree-sitter/workflows/blob/main/.github/workflows/package-crates.yml>. Note that we have a `CARGO_REGISTRY_TOKEN` token that expires after 1 year and may need to be refreshed.
+-   The `publish.yaml` CI will actually run `cargo publish` for you. It runs [this workflow](https://github.com/r-lib/tree-sitter-r/blob/main/.github/workflows/package-crates.yaml) which is our own copy of [this tree-sitter workflow](https://github.com/tree-sitter/workflows/blob/main/.github/workflows/package-crates.yml). We have our own copy of the workflow so that we are in control of updates to it, but we should try and sync it every time we do a release. Note that we have a `CARGO_REGISTRY_TOKEN` token that expires after 1 year and may need to be refreshed.
 
 ## Npm package
 
 Davis is the maintainer of the package.
+
+Note that we currently publish the package under `@davisvaughan/tree-sitter-r` as a *scoped* package, because we are waiting on the npm team to transfer ownership of the `tree-sitter-r` package (it was created maliciously by some bad actor and was taken down, and is owned by the security team for now). We have had to modify `package-npm.yaml` to account for this.
 
 We use [nvm](https://github.com/nvm-sh/nvm) for npm version management. The npm version is specified in `.nvmrc`.
 
@@ -93,8 +97,14 @@ We use [nvm](https://github.com/nvm-sh/nvm) for npm version management. The npm 
 
 -   `npm publish --dry-run` will do a dry run
 
--   The `publish.yaml` CI will actually run `npm publish` for you. It runs <https://github.com/tree-sitter/workflows/blob/main/.github/workflows/package-npm.yml>. Note that we have a `NODE_AUTH_TOKEN` token that expires after 1 year and may need to be refreshed.
+-   The `publish.yaml` CI will actually run `npm publish` for you. It runs [this workflow](https://github.com/r-lib/tree-sitter-r/blob/main/.github/workflows/package-npm.yaml) which is our own copy of [this tree-sitter workflow](https://github.com/tree-sitter/workflows/blob/main/.github/workflows/package-npm.yml). We have our own copy of the workflow so that we are in control of updates to it, but we should try and sync it every time we do a release. Note that we have a `NODE_AUTH_TOKEN` token that expires after 1 year and may need to be refreshed.
 
     -   Note that this builds the WASM binary along with "prebuilds" for each platform, so it does more than just `npm publish`.
 
-We publish as an [unscoped public package](https://docs.npmjs.com/creating-and-publishing-unscoped-public-packages) because that seems to be what other tree-sitter grammars do as well.
+## GitHub Release
+
+-   `publish.yaml` will kick off [this `release.yaml` workflow](https://github.com/r-lib/tree-sitter-r/blob/main/.github/workflows/release.yaml), which is our own copy of [this tree-sitter workflow](https://github.com/tree-sitter/workflows/blob/main/.github/workflows/release.yml).
+
+-   `release.yaml` creates a GitHub Release containing the source code and the WASM binary
+
+-   Note that `release.yaml` must be triggered by `publish.yaml` through a tag update to work correctly, because it creates the GitHub Release by using the `GITHUB_REF_NAME` variable, which should point to the tag version.
