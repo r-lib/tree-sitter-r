@@ -7,10 +7,7 @@
     "url": "git+https://github.com/r-lib/tree-sitter-r.git"
   },
   "license": "MIT",
-  "author": {
-    "name": "Davis Vaughan",
-    "email": "davis@posit.co"
-  },
+  "author": "Davis Vaughan <davis@posit.co>",
   "main": "bindings/node",
   "types": "bindings/node",
   "keywords": [
@@ -51,5 +48,9 @@
     "prestart": "tree-sitter build --wasm",
     "start": "tree-sitter playground",
     "test": "node --test bindings/node/*_test.js"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/r-lib/tree-sitter-r/issues"
+  },
+  "homepage": "https://github.com/r-lib/tree-sitter-r#readme"
 }
