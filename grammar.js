@@ -749,7 +749,7 @@ module.exports = grammar({
     ),
 
     // Comments.
-    comment: $ => token(withPrec(PREC.COMMENT, /#.*/)),
+    comment: $ => token(withPrec(PREC.COMMENT, seq('#', /[^\r\n]*/))),
 
     // Commas. We include these in the AST so we can figure out the
     // argument call position. This is necessary given how R tolerates
