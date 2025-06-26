@@ -52,11 +52,5 @@
   "bugs": {
     "url": "https://github.com/r-lib/tree-sitter-r/issues"
   },
-  "homepage": "https://github.com/r-lib/tree-sitter-r#readme",
-  "tree-sitter": [
-    {
-      "scope": "source.r",
-      "injection-regex": "^r$"
-    }
-  ]
+  "homepage": "https://github.com/r-lib/tree-sitter-r#readme"
 }
