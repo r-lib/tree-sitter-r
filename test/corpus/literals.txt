@@ -353,11 +353,46 @@ Raw Strings
 r"(raw string)"
 R"{another raw string}"
 R"--[yet another ]- raw string]--"
+
+r"(")"
+r"("")"
+r"(')"
+r"('')"
+
+r"-(-)-"
+r"-()-)-"
+r"--()-")--"
+
+r"( () )"
+r"(())"
+r"( ())"
+r"(() )"
+r"-())-"
+r"-(())-)-"
+
+r"(raw
+string
+)"
+
 r()
 
 --------------------------------------------------------------------------------
 
 (program
+  (string)
+  (string)
+  (string)
+  (string)
+  (string)
+  (string)
+  (string)
+  (string)
+  (string)
+  (string)
+  (string)
+  (string)
+  (string)
+  (string)
   (string)
   (string)
   (string)
@@ -420,7 +455,6 @@ Integers
 12332L
 0L
 12L
-0xDEADL
 1e1L
 # Technically, R parses this as a float with a warning, but for our purposes this is good enough
 0.1L
@@ -428,7 +462,6 @@ Integers
 --------------------------------------------------------------------------------
 
 (program
-  (integer)
   (integer)
   (integer)
   (integer)
@@ -444,7 +477,6 @@ Floats
 .11
 123.4123
 .1234
-0xDEAD
 x <- -.66
 
 --------------------------------------------------------------------------------
@@ -454,11 +486,77 @@ x <- -.66
   (float)
   (float)
   (float)
-  (float)
   (binary_operator
     (identifier)
     (unary_operator
       (float))))
+
+================================================================================
+Hexadecimal
+================================================================================
+
+# `x` vs `X`
+0x123
+0X123
+
+# Numbers and letters
+0xDEAD
+0XDEAD
+0x1f2F3
+0X1f2F3
+
+# `p` vs `P`
+0x0p0
+0x0P0
+0x0p123
+0x0P123
+
+# `+` and `-`
+0x0p+0
+0x0p-0
+0x0p+123
+0x0p-123
+
+# As integers
+0x123L
+0X123L
+0xDEADL
+0XDEADL
+0x0p0L
+0x0P0L
+0x0p+0L
+0x0p-0L
+
+--------------------------------------------------------------------------------
+
+(program
+  (comment)
+  (float)
+  (float)
+  (comment)
+  (float)
+  (float)
+  (float)
+  (float)
+  (comment)
+  (float)
+  (float)
+  (float)
+  (float)
+  (comment)
+  (float)
+  (float)
+  (float)
+  (float)
+  (comment)
+  (integer)
+  (integer)
+  (integer)
+  (integer)
+  (integer)
+  (integer)
+  (integer)
+  (integer))
 
 ================================================================================
 Scientific Notation Floats

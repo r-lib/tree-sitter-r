@@ -1,0 +1,91 @@
+# https://github.com/tree-sitter/workflows/blob/main/.github/workflows/release.yml
+
+name: Publish GitHub release
+
+on:
+  workflow_call:
+    inputs:
+      emscripten-version:
+        description: The Emscripten version
+        default: ${{vars.EMSCRIPTEN_VERSION || '3.1.64'}}
+        type: string
+      generate:
+        description: Generate the parser artifacts
+        default: false
+        type: boolean
+      attestations:
+        description: Generate attestations for artifacts
+        default: false
+        type: boolean
+      abi-version:
+        description: The tree-sitter ABI version
+        default: "15"
+        type: string
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  release:
+    name: Build release artifacts
+    runs-on: ubuntu-latest
+    env:
+      REPO_NAME: ${{github.event.repository.name}}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Emscripten
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: ${{inputs.emscripten-version}}
+      - name: Set up tree-sitter CLI
+        uses: tree-sitter/setup-action/cli@v2
+      - name: Install parser dependencies
+        run: |-
+          JQ_SCRIPT='.dependencies | del(."node-addon-api", ."node-gyp-build") | length > 0'
+          if jq -e "$JQ_SCRIPT" package.json >/dev/null; then
+            npm i --ignore-scripts --omit dev --omit peer --omit optional
+          fi
+      - name: Generate parser
+        if: inputs.generate
+        shell: bash
+        run: |
+          while read -r grammar; do
+            grammar_dir=$(dirname "$grammar")
+            pushd "$grammar_dir"
+            tree-sitter generate
+            popd > /dev/null
+          done < <(find . -name grammar.js -not -path './node_modules/*')
+        env:
+          TREE_SITTER_ABI_VERSION: ${{inputs.abi-version}}
+      - name: Build Wasm binaries
+        shell: bash
+        run: |-
+          while read -r grammar; do
+            tree-sitter build --wasm "${grammar%/grammar.js}"
+          done < <(find . -name grammar.js -not -path './node_modules/*')
+      - name: Create source code tarball
+        run: |
+          git ls-files > "$RUNNER_TEMP/files"
+          while read -r grammar; do
+            : "$(dirname "$grammar")"; src_dir="${_/.\//}/src"
+            printf '%s\n' >> "$RUNNER_TEMP/files" \
+              "$src_dir"/parser.c "$src_dir"/grammar.json \
+              "$src_dir"/node-types.json "$src_dir"/tree_sitter/*
+          done < <(find . -name grammar.js -not -path './node_modules/*')
+          tar cvzf "$REPO_NAME.tar.gz" -T <(sort -u "$RUNNER_TEMP/files")
+      - name: Generate attestations
+        uses: actions/attest-build-provenance@v2
+        if: inputs.attestations
+        with:
+          subject-path: |
+            *.wasm
+            ${{env.REPO_NAME}}.tar.gz
+      - name: Create GitHub release
+        run: |-
+          gh release create "$GITHUB_REF_NAME" *.wasm "$REPO_NAME.tar.gz" \
+            -n "**NOTE:** Download \`$REPO_NAME.tar.gz\` for the *complete* source code."
+        env:
+          GH_TOKEN: ${{github.token}}

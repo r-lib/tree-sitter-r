@@ -1,0 +1,48 @@
+{
+  "grammars": [
+    {
+      "name": "r",
+      "camelcase": "R",
+      "scope": "source.R",
+      "path": ".",
+      "file-types": [
+        "R",
+        "r"
+      ],
+      "highlights": "queries/highlights.scm",
+      "tags": "queries/tags.scm",
+      "injection-regex": "^[Rr]$",
+      "first-line-regex": "#!.*\\bRscript$"
+    }
+  ],
+  "metadata": {
+    "version": "1.2.0",
+    "license": "MIT",
+    "description": "R grammar for tree-sitter",
+    "authors": [
+      {
+        "name": "Davis Vaughan",
+        "email": "davis@posit.co"
+      },
+      {
+        "name": "Kevin Ushey",
+        "email": "kevin@posit.co"
+      },
+      {
+        "name": "Jim Hester",
+        "email": "james.f.hester@gmail.com"
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/r-lib/tree-sitter-r"
+    }
+  },
+  "bindings": {
+    "c": true,
+    "go": true,
+    "node": true,
+    "python": true,
+    "rust": true,
+    "swift": true
+  }
+}

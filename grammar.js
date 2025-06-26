@@ -84,13 +84,6 @@ const PREC = {
   // https://www.gnu.org/software/bison/manual/html_node/How-Precedence.html
   BLOCK: { ASSOC: prec, RANK: 0 },
 
-  // ..i
-  // NOTE: If we don't put `dot_dot_i` at a positive rank, then `..1` will get
-  // treated as an `identifier` because the rules for `identifier` and
-  // `dot_dot_i` both match `..1`, but `identifier` physically comes first in
-  // the grammar so it will otherwise have prioritiy if both have rank 0.
-  DOT_DOT_I: { ASSOC: prec, RANK: 1 },
-
   // ?
   HELP: { ASSOC: prec.left, RANK: 1 },
 
@@ -178,6 +171,45 @@ module.exports = grammar({
     /\s/
   ],
 
+  // We inline `_identifier` and `_string_or_identifier` for use in
+  // `_string_or_identifier` itself and for use in
+  // `_argument_name_string_or_identifier_or_null`.
+  //
+  // In particular, in `_argument_name_string_or_identifier_or_null` we need
+  // all choices flattened into a flat array, so that `prec(1)` can be applied
+  // to all choices, which doesn't seem to happen when we have nesting.
+  //
+  // Without this, we get conflicts between `_identifier` and `_expression`
+  // because it can't choose between `_argument_unnamed` and `_argument_named`
+  // because the `prec(1)` isn't being applied recursively to `_identifier`
+  //
+  // I imagine it working like this:
+  //
+  // ```
+  // _argument_name_string_or_identifier_or_null: $ => prec(1, choice(
+  //   $._string_or_identifier,
+  //   $.null
+  // )),
+  // inlines to ->
+  // _argument_name_string_or_identifier_or_null: $ => prec(1, choice(
+  //   $.string,
+  //   $._identifier,
+  //   $.null
+  // )),
+  // inlines to ->
+  // _argument_name_string_or_identifier_or_null: $ => prec(1, choice(
+  //   $.string,
+  //   $.dots,
+  //   $.dot_dot_i,
+  //   $.identifier,
+  //   $.null
+  // )),
+  // ```
+  inline: $ => [
+    $._identifier,
+    $._string_or_identifier
+  ],
+
   externals: $ => [
     $._start,
     $._newline,
@@ -236,15 +268,18 @@ module.exports = grammar({
       $._parameter_without_default
     ),
 
+    // Note that the default is required if we see an `=`,
+    // i.e. `function(x = ) {}` is not valid R code and does
+    // not parse (#161).
     _parameter_with_default: $ => seq(
       $._parameter_name,
       "=",
-      optional(field("default", $._expression))
+      field("default", $._expression)
     ),
 
     _parameter_without_default: $ => $._parameter_name,
 
-    _parameter_name: $ => field("name", $._identifier_or_dots_or_dot_dot_i),
+    _parameter_name: $ => field("name", $._identifier),
 
     // Control flow.
     // NOTE: See `NOTE ON NEWLINES BETWEEN PARENTHESES` above
@@ -269,7 +304,7 @@ module.exports = grammar({
       "for",
       repeat($._newline),
       field("open", $._open_parenthesis),
-      field("variable", $._identifier_or_dots_or_dot_dot_i),
+      field("variable", $._identifier),
       "in",
       field("sequence", $._expression),
       field("close", $._close_parenthesis),
@@ -368,8 +403,11 @@ module.exports = grammar({
       $._argument_unnamed
     ),
 
+    // Note that the value is optional, i.e. both of these are valid:
+    // fn(a = 1)
+    // fn(a = )
     _argument_named: $ => seq(
-      field("name", $._argument_name_string_or_identifier_or_dots_or_dot_dot_i),
+      field("name", $._argument_name_string_or_identifier_or_null),
       "=",
       optional($._argument_value)
     ),
@@ -452,7 +490,7 @@ module.exports = grammar({
       ))))
     },
 
-    // NOTE: Expression on LHS, string/identifier/dots/dot_dot_i on RHS
+    // NOTE: Expression on LHS, string/identifier on RHS
     extract_operator: $ => {
       const table = [
         ["$", PREC.EXTRACT],
@@ -463,11 +501,11 @@ module.exports = grammar({
         field("lhs", $._expression),
         field("operator", operator),
         repeat($._newline),
-        optional(field("rhs", $._string_or_identifier_or_dots_or_dot_dot_i))
+        optional(field("rhs", $._string_or_identifier))
       ))))
     },
 
-    // NOTE: No newlines are allowed. String/identifier/dots/dot_dot_i on both LHS and RHS.
+    // NOTE: No newlines are allowed. String/identifier on both LHS and RHS.
     namespace_operator: $ => {
       const table = [
         ["::", PREC.NAMESPACE],
@@ -475,9 +513,9 @@ module.exports = grammar({
       ];
 
       return choice(...table.map(([operator, prec]) => prec.ASSOC(prec.RANK, seq(
-        field("lhs", $._string_or_identifier_or_dots_or_dot_dot_i),
+        field("lhs", $._string_or_identifier),
         field("operator", operator),
-        optional(field("rhs", $._string_or_identifier_or_dots_or_dot_dot_i))
+        optional(field("rhs", $._string_or_identifier))
       ))))
     },
 
@@ -486,7 +524,8 @@ module.exports = grammar({
     complex: $ => seq($._float_literal, "i"),
     float: $ => $._float_literal,
 
-    _hex_literal: $ => /0[xX][0-9a-fA-F]+/,
+    // NOTE: See `?NumericConstants` for precise details
+    _hex_literal: $ => /0[xX][0-9a-fA-F]+([pP][+-]?[0-9]+)?/,
     _number_literal: $ => /(?:(?:\d+(?:\.\d*)?)|(?:\.\d+))(?:[eE][+-]?\d*)?/,
     _float_literal: $ => choice($._hex_literal, $._number_literal),
 
@@ -500,9 +539,9 @@ module.exports = grammar({
     // TODO: Raw string contents, something like this, where `_raw_string_open`,
     // `_raw_string_close`, and `_raw_string_content` are externals.
     // _raw_string_literal: $ => seq(
-    //   $._raw_string_open,
+    //   field("open", $._raw_string_open),
     //   optional(field("content", alias($._raw_string_content, $.string_content))),
-    //   $._raw_string_close
+    //   field("close", $._raw_string_close)
     // ),
 
     // Explanation is:
@@ -510,15 +549,15 @@ module.exports = grammar({
     //   - Anything except `'` (or `"`) or `\`
     //   - An escape sequence
     _single_quoted_string: $ => seq(
-      '\'',
+      field("open", '\''),
       optional(field("content", alias($._single_quoted_string_content, $.string_content))),
-      '\''
+      field("close", '\'')
     ),
 
     _double_quoted_string: $ => seq(
-      '"',
+      field("open", '"'),
       optional(field("content", alias($._double_quoted_string_content, $.string_content))),
-      '"'
+      field("close", '"')
     ),
 
     _single_quoted_string_content: $ => repeat1(choice(
@@ -544,6 +583,13 @@ module.exports = grammar({
       )
     )),
 
+    // NOTE: The ordering here matters. Since `identifier` would match both
+    // `dots` and `dot_dot_i` and everyone has the same precedence (of 0),
+    // we must put `dots` and `dot_dot_i` first in the grammar itself to
+    // allow them to match first.
+    dots: $ => "...",
+    dot_dot_i: $ => /[.][.]\d+/,
+
     // Identifiers.
     // NOTE: `_` isn't a valid way to start an R identifier, but we are a little
     // lax here and parse it anyways. One reason is because want to support a lone `_` as
@@ -552,66 +598,70 @@ module.exports = grammar({
     // check that `_foo` is an invalid identifier. It seems simpler to parse `_foo` as a
     // single identifier, and then let downstream consumers do further checks on the
     // validity as needed (#71).
-    // NOTE: Due to the linked tree-sitter discussion, if `_identifier` and
-    // `_quoted_identifier` are their own hidden rules, then we can't detect error
+    // NOTE: Due to the linked tree-sitter discussion, if `_unquoted_identifier` and
+    // `_quoted_identifier` are their own hidden terminal rules, then we can't detect error
     // recovered `identifier`s as missing with `ts_node_is_missing()`. The workaround used
     // here inlines the regexes, and wraps the `choice()` call in a single terminal
     // `token()` so `identifier` can still be used as the `word` rule.
     // https://github.com/tree-sitter/tree-sitter/issues/3332
+    // NOTE: Do not use this directly in the grammar, use `_identifier` instead!
     identifier: $ => {
-      const _identifier = /[\p{XID_Start}._][\p{XID_Continue}.]*/;
+      const _unquoted_identifier = /[\p{XID_Start}._][\p{XID_Continue}.]*/;
       const _quoted_identifier = /`((?:\\(.|\n))|[^`\\])*`/;
 
       return token(
         choice(
-          _identifier,
+          _unquoted_identifier,
           _quoted_identifier
         )
       )
     },
 
-    // Identifier-ish, but useful enough to be their own nodes
-    dots: $ => "...",
-    dot_dot_i: $ => token(withPrec(PREC.DOT_DOT_I, /[.][.]\d+/)),
-
-    // NOTE: Technically R allows `...` and `..1` anywhere we want an `$.identifier`,
-    // but practically it can be useful for downstream consumers to have separate
-    // nodes for these particular constructs. Our compromise is to keep these as separate
-    // nodes, but then use this in most places we want an identifier.
-    _identifier_or_dots_or_dot_dot_i: $ => choice(
-      $.identifier,
+    // NOTE: This is the actual "identifier" used throughout the grammar. R
+    // treats `...` and `..i` exactly the same as any other `identifier`
+    // throughout the R grammar. In theory, we could collapse `dots` and
+    // `dot_dot_i` into `identifier`, but downstream consumers sometimes
+    // highlight `dots` and `dot_dot_i` differently than other identifiers. This
+    // is supported by the fact that `...` and `..i` are "reserved words" in R,
+    // see `?Reserved`. We also considered nesting `dots` and `dot_dot_i` as
+    // children under `identifier`, but that is complicated by the fact that we
+    // use `identifier` as the `word`, so it needs to be a token (#157, #176).
+    _identifier: $ => choice(
       $.dots,
-      $.dot_dot_i
+      $.dot_dot_i,
+      $.identifier
     ),
 
-    // NOTE: Having this as an actual node (rather than inlining the `choice()`) somehow
-    // ends up allowing better error recovery in a few cases
-    _string_or_identifier_or_dots_or_dot_dot_i: $ => choice(
+    _string_or_identifier: $ => choice(
       $.string,
-      $.identifier,
-      $.dots,
-      $.dot_dot_i
+      $._identifier
     ),
 
-    // NOTE: This is exactly `_string_or_identifier_or_dots_or_dot_dot_i` but with
-    // a precedence of 1. It seems like we have to set the `prec(1, )` on the `choice()`
-    // directly, we can't reuse `_string_or_identifier_or_dots_or_dot_dot_i` here
-    // otherwise `tree-sitter generate` throws an unresolved conflict error.
+    // NOTE: This is only for use in `_argument_named`
     //
-    // This is only for use in `_argument_named`.
+    // This is extremely similar to `_string_or_identifier`,
+    // but there are two differences outlined below
     //
-    // Since `_argument_unnamed` can be an arbitrary `_expression` (with precedence 0)
-    // which includes `string`, `identifier`, `dots`, and `dot_dot_i`, there is an
-    // ambiguity between:
+    // # Usage of `prec(1, )`
+    //
+    // Since `_argument_unnamed` can be an arbitrary `_expression` (with
+    // precedence 0) which includes `string`, `identifier`, `dots`, `dot_dot_i`,
+    // and `null`, there is an ambiguity between:
     // - Starting the `value` of an `_argument_unnamed`
     // - Starting the `name` of an `_argument_named`
     //
     // We set a higher precedence here to try and match `_argument_named` first.
-    _argument_name_string_or_identifier_or_dots_or_dot_dot_i: $ => prec(1, choice(
-      $.string,
-      $.identifier,
-      $.dots,
-      $.dot_dot_i
+    //
+    // # Inclusion of `null`
+    //
+    // Since the beginning of R, `NULL` has surprisingly been allowed in
+    // function argument name position, like `fn(NULL = 1)` and `fn(NULL = )`.
+    // This is surprising because numeric constants like `NA` and `Inf` are not
+    // allowed here, and `NULL` isn't specially allowed anywhere else you might
+    // expect it to be special cased, like `x$NULL` or `function(NULL) {}` (#164).
+    _argument_name_string_or_identifier_or_null: $ => prec(1, choice(
+      $._string_or_identifier,
+      $.null
     )),
 
     // Keywords.

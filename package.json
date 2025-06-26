@@ -1,12 +1,15 @@
 {
-  "name": "tree-sitter-r",
-  "version": "1.1.0",
-  "license": "MIT",
+  "name": "@davisvaughan/tree-sitter-r",
+  "version": "1.2.0",
   "description": "R grammar for tree-sitter",
-  "repository": "github:r-lib/tree-sitter-r",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/r-lib/tree-sitter-r.git"
+  },
+  "license": "MIT",
+  "author": "Davis Vaughan <davis@posit.co>",
   "main": "bindings/node",
   "types": "bindings/node",
-  "author": "Kevin Ushey <kevin@posit.co>",
   "keywords": [
     "incremental",
     "parsing",
@@ -15,27 +18,30 @@
   ],
   "files": [
     "grammar.js",
+    "tree-sitter.json",
     "binding.gyp",
     "prebuilds/**",
     "bindings/node/*",
     "queries/*",
-    "src/**"
+    "src/**",
+    "*.wasm"
   ],
   "dependencies": {
-    "node-addon-api": "^8.0.0",
-    "node-gyp-build": "^4.8.0"
-  },
-  "peerDependencies": {
-    "tree-sitter": "^0.21.0"
-  },
-  "peerDependenciesMeta": {
-    "tree_sitter": {
-      "optional": true
-    }
+    "node-addon-api": "^8.2.1",
+    "node-gyp-build": "^4.8.2"
   },
   "devDependencies": {
-    "tree-sitter-cli": "^0.23.0",
-    "prebuildify": "^6.0.0"
+    "prebuildify": "^6.0.1",
+    "tree-sitter": "^0.21.1",
+    "tree-sitter-cli": "^0.24.7"
+  },
+  "peerDependencies": {
+    "tree-sitter": "^0.21.1"
+  },
+  "peerDependenciesMeta": {
+    "tree-sitter": {
+      "optional": true
+    }
   },
   "scripts": {
     "install": "node-gyp-build",
@@ -43,17 +49,14 @@
     "start": "tree-sitter playground",
     "test": "node --test bindings/node/*_test.js"
   },
+  "bugs": {
+    "url": "https://github.com/r-lib/tree-sitter-r/issues"
+  },
+  "homepage": "https://github.com/r-lib/tree-sitter-r#readme",
   "tree-sitter": [
     {
-      "scope": "source.R",
-      "file-types": [
-        "R",
-        "r"
-      ],
-      "injection-regex": "^[Rr]$",
-      "first-line-regex": "#!.*\\bRscript$",
-      "highlights": "queries/highlights.scm",
-      "tags": "queries/tags.scm"
+      "scope": "source.r",
+      "injection-regex": "^r$"
     }
   ]
 }

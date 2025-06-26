@@ -2016,6 +2016,56 @@ f(..1 = ..1)
         value: (dot_dot_i)))))
 
 ================================================================================
+Calls With NULL As Argument Name
+================================================================================
+
+fn(NULL =)
+fn(NULL =,)
+fn(NULL = 1)
+
+# This was likely added to R to support this case for `switch()`
+switch(typeof(x), NULL = this, integer = that)
+
+--------------------------------------------------------------------------------
+
+(program
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        name: (null))))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        name: (null))
+      (comma)))
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        name: (null)
+        value: (float))))
+  (comment)
+  (call
+    function: (identifier)
+    arguments: (arguments
+      argument: (argument
+        value: (call
+          function: (identifier)
+          arguments: (arguments
+            argument: (argument
+              value: (identifier)))))
+      (comma)
+      argument: (argument
+        name: (null)
+        value: (identifier))
+      (comma)
+      argument: (argument
+        name: (identifier)
+        value: (identifier)))))
+
+================================================================================
 Braced Expression
 ================================================================================
 

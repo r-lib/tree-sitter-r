@@ -2,9 +2,17 @@
 
 ## devel
 
-- `...` and `..1` are now supported in more places, such as `x$...` and `x@..1` (#148).
+## 1.2.0
 
-- `parenthesized_expression` has been simplified to better align with R's parser. Specifically, it now expects exactly 1 required `body` expression, rather than allowing zero or more optional expressions (#144).
+- Added `"open"` and `"close"` fields to single and double quoted `string`s (#139).
+
+- Fixed an issue related to closing brackets in raw strings (#162).
+
+- Binary exponents are now supported in hexadecimal constants (#159).
+
+- `NULL` is now allowed as a function call argument name (#164).
+
+- `...` and `..1` are now supported in more places, such as `x$...` and `x@..1` (#148).
 
 - `fn(a b)` is now correctly parsed as an error rather than as two sequential arguments (#140).
 
@@ -14,7 +22,17 @@
 
 - Newlines are now allowed after an `else` but before the `alternative` (#141).
 
+- `parenthesized_expression` has been simplified to better align with R's parser. Specifically, it now expects exactly 1 required `body` expression, rather than allowing zero or more optional expressions (#144).
+
+- `highlights.scm` now includes `!` as an `@operator`.
+
+- `tags.scm` now tags function definitions with a string name as `@definition.function` (#147, @MichaelChirico).
+
+- Removed an unnecessary `optional()` from `_parameter_with_default` (#161).
+
 - The internal `_hex_literal` rule was simplified slightly (#138).
+
+- Changed a number of internal files to match tree-sitter v0.24.7 recommendations (#169).
 
 ## 1.1.0
 

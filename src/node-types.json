@@ -20,6 +20,10 @@
             "named": true
           },
           {
+            "type": "null",
+            "named": true
+          },
+          {
             "type": "string",
             "named": true
           }
@@ -2604,6 +2608,20 @@
     "type": "string",
     "named": true,
     "fields": {
+      "close": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "\"",
+            "named": false
+          },
+          {
+            "type": "'",
+            "named": false
+          }
+        ]
+      },
       "content": {
         "multiple": false,
         "required": false,
@@ -2611,6 +2629,20 @@
           {
             "type": "string_content",
             "named": true
+          }
+        ]
+      },
+      "open": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "\"",
+            "named": false
+          },
+          {
+            "type": "'",
+            "named": false
           }
         ]
       }

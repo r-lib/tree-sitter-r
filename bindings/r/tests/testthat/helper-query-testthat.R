@@ -13,7 +13,9 @@ expect_test_that_captures <- function(code_source, desc, captures) {
     trimws(code_source)
   )
   expect_equal(
-    treesitter::node_text(captures[["node"]][[which(captures$name == "function")]]),
+    treesitter::node_text(captures[["node"]][[which(
+      captures$name == "function"
+    )]]),
     "test_that"
   )
   expect_equal(
@@ -22,13 +24,17 @@ expect_test_that_captures <- function(code_source, desc, captures) {
   )
   if ("pkg" %in% captures$name) {
     expect_equal(
-      treesitter::node_text(captures[["node"]][[which(captures$name == "pkg")]]),
+      treesitter::node_text(captures[["node"]][[which(
+        captures$name == "pkg"
+      )]]),
       "testthat"
     )
   }
   if ("param" %in% captures$name) {
     expect_equal(
-      treesitter::node_text(captures[["node"]][[which(captures$name == "param")]]),
+      treesitter::node_text(captures[["node"]][[which(
+        captures$name == "param"
+      )]]),
       "desc"
     )
   }
