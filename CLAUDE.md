@@ -67,7 +67,7 @@ R CMD check treesitter.r_*.tar.gz
 
 # Run R package tests
 cd bindings/r
-R -e 'testthat::test_local()'
+R -e 'devtools::test()'
 ```
 
 ## Repository Structure
