@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tree-sitter R Playground</title>
+  <title>Tree-sitter R Playground YO</title>
 
   <!-- External dependencies -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
@@ -22,7 +22,7 @@
   <div class="playground">
     <div class="playground-header">
       Tree-sitter R Grammar Playground
-      
+
       <div class="playground-controls">
         <div class="control-item">
           <input id="logging-checkbox" type="checkbox">
@@ -148,18 +148,18 @@
         codeEditor.on('changes', debounce(parseCode, 250));
         codeEditor.on('cursorActivity', debounce(handleCursorMovement, 150));
         queryEditor.on('changes', debounce(runQuery, 250));
-        
+
         // Set up checkbox event handlers
         loggingCheckbox.addEventListener('change', function() {
           console.log('Logging ' + (this.checked ? 'enabled' : 'disabled'));
         });
-        
+
         anonymousNodesCheckbox.addEventListener('change', function() {
           parseCode(); // Re-render tree with/without anonymous nodes
         });
-        
+
         queryCheckbox.addEventListener('change', function() {
-          document.getElementById('query-container').style.visibility = 
+          document.getElementById('query-container').style.visibility =
             this.checked ? 'visible' : 'hidden';
         });
 
@@ -179,7 +179,7 @@
 
         // Parse the code
         tree = parser.parse(code);
-        
+
         // Calculate parse time
         const endTime = performance.now();
         const parseTime = endTime - startTime;
@@ -256,7 +256,7 @@
         const isHighlighted = matches.some(match =>
           match.captures.some(capture => capture.node.id === cursor.currentNode.id)
         );
-        
+
         // Skip anonymous nodes if checkbox is not checked
         if (!cursor.nodeIsNamed && !anonymousNodesCheckbox.checked) {
           if (cursor.gotoFirstChild()) {
@@ -337,31 +337,31 @@
   // Handle cursor movement to highlight corresponding tree node
   function handleCursorMovement() {
     if (!tree) return;
-    
+
     const cursor = codeEditor.getCursor();
     const lineNumber = cursor.line;
     const column = cursor.ch;
-    
+
     // Remove any existing highlights
     const highlighted = treeContainer.querySelectorAll('.tree-row.cursor-highlighted');
     highlighted.forEach(el => el.classList.remove('cursor-highlighted'));
-    
+
     // Find all nodes that contain this position
     const treeRows = treeContainer.querySelectorAll('.tree-row');
     let bestMatch = null;
     let smallestSize = Infinity;
-    
+
     treeRows.forEach(row => {
       const startRow = parseInt(row.dataset.startRow, 10);
       const startCol = parseInt(row.dataset.startColumn, 10);
       const endRow = parseInt(row.dataset.endRow, 10);
       const endCol = parseInt(row.dataset.endColumn, 10);
-      
+
       // Check if position is within this node
-      const containsPosition = 
+      const containsPosition =
         (startRow < lineNumber || (startRow === lineNumber && startCol <= column)) &&
         (endRow > lineNumber || (endRow === lineNumber && endCol >= column));
-      
+
       if (containsPosition) {
         // Calculate size of node (rough estimate by characters)
         const size = (endRow - startRow) * 1000 + (endCol - startCol);
@@ -371,7 +371,7 @@
         }
       }
     });
-    
+
     // Highlight the smallest node that contains the cursor
     if (bestMatch) {
       bestMatch.classList.add('cursor-highlighted');
@@ -380,7 +380,7 @@
     }
   }
   </script>
-  
+
   <style>
   /* Additional styles to support new features */
   .playground-header {
@@ -388,26 +388,26 @@
     justify-content: space-between;
     align-items: center;
   }
-  
+
   .playground-controls {
     display: flex;
     gap: 15px;
     align-items: center;
     font-size: 14px;
   }
-  
+
   .control-item {
     display: flex;
     align-items: center;
     gap: 4px;
   }
-  
+
   .tree-row.cursor-highlighted {
     background-color: #e8f0fe;
     border-radius: 3px;
     font-weight: bold;
   }
-  
+
   #update-time {
     font-family: monospace;
     min-width: 40px;
