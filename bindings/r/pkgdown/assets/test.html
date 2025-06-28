@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tree-sitter WASM Test</title>
+  <script src="https://unpkg.com/web-tree-sitter@0.20.8"></script>
+</head>
+<body>
+  <h1>Tree-sitter WASM Test</h1>
+  <div id="output">Testing if we can load the Tree-sitter WASM file...</div>
+  
+  <script>
+    async function test() {
+      const output = document.getElementById('output');
+      
+      try {
+        output.innerHTML += "<p>Initializing Tree-sitter...</p>";
+        await TreeSitter.init({
+          locateFile() {
+            return 'https://unpkg.com/web-tree-sitter@0.20.8/tree-sitter.wasm';
+          }
+        });
+        output.innerHTML += "<p>✅ Tree-sitter initialized successfully</p>";
+        
+        output.innerHTML += "<p>Creating parser...</p>";
+        const parser = new TreeSitter();
+        output.innerHTML += "<p>✅ Parser created successfully</p>";
+        
+        const paths = [
+          'playground/assets/tree-sitter-r.wasm',
+          'assets/playground/assets/tree-sitter-r.wasm',
+          '../playground/assets/tree-sitter-r.wasm',
+          'tree-sitter-r.wasm'
+        ];
+        
+        for (const path of paths) {
+          try {
+            output.innerHTML += `<p>Trying to load R grammar from: ${path}</p>`;
+            const language = await TreeSitter.Language.load(path);
+            output.innerHTML += `<p>✅ Successfully loaded R grammar from: ${path}</p>`;
+            parser.setLanguage(language);
+            
+            // Try parsing some simple code
+            const simpleCode = 'x <- 1 + 2';
+            const tree = parser.parse(simpleCode);
+            output.innerHTML += `<p>✅ Successfully parsed code: ${simpleCode}</p>`;
+            output.innerHTML += `<pre>${JSON.stringify(tree.rootNode.toString(), null, 2)}</pre>`;
+            
+            // Stop after the first successful load
+            return;
+          } catch (e) {
+            output.innerHTML += `<p>❌ Failed to load from ${path}: ${e.message}</p>`;
+          }
+        }
+        
+        output.innerHTML += "<p>❌ Failed to load R grammar from any path</p>";
+      } catch (e) {
+        output.innerHTML += `<p>❌ Error: ${e.message}</p>`;
+        console.error(e);
+      }
+    }
+    
+    // Run the test when page loads
+    window.onload = test;
+  </script>
+</body>
+</html>
