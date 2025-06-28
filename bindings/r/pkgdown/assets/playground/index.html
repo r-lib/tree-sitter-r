@@ -22,6 +22,33 @@
   <div class="playground">
     <div class="playground-header">
       Tree-sitter R Grammar Playground
+      
+      <div class="playground-controls">
+        <div class="control-item">
+          <input id="logging-checkbox" type="checkbox">
+          <label for="logging-checkbox">log</label>
+        </div>
+
+        <div class="control-item">
+          <input id="anonymous-nodes-checkbox" type="checkbox">
+          <label for="anonymous-nodes-checkbox">show anonymous nodes</label>
+        </div>
+
+        <div class="control-item">
+          <input id="query-checkbox" type="checkbox">
+          <label for="query-checkbox">query</label>
+        </div>
+
+        <div class="control-item">
+          <input id="accessibility-checkbox" type="checkbox">
+          <label for="accessibility-checkbox">accessibility</label>
+        </div>
+
+        <div class="control-item">
+          <label for="update-time">parse time: </label>
+          <span id="update-time"></span>
+        </div>
+      </div>
     </div>
 
     <div class="playground-body">
@@ -48,6 +75,8 @@
   <script>
     // DOM elements we'll use
     let codeEditor, tree, codeContainer, treeContainer, queryContainer, queryEditor;
+    // UI control elements
+    let loggingCheckbox, anonymousNodesCheckbox, queryCheckbox, accessibilityCheckbox, updateTimeSpan;
     // Libraries we depend on
     // The tree-sitter objects we'll use
     let parser, rLanguage;
@@ -59,6 +88,11 @@
         codeContainer = document.getElementById('code-container');
         treeContainer = document.getElementById('tree-container');
         queryContainer = document.getElementById('query-container');
+        loggingCheckbox = document.getElementById('logging-checkbox');
+        anonymousNodesCheckbox = document.getElementById('anonymous-nodes-checkbox');
+        queryCheckbox = document.getElementById('query-checkbox');
+        accessibilityCheckbox = document.getElementById('accessibility-checkbox');
+        updateTimeSpan = document.getElementById('update-time');
 
         // Initialize tree-sitter library with explicit path to web-tree-sitter WASM
         await TreeSitter.init({
@@ -112,7 +146,22 @@
 
         // Set up event handlers
         codeEditor.on('changes', debounce(parseCode, 250));
+        codeEditor.on('cursorActivity', debounce(handleCursorMovement, 150));
         queryEditor.on('changes', debounce(runQuery, 250));
+        
+        // Set up checkbox event handlers
+        loggingCheckbox.addEventListener('change', function() {
+          console.log('Logging ' + (this.checked ? 'enabled' : 'disabled'));
+        });
+        
+        anonymousNodesCheckbox.addEventListener('change', function() {
+          parseCode(); // Re-render tree with/without anonymous nodes
+        });
+        
+        queryCheckbox.addEventListener('change', function() {
+          document.getElementById('query-container').style.visibility = 
+            this.checked ? 'visible' : 'hidden';
+        });
 
         // Initial parse
         parseCode();
@@ -126,9 +175,17 @@
     function parseCode() {
       try {
         const code = codeEditor.getValue();
+        const startTime = performance.now();
 
         // Parse the code
         tree = parser.parse(code);
+        
+        // Calculate parse time
+        const endTime = performance.now();
+        const parseTime = endTime - startTime;
+        if (updateTimeSpan) {
+          updateTimeSpan.textContent = parseTime.toFixed(1) + 'ms';
+        }
 
         // Render the tree
         renderTree(tree.rootNode);
@@ -199,6 +256,17 @@
         const isHighlighted = matches.some(match =>
           match.captures.some(capture => capture.node.id === cursor.currentNode.id)
         );
+        
+        // Skip anonymous nodes if checkbox is not checked
+        if (!cursor.nodeIsNamed && !anonymousNodesCheckbox.checked) {
+          if (cursor.gotoFirstChild()) {
+            do {
+              renderNode(depth);
+            } while (cursor.gotoNextSibling());
+            cursor.gotoParent();
+          }
+          return;
+        }
 
         const displayName = cursor.nodeIsNamed ? cursor.nodeType : `"${cursor.nodeType}"`;
         const start = cursor.startPosition;
@@ -207,6 +275,11 @@
         const row = document.createElement('div');
         row.className = isHighlighted ? 'tree-row highlighted' : 'tree-row';
         row.style.marginLeft = (depth * 12) + 'px';
+        row.dataset.startRow = start.row;
+        row.dataset.startColumn = start.column;
+        row.dataset.endRow = end.row;
+        row.dataset.endColumn = end.column;
+        row.dataset.id = cursor.currentNode.id;
 
         const nodeType = document.createElement('span');
         nodeType.className = cursor.nodeIsNamed ? 'node-type' : 'anonymous-node-type';
@@ -261,6 +334,85 @@
         timeout = setTimeout(() => func.apply(context, args), wait);
       };
     }
+  // Handle cursor movement to highlight corresponding tree node
+  function handleCursorMovement() {
+    if (!tree) return;
+    
+    const cursor = codeEditor.getCursor();
+    const lineNumber = cursor.line;
+    const column = cursor.ch;
+    
+    // Remove any existing highlights
+    const highlighted = treeContainer.querySelectorAll('.tree-row.cursor-highlighted');
+    highlighted.forEach(el => el.classList.remove('cursor-highlighted'));
+    
+    // Find all nodes that contain this position
+    const treeRows = treeContainer.querySelectorAll('.tree-row');
+    let bestMatch = null;
+    let smallestSize = Infinity;
+    
+    treeRows.forEach(row => {
+      const startRow = parseInt(row.dataset.startRow, 10);
+      const startCol = parseInt(row.dataset.startColumn, 10);
+      const endRow = parseInt(row.dataset.endRow, 10);
+      const endCol = parseInt(row.dataset.endColumn, 10);
+      
+      // Check if position is within this node
+      const containsPosition = 
+        (startRow < lineNumber || (startRow === lineNumber && startCol <= column)) &&
+        (endRow > lineNumber || (endRow === lineNumber && endCol >= column));
+      
+      if (containsPosition) {
+        // Calculate size of node (rough estimate by characters)
+        const size = (endRow - startRow) * 1000 + (endCol - startCol);
+        if (size < smallestSize) {
+          bestMatch = row;
+          smallestSize = size;
+        }
+      }
+    });
+    
+    // Highlight the smallest node that contains the cursor
+    if (bestMatch) {
+      bestMatch.classList.add('cursor-highlighted');
+      // Ensure it's visible in the viewport
+      bestMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
   </script>
+  
+  <style>
+  /* Additional styles to support new features */
+  .playground-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .playground-controls {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    font-size: 14px;
+  }
+  
+  .control-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .tree-row.cursor-highlighted {
+    background-color: #e8f0fe;
+    border-radius: 3px;
+    font-weight: bold;
+  }
+  
+  #update-time {
+    font-family: monospace;
+    min-width: 40px;
+    display: inline-block;
+  }
+  </style>
 </body>
 </html>
