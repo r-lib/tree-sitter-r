@@ -1,22 +1,26 @@
-url: ~
-
+url: https://jennybc.github.io/tree-sitter-r/
 development:
   mode: auto
-
 template:
   package: tidytemplate
   bootstrap: 5
   includes:
     in_header: |
       <link href="playground/assets/playground.css" rel="stylesheet">
-  assets:
-    - playground
-
+  assets: playground
 navbar:
   structure:
-    left:  [intro, reference, articles, tutorials, playground]
-    right: [search, github]
+    left:
+    - intro
+    - reference
+    - articles
+    - tutorials
+    - playground
+    right:
+    - search
+    - github
   components:
     playground:
-      text: "Playground"
+      text: Playground
       href: playground/index.html
+
