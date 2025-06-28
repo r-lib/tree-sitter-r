@@ -3,6 +3,8 @@
 
 # treesitter.r
 
+hi
+
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/r-lib/tree-sitter-r/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/tree-sitter-r/actions/workflows/R-CMD-check.yaml)
