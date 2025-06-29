@@ -71,7 +71,7 @@ const PREC = {
   // #
   // NOTE: If we don't put comments at a negative rank, then `"#"` will treat the `#` as
   // the start of a comment rather than being part of the string.
-  COMMENT: { ASSOC: prec, RANK: -1},
+  COMMENT: { ASSOC: prec, RANK: -1 },
 
   // {, (
   // NOTE: If we understand correctly, brace and parenthesis blocks are given the same
@@ -237,8 +237,8 @@ module.exports = grammar({
     // Top-level rules.
     // The zero width `$._start` ensures that `program` starts at `(0, 0)`.
     program: $ => seq(
-        $._start,
-        repeat(choice($._expression, $._semicolon, $._newline))
+      $._start,
+      repeat(choice($._expression, $._semicolon, $._newline))
     ),
 
     // Function definitions.
@@ -730,7 +730,7 @@ module.exports = grammar({
     ),
 
     // Comments.
-    comment: $ => token(withPrec(PREC.COMMENT, /#.*/)),
+    comment: $ => token(withPrec(PREC.COMMENT, seq('#', /[^\r\n]*/))),
 
     // Commas. We include these in the AST so we can figure out the
     // argument call position. This is necessary given how R tolerates
