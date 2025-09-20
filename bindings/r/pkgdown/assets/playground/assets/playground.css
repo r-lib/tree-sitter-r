@@ -1,0 +1,167 @@
+/* Basic playground CSS */
+:root {
+  --primary-color: #0550ae;
+  --bg-color: #ffffff;
+  --text-color: #333333;
+  --border-color: #cccccc;
+  --highlight-color: #e3f2fd;
+  --error-color: #f44336;
+}
+
+body.dark-theme {
+  --primary-color: #4f83cc;
+  --bg-color: #1e1e1e;
+  --text-color: #eaeaea;
+  --border-color: #555555;
+  --highlight-color: #284766;
+  --error-color: #ff6b6b;
+}
+
+.playground {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 100px);
+  min-height: 500px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.playground-header {
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.playground-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.playground-section {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-right: 1px solid var(--border-color);
+}
+
+.playground-section:last-child {
+  border-right: none;
+}
+
+.playground-section-header {
+  padding: 5px 10px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid var(--border-color);
+  font-weight: bold;
+  font-size: 14px;
+}
+
+body.dark-theme .playground-section-header {
+  background-color: #2d2d2d;
+}
+
+.playground-section-content {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+}
+
+/* Code editor section */
+.code-section {
+  width: 50%;
+}
+
+/* Tree output section */
+.tree-section {
+  width: 50%;
+}
+
+/* Optional query section */
+.query-section {
+  width: 100%;
+  height: 150px;
+  flex: 0 0 auto;
+  border-top: 1px solid var(--border-color);
+  border-right: none;
+}
+
+/* Tree nodes */
+.tree-row {
+  padding: 2px 0;
+  cursor: pointer;
+  font-family: monospace;
+  white-space: nowrap;
+}
+
+.tree-row:hover {
+  background-color: var(--highlight-color);
+}
+
+.field-name {
+  color: #9a6700;
+}
+
+body.dark-theme .field-name {
+  color: #d9bf8c;
+}
+
+.node-type {
+  color: #004d40;
+}
+
+body.dark-theme .node-type {
+  color: #4db6ac;
+}
+
+.anonymous-node-type {
+  color: #7d7d7d;
+  font-style: italic;
+}
+
+.tree-node-position {
+  color: #7d7d7d;
+  font-size: 80%;
+}
+
+/* CodeMirror customizations */
+.CodeMirror {
+  height: 100%;
+  font-family: monospace;
+  font-size: 14px;
+}
+
+/* Error message */
+.error-message {
+  color: var(--error-color);
+  padding: 10px;
+  font-family: monospace;
+  white-space: pre-wrap;
+  font-size: 14px;
+}
+
+/* Query captures */
+.capture-node {
+  background-color: rgba(86, 156, 214, 0.2);
+}
+
+/* Media queries for responsive layout */
+@media (max-width: 768px) {
+  .playground-body {
+    flex-direction: column;
+  }
+  
+  .code-section, .tree-section {
+    width: 100%;
+    height: 50%;
+  }
+  
+  .playground-section {
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .playground-section:last-child {
+    border-bottom: none;
+  }
+}
