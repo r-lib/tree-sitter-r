@@ -525,7 +525,18 @@ module.exports = grammar({
     float: $ => $._float_literal,
 
     // NOTE: See `?NumericConstants` for precise details
-    _hex_literal: $ => /0[xX][0-9a-fA-F]+([pP][+-]?[0-9]+)?/,
+    //
+    // For hexadecimal:
+    // - '0'
+    // - 'x' or 'X'
+    // - Non-empty sequence of '[0-9a-fA-F.]' restricted to at most 1 '.'
+    //   - LHS `([0-9a-fA-F]+(\.[0-9a-fA-F]*)?)` handles 0x1, 0x1.2
+    //   - RHS `(\.[0-9a-fA-F]*)` handles 0x.1, and 0x. (surprisingly R allows this)
+    // - Optional binary exponent of:
+    //   - 'p' or 'P'
+    //   - Optional '+' or '-'
+    //   - Non-empty sequence of '[0-9]'
+    _hex_literal: $ => /0[xX](([0-9a-fA-F]+(\.[0-9a-fA-F]*)?)|(\.[0-9a-fA-F]*))([pP][+-]?[0-9]+)?/,
     _number_literal: $ => /(?:(?:\d+(?:\.\d*)?)|(?:\.\d+))(?:[eE][+-]?\d*)?/,
     _float_literal: $ => choice($._hex_literal, $._number_literal),
 
