@@ -34,78 +34,144 @@
       .__NAMESPACE__.
       
       S-Expression
-      (identifier [(6, 0), (6, 7)])
+      (identifier [(6, 0), (6, 1)])
+      
+      Text
+      .
+      
+      S-Expression
+      (identifier [(7, 0), (7, 2)])
+      
+      Text
+      ..
+      
+      S-Expression
+      (identifier [(8, 0), (8, 2)])
+      
+      Text
+      ._
+      
+      S-Expression
+      (identifier [(9, 0), (9, 3)])
+      
+      Text
+      ._.
+      
+      S-Expression
+      (identifier [(10, 0), (10, 7)])
       
       Text
       foo_bar
       
       S-Expression
-      (identifier [(7, 0), (7, 6)])
+      (identifier [(11, 0), (11, 6)])
       
       Text
       `_foo`
       
       S-Expression
-      (identifier [(8, 0), (8, 13)])
+      (identifier [(12, 0), (12, 13)])
       
       Text
       `a "literal"`
       
       S-Expression
-      (identifier [(9, 0), (10, 15)])
+      (identifier [(13, 0), (14, 15)])
       
       Text
       `another
       literal \` foo`
       
       S-Expression
-      (identifier [(11, 0), (12, 1)])
+      (identifier [(15, 0), (16, 1)])
       
       Text
       `backslash followed by newline \
       `
       
       S-Expression
-      (identifier [(13, 0), (13, 4)])
+      (identifier [(17, 0), (17, 4)])
       
       Text
       `\``
       
       S-Expression
-      (comment [(14, 0), (14, 18)])
+      (comment [(18, 0), (18, 18)])
       
       Text
       # Pipe placeholder
       
       S-Expression
-      (identifier [(15, 0), (15, 1)])
+      (identifier [(19, 0), (19, 1)])
       
       Text
       _
       
       S-Expression
-      (comment [(16, 0), (16, 73)])
+      (comment [(20, 0), (20, 73)])
       
       Text
       # Recognized as a single `_foo` identifier, even if invalid R code (#71).
       
       S-Expression
-      (identifier [(17, 0), (17, 4)])
+      (identifier [(21, 0), (21, 4)])
       
       Text
       _foo
       
       S-Expression
-      (identifier [(18, 0), (18, 5)])
+      (identifier [(22, 0), (22, 5)])
       
       Text
       __foo
       
       S-Expression
-      (identifier [(19, 0), (19, 5)])
+      (identifier [(23, 0), (23, 5)])
       
       Text
       _foo_
+      
+
+# invalid identifiers
+
+    Code
+      node_children_print(node)
+    Output
+      S-Expression
+      (comment [(1, 0), (1, 79)])
+      
+      Text
+      # R does not allow identifiers to start with a `.` followed by a digit, as this
+      
+      S-Expression
+      (comment [(2, 0), (2, 79)])
+      
+      Text
+      # would cause ambiguity with `.1L` and `.1i`. R itself rejects this as a syntax
+      
+      S-Expression
+      (comment [(3, 0), (3, 80)])
+      
+      Text
+      # error, we currently parse this as `.1` followed by `foo`, just like we do with
+      
+      S-Expression
+      (comment [(4, 0), (4, 16)])
+      
+      Text
+      # `1foo` (#190).
+      
+      S-Expression
+      (float [(5, 0), (5, 2)])
+      
+      Text
+      .1
+      
+      S-Expression
+      (identifier [(5, 2), (5, 5)])
+      
+      Text
+      foo
       
 
 # `return` is just an identifier
@@ -289,6 +355,36 @@
       
       Text
       12L
+      
+      S-Expression
+      (integer [(4, 0), (4, 4)]
+        "L" [(4, 3), (4, 4)]
+      )
+      
+      Text
+      1e1L
+      
+      S-Expression
+      (comment [(5, 0), (5, 96)])
+      
+      Text
+      # Technically, R parses these as floats with a warning, but for our purposes this is good enough
+      
+      S-Expression
+      (integer [(6, 0), (6, 4)]
+        "L" [(6, 3), (6, 4)]
+      )
+      
+      Text
+      0.1L
+      
+      S-Expression
+      (integer [(7, 0), (7, 3)]
+        "L" [(7, 2), (7, 3)]
+      )
+      
+      Text
+      .1L
       
 
 # floats
@@ -650,5 +746,75 @@
       
       Text
       1e10
+      
+
+# complex
+
+    Code
+      node_children_print(node)
+    Output
+      S-Expression
+      (complex [(1, 0), (1, 2)]
+        "i" [(1, 1), (1, 2)]
+      )
+      
+      Text
+      1i
+      
+      S-Expression
+      (complex [(2, 0), (2, 2)]
+        "i" [(2, 1), (2, 2)]
+      )
+      
+      Text
+      0i
+      
+      S-Expression
+      (complex [(3, 0), (3, 4)]
+        "i" [(3, 3), (3, 4)]
+      )
+      
+      Text
+      1.1i
+      
+      S-Expression
+      (complex [(4, 0), (4, 3)]
+        "i" [(4, 2), (4, 3)]
+      )
+      
+      Text
+      .1i
+      
+      S-Expression
+      (complex [(5, 0), (5, 5)]
+        "i" [(5, 4), (5, 5)]
+      )
+      
+      Text
+      1e10i
+      
+      S-Expression
+      (complex [(6, 0), (6, 6)]
+        "i" [(6, 5), (6, 6)]
+      )
+      
+      Text
+      .1e10i
+      
+      S-Expression
+      (complex [(7, 0), (7, 4)]
+        "i" [(7, 3), (7, 4)]
+      )
+      
+      Text
+      0x1i
+      
+      S-Expression
+      (complex [(8, 0), (8, 5)]
+        "i" [(8, 4), (8, 5)]
+      )
+      
+      Text
+      0x.1i
       
 
