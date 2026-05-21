@@ -7,8 +7,6 @@ function(arg1, arg2) {
   arg2
 }
 
-function(x, y) return(y)
-
 function(arg1, arg2 = 2) {}
 
 function(x,
@@ -41,6 +39,12 @@ function(x = function() {}) {}
 
 # With no intermediate `{` scope
 function() for(i in 1:5) i
+
+# ------------------------------------------------------------------------------
+# function with `return` as parameter name
+
+function(return) return
+function(return = 1) return
 
 # ------------------------------------------------------------------------------
 # function dots and dot dot i

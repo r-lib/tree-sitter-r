@@ -1,9 +1,6 @@
 for (i in 1:5) {
 # ^ repeat
 #      ^ keyword
-  return()
-  # ^ @keyword
-
   next
   # ^ @keyword
 
@@ -26,4 +23,18 @@ if (a > b) {
 #      ^ conditional
 } else {
 # ^ conditional
+}
+
+function(return = 1) {
+         # ^ @variable.parameter
+}
+
+function() {
+  return()
+  # ^ @keyword
+}
+
+function() {
+  return
+  # ^ @variable
 }

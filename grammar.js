@@ -668,10 +668,7 @@ module.exports = grammar({
     // We define keywords as those contained in `?Reserved`, i.e. it must be a reserved
     // word in R's parser to be considered here. If a keyword from `?Reserved` is already
     // mentioned within a wider rule (like "if" and "function"), then it is not included
-    // again here. Grammar consumers can choose to highlight more words as required. We
-    // make a single exception for `return`, which is not in `?Reserved` but is SO special
-    // that we decided to include it as a keyword.
-    return: $ => "return",
+    // again here. Grammar consumers can choose to highlight more words as required (#109, #189).
     next: $ => "next",
     break: $ => "break",
     true: $ => "TRUE",
@@ -718,7 +715,6 @@ module.exports = grammar({
       $.dots,
       $.dot_dot_i,
 
-      $.return,
       $.next,
       $.break,
       $.true,

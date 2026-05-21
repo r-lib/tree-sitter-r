@@ -108,3 +108,23 @@ We use [nvm](https://github.com/nvm-sh/nvm) for npm version management. The npm 
 -   `release.yaml` creates a GitHub Release containing the source code and the WASM binary
 
 -   Note that `release.yaml` must be triggered by `publish.yaml` through a tag update to work correctly, because it creates the GitHub Release by using the `GITHUB_REF_NAME` variable, which should point to the tag version.
+
+# General maintenance
+
+We use [just](https://github.com/casey/just) as a command runner for some common workflows. For most of these, you first need to run `nvm use` followed by `npm install` to put a tree-sitter binary in `node_modules/`.
+
+## Running tests
+
+`just test` will run `tree-sitter test`, running the tests in `test/`.
+
+## Adding tests
+
+When you make changes to the grammar and add tests to `tests/corpus/`, you should also check that you haven't broken anything in the R test suite. Open `bindings/r/` as a workspace root in a new instance of Positron and run `devtools::test()` from there (possibly after running `devtools::load_all()` twice to bring in the new grammar updates). You should also add new R tests that are roughly in sync with `tests/corpus/`.
+
+## Regenerating the grammar files
+
+`just generate` will run `tree-sitter generate` to regenerate `parser.c`, `grammar.json`, and `node-types.json` all with the pinned version of tree-sitter that we currently support.
+
+## Arbitrary tree-sitter commands
+
+`just tree-sitter <args>` lets you run arbitrary tree-sitter cli commands with our pinned tree-sitter version. Can be useful for `just tree-sitter playground` and `just tree-sitter parse –debug`.

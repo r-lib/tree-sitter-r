@@ -2624,10 +2624,6 @@
         ]
       }
     },
-    "return": {
-      "type": "STRING",
-      "value": "return"
-    },
     "next": {
       "type": "STRING",
       "value": "next"
@@ -2767,10 +2763,6 @@
         {
           "type": "SYMBOL",
           "name": "dot_dot_i"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "return"
         },
         {
           "type": "SYMBOL",
