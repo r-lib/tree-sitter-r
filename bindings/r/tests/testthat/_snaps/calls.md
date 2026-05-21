@@ -841,6 +841,45 @@
       f(..1 = ..1)
       
 
+# calls with `return` as argument name
+
+    Code
+      node_children_print(node)
+    Output
+      S-Expression
+      (call [(1, 0), (1, 17)]
+        function: (identifier [(1, 0), (1, 2)])
+        arguments: (arguments [(1, 2), (1, 17)]
+          open: "(" [(1, 2), (1, 3)]
+          argument: (argument [(1, 3), (1, 16)]
+            name: (identifier [(1, 3), (1, 9)])
+            "=" [(1, 10), (1, 11)]
+            value: (true [(1, 12), (1, 16)])
+          )
+          close: ")" [(1, 16), (1, 17)]
+        )
+      )
+      
+      Text
+      fn(return = TRUE)
+      
+      S-Expression
+      (call [(2, 0), (2, 13)]
+        function: (identifier [(2, 0), (2, 2)])
+        arguments: (arguments [(2, 2), (2, 13)]
+          open: "(" [(2, 2), (2, 3)]
+          argument: (argument [(2, 3), (2, 11)]
+            name: (identifier [(2, 3), (2, 9)])
+            "=" [(2, 10), (2, 11)]
+          )
+          close: ")" [(2, 12), (2, 13)]
+        )
+      )
+      
+      Text
+      fn(return = )
+      
+
 # not a call, subset, or subset2
 
     Code

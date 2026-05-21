@@ -108,6 +108,58 @@
       _foo_
       
 
+# `return` is just an identifier
+
+    Code
+      node_children_print(node)
+    Output
+      S-Expression
+      (function_definition [(1, 0), (1, 21)]
+        name: "function" [(1, 0), (1, 8)]
+        parameters: (parameters [(1, 8), (1, 11)]
+          open: "(" [(1, 8), (1, 9)]
+          parameter: (parameter [(1, 9), (1, 10)]
+            name: (identifier [(1, 9), (1, 10)])
+          )
+          close: ")" [(1, 10), (1, 11)]
+        )
+        body: (call [(1, 12), (1, 21)]
+          function: (identifier [(1, 12), (1, 18)])
+          arguments: (arguments [(1, 18), (1, 21)]
+            open: "(" [(1, 18), (1, 19)]
+            argument: (argument [(1, 19), (1, 20)]
+              value: (identifier [(1, 19), (1, 20)])
+            )
+            close: ")" [(1, 20), (1, 21)]
+          )
+        )
+      )
+      
+      Text
+      function(x) return(x)
+      
+      S-Expression
+      (call [(2, 0), (2, 9)]
+        function: (identifier [(2, 0), (2, 6)])
+        arguments: (arguments [(2, 6), (2, 9)]
+          open: "(" [(2, 6), (2, 7)]
+          argument: (argument [(2, 7), (2, 8)]
+            value: (identifier [(2, 7), (2, 8)])
+          )
+          close: ")" [(2, 8), (2, 9)]
+        )
+      )
+      
+      Text
+      return(x)
+      
+      S-Expression
+      (identifier [(3, 0), (3, 6)])
+      
+      Text
+      return
+      
+
 # comments
 
     Code
