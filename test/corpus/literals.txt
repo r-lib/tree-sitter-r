@@ -517,6 +517,18 @@ Hexadecimal
 0x0p+123
 0x0p-123
 
+# Decimal point
+0x.
+0x1.
+0x.1
+0x1.1
+
+# Decimal point with exponent
+0x.p1
+0x1.p1
+0x.1p1
+0x1.1p1
+
 # As integers
 0x123L
 0X123L
@@ -526,6 +538,10 @@ Hexadecimal
 0x0P0L
 0x0p+0L
 0x0p-0L
+0x.L
+0x1.L
+0x.1L
+0x1.1L
 
 --------------------------------------------------------------------------------
 
@@ -549,6 +565,20 @@ Hexadecimal
   (float)
   (float)
   (comment)
+  (float)
+  (float)
+  (float)
+  (float)
+  (comment)
+  (float)
+  (float)
+  (float)
+  (float)
+  (comment)
+  (integer)
+  (integer)
+  (integer)
+  (integer)
   (integer)
   (integer)
   (integer)

@@ -448,74 +448,166 @@
       0x0p-123
       
       S-Expression
-      (comment [(23, 0), (23, 13)])
+      (comment [(23, 0), (23, 15)])
+      
+      Text
+      # Decimal point
+      
+      S-Expression
+      (float [(24, 0), (24, 3)])
+      
+      Text
+      0x.
+      
+      S-Expression
+      (float [(25, 0), (25, 4)])
+      
+      Text
+      0x1.
+      
+      S-Expression
+      (float [(26, 0), (26, 4)])
+      
+      Text
+      0x.1
+      
+      S-Expression
+      (float [(27, 0), (27, 5)])
+      
+      Text
+      0x1.1
+      
+      S-Expression
+      (comment [(29, 0), (29, 29)])
+      
+      Text
+      # Decimal point with exponent
+      
+      S-Expression
+      (float [(30, 0), (30, 5)])
+      
+      Text
+      0x.p1
+      
+      S-Expression
+      (float [(31, 0), (31, 6)])
+      
+      Text
+      0x1.p1
+      
+      S-Expression
+      (float [(32, 0), (32, 6)])
+      
+      Text
+      0x.1p1
+      
+      S-Expression
+      (float [(33, 0), (33, 7)])
+      
+      Text
+      0x1.1p1
+      
+      S-Expression
+      (comment [(35, 0), (35, 13)])
       
       Text
       # As integers
       
       S-Expression
-      (integer [(24, 0), (24, 6)]
-        "L" [(24, 5), (24, 6)]
+      (integer [(36, 0), (36, 6)]
+        "L" [(36, 5), (36, 6)]
       )
       
       Text
       0x123L
       
       S-Expression
-      (integer [(25, 0), (25, 6)]
-        "L" [(25, 5), (25, 6)]
+      (integer [(37, 0), (37, 6)]
+        "L" [(37, 5), (37, 6)]
       )
       
       Text
       0X123L
       
       S-Expression
-      (integer [(26, 0), (26, 7)]
-        "L" [(26, 6), (26, 7)]
+      (integer [(38, 0), (38, 7)]
+        "L" [(38, 6), (38, 7)]
       )
       
       Text
       0xDEADL
       
       S-Expression
-      (integer [(27, 0), (27, 7)]
-        "L" [(27, 6), (27, 7)]
+      (integer [(39, 0), (39, 7)]
+        "L" [(39, 6), (39, 7)]
       )
       
       Text
       0XDEADL
       
       S-Expression
-      (integer [(28, 0), (28, 6)]
-        "L" [(28, 5), (28, 6)]
+      (integer [(40, 0), (40, 6)]
+        "L" [(40, 5), (40, 6)]
       )
       
       Text
       0x0p0L
       
       S-Expression
-      (integer [(29, 0), (29, 6)]
-        "L" [(29, 5), (29, 6)]
+      (integer [(41, 0), (41, 6)]
+        "L" [(41, 5), (41, 6)]
       )
       
       Text
       0x0P0L
       
       S-Expression
-      (integer [(30, 0), (30, 7)]
-        "L" [(30, 6), (30, 7)]
+      (integer [(42, 0), (42, 7)]
+        "L" [(42, 6), (42, 7)]
       )
       
       Text
       0x0p+0L
       
       S-Expression
-      (integer [(31, 0), (31, 7)]
-        "L" [(31, 6), (31, 7)]
+      (integer [(43, 0), (43, 7)]
+        "L" [(43, 6), (43, 7)]
       )
       
       Text
       0x0p-0L
+      
+      S-Expression
+      (integer [(44, 0), (44, 4)]
+        "L" [(44, 3), (44, 4)]
+      )
+      
+      Text
+      0x.L
+      
+      S-Expression
+      (integer [(45, 0), (45, 5)]
+        "L" [(45, 4), (45, 5)]
+      )
+      
+      Text
+      0x1.L
+      
+      S-Expression
+      (integer [(46, 0), (46, 5)]
+        "L" [(46, 4), (46, 5)]
+      )
+      
+      Text
+      0x.1L
+      
+      S-Expression
+      (integer [(47, 0), (47, 6)]
+        "L" [(47, 5), (47, 6)]
+      )
+      
+      Text
+      0x1.1L
       
 
 # scientific notation floats
