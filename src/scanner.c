@@ -1,5 +1,5 @@
-#include <string.h>  // memcpy()
-#include <wctype.h>  // iswspace()
+#include <string.h> // memcpy()
+#include <wctype.h> // iswspace()
 
 #include "tree_sitter/alloc.h"
 #include "tree_sitter/parser.h"
@@ -9,8 +9,8 @@
 // #define TREE_SITTER_R_DEBUG
 
 #ifdef TREE_SITTER_R_DEBUG
-#include <stdarg.h>  // va_list, va_start(), va_end()
-#include <stdio.h>   // vprintf()
+#include <stdarg.h> // va_list, va_start(), va_end()
+#include <stdio.h>  // vprintf()
 
 static inline void debug_print(const char* fmt, ...) {
   va_list args;
@@ -131,11 +131,7 @@ static bool stack_pop(Stack* stack, Scope scope) {
 
   if (x != scope) {
     // Return `false` so `scan()` can return `false` and refuse to handle the token
-    debug_print(
-        "`stack_pop()` failed. Actual scope '%c' does not match expected scope '%c'.\n",
-        x,
-        scope
-    );
+    debug_print("`stack_pop()` failed. Actual scope '%c' does not match expected scope '%c'.\n", x, scope);
     return false;
   }
 
@@ -412,8 +408,7 @@ static inline bool scan_newline(TSLexer* lexer) {
   return true;
 }
 
-static inline bool
-scan_open_block(TSLexer* lexer, Stack* stack, Scope scope, TSSymbol symbol) {
+static inline bool scan_open_block(TSLexer* lexer, Stack* stack, Scope scope, TSSymbol symbol) {
   if (!stack_push(stack, scope)) {
     return false;
   }
@@ -423,8 +418,7 @@ scan_open_block(TSLexer* lexer, Stack* stack, Scope scope, TSSymbol symbol) {
   return true;
 }
 
-static inline bool
-scan_close_block(TSLexer* lexer, Stack* stack, Scope scope, TSSymbol symbol) {
+static inline bool scan_close_block(TSLexer* lexer, Stack* stack, Scope scope, TSSymbol symbol) {
   if (!stack_pop(stack, scope)) {
     return false;
   }
@@ -434,8 +428,7 @@ scan_close_block(TSLexer* lexer, Stack* stack, Scope scope, TSSymbol symbol) {
   return true;
 }
 
-static inline bool
-scan_open_bracket_or_bracket2(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
+static inline bool scan_open_bracket_or_bracket2(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
   // We know lookahead is the first `[`
   lexer->advance(lexer, false);
 
@@ -549,11 +542,7 @@ void* tree_sitter_r_external_scanner_create(void) {
   return stack_new();
 }
 
-bool tree_sitter_r_external_scanner_scan(
-    void* payload,
-    TSLexer* lexer,
-    const bool* valid_symbols
-) {
+bool tree_sitter_r_external_scanner_scan(void* payload, TSLexer* lexer, const bool* valid_symbols) {
   if (stack_exists(payload)) {
     return scan(lexer, payload, valid_symbols);
   } else {
@@ -569,11 +558,7 @@ unsigned tree_sitter_r_external_scanner_serialize(void* payload, char* buffer) {
   }
 }
 
-void tree_sitter_r_external_scanner_deserialize(
-    void* payload,
-    const char* buffer,
-    unsigned length
-) {
+void tree_sitter_r_external_scanner_deserialize(void* payload, const char* buffer, unsigned length) {
   if (stack_exists(payload)) {
     stack_deserialize(payload, buffer, length);
   }
