@@ -6,6 +6,10 @@ foo2
 foo.bar
 .foo.bar
 .__NAMESPACE__.
+.
+..
+._
+._.
 foo_bar
 `_foo`
 `a "literal"`
@@ -20,6 +24,15 @@ _
 _foo
 __foo
 _foo_
+
+# ------------------------------------------------------------------------------
+# invalid identifiers
+
+# R does not allow identifiers to start with a `.` followed by a digit, as this
+# would cause ambiguity with `.1L` and `.1i`. R itself rejects this as a syntax
+# error, we currently parse this as `.1` followed by `foo`, just like we do with
+# `1foo` (#190).
+.1foo
 
 # ------------------------------------------------------------------------------
 # `return` is just an identifier
@@ -58,6 +71,10 @@ NA_complex_
 12332L
 0L
 12L
+1e1L
+# Technically, R parses these as floats with a warning, but for our purposes this is good enough
+0.1L
+.1L
 
 # ------------------------------------------------------------------------------
 # floats
@@ -128,3 +145,15 @@ x <- -.66
 1.8e10
 1.e10
 1e10
+
+# ------------------------------------------------------------------------------
+# complex
+
+1i
+0i
+1.1i
+.1i
+1e10i
+.1e10i
+0x1i
+0x.1i
