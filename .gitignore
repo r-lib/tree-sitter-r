@@ -42,3 +42,6 @@ dist/
 *.tar.gz
 *.tgz
 *.zip
+
+# Local claude settings
+.claude/settings.local.json
