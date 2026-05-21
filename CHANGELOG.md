@@ -1,8 +1,8 @@
 # Changelog
 
-- Hexadecimal constants with decimals are now supported (#191).
-
 ## devel
+
+- Hexadecimal constants with decimals are now supported (#191).
 
 - `return` is no longer considered a keyword with its own special node. It is now a standard `identifier`. This is in line with R, where `?Reserved` documents the full set of R keywords, and `return` is noticeably absent from this list. This change puts tree-sitter-r fully in line with R's set of keywords, with no special cases, and fixes some bugs related to an inability to parse `return` in function parameter or call argument positions. `highlights.scm` retains special support for marking the `return` of `return()` as a `@keyword`, since most users expect `return()` to highlight differently than other function calls (#189).
 
