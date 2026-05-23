@@ -214,7 +214,9 @@ module.exports = grammar({
     $._start,
     $._newline,
     $._semicolon,
-    $._raw_string_literal,
+    $._raw_string_open,
+    $._raw_string_content,
+    $._raw_string_close,
     // Don't use `_external` variants directly. Instead use their aliased versions.
     $._external_else,
     $._external_open_parenthesis,
@@ -542,18 +544,16 @@ module.exports = grammar({
 
     // Strings.
     string: $ => choice(
-      $._raw_string_literal,
+      $._raw_string,
       $._single_quoted_string,
       $._double_quoted_string
     ),
 
-    // TODO: Raw string contents, something like this, where `_raw_string_open`,
-    // `_raw_string_close`, and `_raw_string_content` are externals.
-    // _raw_string_literal: $ => seq(
-    //   field("open", $._raw_string_open),
-    //   optional(field("content", alias($._raw_string_content, $.string_content))),
-    //   field("close", $._raw_string_close)
-    // ),
+    _raw_string: $ => seq(
+      field("open", $._raw_string_open),
+      optional(field("content", alias($._raw_string_content, $.string_content))),
+      field("close", $._raw_string_close)
+    ),
 
     // Explanation is:
     // - Between two quote characters, allow either:

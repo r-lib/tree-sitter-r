@@ -370,23 +370,40 @@ r()
 --------------------------------------------------------------------------------
 
 (program
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
   (call
     (identifier)
     (arguments)))
