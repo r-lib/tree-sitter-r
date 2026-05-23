@@ -2547,7 +2547,7 @@
     "fields": {
       "close": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "\"",
@@ -2571,7 +2571,7 @@
       },
       "open": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "\"",
