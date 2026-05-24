@@ -108,6 +108,7 @@ static Stack* stack_new(void) {
   Scope* scopes = ts_malloc(MAX_N_SCOPES * SCOPE_SIZE);
   if (scopes == NULL) {
     debug_print("`stack_new()` failed. Can't allocate scope array.");
+    ts_free(stack);
     return NULL;
   }
   stack->scopes = scopes;
@@ -298,12 +299,15 @@ static Payload* payload_new(void) {
   payload->stack = stack_new();
   if (payload->stack == NULL) {
     debug_print("`payload_new()` failed. Can't allocate stack.");
+    ts_free(payload);
     return NULL;
   }
 
   payload->state = raw_string_state_new();
   if (payload->state == NULL) {
     debug_print("`payload_new()` failed. Can't allocate state.");
+    stack_free(payload->stack);
+    ts_free(payload);
     return NULL;
   }
 
