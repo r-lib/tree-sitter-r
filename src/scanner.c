@@ -92,6 +92,7 @@ typedef struct {
 } Stack;
 
 const unsigned STACK_SIZE = sizeof(Stack);
+const unsigned N_SCOPES_SIZE = sizeof(unsigned);
 
 static void stack_reset(Stack* stack) {
   stack->n_scopes = 0;
@@ -163,12 +164,12 @@ static bool stack_pop(Stack* stack, Scope expected) {
 }
 
 static void stack_serialize(Stack* stack, SerializeBuffer* buffer) {
-  // First `Stack` struct
-  memcpy(buffer->pointer, stack, STACK_SIZE);
-  buffer->pointer += STACK_SIZE;
-  buffer->length += STACK_SIZE;
+  // Serialize `n_scopes` so we know how many `Scope`s to deserialize
+  memcpy(buffer->pointer, &stack->n_scopes, N_SCOPES_SIZE);
+  buffer->pointer += N_SCOPES_SIZE;
+  buffer->length += N_SCOPES_SIZE;
 
-  // Then `Scope` array
+  // Serialize `Scope` array
   if (stack->n_scopes > 0) {
     const unsigned scopes_size = stack->n_scopes * SCOPE_SIZE;
     memcpy(buffer->pointer, stack->scopes, scopes_size);
@@ -178,17 +179,17 @@ static void stack_serialize(Stack* stack, SerializeBuffer* buffer) {
 }
 
 static bool stack_deserialize(Stack* stack, DeserializeBuffer* buffer) {
-  if (buffer->length < STACK_SIZE) {
-    debug_print("`stack_deserialize()` failed. Can't deserialize stack. Buffer length %u.\n", buffer->length);
+  if (buffer->length < N_SCOPES_SIZE) {
+    debug_print("`stack_deserialize()` failed. Can't deserialize `n_scopes`. Buffer length %u.\n", buffer->length);
     return false;
   }
 
-  // First `Stack` struct
-  memcpy(stack, buffer->pointer, STACK_SIZE);
-  buffer->pointer += STACK_SIZE;
-  buffer->length -= STACK_SIZE;
+  // Deserialize `n_scopes`
+  memcpy(&stack->n_scopes, buffer->pointer, N_SCOPES_SIZE);
+  buffer->pointer += N_SCOPES_SIZE;
+  buffer->length -= N_SCOPES_SIZE;
 
-  // Then `Scope` array
+  // Deserialize `Scope` array
   if (stack->n_scopes > 0) {
     const unsigned scopes_size = stack->n_scopes * SCOPE_SIZE;
 
