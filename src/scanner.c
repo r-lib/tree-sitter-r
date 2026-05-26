@@ -509,10 +509,10 @@ static inline bool scan_raw_string_open(TSLexer* lexer, RawStringState* state) {
 // TODO!: Don't forget to update all `scope` related comments about it being size 1, which no longer matter
 
 // We're in the body of the raw string, start looping until
-// we find the matching `closing_token -> hyphen_count -> quote` sequence
+// we find the matching `closing_bracket -> hyphen_count -> quote` sequence
 //
 // We purposefully only `advance()` on known non-closing sequence elements at the
-// very beginning in the `!= closing_token` check (#162).
+// very beginning in the `!= closing_bracket` check (#162).
 //
 // Consider the following:
 //
