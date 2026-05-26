@@ -917,25 +917,19 @@
       )"
       
       S-Expression
-      (string [(25, 0), (25, 5)]
-        content: (string_content [(25, 3), (25, 3)])
-      )
+      (string [(25, 0), (25, 5)])
       
       Text
       r"()"
       
       S-Expression
-      (string [(26, 0), (26, 5)]
-        content: (string_content [(26, 3), (26, 3)])
-      )
+      (string [(26, 0), (26, 5)])
       
       Text
       R"{}"
       
       S-Expression
-      (string [(27, 0), (27, 9)]
-        content: (string_content [(27, 5), (27, 5)])
-      )
+      (string [(27, 0), (27, 9)])
       
       Text
       r"--[]--"
@@ -1015,9 +1009,7 @@
       # Single quoted raw strings
       
       S-Expression
-      (string [(41, 0), (41, 5)]
-        content: (string_content [(41, 3), (41, 3)])
-      )
+      (string [(41, 0), (41, 5)])
       
       Text
       r'()'

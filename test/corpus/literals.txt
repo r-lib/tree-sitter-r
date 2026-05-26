@@ -365,7 +365,9 @@ r"(raw
 string
 )"
 
+# Empty strings with no `string_content` node
 r"()"
+r'()'
 R"{}"
 r"--[]--"
 
@@ -381,7 +383,6 @@ hello
 )")
 
 # Single quoted raw strings
-r'()'
 r'(a)'
 r'(')'
 r'(")'
@@ -425,12 +426,11 @@ r()
     (string_content))
   (string
     (string_content))
-  (string
-    (string_content))
-  (string
-    (string_content))
-  (string
-    (string_content))
+  (comment)
+  (string)
+  (string)
+  (string)
+  (string)
   (comment)
   (string
     (string_content))
@@ -451,8 +451,6 @@ r()
         (string
           (string_content)))))
   (comment)
-  (string
-    (string_content))
   (string
     (string_content))
   (string
