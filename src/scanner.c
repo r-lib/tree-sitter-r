@@ -566,15 +566,22 @@ static inline bool scan_raw_string_open(TSLexer* lexer, RawStringState* raw_stri
 //
 // If we also called `advance()` in the `!matched_hyphens` branch, we'd skip past the
 // `)` and we'd fail to recognize the raw string.
-static inline bool scan_raw_string_content(TSLexer* lexer, RawStringState* raw_string_state) {
+//
+// In the case of `r"()"` when there is no string content, we avoid emitting a
+// content node altogether, and instead immediately close out the raw string.
+// This has to happen from here because we can't rewind the lexer.
+static inline bool scan_raw_string_content_or_close(TSLexer* lexer, RawStringState* raw_string_state) {
   const char closing_bracket = raw_string_state->closing_bracket;
   const int hyphen_count = raw_string_state->hyphen_count;
   const char closing_quote = raw_string_state->closing_quote;
+
+  bool any_content = false;
 
   while (!lexer->eof(lexer)) {
     if (lexer->lookahead != closing_bracket) {
       // Consume an arbitrary string part
       lexer->advance(lexer, false);
+      any_content = true;
       continue;
     }
 
@@ -583,7 +590,6 @@ static inline bool scan_raw_string_content(TSLexer* lexer, RawStringState* raw_s
     // the cutoff for string content. If we are wrong, we loop around again and
     // will reset the marker.
     lexer->mark_end(lexer);
-    lexer->result_symbol = RAW_STRING_CONTENT;
 
     // Consume a closing bracket
     lexer->advance(lexer, false);
@@ -603,15 +609,31 @@ static inline bool scan_raw_string_content(TSLexer* lexer, RawStringState* raw_s
     }
 
     if (!matched_hyphens) {
+      any_content = true;
       continue;
     }
 
     if (lexer->lookahead != closing_quote) {
+      any_content = true;
       continue;
     }
 
-    // Success! Everything up to the `mark_end()` is the string content,
-    // and we know the closing sequence is coming up next.
+    // Consume a closing quote
+    lexer->advance(lexer, false);
+
+    // Success! We have consumed the closing sequence.
+    if (any_content) {
+      // If there was content, everything up to `mark_end()` contains it.
+      // We will reconsume the closing sequence next in `scan_raw_string_close()`.
+      lexer->result_symbol = RAW_STRING_CONTENT;
+    } else {
+      // If there wasn't content, close the raw string immediately. We don't
+      // emit a zero width content node, consistent with single and double
+      // quoted strings.
+      lexer->mark_end(lexer);
+      lexer->result_symbol = RAW_STRING_CLOSE;
+    }
+
     return true;
   }
 
@@ -738,7 +760,10 @@ static bool scan(TSLexer* lexer, Scopes* scopes, RawStringState* raw_string_stat
   // consumed, otherwise `r"(  hello)"` won't capture the whitespace in the
   // `string_content`.
   if (valid_symbols[RAW_STRING_CONTENT]) {
-    return scan_raw_string_content(lexer, raw_string_state);
+    if (!valid_symbols[RAW_STRING_CLOSE]) {
+      debug_print("Expected `RAW_STRING_CLOSE` to also be valid.");
+    }
+    return scan_raw_string_content_or_close(lexer, raw_string_state);
   } else if (valid_symbols[RAW_STRING_CLOSE]) {
     return scan_raw_string_close(lexer, raw_string_state);
   }
