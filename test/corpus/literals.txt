@@ -365,11 +365,21 @@ r"(raw
 string
 )"
 
+r"()"
+R"{}"
+r"--[]--"
+
 r()
 
 --------------------------------------------------------------------------------
 
 (program
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
   (string
     (string_content))
   (string
