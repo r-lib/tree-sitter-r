@@ -55,6 +55,88 @@ typedef struct {
 } DeserializeBuffer;
 
 // ---------------------------------------------------------------------------------------
+
+// i.e. `}---"`
+//       ^ ^ ^
+//       | | |- closing_quote = "
+//       | |- hyphen_count = 3
+//       |- closing_bracket = }
+typedef struct {
+  char closing_bracket;
+  uint8_t hyphen_count;
+  char closing_quote;
+} RawStringState;
+
+const unsigned RAW_STRING_CLOSING_BRACKET_SIZE = sizeof(char);
+const unsigned RAW_STRING_HYPHEN_COUNT_SIZE = sizeof(uint8_t);
+const unsigned RAW_STRING_CLOSING_QUOTE_SIZE = sizeof(char);
+
+static void raw_string_state_set(
+  RawStringState* raw_string_state,
+  char closing_bracket,
+  uint8_t hyphen_count,
+  char closing_quote
+) {
+  raw_string_state->closing_bracket = closing_bracket;
+  raw_string_state->hyphen_count = hyphen_count;
+  raw_string_state->closing_quote = closing_quote;
+}
+
+static void raw_string_state_reset(RawStringState* raw_string_state) {
+  raw_string_state_set(raw_string_state, '\0', 0, '\0');
+}
+
+static bool raw_string_state_init(RawStringState* raw_string_state) {
+  raw_string_state_reset(raw_string_state);
+  return true;
+}
+
+static void raw_string_state_destroy(RawStringState* raw_string_state) {
+  // Nothing to free
+}
+
+// Serialize fields individually to skip the struct's padding bytes, which
+// `sizeof(RawStringState)` would otherwise include
+static void raw_string_state_serialize(RawStringState* raw_string_state, SerializeBuffer* buffer) {
+  memcpy(buffer->pointer, &raw_string_state->closing_bracket, RAW_STRING_CLOSING_BRACKET_SIZE);
+  buffer->pointer += RAW_STRING_CLOSING_BRACKET_SIZE;
+  buffer->length += RAW_STRING_CLOSING_BRACKET_SIZE;
+
+  memcpy(buffer->pointer, &raw_string_state->hyphen_count, RAW_STRING_HYPHEN_COUNT_SIZE);
+  buffer->pointer += RAW_STRING_HYPHEN_COUNT_SIZE;
+  buffer->length += RAW_STRING_HYPHEN_COUNT_SIZE;
+
+  memcpy(buffer->pointer, &raw_string_state->closing_quote, RAW_STRING_CLOSING_QUOTE_SIZE);
+  buffer->pointer += RAW_STRING_CLOSING_QUOTE_SIZE;
+  buffer->length += RAW_STRING_CLOSING_QUOTE_SIZE;
+}
+
+static bool raw_string_state_deserialize(RawStringState* raw_string_state, DeserializeBuffer* buffer) {
+  if (buffer->length <
+      (RAW_STRING_CLOSING_BRACKET_SIZE + RAW_STRING_HYPHEN_COUNT_SIZE + RAW_STRING_CLOSING_QUOTE_SIZE)) {
+    debug_print(
+      "`raw_string_state_deserialize()` failed. Can't deserialize raw string state. Buffer length %u.\n",
+      buffer->length
+    );
+    return false;
+  }
+
+  memcpy(&raw_string_state->closing_bracket, buffer->pointer, RAW_STRING_CLOSING_BRACKET_SIZE);
+  buffer->pointer += RAW_STRING_CLOSING_BRACKET_SIZE;
+  buffer->length -= RAW_STRING_CLOSING_BRACKET_SIZE;
+
+  memcpy(&raw_string_state->hyphen_count, buffer->pointer, RAW_STRING_HYPHEN_COUNT_SIZE);
+  buffer->pointer += RAW_STRING_HYPHEN_COUNT_SIZE;
+  buffer->length -= RAW_STRING_HYPHEN_COUNT_SIZE;
+
+  memcpy(&raw_string_state->closing_quote, buffer->pointer, RAW_STRING_CLOSING_QUOTE_SIZE);
+  buffer->pointer += RAW_STRING_CLOSING_QUOTE_SIZE;
+  buffer->length -= RAW_STRING_CLOSING_QUOTE_SIZE;
+
+  return true;
+}
+
+// ---------------------------------------------------------------------------------------
 // Stack structure inspired from tree-sitter-julia
 
 // We purposefully use `char` as the element storage type. An `enum` would be
@@ -201,98 +283,16 @@ static bool scopes_deserialize(Scopes* scopes, DeserializeBuffer* buffer) {
 
 // ---------------------------------------------------------------------------------------
 
-// i.e. `}---"`
-//       ^ ^ ^
-//       | | |- closing_quote = "
-//       | |- hyphen_count = 3
-//       |- closing_bracket = }
 typedef struct {
-  char closing_bracket;
-  uint8_t hyphen_count;
-  char closing_quote;
-} RawStringState;
-
-const unsigned RAW_STRING_CLOSING_BRACKET_SIZE = sizeof(char);
-const unsigned RAW_STRING_HYPHEN_COUNT_SIZE = sizeof(uint8_t);
-const unsigned RAW_STRING_CLOSING_QUOTE_SIZE = sizeof(char);
-
-static void raw_string_state_set(
-  RawStringState* raw_string_state,
-  char closing_bracket,
-  uint8_t hyphen_count,
-  char closing_quote
-) {
-  raw_string_state->closing_bracket = closing_bracket;
-  raw_string_state->hyphen_count = hyphen_count;
-  raw_string_state->closing_quote = closing_quote;
-}
-
-static void raw_string_state_reset(RawStringState* raw_string_state) {
-  raw_string_state_set(raw_string_state, '\0', 0, '\0');
-}
-
-static bool raw_string_state_init(RawStringState* raw_string_state) {
-  raw_string_state_reset(raw_string_state);
-  return true;
-}
-
-static void raw_string_state_destroy(RawStringState* raw_string_state) {
-  // Nothing to free
-}
-
-// Serialize fields individually to skip the struct's padding bytes, which
-// `sizeof(RawStringState)` would otherwise include
-static void raw_string_state_serialize(RawStringState* raw_string_state, SerializeBuffer* buffer) {
-  memcpy(buffer->pointer, &raw_string_state->closing_bracket, RAW_STRING_CLOSING_BRACKET_SIZE);
-  buffer->pointer += RAW_STRING_CLOSING_BRACKET_SIZE;
-  buffer->length += RAW_STRING_CLOSING_BRACKET_SIZE;
-
-  memcpy(buffer->pointer, &raw_string_state->hyphen_count, RAW_STRING_HYPHEN_COUNT_SIZE);
-  buffer->pointer += RAW_STRING_HYPHEN_COUNT_SIZE;
-  buffer->length += RAW_STRING_HYPHEN_COUNT_SIZE;
-
-  memcpy(buffer->pointer, &raw_string_state->closing_quote, RAW_STRING_CLOSING_QUOTE_SIZE);
-  buffer->pointer += RAW_STRING_CLOSING_QUOTE_SIZE;
-  buffer->length += RAW_STRING_CLOSING_QUOTE_SIZE;
-}
-
-static bool raw_string_state_deserialize(RawStringState* raw_string_state, DeserializeBuffer* buffer) {
-  if (buffer->length <
-      (RAW_STRING_CLOSING_BRACKET_SIZE + RAW_STRING_HYPHEN_COUNT_SIZE + RAW_STRING_CLOSING_QUOTE_SIZE)) {
-    debug_print(
-      "`raw_string_state_deserialize()` failed. Can't deserialize raw string state. Buffer length %u.\n",
-      buffer->length
-    );
-    return false;
-  }
-
-  memcpy(&raw_string_state->closing_bracket, buffer->pointer, RAW_STRING_CLOSING_BRACKET_SIZE);
-  buffer->pointer += RAW_STRING_CLOSING_BRACKET_SIZE;
-  buffer->length -= RAW_STRING_CLOSING_BRACKET_SIZE;
-
-  memcpy(&raw_string_state->hyphen_count, buffer->pointer, RAW_STRING_HYPHEN_COUNT_SIZE);
-  buffer->pointer += RAW_STRING_HYPHEN_COUNT_SIZE;
-  buffer->length -= RAW_STRING_HYPHEN_COUNT_SIZE;
-
-  memcpy(&raw_string_state->closing_quote, buffer->pointer, RAW_STRING_CLOSING_QUOTE_SIZE);
-  buffer->pointer += RAW_STRING_CLOSING_QUOTE_SIZE;
-  buffer->length -= RAW_STRING_CLOSING_QUOTE_SIZE;
-
-  return true;
-}
-
-// ---------------------------------------------------------------------------------------
-
-typedef struct {
-  Scopes scopes;
   RawStringState raw_string_state;
+  Scopes scopes;
 } Payload;
 
 const unsigned PAYLOAD_SIZE = sizeof(Payload);
 
 static void payload_reset(Payload* payload) {
-  scopes_reset(&payload->scopes);
   raw_string_state_reset(&payload->raw_string_state);
+  scopes_reset(&payload->scopes);
 }
 
 static Payload* payload_new(void) {
@@ -302,15 +302,15 @@ static Payload* payload_new(void) {
     return NULL;
   }
 
-  if (!scopes_init(&payload->scopes)) {
-    debug_print("`payload_new()` failed. Can't initialize scopes.");
+  if (!raw_string_state_init(&payload->raw_string_state)) {
+    debug_print("`payload_new()` failed. Can't initialize raw string state.");
     ts_free(payload);
     return NULL;
   }
 
-  if (!raw_string_state_init(&payload->raw_string_state)) {
-    debug_print("`payload_new()` failed. Can't initialize raw string state.");
-    scopes_destroy(&payload->scopes);
+  if (!scopes_init(&payload->scopes)) {
+    debug_print("`payload_new()` failed. Can't initialize scopes.");
+    raw_string_state_destroy(&payload->raw_string_state);
     ts_free(payload);
     return NULL;
   }
@@ -319,21 +319,21 @@ static Payload* payload_new(void) {
 }
 
 static void payload_destroy(Payload* payload) {
-  scopes_destroy(&payload->scopes);
   raw_string_state_destroy(&payload->raw_string_state);
+  scopes_destroy(&payload->scopes);
   ts_free(payload);
 }
 
 static void payload_serialize(Payload* payload, SerializeBuffer* buffer) {
-  scopes_serialize(&payload->scopes, buffer);
   raw_string_state_serialize(&payload->raw_string_state, buffer);
+  scopes_serialize(&payload->scopes, buffer);
 }
 
 static bool payload_deserialize(Payload* payload, DeserializeBuffer* buffer) {
-  if (!scopes_deserialize(&payload->scopes, buffer)) {
+  if (!raw_string_state_deserialize(&payload->raw_string_state, buffer)) {
     return false;
   }
-  if (!raw_string_state_deserialize(&payload->raw_string_state, buffer)) {
+  if (!scopes_deserialize(&payload->scopes, buffer)) {
     return false;
   }
   return true;
