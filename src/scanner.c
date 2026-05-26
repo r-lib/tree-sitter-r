@@ -538,7 +538,7 @@ static inline bool scan_raw_string_open(TSLexer* lexer, RawStringState* raw_stri
   lexer->advance(lexer, false);
 
   // Start counting '-' characters
-  // Bail on pathelogical case of 256 hyphens
+  // Bail on pathological case of 256 hyphens
   uint8_t hyphen_count = 0;
   while (lexer->lookahead == '-') {
     if (hyphen_count == UINT8_MAX) {
