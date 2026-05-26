@@ -792,6 +792,7 @@ void tree_sitter_r_external_scanner_deserialize(void* payload, const char* buffe
   }
   DeserializeBuffer deserialize_buffer = (DeserializeBuffer) {.pointer = buffer, .length = length};
   if (!payload_deserialize(payload, &deserialize_buffer)) {
+    payload_reset(payload);
     debug_print("`payload_deserialize()` failed. Can't deserialize payload.\n");
   }
 }
