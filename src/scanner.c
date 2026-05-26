@@ -211,7 +211,9 @@ typedef struct {
   char closing_quote;
 } RawStringState;
 
-const unsigned RAW_STRING_STATE_SIZE = sizeof(RawStringState);
+const unsigned RAW_STRING_CLOSING_BRACKET_SIZE = sizeof(char);
+const unsigned RAW_STRING_HYPHEN_COUNT_SIZE = sizeof(int);
+const unsigned RAW_STRING_CLOSING_QUOTE_SIZE = sizeof(char);
 
 static void raw_string_state_set(
   RawStringState* raw_string_state,
@@ -237,23 +239,44 @@ static void raw_string_state_destroy(RawStringState* raw_string_state) {
   // Nothing to free
 }
 
+// Serialize fields individually to skip the struct's padding bytes, which
+// `sizeof(RawStringState)` would otherwise include
 static void raw_string_state_serialize(RawStringState* raw_string_state, SerializeBuffer* buffer) {
-  memcpy(buffer->pointer, raw_string_state, RAW_STRING_STATE_SIZE);
-  buffer->pointer += RAW_STRING_STATE_SIZE;
-  buffer->length += RAW_STRING_STATE_SIZE;
+  memcpy(buffer->pointer, &raw_string_state->closing_bracket, RAW_STRING_CLOSING_BRACKET_SIZE);
+  buffer->pointer += RAW_STRING_CLOSING_BRACKET_SIZE;
+  buffer->length += RAW_STRING_CLOSING_BRACKET_SIZE;
+
+  memcpy(buffer->pointer, &raw_string_state->hyphen_count, RAW_STRING_HYPHEN_COUNT_SIZE);
+  buffer->pointer += RAW_STRING_HYPHEN_COUNT_SIZE;
+  buffer->length += RAW_STRING_HYPHEN_COUNT_SIZE;
+
+  memcpy(buffer->pointer, &raw_string_state->closing_quote, RAW_STRING_CLOSING_QUOTE_SIZE);
+  buffer->pointer += RAW_STRING_CLOSING_QUOTE_SIZE;
+  buffer->length += RAW_STRING_CLOSING_QUOTE_SIZE;
 }
 
 static bool raw_string_state_deserialize(RawStringState* raw_string_state, DeserializeBuffer* buffer) {
-  if (buffer->length < RAW_STRING_STATE_SIZE) {
+  if (buffer->length <
+      (RAW_STRING_CLOSING_BRACKET_SIZE + RAW_STRING_HYPHEN_COUNT_SIZE + RAW_STRING_CLOSING_QUOTE_SIZE)) {
     debug_print(
       "`raw_string_state_deserialize()` failed. Can't deserialize raw string state. Buffer length %u.\n",
       buffer->length
     );
     return false;
   }
-  memcpy(raw_string_state, buffer->pointer, RAW_STRING_STATE_SIZE);
-  buffer->pointer += RAW_STRING_STATE_SIZE;
-  buffer->length -= RAW_STRING_STATE_SIZE;
+
+  memcpy(&raw_string_state->closing_bracket, buffer->pointer, RAW_STRING_CLOSING_BRACKET_SIZE);
+  buffer->pointer += RAW_STRING_CLOSING_BRACKET_SIZE;
+  buffer->length -= RAW_STRING_CLOSING_BRACKET_SIZE;
+
+  memcpy(&raw_string_state->hyphen_count, buffer->pointer, RAW_STRING_HYPHEN_COUNT_SIZE);
+  buffer->pointer += RAW_STRING_HYPHEN_COUNT_SIZE;
+  buffer->length -= RAW_STRING_HYPHEN_COUNT_SIZE;
+
+  memcpy(&raw_string_state->closing_quote, buffer->pointer, RAW_STRING_CLOSING_QUOTE_SIZE);
+  buffer->pointer += RAW_STRING_CLOSING_QUOTE_SIZE;
+  buffer->length -= RAW_STRING_CLOSING_QUOTE_SIZE;
+
   return true;
 }
 
