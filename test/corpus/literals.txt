@@ -369,6 +369,17 @@ r"()"
 R"{}"
 r"--[]--"
 
+# Leading whitespace and newlines after open
+r"(  hello)"
+r"(\nhello)"
+r"(
+hello
+)"
+f(r"(\nhello\n)")
+f(r"(
+hello
+)")
+
 r()
 
 --------------------------------------------------------------------------------
@@ -414,6 +425,25 @@ r()
     (string_content))
   (string
     (string_content))
+  (comment)
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (call
+    (identifier)
+    (arguments
+      (argument
+        (string
+          (string_content)))))
+  (call
+    (identifier)
+    (arguments
+      (argument
+        (string
+          (string_content)))))
   (call
     (identifier)
     (arguments)))
