@@ -238,7 +238,7 @@ static void raw_string_state_set(RawStringState* state, char closing_bracket, in
   state->closing_quote = closing_quote;
 }
 static void raw_string_state_reset(RawStringState* state) {
-  raw_string_state_set(state, '0', 0, '0');
+  raw_string_state_set(state, '\0', 0, '\0');
 }
 
 static RawStringState* raw_string_state_new(void) {
@@ -487,7 +487,7 @@ static inline bool scan_raw_string_open(TSLexer* lexer, RawStringState* state) {
   // Check for an opening bracket, and figure out
   // the corresponding closing bracket
   char opening_bracket = lexer->lookahead;
-  char closing_bracket = '0';
+  char closing_bracket;
   if (opening_bracket == '(') {
     closing_bracket = ')';
     lexer->advance(lexer, false);
