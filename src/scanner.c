@@ -213,40 +213,45 @@ typedef struct {
 
 const unsigned RAW_STRING_STATE_SIZE = sizeof(RawStringState);
 
-static void raw_string_state_set(RawStringState* state, char closing_bracket, int hyphen_count, char closing_quote) {
-  state->closing_bracket = closing_bracket;
-  state->hyphen_count = hyphen_count;
-  state->closing_quote = closing_quote;
+static void raw_string_state_set(
+  RawStringState* raw_string_state,
+  char closing_bracket,
+  int hyphen_count,
+  char closing_quote
+) {
+  raw_string_state->closing_bracket = closing_bracket;
+  raw_string_state->hyphen_count = hyphen_count;
+  raw_string_state->closing_quote = closing_quote;
 }
 
-static void raw_string_state_reset(RawStringState* state) {
-  raw_string_state_set(state, '\0', 0, '\0');
+static void raw_string_state_reset(RawStringState* raw_string_state) {
+  raw_string_state_set(raw_string_state, '\0', 0, '\0');
 }
 
-static bool raw_string_state_init(RawStringState* state) {
-  raw_string_state_reset(state);
+static bool raw_string_state_init(RawStringState* raw_string_state) {
+  raw_string_state_reset(raw_string_state);
   return true;
 }
 
-static void raw_string_state_destroy(RawStringState* state) {
+static void raw_string_state_destroy(RawStringState* raw_string_state) {
   // Nothing to free
 }
 
-static void raw_string_state_serialize(RawStringState* state, SerializeBuffer* buffer) {
-  memcpy(buffer->pointer, state, RAW_STRING_STATE_SIZE);
+static void raw_string_state_serialize(RawStringState* raw_string_state, SerializeBuffer* buffer) {
+  memcpy(buffer->pointer, raw_string_state, RAW_STRING_STATE_SIZE);
   buffer->pointer += RAW_STRING_STATE_SIZE;
   buffer->length += RAW_STRING_STATE_SIZE;
 }
 
-static bool raw_string_state_deserialize(RawStringState* state, DeserializeBuffer* buffer) {
+static bool raw_string_state_deserialize(RawStringState* raw_string_state, DeserializeBuffer* buffer) {
   if (buffer->length < RAW_STRING_STATE_SIZE) {
     debug_print(
-      "`raw_string_state_deserialize()` failed. Can't deserialize state. Buffer length %u.\n",
+      "`raw_string_state_deserialize()` failed. Can't deserialize raw string state. Buffer length %u.\n",
       buffer->length
     );
     return false;
   }
-  memcpy(state, buffer->pointer, RAW_STRING_STATE_SIZE);
+  memcpy(raw_string_state, buffer->pointer, RAW_STRING_STATE_SIZE);
   buffer->pointer += RAW_STRING_STATE_SIZE;
   buffer->length -= RAW_STRING_STATE_SIZE;
   return true;
@@ -256,14 +261,14 @@ static bool raw_string_state_deserialize(RawStringState* state, DeserializeBuffe
 
 typedef struct {
   Scopes scopes;
-  RawStringState state;
+  RawStringState raw_string_state;
 } Payload;
 
 const unsigned PAYLOAD_SIZE = sizeof(Payload);
 
 static void payload_reset(Payload* payload) {
   scopes_reset(&payload->scopes);
-  raw_string_state_reset(&payload->state);
+  raw_string_state_reset(&payload->raw_string_state);
 }
 
 static Payload* payload_new(void) {
@@ -279,7 +284,7 @@ static Payload* payload_new(void) {
     return NULL;
   }
 
-  if (!raw_string_state_init(&payload->state)) {
+  if (!raw_string_state_init(&payload->raw_string_state)) {
     debug_print("`payload_new()` failed. Can't initialize raw string state.");
     scopes_destroy(&payload->scopes);
     ts_free(payload);
@@ -291,20 +296,20 @@ static Payload* payload_new(void) {
 
 static void payload_destroy(Payload* payload) {
   scopes_destroy(&payload->scopes);
-  raw_string_state_destroy(&payload->state);
+  raw_string_state_destroy(&payload->raw_string_state);
   ts_free(payload);
 }
 
 static void payload_serialize(Payload* payload, SerializeBuffer* buffer) {
   scopes_serialize(&payload->scopes, buffer);
-  raw_string_state_serialize(&payload->state, buffer);
+  raw_string_state_serialize(&payload->raw_string_state, buffer);
 }
 
 static bool payload_deserialize(Payload* payload, DeserializeBuffer* buffer) {
   if (!scopes_deserialize(&payload->scopes, buffer)) {
     return false;
   }
-  if (!raw_string_state_deserialize(&payload->state, buffer)) {
+  if (!raw_string_state_deserialize(&payload->raw_string_state, buffer)) {
     return false;
   }
   return true;
@@ -486,7 +491,7 @@ static inline bool scan_else_with_leading_newlines(TSLexer* lexer) {
 
 // Scan a raw string literal; see R source code for implementation:
 // https://github.com/wch/r-source/blob/52b730f217c12ba3d95dee0cd1f330d1977b5ea3/src/main/gram.y#L3102
-static inline bool scan_raw_string_open(TSLexer* lexer, RawStringState* state) {
+static inline bool scan_raw_string_open(TSLexer* lexer, RawStringState* raw_string_state) {
   // Raw string literals can start with either 'r' or 'R'
   char prefix = lexer->lookahead;
   if (prefix != 'r' && prefix != 'R') {
@@ -528,7 +533,7 @@ static inline bool scan_raw_string_open(TSLexer* lexer, RawStringState* state) {
   // Success!
   lexer->mark_end(lexer);
   lexer->result_symbol = RAW_STRING_OPEN;
-  raw_string_state_set(state, closing_bracket, hyphen_count, closing_quote);
+  raw_string_state_set(raw_string_state, closing_bracket, hyphen_count, closing_quote);
   return true;
 }
 
@@ -561,10 +566,10 @@ static inline bool scan_raw_string_open(TSLexer* lexer, RawStringState* state) {
 //
 // If we also called `advance()` in the `!matched_hyphens` branch, we'd skip past the
 // `)` and we'd fail to recognize the raw string.
-static inline bool scan_raw_string_content(TSLexer* lexer, RawStringState* state) {
-  const char closing_bracket = state->closing_bracket;
-  const int hyphen_count = state->hyphen_count;
-  const char closing_quote = state->closing_quote;
+static inline bool scan_raw_string_content(TSLexer* lexer, RawStringState* raw_string_state) {
+  const char closing_bracket = raw_string_state->closing_bracket;
+  const int hyphen_count = raw_string_state->hyphen_count;
+  const char closing_quote = raw_string_state->closing_quote;
 
   while (!lexer->eof(lexer)) {
     if (lexer->lookahead != closing_bracket) {
@@ -617,12 +622,12 @@ static inline bool scan_raw_string_content(TSLexer* lexer, RawStringState* state
 
 // Trust that `scan_raw_string_content()` validated that the closing sequence
 // is coming up next, so we just consume it without checking a second time
-static inline bool scan_raw_string_close(TSLexer* lexer, RawStringState* state) {
+static inline bool scan_raw_string_close(TSLexer* lexer, RawStringState* raw_string_state) {
   // Consume closing bracket
   lexer->advance(lexer, false);
 
   // Consume hyphens
-  for (int i = 0; i < state->hyphen_count; ++i) {
+  for (int i = 0; i < raw_string_state->hyphen_count; ++i) {
     lexer->advance(lexer, false);
   }
 
@@ -711,7 +716,7 @@ static inline bool scan_close_bracket2(TSLexer* lexer, Scopes* scopes) {
   return scan_close_block(lexer, scopes, SCOPE_BRACKET2, CLOSE_BRACKET2);
 }
 
-static bool scan(TSLexer* lexer, Scopes* scopes, RawStringState* state, const bool* valid_symbols) {
+static bool scan(TSLexer* lexer, Scopes* scopes, RawStringState* raw_string_state, const bool* valid_symbols) {
   if (valid_symbols[ERROR_SENTINEL]) {
     // Decline to handle when in "error recovery" mode. When a syntax error occurs,
     // tree-sitter calls the external scanner with all `valid_symbols` marked as valid.
@@ -758,11 +763,11 @@ static bool scan(TSLexer* lexer, Scopes* scopes, RawStringState* state, const bo
     // in favor of this branch.
     return scan_close_bracket2(lexer, scopes);
   } else if (valid_symbols[RAW_STRING_OPEN] && (lexer->lookahead == 'r' || lexer->lookahead == 'R')) {
-    return scan_raw_string_open(lexer, state);
+    return scan_raw_string_open(lexer, raw_string_state);
   } else if (valid_symbols[RAW_STRING_CONTENT]) {
-    return scan_raw_string_content(lexer, state);
+    return scan_raw_string_content(lexer, raw_string_state);
   } else if (valid_symbols[RAW_STRING_CLOSE]) {
-    return scan_raw_string_close(lexer, state);
+    return scan_raw_string_close(lexer, raw_string_state);
   } else if (valid_symbols[ELSE] && lexer->lookahead == 'e') {
     return scan_else(lexer);
   } else if (valid_symbols[ELSE] && scopes_peek(scopes) == SCOPE_BRACE && lexer->lookahead == '\n') {
@@ -791,7 +796,7 @@ bool tree_sitter_r_external_scanner_scan(void* payload, TSLexer* lexer, const bo
     return false;
   }
   Payload* payload_typed = (Payload*) payload;
-  return scan(lexer, &payload_typed->scopes, &payload_typed->state, valid_symbols);
+  return scan(lexer, &payload_typed->scopes, &payload_typed->raw_string_state, valid_symbols);
 }
 
 unsigned tree_sitter_r_external_scanner_serialize(void* payload, char* buffer) {
