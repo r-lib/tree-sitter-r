@@ -1009,11 +1009,49 @@
       )")
       
       S-Expression
-      (call [(40, 0), (40, 3)]
-        function: (identifier [(40, 0), (40, 1)])
-        arguments: (arguments [(40, 1), (40, 3)]
-          open: "(" [(40, 1), (40, 2)]
-          close: ")" [(40, 2), (40, 3)]
+      (comment [(40, 0), (40, 27)])
+      
+      Text
+      # Single quoted raw strings
+      
+      S-Expression
+      (string [(41, 0), (41, 5)]
+        content: (string_content [(41, 3), (41, 3)])
+      )
+      
+      Text
+      r'()'
+      
+      S-Expression
+      (string [(42, 0), (42, 6)]
+        content: (string_content [(42, 3), (42, 4)])
+      )
+      
+      Text
+      r'(a)'
+      
+      S-Expression
+      (string [(43, 0), (43, 6)]
+        content: (string_content [(43, 3), (43, 4)])
+      )
+      
+      Text
+      r'(')'
+      
+      S-Expression
+      (string [(44, 0), (44, 6)]
+        content: (string_content [(44, 3), (44, 4)])
+      )
+      
+      Text
+      r'(")'
+      
+      S-Expression
+      (call [(46, 0), (46, 3)]
+        function: (identifier [(46, 0), (46, 1)])
+        arguments: (arguments [(46, 1), (46, 3)]
+          open: "(" [(46, 1), (46, 2)]
+          close: ")" [(46, 2), (46, 3)]
         )
       )
       

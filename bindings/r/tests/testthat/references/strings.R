@@ -139,4 +139,10 @@ f(r"(
 hello
 )")
 
+# Single quoted raw strings
+r'()'
+r'(a)'
+r'(')'
+r'(")'
+
 r()
