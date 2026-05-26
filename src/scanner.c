@@ -1,3 +1,4 @@
+#include <stdint.h> // uint8_t
 #include <string.h> // memcpy()
 #include <wctype.h> // iswspace()
 
@@ -207,18 +208,18 @@ static bool scopes_deserialize(Scopes* scopes, DeserializeBuffer* buffer) {
 //       |- closing_bracket = }
 typedef struct {
   char closing_bracket;
-  int hyphen_count;
+  uint8_t hyphen_count;
   char closing_quote;
 } RawStringState;
 
 const unsigned RAW_STRING_CLOSING_BRACKET_SIZE = sizeof(char);
-const unsigned RAW_STRING_HYPHEN_COUNT_SIZE = sizeof(int);
+const unsigned RAW_STRING_HYPHEN_COUNT_SIZE = sizeof(uint8_t);
 const unsigned RAW_STRING_CLOSING_QUOTE_SIZE = sizeof(char);
 
 static void raw_string_state_set(
   RawStringState* raw_string_state,
   char closing_bracket,
-  int hyphen_count,
+  uint8_t hyphen_count,
   char closing_quote
 ) {
   raw_string_state->closing_bracket = closing_bracket;
@@ -479,8 +480,12 @@ static inline bool scan_raw_string_open(TSLexer* lexer, RawStringState* raw_stri
   lexer->advance(lexer, false);
 
   // Start counting '-' characters
-  int hyphen_count = 0;
+  // Bail on pathelogical case of 256 hyphens
+  uint8_t hyphen_count = 0;
   while (lexer->lookahead == '-') {
+    if (hyphen_count == UINT8_MAX) {
+      return false;
+    }
     lexer->advance(lexer, false);
     hyphen_count += 1;
   }
@@ -544,7 +549,7 @@ static inline bool scan_raw_string_open(TSLexer* lexer, RawStringState* raw_stri
 // This has to happen from here because we can't rewind the lexer.
 static inline bool scan_raw_string_content_or_close(TSLexer* lexer, RawStringState* raw_string_state) {
   const char closing_bracket = raw_string_state->closing_bracket;
-  const int hyphen_count = raw_string_state->hyphen_count;
+  const uint8_t hyphen_count = raw_string_state->hyphen_count;
   const char closing_quote = raw_string_state->closing_quote;
 
   bool any_content = false;
@@ -570,7 +575,7 @@ static inline bool scan_raw_string_content_or_close(TSLexer* lexer, RawStringSta
     // (Start "matched" for the case of 0 hyphens)
     bool matched_hyphens = true;
 
-    for (int i = 0; i < hyphen_count; i++) {
+    for (uint8_t i = 0; i < hyphen_count; ++i) {
       if (lexer->lookahead != '-') {
         matched_hyphens = false;
         break;
@@ -621,7 +626,7 @@ static inline bool scan_raw_string_close(TSLexer* lexer, RawStringState* raw_str
   lexer->advance(lexer, false);
 
   // Consume hyphens
-  for (int i = 0; i < raw_string_state->hyphen_count; ++i) {
+  for (uint8_t i = 0; i < raw_string_state->hyphen_count; ++i) {
     lexer->advance(lexer, false);
   }
 
