@@ -677,7 +677,7 @@ static inline bool scan_raw_string_content_or_close(TSLexer* lexer, RawStringSta
   return false;
 }
 
-// Trust that `scan_raw_string_content()` validated that the closing sequence
+// Trust that `scan_raw_string_content_or_close()` validated that the closing sequence
 // is coming up next, so we just consume it without checking a second time
 static inline bool scan_raw_string_close(TSLexer* lexer, RawStringState* raw_string_state) {
   // Consume closing bracket
