@@ -91,36 +91,27 @@ typedef struct {
   unsigned n_scopes;
 } Stack;
 
-const unsigned STACK_SIZE = sizeof(Stack);
 const unsigned N_SCOPES_SIZE = sizeof(unsigned);
 
 static void stack_reset(Stack* stack) {
   stack->n_scopes = 0;
 }
 
-static Stack* stack_new(void) {
-  Stack* stack = ts_malloc(STACK_SIZE);
-  if (stack == NULL) {
-    debug_print("`stack_new()` failed. Can't allocate stack.");
-    return NULL;
-  }
-
+static bool stack_init(Stack* stack) {
   Scope* scopes = ts_malloc(MAX_N_SCOPES * SCOPE_SIZE);
   if (scopes == NULL) {
-    debug_print("`stack_new()` failed. Can't allocate scope array.");
-    ts_free(stack);
-    return NULL;
+    debug_print("`stack_init()` failed. Can't allocate scope array.");
+    return false;
   }
   stack->scopes = scopes;
 
   stack_reset(stack);
 
-  return stack;
+  return true;
 }
 
-static void stack_free(Stack* stack) {
+static void stack_destroy(Stack* stack) {
   ts_free(stack->scopes);
-  ts_free(stack);
 }
 
 static bool stack_push(Stack* stack, Scope scope) {
@@ -232,18 +223,13 @@ static void raw_string_state_reset(RawStringState* state) {
   raw_string_state_set(state, '\0', 0, '\0');
 }
 
-static RawStringState* raw_string_state_new(void) {
-  RawStringState* state = ts_malloc(RAW_STRING_STATE_SIZE);
-  if (state == NULL) {
-    debug_print("`raw_string_state_new()` failed. Can't allocate state.");
-    return NULL;
-  }
+static bool raw_string_state_init(RawStringState* state) {
   raw_string_state_reset(state);
-  return state;
+  return true;
 }
 
-static void raw_string_state_free(RawStringState* state) {
-  ts_free(state);
+static void raw_string_state_destroy(RawStringState* state) {
+  // Nothing to free
 }
 
 static void raw_string_state_serialize(RawStringState* state, SerializeBuffer* buffer) {
@@ -269,15 +255,15 @@ static bool raw_string_state_deserialize(RawStringState* state, DeserializeBuffe
 // ---------------------------------------------------------------------------------------
 
 typedef struct {
-  Stack* stack;
-  RawStringState* state;
+  Stack stack;
+  RawStringState state;
 } Payload;
 
 const unsigned PAYLOAD_SIZE = sizeof(Payload);
 
 static void payload_reset(Payload* payload) {
-  stack_reset(payload->stack);
-  raw_string_state_reset(payload->state);
+  stack_reset(&payload->stack);
+  raw_string_state_reset(&payload->state);
 }
 
 static Payload* payload_new(void) {
@@ -287,17 +273,15 @@ static Payload* payload_new(void) {
     return NULL;
   }
 
-  payload->stack = stack_new();
-  if (payload->stack == NULL) {
-    debug_print("`payload_new()` failed. Can't allocate stack.");
+  if (!stack_init(&payload->stack)) {
+    debug_print("`payload_new()` failed. Can't initialize stack.");
     ts_free(payload);
     return NULL;
   }
 
-  payload->state = raw_string_state_new();
-  if (payload->state == NULL) {
-    debug_print("`payload_new()` failed. Can't allocate state.");
-    stack_free(payload->stack);
+  if (!raw_string_state_init(&payload->state)) {
+    debug_print("`payload_new()` failed. Can't initialize raw string state.");
+    stack_destroy(&payload->stack);
     ts_free(payload);
     return NULL;
   }
@@ -305,22 +289,22 @@ static Payload* payload_new(void) {
   return payload;
 }
 
-static void payload_free(Payload* payload) {
-  raw_string_state_free(payload->state);
-  stack_free(payload->stack);
+static void payload_destroy(Payload* payload) {
+  stack_destroy(&payload->stack);
+  raw_string_state_destroy(&payload->state);
   ts_free(payload);
 }
 
 static void payload_serialize(Payload* payload, SerializeBuffer* buffer) {
-  stack_serialize(payload->stack, buffer);
-  raw_string_state_serialize(payload->state, buffer);
+  stack_serialize(&payload->stack, buffer);
+  raw_string_state_serialize(&payload->state, buffer);
 }
 
 static bool payload_deserialize(Payload* payload, DeserializeBuffer* buffer) {
-  if (!stack_deserialize(payload->stack, buffer)) {
+  if (!stack_deserialize(&payload->stack, buffer)) {
     return false;
   }
-  if (!raw_string_state_deserialize(payload->state, buffer)) {
+  if (!raw_string_state_deserialize(&payload->state, buffer)) {
     return false;
   }
   return true;
@@ -808,7 +792,8 @@ bool tree_sitter_r_external_scanner_scan(void* payload, TSLexer* lexer, const bo
   if (!payload_exists(payload)) {
     return false;
   }
-  return scan(lexer, ((Payload*) payload)->stack, ((Payload*) payload)->state, valid_symbols);
+  Payload* payload_typed = (Payload*) payload;
+  return scan(lexer, &payload_typed->stack, &payload_typed->state, valid_symbols);
 }
 
 unsigned tree_sitter_r_external_scanner_serialize(void* payload, char* buffer) {
@@ -838,6 +823,6 @@ void tree_sitter_r_external_scanner_deserialize(void* payload, const char* buffe
 
 void tree_sitter_r_external_scanner_destroy(void* payload) {
   if (payload_exists(payload)) {
-    payload_free(payload);
+    payload_destroy(payload);
   }
 }
