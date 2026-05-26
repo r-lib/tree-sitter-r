@@ -92,7 +92,8 @@ static bool raw_string_state_init(RawStringState* raw_string_state) {
 }
 
 static void raw_string_state_destroy(RawStringState* raw_string_state) {
-  // Nothing to free
+  // Nothing to free, recognize argument for Windows checks
+  (void) raw_string_state;
 }
 
 // Serialize fields individually to skip the struct's padding bytes, which
