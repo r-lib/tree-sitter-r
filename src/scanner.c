@@ -222,21 +222,12 @@ typedef struct {
 
 const unsigned RAW_STRING_STATE_SIZE = sizeof(RawStringState);
 
-static char raw_string_state_closing_bracket(RawStringState* state) {
-  return state->closing_bracket;
-}
-static int raw_string_state_hyphen_count(RawStringState* state) {
-  return state->hyphen_count;
-}
-static char raw_string_state_closing_quote(RawStringState* state) {
-  return state->closing_quote;
-}
-
 static void raw_string_state_set(RawStringState* state, char closing_bracket, int hyphen_count, char closing_quote) {
   state->closing_bracket = closing_bracket;
   state->hyphen_count = hyphen_count;
   state->closing_quote = closing_quote;
 }
+
 static void raw_string_state_reset(RawStringState* state) {
   raw_string_state_set(state, '\0', 0, '\0');
 }
@@ -538,9 +529,9 @@ static inline bool scan_raw_string_open(TSLexer* lexer, RawStringState* state) {
 // If we also called `advance()` in the `!matched_hyphens` branch, we'd skip past the
 // `)` and we'd fail to recognize the raw string.
 static inline bool scan_raw_string_content(TSLexer* lexer, RawStringState* state) {
-  const char closing_bracket = raw_string_state_closing_bracket(state);
-  const int hyphen_count = raw_string_state_hyphen_count(state);
-  const char closing_quote = raw_string_state_closing_quote(state);
+  const char closing_bracket = state->closing_bracket;
+  const int hyphen_count = state->hyphen_count;
+  const char closing_quote = state->closing_quote;
 
   while (!lexer->eof(lexer)) {
     if (lexer->lookahead != closing_bracket) {
@@ -598,8 +589,7 @@ static inline bool scan_raw_string_close(TSLexer* lexer, RawStringState* state) 
   lexer->advance(lexer, false);
 
   // Consume hyphens
-  const int hyphen_count = raw_string_state_hyphen_count(state);
-  for (int i = 0; i < hyphen_count; ++i) {
+  for (int i = 0; i < state->hyphen_count; ++i) {
     lexer->advance(lexer, false);
   }
 
