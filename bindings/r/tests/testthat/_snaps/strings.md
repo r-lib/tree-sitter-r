@@ -779,103 +779,137 @@
       node_children_print(node)
     Output
       S-Expression
-      (string [(1, 0), (1, 15)])
+      (string [(1, 0), (1, 15)]
+        content: (string_content [(1, 3), (1, 13)])
+      )
       
       Text
       r"(raw string)"
       
       S-Expression
-      (string [(2, 0), (2, 23)])
+      (string [(2, 0), (2, 23)]
+        content: (string_content [(2, 3), (2, 21)])
+      )
       
       Text
       R"{another raw string}"
       
       S-Expression
-      (string [(3, 0), (3, 34)])
+      (string [(3, 0), (3, 34)]
+        content: (string_content [(3, 5), (3, 30)])
+      )
       
       Text
       R"--[yet another ]- raw string]--"
       
       S-Expression
-      (string [(5, 0), (5, 6)])
+      (string [(5, 0), (5, 6)]
+        content: (string_content [(5, 3), (5, 4)])
+      )
       
       Text
       r"(")"
       
       S-Expression
-      (string [(6, 0), (6, 7)])
+      (string [(6, 0), (6, 7)]
+        content: (string_content [(6, 3), (6, 5)])
+      )
       
       Text
       r"("")"
       
       S-Expression
-      (string [(7, 0), (7, 6)])
+      (string [(7, 0), (7, 6)]
+        content: (string_content [(7, 3), (7, 4)])
+      )
       
       Text
       r"(')"
       
       S-Expression
-      (string [(8, 0), (8, 7)])
+      (string [(8, 0), (8, 7)]
+        content: (string_content [(8, 3), (8, 5)])
+      )
       
       Text
       r"('')"
       
       S-Expression
-      (string [(10, 0), (10, 8)])
+      (string [(10, 0), (10, 8)]
+        content: (string_content [(10, 4), (10, 5)])
+      )
       
       Text
       r"-(-)-"
       
       S-Expression
-      (string [(11, 0), (11, 9)])
+      (string [(11, 0), (11, 9)]
+        content: (string_content [(11, 4), (11, 6)])
+      )
       
       Text
       r"-()-)-"
       
       S-Expression
-      (string [(12, 0), (12, 12)])
+      (string [(12, 0), (12, 12)]
+        content: (string_content [(12, 5), (12, 8)])
+      )
       
       Text
       r"--()-")--"
       
       S-Expression
-      (string [(14, 0), (14, 9)])
+      (string [(14, 0), (14, 9)]
+        content: (string_content [(14, 4), (14, 7)])
+      )
       
       Text
       r"( () )"
       
       S-Expression
-      (string [(15, 0), (15, 7)])
+      (string [(15, 0), (15, 7)]
+        content: (string_content [(15, 3), (15, 5)])
+      )
       
       Text
       r"(())"
       
       S-Expression
-      (string [(16, 0), (16, 8)])
+      (string [(16, 0), (16, 8)]
+        content: (string_content [(16, 4), (16, 6)])
+      )
       
       Text
       r"( ())"
       
       S-Expression
-      (string [(17, 0), (17, 8)])
+      (string [(17, 0), (17, 8)]
+        content: (string_content [(17, 3), (17, 6)])
+      )
       
       Text
       r"(() )"
       
       S-Expression
-      (string [(18, 0), (18, 8)])
+      (string [(18, 0), (18, 8)]
+        content: (string_content [(18, 4), (18, 5)])
+      )
       
       Text
       r"-())-"
       
       S-Expression
-      (string [(19, 0), (19, 11)])
+      (string [(19, 0), (19, 11)]
+        content: (string_content [(19, 4), (19, 8)])
+      )
       
       Text
       r"-(())-)-"
       
       S-Expression
-      (string [(21, 0), (23, 2)])
+      (string [(21, 0), (23, 2)]
+        content: (string_content [(21, 3), (23, 0)])
+      )
       
       Text
       r"(raw
@@ -883,11 +917,103 @@
       )"
       
       S-Expression
-      (call [(25, 0), (25, 3)]
-        function: (identifier [(25, 0), (25, 1)])
-        arguments: (arguments [(25, 1), (25, 3)]
-          open: "(" [(25, 1), (25, 2)]
-          close: ")" [(25, 2), (25, 3)]
+      (string [(25, 0), (25, 5)]
+        content: (string_content [(25, 3), (25, 3)])
+      )
+      
+      Text
+      r"()"
+      
+      S-Expression
+      (string [(26, 0), (26, 5)]
+        content: (string_content [(26, 3), (26, 3)])
+      )
+      
+      Text
+      R"{}"
+      
+      S-Expression
+      (string [(27, 0), (27, 9)]
+        content: (string_content [(27, 5), (27, 5)])
+      )
+      
+      Text
+      r"--[]--"
+      
+      S-Expression
+      (comment [(29, 0), (29, 44)])
+      
+      Text
+      # Leading whitespace and newlines after open
+      
+      S-Expression
+      (string [(30, 0), (30, 12)]
+        content: (string_content [(30, 5), (30, 10)])
+      )
+      
+      Text
+      r"(  hello)"
+      
+      S-Expression
+      (string [(31, 0), (31, 12)]
+        content: (string_content [(31, 3), (31, 10)])
+      )
+      
+      Text
+      r"(\nhello)"
+      
+      S-Expression
+      (string [(32, 0), (34, 2)]
+        content: (string_content [(32, 3), (34, 0)])
+      )
+      
+      Text
+      r"(
+      hello
+      )"
+      
+      S-Expression
+      (call [(35, 0), (35, 17)]
+        function: (identifier [(35, 0), (35, 1)])
+        arguments: (arguments [(35, 1), (35, 17)]
+          open: "(" [(35, 1), (35, 2)]
+          argument: (argument [(35, 2), (35, 16)]
+            value: (string [(35, 2), (35, 16)]
+              content: (string_content [(35, 5), (35, 14)])
+            )
+          )
+          close: ")" [(35, 16), (35, 17)]
+        )
+      )
+      
+      Text
+      f(r"(\nhello\n)")
+      
+      S-Expression
+      (call [(36, 0), (38, 3)]
+        function: (identifier [(36, 0), (36, 1)])
+        arguments: (arguments [(36, 1), (38, 3)]
+          open: "(" [(36, 1), (36, 2)]
+          argument: (argument [(36, 2), (38, 2)]
+            value: (string [(36, 2), (38, 2)]
+              content: (string_content [(37, 0), (38, 0)])
+            )
+          )
+          close: ")" [(38, 2), (38, 3)]
+        )
+      )
+      
+      Text
+      f(r"(
+      hello
+      )")
+      
+      S-Expression
+      (call [(40, 0), (40, 3)]
+        function: (identifier [(40, 0), (40, 1)])
+        arguments: (arguments [(40, 1), (40, 3)]
+          open: "(" [(40, 1), (40, 2)]
+          close: ")" [(40, 2), (40, 3)]
         )
       )
       
