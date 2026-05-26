@@ -145,9 +145,6 @@ static bool raw_string_state_deserialize(RawStringState* raw_string_state, Deser
 // `SCOPE_SIZE` to be 1 everywhere, but we are careful just in case.
 typedef char Scope;
 
-const unsigned SCOPE_SIZE = sizeof(Scope);
-const unsigned MAX_N_SCOPES = TREE_SITTER_SERIALIZATION_BUFFER_SIZE / SCOPE_SIZE;
-
 const Scope SCOPE_TOP_LEVEL = 0;
 const Scope SCOPE_BRACE = 1;
 const Scope SCOPE_PAREN = 2;
@@ -157,8 +154,8 @@ const Scope SCOPE_BRACKET2 = 4;
 // A stack data structure for tracking the current `Scope`
 //
 // `SCOPE_TOP_LEVEL` is never actually pushed onto the stack. It is returned
-// from `scopes_peek()` as a base case when `size = 0`. Note that in
-// `scopes_pop()` we still check for `size > 0` before peeking to retain the
+// from `scopes_peek()` as a base case when `count = 0`. Note that in
+// `scopes_pop()` we still check for `count > 0` before peeking to retain the
 // invariant that we can't pop without something on the stack.
 //
 // This actually makes serialization/deserialization very simple. Even if we pushed an
@@ -166,22 +163,32 @@ const Scope SCOPE_BRACKET2 = 4;
 // serialized (so the length of the stack won't be remembered) because the serialize hook
 // only runs when we accept a token from our external scanner. That would complicate the
 // deserialize hook by forcing us to differentiate between the cases of:
-// 1) A deserialization call restoring state from a previous serialization (size > 0).
-// 2) A deserialization call when there wasn't a previous serialization (size = 0),
+// 1) A deserialization call restoring state from a previous serialization (count > 0).
+// 2) A deserialization call when there wasn't a previous serialization (count = 0),
 //    where we'd have to repush an initial `SCOPE_TOP_LEVEL`.
 typedef struct {
   Scope* data;
-  unsigned size;
+  unsigned count;
 } Scopes;
 
-const unsigned SIZE_SIZE = sizeof(unsigned);
+const unsigned SCOPE_SIZE = sizeof(Scope);
+const unsigned COUNT_SIZE = sizeof(unsigned);
+
+// `MAX_SCOPES_COUNT` is the maximum number of nested scopes that are allowed.
+// It is computed as the remaining `buffer` space allowed by
+// `TREE_SITTER_SERIALIZATION_BUFFER_SIZE` after removing all other serialized
+// elements, so keep this up to date with anything else that gets serialized!
+// Ideally we leave as much space for this as possible.
+const unsigned MAX_SCOPES_COUNT = (TREE_SITTER_SERIALIZATION_BUFFER_SIZE - RAW_STRING_CLOSING_BRACKET_SIZE -
+                                   RAW_STRING_HYPHEN_COUNT_SIZE - RAW_STRING_CLOSING_QUOTE_SIZE - COUNT_SIZE) /
+  SCOPE_SIZE;
 
 static void scopes_reset(Scopes* scopes) {
-  scopes->size = 0;
+  scopes->count = 0;
 }
 
 static bool scopes_init(Scopes* scopes) {
-  Scope* data = ts_malloc(MAX_N_SCOPES * SCOPE_SIZE);
+  Scope* data = ts_malloc(MAX_SCOPES_COUNT * SCOPE_SIZE);
   if (data == NULL) {
     debug_print("`scopes_init()` failed. Can't allocate scope array.");
     return false;
@@ -198,36 +205,36 @@ static void scopes_destroy(Scopes* scopes) {
 }
 
 static bool scopes_push(Scopes* scopes, Scope scope) {
-  if (scopes->size >= MAX_N_SCOPES) {
+  if (scopes->count >= MAX_SCOPES_COUNT) {
     // Return `false` so `scan()` can return `false` and refuse to handle the token.
-    // Should only ever happen in pathological cases (i.e. 1025 unmatched opening braces).
+    // Should only ever happen in pathological cases (i.e. >1000 unmatched opening braces).
     debug_print("`scopes_push()` failed. `scopes` is at maximum capacity.\n");
     return false;
   }
 
-  scopes->data[scopes->size] = scope;
-  scopes->size++;
+  scopes->data[scopes->count] = scope;
+  scopes->count++;
 
   return true;
 }
 
 static Scope scopes_peek(Scopes* scopes) {
-  if (scopes->size == 0) {
+  if (scopes->count == 0) {
     return SCOPE_TOP_LEVEL;
   } else {
-    return scopes->data[scopes->size - 1];
+    return scopes->data[scopes->count - 1];
   }
 }
 
 static bool scopes_pop(Scopes* scopes, Scope expected) {
-  if (scopes->size == 0) {
+  if (scopes->count == 0) {
     // Return `false` so `scan()` can return `false` and refuse to handle the token
     debug_print("`scopes_pop()` failed. `scopes` is empty, nothing to pop.\n");
     return false;
   }
 
   Scope scope = scopes_peek(scopes);
-  scopes->size--;
+  scopes->count--;
 
   if (scope != expected) {
     // Return `false` so `scan()` can return `false` and refuse to handle the token
@@ -239,14 +246,14 @@ static bool scopes_pop(Scopes* scopes, Scope expected) {
 }
 
 static void scopes_serialize(Scopes* scopes, SerializeBuffer* buffer) {
-  // Serialize `size` so we know how many `Scope`s to deserialize
-  memcpy(buffer->pointer, &scopes->size, SIZE_SIZE);
-  buffer->pointer += SIZE_SIZE;
-  buffer->length += SIZE_SIZE;
+  // Serialize `count` so we know how many `Scope`s to deserialize
+  memcpy(buffer->pointer, &scopes->count, COUNT_SIZE);
+  buffer->pointer += COUNT_SIZE;
+  buffer->length += COUNT_SIZE;
 
   // Serialize `Scope` array
-  if (scopes->size > 0) {
-    const unsigned scopes_size = scopes->size * SCOPE_SIZE;
+  if (scopes->count > 0) {
+    const unsigned scopes_size = scopes->count * SCOPE_SIZE;
     memcpy(buffer->pointer, scopes->data, scopes_size);
     buffer->pointer += scopes_size;
     buffer->length += scopes_size;
@@ -254,19 +261,19 @@ static void scopes_serialize(Scopes* scopes, SerializeBuffer* buffer) {
 }
 
 static bool scopes_deserialize(Scopes* scopes, DeserializeBuffer* buffer) {
-  if (buffer->length < SIZE_SIZE) {
-    debug_print("`scopes_deserialize()` failed. Can't deserialize `size`. Buffer length %u.\n", buffer->length);
+  if (buffer->length < COUNT_SIZE) {
+    debug_print("`scopes_deserialize()` failed. Can't deserialize `count`. Buffer length %u.\n", buffer->length);
     return false;
   }
 
-  // Deserialize `size`
-  memcpy(&scopes->size, buffer->pointer, SIZE_SIZE);
-  buffer->pointer += SIZE_SIZE;
-  buffer->length -= SIZE_SIZE;
+  // Deserialize `count`
+  memcpy(&scopes->count, buffer->pointer, COUNT_SIZE);
+  buffer->pointer += COUNT_SIZE;
+  buffer->length -= COUNT_SIZE;
 
   // Deserialize `Scope` array
-  if (scopes->size > 0) {
-    const unsigned scopes_size = scopes->size * SCOPE_SIZE;
+  if (scopes->count > 0) {
+    const unsigned scopes_size = scopes->count * SCOPE_SIZE;
 
     if (buffer->length < scopes_size) {
       debug_print("`scopes_deserialize()` failed. Can't deserialize scopes. Buffer length %u.\n", buffer->length);
@@ -867,6 +874,9 @@ unsigned tree_sitter_r_external_scanner_serialize(void* payload, char* buffer) {
   }
   SerializeBuffer serialize_buffer = (SerializeBuffer) {.pointer = buffer, .length = 0};
   payload_serialize(payload, &serialize_buffer);
+  if (serialize_buffer.length > TREE_SITTER_SERIALIZATION_BUFFER_SIZE) {
+    debug_print("`serialize_buffer.length` can't be greater than `TREE_SITTER_SERIALIZATION_BUFFER_SIZE`\n");
+  }
   return serialize_buffer.length;
 }
 
