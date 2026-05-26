@@ -56,10 +56,10 @@ typedef struct {
 // ---------------------------------------------------------------------------------------
 // Stack structure inspired from tree-sitter-julia
 
-// Important to use `char` as the element storage type. This makes `ts_malloc()`
-// and `memcpy()` calls related to the `Scope` array very straightforward as no
-// `sizeof()` call is needed. An `enum` would be simpler but we don't think it
-// has `char` element storage.
+// We purposefully use `char` as the element storage type. An `enum` would be
+// simpler, but it doesn't have `char` element storage so you can't fit as many
+// of them inside `TREE_SITTER_SERIALIZATION_BUFFER_SIZE`. We expect
+// `SCOPE_SIZE` to be 1 everywhere, but we are careful just in case.
 typedef char Scope;
 
 const unsigned SCOPE_SIZE = sizeof(Scope);
@@ -73,19 +73,19 @@ const Scope SCOPE_BRACKET2 = 4;
 
 // A `Stack` data structure for tracking the current `Scope`
 //
-// `SCOPE_TOP_LEVEL` is never actually pushed onto the stack. It is returned from
-// `stack_peek()` as a base case when `len = 0`. Note that in `stack_pop()` we still check
-// for `len > 0` before peeking to retain the invariant that we can't pop without
-// something on the stack.
+// `SCOPE_TOP_LEVEL` is never actually pushed onto the stack. It is returned
+// from `stack_peek()` as a base case when `n_scopes = 0`. Note that in
+// `stack_pop()` we still check for `n_scopes > 0` before peeking to retain the
+// invariant that we can't pop without something on the stack.
 //
 // This actually makes serialization/deserialization very simple. Even if we pushed an
 // initial `SCOPE_TOP_LEVEL` in the create hook, there is no guarantee that that will get
 // serialized (so the length of the stack won't be remembered) because the serialize hook
 // only runs when we accept a token from our external scanner. That would complicate the
 // deserialize hook by forcing us to differentiate between the cases of:
-// 1) A deserialization call restoring state from a previous serialization (len > 0).
-// 2) A deserialization call when there wasn't a previous serialization (len = 0), where
-//    we'd have to repush an initial `SCOPE_TOP_LEVEL`.
+// 1) A deserialization call restoring state from a previous serialization (n_scopes > 0).
+// 2) A deserialization call when there wasn't a previous serialization (n_scopes = 0),
+//    where we'd have to repush an initial `SCOPE_TOP_LEVEL`.
 typedef struct {
   Scope* scopes;
   unsigned n_scopes;
@@ -480,8 +480,6 @@ static inline bool scan_raw_string_open(TSLexer* lexer, RawStringState* state) {
   raw_string_state_set(state, closing_bracket, hyphen_count, closing_quote);
   return true;
 }
-
-// TODO!: Don't forget to update all `scope` related comments about it being size 1, which no longer matter
 
 // We're in the body of the raw string, start looping until
 // we find the matching `closing_bracket -> hyphen_count -> quote` sequence
