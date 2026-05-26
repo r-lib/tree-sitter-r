@@ -67,9 +67,9 @@ typedef struct {
   char closing_quote;
 } RawStringState;
 
-const unsigned RAW_STRING_CLOSING_BRACKET_SIZE = sizeof(char);
-const unsigned RAW_STRING_HYPHEN_COUNT_SIZE = sizeof(uint8_t);
-const unsigned RAW_STRING_CLOSING_QUOTE_SIZE = sizeof(char);
+#define RAW_STRING_CLOSING_BRACKET_SIZE sizeof(char)
+#define RAW_STRING_HYPHEN_COUNT_SIZE sizeof(uint8_t)
+#define RAW_STRING_CLOSING_QUOTE_SIZE sizeof(char)
 
 static void raw_string_state_set(
   RawStringState* raw_string_state,
@@ -172,17 +172,18 @@ typedef struct {
   unsigned count;
 } Scopes;
 
-const unsigned SCOPE_SIZE = sizeof(Scope);
-const unsigned COUNT_SIZE = sizeof(unsigned);
+#define SCOPE_SIZE sizeof(Scope)
+#define COUNT_SIZE sizeof(unsigned)
 
 // `MAX_SCOPES_COUNT` is the maximum number of nested scopes that are allowed.
 // It is computed as the remaining `buffer` space allowed by
 // `TREE_SITTER_SERIALIZATION_BUFFER_SIZE` after removing all other serialized
 // elements, so keep this up to date with anything else that gets serialized!
 // Ideally we leave as much space for this as possible.
-const unsigned MAX_SCOPES_COUNT = (TREE_SITTER_SERIALIZATION_BUFFER_SIZE - RAW_STRING_CLOSING_BRACKET_SIZE -
-                                   RAW_STRING_HYPHEN_COUNT_SIZE - RAW_STRING_CLOSING_QUOTE_SIZE - COUNT_SIZE) /
-  SCOPE_SIZE;
+#define MAX_SCOPES_COUNT                                                                                               \
+  ((TREE_SITTER_SERIALIZATION_BUFFER_SIZE - RAW_STRING_CLOSING_BRACKET_SIZE - RAW_STRING_HYPHEN_COUNT_SIZE -           \
+    RAW_STRING_CLOSING_QUOTE_SIZE - COUNT_SIZE) /                                                                      \
+   SCOPE_SIZE)
 
 static void scopes_reset(Scopes* scopes) {
   scopes->count = 0;
