@@ -779,6 +779,9 @@ bool tree_sitter_r_external_scanner_scan(void* payload, TSLexer* lexer, const bo
   return scan(lexer, &payload_typed->scopes, &payload_typed->raw_string_state, valid_symbols);
 }
 
+// Note that `buffer` is allocated and owned by tree-sitter, not us, to be
+// `TREE_SITTER_SERIALIZATION_BUFFER_SIZE`, so we can't write more than this
+// into the buffer!
 unsigned tree_sitter_r_external_scanner_serialize(void* payload, char* buffer) {
   if (!payload_exists(payload)) {
     return 0;
