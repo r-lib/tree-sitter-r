@@ -380,6 +380,12 @@ f(r"(
 hello
 )")
 
+# Single quoted raw strings
+r'()'
+r'(a)'
+r'(')'
+r'(")'
+
 r()
 
 --------------------------------------------------------------------------------
@@ -444,6 +450,15 @@ r()
       (argument
         (string
           (string_content)))))
+  (comment)
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
+  (string
+    (string_content))
   (call
     (identifier)
     (arguments)))
