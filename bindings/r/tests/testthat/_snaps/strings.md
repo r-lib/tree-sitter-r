@@ -860,7 +860,7 @@
       
       S-Expression
       (string [(14, 0), (14, 9)]
-        content: (string_content [(14, 4), (14, 7)])
+        content: (string_content [(14, 3), (14, 7)])
       )
       
       Text
@@ -876,7 +876,7 @@
       
       S-Expression
       (string [(16, 0), (16, 8)]
-        content: (string_content [(16, 4), (16, 6)])
+        content: (string_content [(16, 3), (16, 6)])
       )
       
       Text
@@ -948,7 +948,7 @@
       
       S-Expression
       (string [(30, 0), (30, 12)]
-        content: (string_content [(30, 5), (30, 10)])
+        content: (string_content [(30, 3), (30, 10)])
       )
       
       Text
@@ -996,7 +996,7 @@
           open: "(" [(36, 1), (36, 2)]
           argument: (argument [(36, 2), (38, 2)]
             value: (string [(36, 2), (38, 2)]
-              content: (string_content [(37, 0), (38, 0)])
+              content: (string_content [(36, 5), (38, 0)])
             )
           )
           close: ")" [(38, 2), (38, 3)]

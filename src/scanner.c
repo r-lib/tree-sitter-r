@@ -733,6 +733,16 @@ static bool scan(TSLexer* lexer, Scopes* scopes, RawStringState* raw_string_stat
     return true;
   }
 
+  // These cases are only valid after `scan_raw_string_open()` accepts a raw
+  // string opening sequence. They must run before whitespace and newlines are
+  // consumed, otherwise `r"(  hello)"` won't capture the whitespace in the
+  // `string_content`.
+  if (valid_symbols[RAW_STRING_CONTENT]) {
+    return scan_raw_string_content(lexer, raw_string_state);
+  } else if (valid_symbols[RAW_STRING_CLOSE]) {
+    return scan_raw_string_close(lexer, raw_string_state);
+  }
+
   consume_whitespace_and_ignored_newlines(lexer, scopes);
 
   // Purposefully structured as a series of exclusive if statements to
@@ -764,10 +774,6 @@ static bool scan(TSLexer* lexer, Scopes* scopes, RawStringState* raw_string_stat
     return scan_close_bracket2(lexer, scopes);
   } else if (valid_symbols[RAW_STRING_OPEN] && (lexer->lookahead == 'r' || lexer->lookahead == 'R')) {
     return scan_raw_string_open(lexer, raw_string_state);
-  } else if (valid_symbols[RAW_STRING_CONTENT]) {
-    return scan_raw_string_content(lexer, raw_string_state);
-  } else if (valid_symbols[RAW_STRING_CLOSE]) {
-    return scan_raw_string_close(lexer, raw_string_state);
   } else if (valid_symbols[ELSE] && lexer->lookahead == 'e') {
     return scan_else(lexer);
   } else if (valid_symbols[ELSE] && scopes_peek(scopes) == SCOPE_BRACE && lexer->lookahead == '\n') {
