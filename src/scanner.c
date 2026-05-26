@@ -71,11 +71,11 @@ const Scope SCOPE_PAREN = 2;
 const Scope SCOPE_BRACKET = 3;
 const Scope SCOPE_BRACKET2 = 4;
 
-// A `Stack` data structure for tracking the current `Scope`
+// A stack data structure for tracking the current `Scope`
 //
 // `SCOPE_TOP_LEVEL` is never actually pushed onto the stack. It is returned
-// from `stack_peek()` as a base case when `n_scopes = 0`. Note that in
-// `stack_pop()` we still check for `n_scopes > 0` before peeking to retain the
+// from `scopes_peek()` as a base case when `size = 0`. Note that in
+// `scopes_pop()` we still check for `size > 0` before peeking to retain the
 // invariant that we can't pop without something on the stack.
 //
 // This actually makes serialization/deserialization very simple. Even if we pushed an
@@ -83,114 +83,114 @@ const Scope SCOPE_BRACKET2 = 4;
 // serialized (so the length of the stack won't be remembered) because the serialize hook
 // only runs when we accept a token from our external scanner. That would complicate the
 // deserialize hook by forcing us to differentiate between the cases of:
-// 1) A deserialization call restoring state from a previous serialization (n_scopes > 0).
-// 2) A deserialization call when there wasn't a previous serialization (n_scopes = 0),
+// 1) A deserialization call restoring state from a previous serialization (size > 0).
+// 2) A deserialization call when there wasn't a previous serialization (size = 0),
 //    where we'd have to repush an initial `SCOPE_TOP_LEVEL`.
 typedef struct {
-  Scope* scopes;
-  unsigned n_scopes;
-} Stack;
+  Scope* data;
+  unsigned size;
+} Scopes;
 
-const unsigned N_SCOPES_SIZE = sizeof(unsigned);
+const unsigned SIZE_SIZE = sizeof(unsigned);
 
-static void stack_reset(Stack* stack) {
-  stack->n_scopes = 0;
+static void scopes_reset(Scopes* scopes) {
+  scopes->size = 0;
 }
 
-static bool stack_init(Stack* stack) {
-  Scope* scopes = ts_malloc(MAX_N_SCOPES * SCOPE_SIZE);
-  if (scopes == NULL) {
-    debug_print("`stack_init()` failed. Can't allocate scope array.");
+static bool scopes_init(Scopes* scopes) {
+  Scope* data = ts_malloc(MAX_N_SCOPES * SCOPE_SIZE);
+  if (data == NULL) {
+    debug_print("`scopes_init()` failed. Can't allocate scope array.");
     return false;
   }
-  stack->scopes = scopes;
+  scopes->data = data;
 
-  stack_reset(stack);
+  scopes_reset(scopes);
 
   return true;
 }
 
-static void stack_destroy(Stack* stack) {
-  ts_free(stack->scopes);
+static void scopes_destroy(Scopes* scopes) {
+  ts_free(scopes->data);
 }
 
-static bool stack_push(Stack* stack, Scope scope) {
-  if (stack->n_scopes >= MAX_N_SCOPES) {
+static bool scopes_push(Scopes* scopes, Scope scope) {
+  if (scopes->size >= MAX_N_SCOPES) {
     // Return `false` so `scan()` can return `false` and refuse to handle the token.
     // Should only ever happen in pathological cases (i.e. 1025 unmatched opening braces).
-    debug_print("`stack_push()` failed. Stack is at maximum capacity.\n");
+    debug_print("`scopes_push()` failed. `scopes` is at maximum capacity.\n");
     return false;
   }
 
-  stack->scopes[stack->n_scopes] = scope;
-  stack->n_scopes++;
+  scopes->data[scopes->size] = scope;
+  scopes->size++;
 
   return true;
 }
 
-static Scope stack_peek(Stack* stack) {
-  if (stack->n_scopes == 0) {
+static Scope scopes_peek(Scopes* scopes) {
+  if (scopes->size == 0) {
     return SCOPE_TOP_LEVEL;
   } else {
-    return stack->scopes[stack->n_scopes - 1];
+    return scopes->data[scopes->size - 1];
   }
 }
 
-static bool stack_pop(Stack* stack, Scope expected) {
-  if (stack->n_scopes == 0) {
+static bool scopes_pop(Scopes* scopes, Scope expected) {
+  if (scopes->size == 0) {
     // Return `false` so `scan()` can return `false` and refuse to handle the token
-    debug_print("`stack_pop()` failed. Stack is empty, nothing to pop.\n");
+    debug_print("`scopes_pop()` failed. `scopes` is empty, nothing to pop.\n");
     return false;
   }
 
-  Scope scope = stack_peek(stack);
-  stack->n_scopes--;
+  Scope scope = scopes_peek(scopes);
+  scopes->size--;
 
   if (scope != expected) {
     // Return `false` so `scan()` can return `false` and refuse to handle the token
-    debug_print("`stack_pop()` failed. Actual scope '%c' does not match expected scope '%c'.\n", scope, expected);
+    debug_print("`scopes_pop()` failed. Actual scope '%c' does not match expected scope '%c'.\n", scope, expected);
     return false;
   }
 
   return true;
 }
 
-static void stack_serialize(Stack* stack, SerializeBuffer* buffer) {
-  // Serialize `n_scopes` so we know how many `Scope`s to deserialize
-  memcpy(buffer->pointer, &stack->n_scopes, N_SCOPES_SIZE);
-  buffer->pointer += N_SCOPES_SIZE;
-  buffer->length += N_SCOPES_SIZE;
+static void scopes_serialize(Scopes* scopes, SerializeBuffer* buffer) {
+  // Serialize `size` so we know how many `Scope`s to deserialize
+  memcpy(buffer->pointer, &scopes->size, SIZE_SIZE);
+  buffer->pointer += SIZE_SIZE;
+  buffer->length += SIZE_SIZE;
 
   // Serialize `Scope` array
-  if (stack->n_scopes > 0) {
-    const unsigned scopes_size = stack->n_scopes * SCOPE_SIZE;
-    memcpy(buffer->pointer, stack->scopes, scopes_size);
+  if (scopes->size > 0) {
+    const unsigned scopes_size = scopes->size * SCOPE_SIZE;
+    memcpy(buffer->pointer, scopes->data, scopes_size);
     buffer->pointer += scopes_size;
     buffer->length += scopes_size;
   }
 }
 
-static bool stack_deserialize(Stack* stack, DeserializeBuffer* buffer) {
-  if (buffer->length < N_SCOPES_SIZE) {
-    debug_print("`stack_deserialize()` failed. Can't deserialize `n_scopes`. Buffer length %u.\n", buffer->length);
+static bool scopes_deserialize(Scopes* scopes, DeserializeBuffer* buffer) {
+  if (buffer->length < SIZE_SIZE) {
+    debug_print("`scopes_deserialize()` failed. Can't deserialize `size`. Buffer length %u.\n", buffer->length);
     return false;
   }
 
-  // Deserialize `n_scopes`
-  memcpy(&stack->n_scopes, buffer->pointer, N_SCOPES_SIZE);
-  buffer->pointer += N_SCOPES_SIZE;
-  buffer->length -= N_SCOPES_SIZE;
+  // Deserialize `size`
+  memcpy(&scopes->size, buffer->pointer, SIZE_SIZE);
+  buffer->pointer += SIZE_SIZE;
+  buffer->length -= SIZE_SIZE;
 
   // Deserialize `Scope` array
-  if (stack->n_scopes > 0) {
-    const unsigned scopes_size = stack->n_scopes * SCOPE_SIZE;
+  if (scopes->size > 0) {
+    const unsigned scopes_size = scopes->size * SCOPE_SIZE;
 
     if (buffer->length < scopes_size) {
-      debug_print("`stack_deserialize()` failed. Can't deserialize scopes. Buffer length %u.\n", buffer->length);
+      debug_print("`scopes_deserialize()` failed. Can't deserialize scopes. Buffer length %u.\n", buffer->length);
       return false;
     }
 
-    memcpy(stack->scopes, buffer->pointer, scopes_size);
+    memcpy(scopes->data, buffer->pointer, scopes_size);
     buffer->pointer += scopes_size;
     buffer->length -= scopes_size;
   }
@@ -255,14 +255,14 @@ static bool raw_string_state_deserialize(RawStringState* state, DeserializeBuffe
 // ---------------------------------------------------------------------------------------
 
 typedef struct {
-  Stack stack;
+  Scopes scopes;
   RawStringState state;
 } Payload;
 
 const unsigned PAYLOAD_SIZE = sizeof(Payload);
 
 static void payload_reset(Payload* payload) {
-  stack_reset(&payload->stack);
+  scopes_reset(&payload->scopes);
   raw_string_state_reset(&payload->state);
 }
 
@@ -273,15 +273,15 @@ static Payload* payload_new(void) {
     return NULL;
   }
 
-  if (!stack_init(&payload->stack)) {
-    debug_print("`payload_new()` failed. Can't initialize stack.");
+  if (!scopes_init(&payload->scopes)) {
+    debug_print("`payload_new()` failed. Can't initialize scopes.");
     ts_free(payload);
     return NULL;
   }
 
   if (!raw_string_state_init(&payload->state)) {
     debug_print("`payload_new()` failed. Can't initialize raw string state.");
-    stack_destroy(&payload->stack);
+    scopes_destroy(&payload->scopes);
     ts_free(payload);
     return NULL;
   }
@@ -290,18 +290,18 @@ static Payload* payload_new(void) {
 }
 
 static void payload_destroy(Payload* payload) {
-  stack_destroy(&payload->stack);
+  scopes_destroy(&payload->scopes);
   raw_string_state_destroy(&payload->state);
   ts_free(payload);
 }
 
 static void payload_serialize(Payload* payload, SerializeBuffer* buffer) {
-  stack_serialize(&payload->stack, buffer);
+  scopes_serialize(&payload->scopes, buffer);
   raw_string_state_serialize(&payload->state, buffer);
 }
 
 static bool payload_deserialize(Payload* payload, DeserializeBuffer* buffer) {
-  if (!stack_deserialize(&payload->stack, buffer)) {
+  if (!scopes_deserialize(&payload->scopes, buffer)) {
     return false;
   }
   if (!raw_string_state_deserialize(&payload->state, buffer)) {
@@ -344,7 +344,7 @@ static inline bool payload_exists(void* payload) {
 // but in practice this does not work. An external scanner MUST skip whitespace.
 // https://github.com/tree-sitter/tree-sitter/discussions/884#discussioncomment-302898
 // https://github.com/tree-sitter/tree-sitter/issues/2735#issuecomment-1830392298
-static inline void consume_whitespace_and_ignored_newlines(TSLexer* lexer, Stack* stack) {
+static inline void consume_whitespace_and_ignored_newlines(TSLexer* lexer, Scopes* scopes) {
   while (iswspace(lexer->lookahead)) {
     if (lexer->lookahead != '\n') {
       // Whitespace that isn't a newline, skip
@@ -352,7 +352,7 @@ static inline void consume_whitespace_and_ignored_newlines(TSLexer* lexer, Stack
       continue;
     }
 
-    Scope scope = stack_peek(stack);
+    Scope scope = scopes_peek(scopes);
     if (scope == SCOPE_PAREN || scope == SCOPE_BRACKET || scope == SCOPE_BRACKET2) {
       // Newline in `(`, `[`, or `[[` scope, skip
       lexer->advance(lexer, true);
@@ -648,8 +648,8 @@ static inline bool scan_newline(TSLexer* lexer) {
   return true;
 }
 
-static inline bool scan_open_block(TSLexer* lexer, Stack* stack, Scope scope, TSSymbol symbol) {
-  if (!stack_push(stack, scope)) {
+static inline bool scan_open_block(TSLexer* lexer, Scopes* scopes, Scope scope, TSSymbol symbol) {
+  if (!scopes_push(scopes, scope)) {
     return false;
   }
   lexer->advance(lexer, false);
@@ -658,8 +658,8 @@ static inline bool scan_open_block(TSLexer* lexer, Stack* stack, Scope scope, TS
   return true;
 }
 
-static inline bool scan_close_block(TSLexer* lexer, Stack* stack, Scope scope, TSSymbol symbol) {
-  if (!stack_pop(stack, scope)) {
+static inline bool scan_close_block(TSLexer* lexer, Scopes* scopes, Scope scope, TSSymbol symbol) {
+  if (!scopes_pop(scopes, scope)) {
     return false;
   }
   lexer->advance(lexer, false);
@@ -668,13 +668,13 @@ static inline bool scan_close_block(TSLexer* lexer, Stack* stack, Scope scope, T
   return true;
 }
 
-static inline bool scan_open_bracket_or_bracket2(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
+static inline bool scan_open_bracket_or_bracket2(TSLexer* lexer, Scopes* scopes, const bool* valid_symbols) {
   // We know lookahead is the first `[`
   lexer->advance(lexer, false);
 
   // If we see `[[` when it's a valid symbol, greedily accept that
   if (valid_symbols[OPEN_BRACKET2] && lexer->lookahead == '[') {
-    if (!stack_push(stack, SCOPE_BRACKET2)) {
+    if (!scopes_push(scopes, SCOPE_BRACKET2)) {
       return false;
     }
     lexer->advance(lexer, false);
@@ -686,7 +686,7 @@ static inline bool scan_open_bracket_or_bracket2(TSLexer* lexer, Stack* stack, c
   // If we see either `[` followed by something else, or `[[` when `[[` happens to
   // not be a valid symbol, accept the single `[` if it's a valid symbol.
   if (valid_symbols[OPEN_BRACKET]) {
-    if (!stack_push(stack, SCOPE_BRACKET)) {
+    if (!scopes_push(scopes, SCOPE_BRACKET)) {
       return false;
     }
     lexer->mark_end(lexer);
@@ -699,7 +699,7 @@ static inline bool scan_open_bracket_or_bracket2(TSLexer* lexer, Stack* stack, c
   return false;
 }
 
-static inline bool scan_close_bracket2(TSLexer* lexer, Stack* stack) {
+static inline bool scan_close_bracket2(TSLexer* lexer, Scopes* scopes) {
   // We know the lookahead is the first `]`
   lexer->advance(lexer, false);
 
@@ -708,10 +708,10 @@ static inline bool scan_close_bracket2(TSLexer* lexer, Stack* stack) {
     return false;
   }
 
-  return scan_close_block(lexer, stack, SCOPE_BRACKET2, CLOSE_BRACKET2);
+  return scan_close_block(lexer, scopes, SCOPE_BRACKET2, CLOSE_BRACKET2);
 }
 
-static bool scan(TSLexer* lexer, Stack* stack, RawStringState* state, const bool* valid_symbols) {
+static bool scan(TSLexer* lexer, Scopes* scopes, RawStringState* state, const bool* valid_symbols) {
   if (valid_symbols[ERROR_SENTINEL]) {
     // Decline to handle when in "error recovery" mode. When a syntax error occurs,
     // tree-sitter calls the external scanner with all `valid_symbols` marked as valid.
@@ -728,7 +728,7 @@ static bool scan(TSLexer* lexer, Stack* stack, RawStringState* state, const bool
     return true;
   }
 
-  consume_whitespace_and_ignored_newlines(lexer, stack);
+  consume_whitespace_and_ignored_newlines(lexer, scopes);
 
   // Purposefully structured as a series of exclusive if statements to
   // emphasize that we can't check any other condition after entering a branch,
@@ -738,25 +738,25 @@ static bool scan(TSLexer* lexer, Stack* stack, RawStringState* state, const bool
   if (valid_symbols[SEMICOLON] && lexer->lookahead == ';') {
     return scan_semicolon(lexer);
   } else if (valid_symbols[OPEN_PAREN] && lexer->lookahead == '(') {
-    return scan_open_block(lexer, stack, SCOPE_PAREN, OPEN_PAREN);
+    return scan_open_block(lexer, scopes, SCOPE_PAREN, OPEN_PAREN);
   } else if (valid_symbols[CLOSE_PAREN] && lexer->lookahead == ')') {
-    return scan_close_block(lexer, stack, SCOPE_PAREN, CLOSE_PAREN);
+    return scan_close_block(lexer, scopes, SCOPE_PAREN, CLOSE_PAREN);
   } else if (valid_symbols[OPEN_BRACE] && lexer->lookahead == '{') {
-    return scan_open_block(lexer, stack, SCOPE_BRACE, OPEN_BRACE);
+    return scan_open_block(lexer, scopes, SCOPE_BRACE, OPEN_BRACE);
   } else if (valid_symbols[CLOSE_BRACE] && lexer->lookahead == '}') {
-    return scan_close_block(lexer, stack, SCOPE_BRACE, CLOSE_BRACE);
+    return scan_close_block(lexer, scopes, SCOPE_BRACE, CLOSE_BRACE);
   } else if ((valid_symbols[OPEN_BRACKET] || valid_symbols[OPEN_BRACKET2]) && lexer->lookahead == '[') {
-    return scan_open_bracket_or_bracket2(lexer, stack, valid_symbols);
-  } else if (valid_symbols[CLOSE_BRACKET] && lexer->lookahead == ']' && stack_peek(stack) == SCOPE_BRACKET) {
+    return scan_open_bracket_or_bracket2(lexer, scopes, valid_symbols);
+  } else if (valid_symbols[CLOSE_BRACKET] && lexer->lookahead == ']' && scopes_peek(scopes) == SCOPE_BRACKET) {
     // Must check the scope before entering this branch to account for `x[[a[1]]]` where
     // the first `]` occurs when both `]` and `]]` are valid. The scope breaks the tie
     // in favor of this branch.
-    return scan_close_block(lexer, stack, SCOPE_BRACKET, CLOSE_BRACKET);
-  } else if (valid_symbols[CLOSE_BRACKET2] && lexer->lookahead == ']' && stack_peek(stack) == SCOPE_BRACKET2) {
+    return scan_close_block(lexer, scopes, SCOPE_BRACKET, CLOSE_BRACKET);
+  } else if (valid_symbols[CLOSE_BRACKET2] && lexer->lookahead == ']' && scopes_peek(scopes) == SCOPE_BRACKET2) {
     // Must check the scope before entering this branch to account for `x[a[[1]]]` where
     // the first `]` occurs when both `]` and `]]` are valid. The scope breaks the tie
     // in favor of this branch.
-    return scan_close_bracket2(lexer, stack);
+    return scan_close_bracket2(lexer, scopes);
   } else if (valid_symbols[RAW_STRING_OPEN] && (lexer->lookahead == 'r' || lexer->lookahead == 'R')) {
     return scan_raw_string_open(lexer, state);
   } else if (valid_symbols[RAW_STRING_CONTENT]) {
@@ -765,7 +765,7 @@ static bool scan(TSLexer* lexer, Stack* stack, RawStringState* state, const bool
     return scan_raw_string_close(lexer, state);
   } else if (valid_symbols[ELSE] && lexer->lookahead == 'e') {
     return scan_else(lexer);
-  } else if (valid_symbols[ELSE] && stack_peek(stack) == SCOPE_BRACE && lexer->lookahead == '\n') {
+  } else if (valid_symbols[ELSE] && scopes_peek(scopes) == SCOPE_BRACE && lexer->lookahead == '\n') {
     // If we are inside a `SCOPE_BRACE`, this is an extremely special case where `else`
     // can follow any number of newlines or whitespace and still be valid.
     return scan_else_with_leading_newlines(lexer);
@@ -791,7 +791,7 @@ bool tree_sitter_r_external_scanner_scan(void* payload, TSLexer* lexer, const bo
     return false;
   }
   Payload* payload_typed = (Payload*) payload;
-  return scan(lexer, &payload_typed->stack, &payload_typed->state, valid_symbols);
+  return scan(lexer, &payload_typed->scopes, &payload_typed->state, valid_symbols);
 }
 
 unsigned tree_sitter_r_external_scanner_serialize(void* payload, char* buffer) {
