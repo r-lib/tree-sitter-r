@@ -108,25 +108,45 @@ bar'
 
 (program
   (string
-    (string_content))
+    (string_open)
+    (string_content)
+    (string_close))
   (string
-    (string_content))
+    (string_open)
+    (string_content)
+    (string_close))
   (string
-    (string_content))
+    (string_open)
+    (string_content)
+    (string_close))
   (string
-    (string_content))
+    (string_open)
+    (string_content)
+    (string_close))
   (string
-    (string_content))
+    (string_open)
+    (string_content)
+    (string_close))
   (string
-    (string_content))
+    (string_open)
+    (string_content)
+    (string_close))
   (string
-    (string_content))
+    (string_open)
+    (string_content)
+    (string_close))
   (string
-    (string_content))
+    (string_open)
+    (string_content)
+    (string_close))
   (string
-    (string_content))
+    (string_open)
+    (string_content)
+    (string_close))
   (string
-    (string_content)))
+    (string_open)
+    (string_content)
+    (string_close)))
 
 ================================================================================
 Strings Without Content
@@ -138,8 +158,12 @@ Strings Without Content
 --------------------------------------------------------------------------------
 
 (program
-  (string)
-  (string))
+  (string
+    (string_open)
+    (string_close))
+  (string
+    (string_open)
+    (string_close)))
 
 ================================================================================
 Strings With Escape Sequences
@@ -203,140 +227,230 @@ Strings With Escape Sequences
 
 (program
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence)))
+      (escape_sequence))
+    (string_close))
   (string
+    (string_open)
     (string_content
-      (escape_sequence))))
+      (escape_sequence))
+    (string_close)))
 
 ================================================================================
 Raw Strings
@@ -365,28 +479,156 @@ r"(raw
 string
 )"
 
+# Empty strings with no `string_content` node
+r"()"
+r'()'
+R"{}"
+r"--[]--"
+
+# Leading whitespace and newlines after open
+r"(  hello)"
+r"(\nhello)"
+r"(
+hello
+)"
+f(r"(\nhello\n)")
+f(r"(
+hello
+)")
+
+# Single quoted raw strings
+r'(a)'
+r'(')'
+r'(")'
+
 r()
 
 --------------------------------------------------------------------------------
 
 (program
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
-  (string)
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (comment)
+  (string
+    (string_open)
+    (string_close))
+  (string
+    (string_open)
+    (string_close))
+  (string
+    (string_open)
+    (string_close))
+  (string
+    (string_open)
+    (string_close))
+  (comment)
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (call
+    (identifier)
+    (arguments
+      (argument
+        (string
+          (string_open)
+          (string_content)
+          (string_close)))))
+  (call
+    (identifier)
+    (arguments
+      (argument
+        (string
+          (string_open)
+          (string_content)
+          (string_close)))))
+  (comment)
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
+  (string
+    (string_open)
+    (string_content)
+    (string_close))
   (call
     (identifier)
     (arguments)))
@@ -408,9 +650,13 @@ Comments
 (program
   (comment)
   (string
-    (string_content))
+    (string_open)
+    (string_content)
+    (string_close))
   (string
-    (string_content)))
+    (string_open)
+    (string_content)
+    (string_close)))
 
 ================================================================================
 Constants

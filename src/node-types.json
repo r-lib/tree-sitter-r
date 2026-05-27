@@ -2547,15 +2547,11 @@
     "fields": {
       "close": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
-            "type": "\"",
-            "named": false
-          },
-          {
-            "type": "'",
-            "named": false
+            "type": "string_close",
+            "named": true
           }
         ]
       },
@@ -2571,15 +2567,11 @@
       },
       "open": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
-            "type": "\"",
-            "named": false
-          },
-          {
-            "type": "'",
-            "named": false
+            "type": "string_open",
+            "named": true
           }
         ]
       }
@@ -3309,10 +3301,6 @@
     "named": false
   },
   {
-    "type": "\"",
-    "named": false
-  },
-  {
     "type": "$",
     "named": false
   },
@@ -3322,10 +3310,6 @@
   },
   {
     "type": "&&",
-    "named": false
-  },
-  {
-    "type": "'",
     "named": false
   },
   {
@@ -3547,6 +3531,14 @@
   {
     "type": "special",
     "named": false
+  },
+  {
+    "type": "string_close",
+    "named": true
+  },
+  {
+    "type": "string_open",
+    "named": true
   },
   {
     "type": "true",

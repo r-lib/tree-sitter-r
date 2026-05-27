@@ -3,6 +3,12 @@ test_that("1025 unmatched opening braces", {
   # doesn't crash. This is 1 nesting level past the `TREE_SITTER_SERIALIZATION_BUFFER_SIZE`,
   # which is a pathological edge case. When this occurs, we give up from the external
   # scanner and let the internal scanner either handle it or error.
+  #
+  # Technically we can handle up to `MAX_SCOPES_COUNT` nested scopes, which is
+  # `TREE_SITTER_SERIALIZATION_BUFFER_SIZE` minus any other serialized data in
+  # the buffer. Anything past that should just give up. Since that value might
+  # vary over time, we just use `TREE_SITTER_SERIALIZATION_BUFFER_SIZE` here for
+  # simplicity.
 
   skip_if_not_installed("treesitter")
 

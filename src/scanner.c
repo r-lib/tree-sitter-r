@@ -1,3 +1,4 @@
+#include <stdint.h> // uint8_t
 #include <string.h> // memcpy()
 #include <wctype.h> // iswspace()
 
@@ -26,7 +27,9 @@ enum TokenType {
   START,
   NEWLINE,
   SEMICOLON,
-  RAW_STRING_LITERAL,
+  RAW_STRING_OPEN,
+  RAW_STRING_CONTENT,
+  RAW_STRING_CLOSE,
   ELSE,
   OPEN_PAREN,
   CLOSE_PAREN,
@@ -40,12 +43,107 @@ enum TokenType {
 };
 
 // ---------------------------------------------------------------------------------------
+
+typedef struct {
+  char* pointer;
+  unsigned length;
+} SerializeBuffer;
+
+typedef struct {
+  const char* pointer;
+  unsigned length;
+} DeserializeBuffer;
+
+// ---------------------------------------------------------------------------------------
+
+// i.e. `}---"`
+//       ^ ^ ^
+//       | | |- closing_quote = "
+//       | |- hyphen_count = 3
+//       |- closing_bracket = }
+typedef struct {
+  char closing_bracket;
+  uint8_t hyphen_count;
+  char closing_quote;
+} RawStringState;
+
+#define RAW_STRING_CLOSING_BRACKET_SIZE sizeof(char)
+#define RAW_STRING_HYPHEN_COUNT_SIZE sizeof(uint8_t)
+#define RAW_STRING_CLOSING_QUOTE_SIZE sizeof(char)
+
+static void raw_string_state_set(
+  RawStringState* raw_string_state,
+  char closing_bracket,
+  uint8_t hyphen_count,
+  char closing_quote
+) {
+  raw_string_state->closing_bracket = closing_bracket;
+  raw_string_state->hyphen_count = hyphen_count;
+  raw_string_state->closing_quote = closing_quote;
+}
+
+static void raw_string_state_reset(RawStringState* raw_string_state) {
+  raw_string_state_set(raw_string_state, '\0', 0, '\0');
+}
+
+static bool raw_string_state_init(RawStringState* raw_string_state) {
+  raw_string_state_reset(raw_string_state);
+  return true;
+}
+
+static void raw_string_state_destroy(RawStringState* raw_string_state) {
+  // Nothing to free, recognize argument for Windows checks
+  (void) raw_string_state;
+}
+
+// Serialize fields individually to skip the struct's padding bytes, which
+// `sizeof(RawStringState)` would otherwise include
+static void raw_string_state_serialize(RawStringState* raw_string_state, SerializeBuffer* buffer) {
+  memcpy(buffer->pointer, &raw_string_state->closing_bracket, RAW_STRING_CLOSING_BRACKET_SIZE);
+  buffer->pointer += RAW_STRING_CLOSING_BRACKET_SIZE;
+  buffer->length += RAW_STRING_CLOSING_BRACKET_SIZE;
+
+  memcpy(buffer->pointer, &raw_string_state->hyphen_count, RAW_STRING_HYPHEN_COUNT_SIZE);
+  buffer->pointer += RAW_STRING_HYPHEN_COUNT_SIZE;
+  buffer->length += RAW_STRING_HYPHEN_COUNT_SIZE;
+
+  memcpy(buffer->pointer, &raw_string_state->closing_quote, RAW_STRING_CLOSING_QUOTE_SIZE);
+  buffer->pointer += RAW_STRING_CLOSING_QUOTE_SIZE;
+  buffer->length += RAW_STRING_CLOSING_QUOTE_SIZE;
+}
+
+static bool raw_string_state_deserialize(RawStringState* raw_string_state, DeserializeBuffer* buffer) {
+  if (buffer->length <
+      (RAW_STRING_CLOSING_BRACKET_SIZE + RAW_STRING_HYPHEN_COUNT_SIZE + RAW_STRING_CLOSING_QUOTE_SIZE)) {
+    debug_print(
+      "`raw_string_state_deserialize()` failed. Can't deserialize raw string state. Buffer length %u.\n",
+      buffer->length
+    );
+    return false;
+  }
+
+  memcpy(&raw_string_state->closing_bracket, buffer->pointer, RAW_STRING_CLOSING_BRACKET_SIZE);
+  buffer->pointer += RAW_STRING_CLOSING_BRACKET_SIZE;
+  buffer->length -= RAW_STRING_CLOSING_BRACKET_SIZE;
+
+  memcpy(&raw_string_state->hyphen_count, buffer->pointer, RAW_STRING_HYPHEN_COUNT_SIZE);
+  buffer->pointer += RAW_STRING_HYPHEN_COUNT_SIZE;
+  buffer->length -= RAW_STRING_HYPHEN_COUNT_SIZE;
+
+  memcpy(&raw_string_state->closing_quote, buffer->pointer, RAW_STRING_CLOSING_QUOTE_SIZE);
+  buffer->pointer += RAW_STRING_CLOSING_QUOTE_SIZE;
+  buffer->length -= RAW_STRING_CLOSING_QUOTE_SIZE;
+
+  return true;
+}
+
+// ---------------------------------------------------------------------------------------
 // Stack structure inspired from tree-sitter-julia
 
-// Important to use `char` as the element storage type. This makes `ts_malloc()`
-// and `memcpy()` calls related to the `Scope` array very straightforward as no
-// `sizeof()` call is needed. An `enum` would be simpler but we don't think it
-// has `char` element storage.
+// We purposefully use `char` as the element storage type. An `enum` would be
+// simpler, but it doesn't have `char` element storage so you can't fit as many
+// of them inside `TREE_SITTER_SERIALIZATION_BUFFER_SIZE`. We expect
+// `SCOPE_SIZE` to be 1 everywhere, but we are careful just in case.
 typedef char Scope;
 
 const Scope SCOPE_TOP_LEVEL = 0;
@@ -54,107 +152,204 @@ const Scope SCOPE_PAREN = 2;
 const Scope SCOPE_BRACKET = 3;
 const Scope SCOPE_BRACKET2 = 4;
 
-// A `Stack` data structure for tracking the current `Scope`
+// A stack data structure for tracking the current `Scope`
 //
-// `SCOPE_TOP_LEVEL` is never actually pushed onto the stack. It is returned from
-// `stack_peek()` as a base case when `len = 0`. Note that in `stack_pop()` we still check
-// for `len > 0` before peeking to retain the invariant that we can't pop without
-// something on the stack.
+// `SCOPE_TOP_LEVEL` is never actually pushed onto the stack. It is returned
+// from `scopes_peek()` as a base case when `count = 0`. Note that in
+// `scopes_pop()` we still check for `count > 0` before peeking to retain the
+// invariant that we can't pop without something on the stack.
 //
 // This actually makes serialization/deserialization very simple. Even if we pushed an
 // initial `SCOPE_TOP_LEVEL` in the create hook, there is no guarantee that that will get
 // serialized (so the length of the stack won't be remembered) because the serialize hook
 // only runs when we accept a token from our external scanner. That would complicate the
 // deserialize hook by forcing us to differentiate between the cases of:
-// 1) A deserialization call restoring state from a previous serialization (len > 0).
-// 2) A deserialization call when there wasn't a previous serialization (len = 0), where
-//    we'd have to repush an initial `SCOPE_TOP_LEVEL`.
+// 1) A deserialization call restoring state from a previous serialization (count > 0).
+// 2) A deserialization call when there wasn't a previous serialization (count = 0),
+//    where we'd have to repush an initial `SCOPE_TOP_LEVEL`.
 typedef struct {
-  Scope* arr;
-  unsigned len;
-} Stack;
+  Scope* data;
+  unsigned count;
+} Scopes;
 
-static Stack* stack_new(void) {
-  Scope* arr = ts_malloc(TREE_SITTER_SERIALIZATION_BUFFER_SIZE);
-  if (arr == NULL) {
-    debug_print("`stack_new()` failed. Can't allocate scope array.");
-    return NULL;
-  }
+#define SCOPE_SIZE sizeof(Scope)
+#define COUNT_SIZE sizeof(unsigned)
 
-  Stack* stack = ts_malloc(sizeof(Stack));
-  if (stack == NULL) {
-    debug_print("`stack_new()` failed. Can't allocate stack.");
-    return NULL;
-  }
+// `MAX_SCOPES_COUNT` is the maximum number of nested scopes that are allowed.
+// It is computed as the remaining `buffer` space allowed by
+// `TREE_SITTER_SERIALIZATION_BUFFER_SIZE` after removing all other serialized
+// elements, so keep this up to date with anything else that gets serialized!
+// Ideally we leave as much space for this as possible.
+#define MAX_SCOPES_COUNT                                                                                               \
+  ((TREE_SITTER_SERIALIZATION_BUFFER_SIZE - RAW_STRING_CLOSING_BRACKET_SIZE - RAW_STRING_HYPHEN_COUNT_SIZE -           \
+    RAW_STRING_CLOSING_QUOTE_SIZE - COUNT_SIZE) /                                                                      \
+   SCOPE_SIZE)
 
-  stack->arr = arr;
-  stack->len = 0;
-  return stack;
+static void scopes_reset(Scopes* scopes) {
+  scopes->count = 0;
 }
 
-static void stack_free(Stack* stack) {
-  ts_free(stack->arr);
-  ts_free(stack);
-}
-
-static bool stack_push(Stack* stack, Scope scope) {
-  if (stack->len >= TREE_SITTER_SERIALIZATION_BUFFER_SIZE) {
-    // Return `false` so `scan()` can return `false` and refuse to handle the token.
-    // Should only ever happen in pathological cases (i.e. 1025 unmatched opening braces).
-    debug_print("`stack_push()` failed. Stack is at maximum capacity.\n");
+static bool scopes_init(Scopes* scopes) {
+  Scope* data = ts_malloc(MAX_SCOPES_COUNT * SCOPE_SIZE);
+  if (data == NULL) {
+    debug_print("`scopes_init()` failed. Can't allocate scope array.");
     return false;
   }
+  scopes->data = data;
 
-  stack->arr[stack->len] = scope;
-  stack->len++;
+  scopes_reset(scopes);
 
   return true;
 }
 
-static Scope stack_peek(Stack* stack) {
-  if (stack->len == 0) {
+static void scopes_destroy(Scopes* scopes) {
+  ts_free(scopes->data);
+}
+
+static bool scopes_push(Scopes* scopes, Scope scope) {
+  if (scopes->count >= MAX_SCOPES_COUNT) {
+    // Return `false` so `scan()` can return `false` and refuse to handle the token.
+    // Should only ever happen in pathological cases (i.e. >1000 unmatched opening braces).
+    debug_print("`scopes_push()` failed. `scopes` is at maximum capacity.\n");
+    return false;
+  }
+
+  scopes->data[scopes->count] = scope;
+  scopes->count++;
+
+  return true;
+}
+
+static Scope scopes_peek(Scopes* scopes) {
+  if (scopes->count == 0) {
     return SCOPE_TOP_LEVEL;
   } else {
-    return stack->arr[stack->len - 1];
+    return scopes->data[scopes->count - 1];
   }
 }
 
-static bool stack_pop(Stack* stack, Scope scope) {
-  if (stack->len == 0) {
+static bool scopes_pop(Scopes* scopes, Scope expected) {
+  if (scopes->count == 0) {
     // Return `false` so `scan()` can return `false` and refuse to handle the token
-    debug_print("`stack_pop()` failed. Stack is empty, nothing to pop.\n");
+    debug_print("`scopes_pop()` failed. `scopes` is empty, nothing to pop.\n");
     return false;
   }
 
-  Scope x = stack_peek(stack);
-  stack->len--;
+  Scope scope = scopes_peek(scopes);
+  scopes->count--;
 
-  if (x != scope) {
+  if (scope != expected) {
     // Return `false` so `scan()` can return `false` and refuse to handle the token
-    debug_print("`stack_pop()` failed. Actual scope '%c' does not match expected scope '%c'.\n", x, scope);
+    debug_print("`scopes_pop()` failed. Actual scope '%c' does not match expected scope '%c'.\n", scope, expected);
     return false;
   }
 
   return true;
 }
 
-static unsigned stack_serialize(Stack* stack, char* buffer) {
-  unsigned len = stack->len;
-  if (len > 0) {
-    memcpy(buffer, stack->arr, len);
+static void scopes_serialize(Scopes* scopes, SerializeBuffer* buffer) {
+  // Serialize `count` so we know how many `Scope`s to deserialize
+  memcpy(buffer->pointer, &scopes->count, COUNT_SIZE);
+  buffer->pointer += COUNT_SIZE;
+  buffer->length += COUNT_SIZE;
+
+  // Serialize `Scope` array
+  if (scopes->count > 0) {
+    const unsigned scopes_size = scopes->count * SCOPE_SIZE;
+    memcpy(buffer->pointer, scopes->data, scopes_size);
+    buffer->pointer += scopes_size;
+    buffer->length += scopes_size;
   }
-  return len;
 }
 
-static void stack_deserialize(Stack* stack, const char* buffer, unsigned len) {
-  if (len > 0) {
-    memcpy(stack->arr, buffer, len);
+static bool scopes_deserialize(Scopes* scopes, DeserializeBuffer* buffer) {
+  if (buffer->length < COUNT_SIZE) {
+    debug_print("`scopes_deserialize()` failed. Can't deserialize `count`. Buffer length %u.\n", buffer->length);
+    return false;
   }
-  stack->len = len;
+
+  // Deserialize `count`
+  memcpy(&scopes->count, buffer->pointer, COUNT_SIZE);
+  buffer->pointer += COUNT_SIZE;
+  buffer->length -= COUNT_SIZE;
+
+  // Deserialize `Scope` array
+  if (scopes->count > 0) {
+    const unsigned scopes_size = scopes->count * SCOPE_SIZE;
+
+    if (buffer->length < scopes_size) {
+      debug_print("`scopes_deserialize()` failed. Can't deserialize scopes. Buffer length %u.\n", buffer->length);
+      return false;
+    }
+
+    memcpy(scopes->data, buffer->pointer, scopes_size);
+    buffer->pointer += scopes_size;
+    buffer->length -= scopes_size;
+  }
+
+  return true;
 }
 
-static inline bool stack_exists(void* stack) {
-  return stack != NULL;
+// ---------------------------------------------------------------------------------------
+
+typedef struct {
+  RawStringState raw_string_state;
+  Scopes scopes;
+} Payload;
+
+const unsigned PAYLOAD_SIZE = sizeof(Payload);
+
+static void payload_reset(Payload* payload) {
+  raw_string_state_reset(&payload->raw_string_state);
+  scopes_reset(&payload->scopes);
+}
+
+static Payload* payload_new(void) {
+  Payload* payload = ts_malloc(PAYLOAD_SIZE);
+  if (payload == NULL) {
+    debug_print("`payload_new()` failed. Can't allocate payload.");
+    return NULL;
+  }
+
+  if (!raw_string_state_init(&payload->raw_string_state)) {
+    debug_print("`payload_new()` failed. Can't initialize raw string state.");
+    ts_free(payload);
+    return NULL;
+  }
+
+  if (!scopes_init(&payload->scopes)) {
+    debug_print("`payload_new()` failed. Can't initialize scopes.");
+    raw_string_state_destroy(&payload->raw_string_state);
+    ts_free(payload);
+    return NULL;
+  }
+
+  return payload;
+}
+
+static void payload_destroy(Payload* payload) {
+  raw_string_state_destroy(&payload->raw_string_state);
+  scopes_destroy(&payload->scopes);
+  ts_free(payload);
+}
+
+static void payload_serialize(Payload* payload, SerializeBuffer* buffer) {
+  raw_string_state_serialize(&payload->raw_string_state, buffer);
+  scopes_serialize(&payload->scopes, buffer);
+}
+
+static bool payload_deserialize(Payload* payload, DeserializeBuffer* buffer) {
+  if (!raw_string_state_deserialize(&payload->raw_string_state, buffer)) {
+    return false;
+  }
+  if (!scopes_deserialize(&payload->scopes, buffer)) {
+    return false;
+  }
+  return true;
+}
+
+static inline bool payload_exists(void* payload) {
+  return payload != NULL;
 }
 
 // ---------------------------------------------------------------------------------------
@@ -187,7 +382,7 @@ static inline bool stack_exists(void* stack) {
 // but in practice this does not work. An external scanner MUST skip whitespace.
 // https://github.com/tree-sitter/tree-sitter/discussions/884#discussioncomment-302898
 // https://github.com/tree-sitter/tree-sitter/issues/2735#issuecomment-1830392298
-static inline void consume_whitespace_and_ignored_newlines(TSLexer* lexer, Stack* stack) {
+static inline void consume_whitespace_and_ignored_newlines(TSLexer* lexer, Scopes* scopes) {
   while (iswspace(lexer->lookahead)) {
     if (lexer->lookahead != '\n') {
       // Whitespace that isn't a newline, skip
@@ -195,7 +390,7 @@ static inline void consume_whitespace_and_ignored_newlines(TSLexer* lexer, Stack
       continue;
     }
 
-    Scope scope = stack_peek(stack);
+    Scope scope = scopes_peek(scopes);
     if (scope == SCOPE_PAREN || scope == SCOPE_BRACKET || scope == SCOPE_BRACKET2) {
       // Newline in `(`, `[`, or `[[` scope, skip
       lexer->advance(lexer, true);
@@ -276,12 +471,10 @@ static inline bool scan_else_with_leading_newlines(TSLexer* lexer) {
   return true;
 }
 
-static inline bool scan_raw_string_literal(TSLexer* lexer) {
-  // Scan a raw string literal; see R source code for implementation:
-  // https://github.com/wch/r-source/blob/52b730f217c12ba3d95dee0cd1f330d1977b5ea3/src/main/gram.y#L3102
-
+// Scan a raw string literal; see R source code for implementation:
+// https://github.com/wch/r-source/blob/52b730f217c12ba3d95dee0cd1f330d1977b5ea3/src/main/gram.y#L3102
+static inline bool scan_raw_string_open(TSLexer* lexer, RawStringState* raw_string_state) {
   // Raw string literals can start with either 'r' or 'R'
-  lexer->mark_end(lexer);
   char prefix = lexer->lookahead;
   if (prefix != 'r' && prefix != 'R') {
     return false;
@@ -296,8 +489,12 @@ static inline bool scan_raw_string_literal(TSLexer* lexer) {
   lexer->advance(lexer, false);
 
   // Start counting '-' characters
-  int hyphen_count = 0;
+  // Bail on pathological case of 256 hyphens
+  uint8_t hyphen_count = 0;
   while (lexer->lookahead == '-') {
+    if (hyphen_count == UINT8_MAX) {
+      return false;
+    }
     lexer->advance(lexer, false);
     hyphen_count += 1;
   }
@@ -305,7 +502,7 @@ static inline bool scan_raw_string_literal(TSLexer* lexer) {
   // Check for an opening bracket, and figure out
   // the corresponding closing bracket
   char opening_bracket = lexer->lookahead;
-  char closing_bracket = 0;
+  char closing_bracket;
   if (opening_bracket == '(') {
     closing_bracket = ')';
     lexer->advance(lexer, false);
@@ -319,41 +516,66 @@ static inline bool scan_raw_string_literal(TSLexer* lexer) {
     return false;
   }
 
-  // We're in the body of the raw string, start looping until
-  // we find the matching `closing_bracket -> hyphens -> quote` sequence
-  //
-  // We purposefully only `advance()` on known non-closing sequence elements at the
-  // very beginning in the `!= closing_bracket` check (#162).
-  //
-  // Consider the following:
-  //
-  // r"(())"
-  //     ^^
-  //     ||
-  //     || 2) Which advances us to `)`. But this isn't a `"`, so we should loop around
-  //     ||    without advancing past the `)`.
-  //     | 1) This looks like it might be a closing `)`.
-  //
-  // If we also called `advance()` in the `!= closing_quote` branch, we'd skip past the
-  // `)` and we'd fail to recognize the raw string.
-  //
-  // Same logic applies to:
-  //
-  // r"-())-"
-  //     ^^
-  //     ||
-  //     || 2) Which advances us to `)`. But this isn't a `-`, so we should loop around
-  //     ||    without advancing past the `)`.
-  //     | 1) This looks like it might be a closing `)`.
-  //
-  // If we also called `advance()` in the `!matched_hyphens` branch, we'd skip past the
-  // `)` and we'd fail to recognize the raw string.
+  // Success!
+  lexer->mark_end(lexer);
+  lexer->result_symbol = RAW_STRING_OPEN;
+  raw_string_state_set(raw_string_state, closing_bracket, hyphen_count, closing_quote);
+  return true;
+}
+
+// We're in the body of the raw string, start looping until
+// we find the matching `closing_bracket -> hyphen_count -> quote` sequence
+//
+// We purposefully only `advance()` on known non-closing sequence elements at the
+// very beginning in the `!= closing_bracket` check (#162).
+//
+// Consider the following:
+//
+// r"(())"
+//     ^^
+//     ||
+//     || 2) Which advances us to `)`. But this isn't a `"`, so we should loop around
+//     ||    without advancing past the `)`.
+//     | 1) This looks like it might be a closing `)`.
+//
+// If we also called `advance()` in the `!= closing_quote` branch, we'd skip past the
+// `)` and we'd fail to recognize the raw string.
+//
+// Same logic applies to:
+//
+// r"-())-"
+//     ^^
+//     ||
+//     || 2) Which advances us to `)`. But this isn't a `-`, so we should loop around
+//     ||    without advancing past the `)`.
+//     | 1) This looks like it might be a closing `)`.
+//
+// If we also called `advance()` in the `!matched_hyphens` branch, we'd skip past the
+// `)` and we'd fail to recognize the raw string.
+//
+// In the case of `r"()"` when there is no string content, we avoid emitting a
+// content node altogether, and instead immediately close out the raw string.
+// This has to happen from here because we can't rewind the lexer.
+static inline bool scan_raw_string_content_or_close(TSLexer* lexer, RawStringState* raw_string_state) {
+  const char closing_bracket = raw_string_state->closing_bracket;
+  const uint8_t hyphen_count = raw_string_state->hyphen_count;
+  const char closing_quote = raw_string_state->closing_quote;
+
+  bool any_content = false;
+
   while (!lexer->eof(lexer)) {
     if (lexer->lookahead != closing_bracket) {
       // Consume an arbitrary string part
       lexer->advance(lexer, false);
+      any_content = true;
       continue;
     }
+
+    // Assume we've captured all string content, and that we are going to try
+    // and match against the closing sequence. If we are right, this marker was
+    // the cutoff for string content. If we are wrong, we loop around again and
+    // will reset the marker.
+    lexer->mark_end(lexer);
 
     // Consume a closing bracket
     lexer->advance(lexer, false);
@@ -362,7 +584,7 @@ static inline bool scan_raw_string_literal(TSLexer* lexer) {
     // (Start "matched" for the case of 0 hyphens)
     bool matched_hyphens = true;
 
-    for (int i = 0; i < hyphen_count; i++) {
+    for (uint8_t i = 0; i < hyphen_count; ++i) {
       if (lexer->lookahead != '-') {
         matched_hyphens = false;
         break;
@@ -373,25 +595,56 @@ static inline bool scan_raw_string_literal(TSLexer* lexer) {
     }
 
     if (!matched_hyphens) {
+      any_content = true;
       continue;
     }
 
     if (lexer->lookahead != closing_quote) {
+      any_content = true;
       continue;
     }
 
-    // Consume a closing quote character
+    // Consume a closing quote
     lexer->advance(lexer, false);
 
-    // Success!
-    lexer->mark_end(lexer);
-    lexer->result_symbol = RAW_STRING_LITERAL;
+    // Success! We have consumed the closing sequence.
+    if (any_content) {
+      // If there was content, everything up to `mark_end()` contains it.
+      // We will reconsume the closing sequence next in `scan_raw_string_close()`.
+      lexer->result_symbol = RAW_STRING_CONTENT;
+    } else {
+      // If there wasn't content, close the raw string immediately. We don't
+      // emit a zero width content node, consistent with single and double
+      // quoted strings.
+      lexer->mark_end(lexer);
+      lexer->result_symbol = RAW_STRING_CLOSE;
+    }
+
     return true;
   }
 
   // If we get here, this implies we hit eof (and so we have
   // an unclosed raw string)
   return false;
+}
+
+// Trust that `scan_raw_string_content_or_close()` validated that the closing sequence
+// is coming up next, so we just consume it without checking a second time
+static inline bool scan_raw_string_close(TSLexer* lexer, RawStringState* raw_string_state) {
+  // Consume closing bracket
+  lexer->advance(lexer, false);
+
+  // Consume hyphens
+  for (uint8_t i = 0; i < raw_string_state->hyphen_count; ++i) {
+    lexer->advance(lexer, false);
+  }
+
+  // Consume closing quote
+  lexer->advance(lexer, false);
+
+  lexer->mark_end(lexer);
+  lexer->result_symbol = RAW_STRING_CLOSE;
+  return true;
 }
 
 static inline bool scan_semicolon(TSLexer* lexer) {
@@ -408,8 +661,8 @@ static inline bool scan_newline(TSLexer* lexer) {
   return true;
 }
 
-static inline bool scan_open_block(TSLexer* lexer, Stack* stack, Scope scope, TSSymbol symbol) {
-  if (!stack_push(stack, scope)) {
+static inline bool scan_open_block(TSLexer* lexer, Scopes* scopes, Scope scope, TSSymbol symbol) {
+  if (!scopes_push(scopes, scope)) {
     return false;
   }
   lexer->advance(lexer, false);
@@ -418,8 +671,8 @@ static inline bool scan_open_block(TSLexer* lexer, Stack* stack, Scope scope, TS
   return true;
 }
 
-static inline bool scan_close_block(TSLexer* lexer, Stack* stack, Scope scope, TSSymbol symbol) {
-  if (!stack_pop(stack, scope)) {
+static inline bool scan_close_block(TSLexer* lexer, Scopes* scopes, Scope scope, TSSymbol symbol) {
+  if (!scopes_pop(scopes, scope)) {
     return false;
   }
   lexer->advance(lexer, false);
@@ -428,13 +681,13 @@ static inline bool scan_close_block(TSLexer* lexer, Stack* stack, Scope scope, T
   return true;
 }
 
-static inline bool scan_open_bracket_or_bracket2(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
+static inline bool scan_open_bracket_or_bracket2(TSLexer* lexer, Scopes* scopes, const bool* valid_symbols) {
   // We know lookahead is the first `[`
   lexer->advance(lexer, false);
 
   // If we see `[[` when it's a valid symbol, greedily accept that
   if (valid_symbols[OPEN_BRACKET2] && lexer->lookahead == '[') {
-    if (!stack_push(stack, SCOPE_BRACKET2)) {
+    if (!scopes_push(scopes, SCOPE_BRACKET2)) {
       return false;
     }
     lexer->advance(lexer, false);
@@ -446,7 +699,7 @@ static inline bool scan_open_bracket_or_bracket2(TSLexer* lexer, Stack* stack, c
   // If we see either `[` followed by something else, or `[[` when `[[` happens to
   // not be a valid symbol, accept the single `[` if it's a valid symbol.
   if (valid_symbols[OPEN_BRACKET]) {
-    if (!stack_push(stack, SCOPE_BRACKET)) {
+    if (!scopes_push(scopes, SCOPE_BRACKET)) {
       return false;
     }
     lexer->mark_end(lexer);
@@ -459,7 +712,7 @@ static inline bool scan_open_bracket_or_bracket2(TSLexer* lexer, Stack* stack, c
   return false;
 }
 
-static inline bool scan_close_bracket2(TSLexer* lexer, Stack* stack) {
+static inline bool scan_close_bracket2(TSLexer* lexer, Scopes* scopes) {
   // We know the lookahead is the first `]`
   lexer->advance(lexer, false);
 
@@ -468,10 +721,10 @@ static inline bool scan_close_bracket2(TSLexer* lexer, Stack* stack) {
     return false;
   }
 
-  return scan_close_block(lexer, stack, SCOPE_BRACKET2, CLOSE_BRACKET2);
+  return scan_close_block(lexer, scopes, SCOPE_BRACKET2, CLOSE_BRACKET2);
 }
 
-static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
+static bool scan(TSLexer* lexer, Scopes* scopes, RawStringState* raw_string_state, const bool* valid_symbols) {
   if (valid_symbols[ERROR_SENTINEL]) {
     // Decline to handle when in "error recovery" mode. When a syntax error occurs,
     // tree-sitter calls the external scanner with all `valid_symbols` marked as valid.
@@ -488,7 +741,20 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
     return true;
   }
 
-  consume_whitespace_and_ignored_newlines(lexer, stack);
+  // These cases are only valid after `scan_raw_string_open()` accepts a raw
+  // string opening sequence. They must run before whitespace and newlines are
+  // consumed, otherwise `r"(  hello)"` won't capture the whitespace in the
+  // `string_content`.
+  if (valid_symbols[RAW_STRING_CONTENT]) {
+    if (!valid_symbols[RAW_STRING_CLOSE]) {
+      debug_print("Expected `RAW_STRING_CLOSE` to also be valid.");
+    }
+    return scan_raw_string_content_or_close(lexer, raw_string_state);
+  } else if (valid_symbols[RAW_STRING_CLOSE]) {
+    return scan_raw_string_close(lexer, raw_string_state);
+  }
+
+  consume_whitespace_and_ignored_newlines(lexer, scopes);
 
   // Purposefully structured as a series of exclusive if statements to
   // emphasize that we can't check any other condition after entering a branch,
@@ -498,30 +764,30 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
   if (valid_symbols[SEMICOLON] && lexer->lookahead == ';') {
     return scan_semicolon(lexer);
   } else if (valid_symbols[OPEN_PAREN] && lexer->lookahead == '(') {
-    return scan_open_block(lexer, stack, SCOPE_PAREN, OPEN_PAREN);
+    return scan_open_block(lexer, scopes, SCOPE_PAREN, OPEN_PAREN);
   } else if (valid_symbols[CLOSE_PAREN] && lexer->lookahead == ')') {
-    return scan_close_block(lexer, stack, SCOPE_PAREN, CLOSE_PAREN);
+    return scan_close_block(lexer, scopes, SCOPE_PAREN, CLOSE_PAREN);
   } else if (valid_symbols[OPEN_BRACE] && lexer->lookahead == '{') {
-    return scan_open_block(lexer, stack, SCOPE_BRACE, OPEN_BRACE);
+    return scan_open_block(lexer, scopes, SCOPE_BRACE, OPEN_BRACE);
   } else if (valid_symbols[CLOSE_BRACE] && lexer->lookahead == '}') {
-    return scan_close_block(lexer, stack, SCOPE_BRACE, CLOSE_BRACE);
+    return scan_close_block(lexer, scopes, SCOPE_BRACE, CLOSE_BRACE);
   } else if ((valid_symbols[OPEN_BRACKET] || valid_symbols[OPEN_BRACKET2]) && lexer->lookahead == '[') {
-    return scan_open_bracket_or_bracket2(lexer, stack, valid_symbols);
-  } else if (valid_symbols[CLOSE_BRACKET] && lexer->lookahead == ']' && stack_peek(stack) == SCOPE_BRACKET) {
+    return scan_open_bracket_or_bracket2(lexer, scopes, valid_symbols);
+  } else if (valid_symbols[CLOSE_BRACKET] && lexer->lookahead == ']' && scopes_peek(scopes) == SCOPE_BRACKET) {
     // Must check the scope before entering this branch to account for `x[[a[1]]]` where
     // the first `]` occurs when both `]` and `]]` are valid. The scope breaks the tie
     // in favor of this branch.
-    return scan_close_block(lexer, stack, SCOPE_BRACKET, CLOSE_BRACKET);
-  } else if (valid_symbols[CLOSE_BRACKET2] && lexer->lookahead == ']' && stack_peek(stack) == SCOPE_BRACKET2) {
+    return scan_close_block(lexer, scopes, SCOPE_BRACKET, CLOSE_BRACKET);
+  } else if (valid_symbols[CLOSE_BRACKET2] && lexer->lookahead == ']' && scopes_peek(scopes) == SCOPE_BRACKET2) {
     // Must check the scope before entering this branch to account for `x[a[[1]]]` where
     // the first `]` occurs when both `]` and `]]` are valid. The scope breaks the tie
     // in favor of this branch.
-    return scan_close_bracket2(lexer, stack);
-  } else if (valid_symbols[RAW_STRING_LITERAL] && (lexer->lookahead == 'r' || lexer->lookahead == 'R')) {
-    return scan_raw_string_literal(lexer);
+    return scan_close_bracket2(lexer, scopes);
+  } else if (valid_symbols[RAW_STRING_OPEN] && (lexer->lookahead == 'r' || lexer->lookahead == 'R')) {
+    return scan_raw_string_open(lexer, raw_string_state);
   } else if (valid_symbols[ELSE] && lexer->lookahead == 'e') {
     return scan_else(lexer);
-  } else if (valid_symbols[ELSE] && stack_peek(stack) == SCOPE_BRACE && lexer->lookahead == '\n') {
+  } else if (valid_symbols[ELSE] && scopes_peek(scopes) == SCOPE_BRACE && lexer->lookahead == '\n') {
     // If we are inside a `SCOPE_BRACE`, this is an extremely special case where `else`
     // can follow any number of newlines or whitespace and still be valid.
     return scan_else_with_leading_newlines(lexer);
@@ -539,33 +805,50 @@ static bool scan(TSLexer* lexer, Stack* stack, const bool* valid_symbols) {
 // ---------------------------------------------------------------------------------------
 
 void* tree_sitter_r_external_scanner_create(void) {
-  return stack_new();
+  return payload_new();
 }
 
 bool tree_sitter_r_external_scanner_scan(void* payload, TSLexer* lexer, const bool* valid_symbols) {
-  if (stack_exists(payload)) {
-    return scan(lexer, payload, valid_symbols);
-  } else {
+  if (!payload_exists(payload)) {
     return false;
   }
+  Payload* payload_typed = (Payload*) payload;
+  return scan(lexer, &payload_typed->scopes, &payload_typed->raw_string_state, valid_symbols);
 }
 
+// Note that `buffer` is allocated and owned by tree-sitter, not us, to be
+// `TREE_SITTER_SERIALIZATION_BUFFER_SIZE`, so we can't write more than this
+// into the buffer!
 unsigned tree_sitter_r_external_scanner_serialize(void* payload, char* buffer) {
-  if (stack_exists(payload)) {
-    return stack_serialize(payload, buffer);
-  } else {
+  if (!payload_exists(payload)) {
     return 0;
   }
+  SerializeBuffer serialize_buffer = (SerializeBuffer) {.pointer = buffer, .length = 0};
+  payload_serialize(payload, &serialize_buffer);
+  if (serialize_buffer.length > TREE_SITTER_SERIALIZATION_BUFFER_SIZE) {
+    debug_print("`serialize_buffer.length` can't be greater than `TREE_SITTER_SERIALIZATION_BUFFER_SIZE`\n");
+  }
+  return serialize_buffer.length;
 }
 
 void tree_sitter_r_external_scanner_deserialize(void* payload, const char* buffer, unsigned length) {
-  if (stack_exists(payload)) {
-    stack_deserialize(payload, buffer, length);
+  if (!payload_exists(payload)) {
+    return;
+  }
+  if (length == 0) {
+    // At the start of every parse we are called with length 0 as a "reset" signal
+    payload_reset(payload);
+    return;
+  }
+  DeserializeBuffer deserialize_buffer = (DeserializeBuffer) {.pointer = buffer, .length = length};
+  if (!payload_deserialize(payload, &deserialize_buffer)) {
+    payload_reset(payload);
+    debug_print("`payload_deserialize()` failed. Can't deserialize payload.\n");
   }
 }
 
 void tree_sitter_r_external_scanner_destroy(void* payload) {
-  if (stack_exists(payload)) {
-    stack_free(payload);
+  if (payload_exists(payload)) {
+    payload_destroy(payload);
   }
 }

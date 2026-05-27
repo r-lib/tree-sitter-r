@@ -124,4 +124,25 @@ r"(raw
 string
 )"
 
+r"()"
+R"{}"
+r"--[]--"
+
+# Leading whitespace and newlines after open
+r"(  hello)"
+r"(\nhello)"
+r"(
+hello
+)"
+f(r"(\nhello\n)")
+f(r"(
+hello
+)")
+
+# Single quoted raw strings
+r'()'
+r'(a)'
+r'(')'
+r'(")'
+
 r()
