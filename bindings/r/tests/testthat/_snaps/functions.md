@@ -383,9 +383,9 @@
               open: "(" [(5, 23), (5, 24)]
               argument: (argument [(5, 24), (5, 29)]
                 value: (string [(5, 24), (5, 29)]
-                  open: "\"" [(5, 24), (5, 25)]
+                  open: (string_open [(5, 24), (5, 25)])
                   content: (string_content [(5, 25), (5, 28)])
-                  close: "\"" [(5, 28), (5, 29)]
+                  close: (string_close [(5, 28), (5, 29)])
                 )
               )
               close: ")" [(5, 29), (5, 30)]
@@ -422,9 +422,9 @@
               open: "(" [(8, 19), (8, 20)]
               argument: (argument [(8, 20), (8, 25)]
                 value: (string [(8, 20), (8, 25)]
-                  open: "\"" [(8, 20), (8, 21)]
+                  open: (string_open [(8, 20), (8, 21)])
                   content: (string_content [(8, 21), (8, 24)])
-                  close: "\"" [(8, 24), (8, 25)]
+                  close: (string_close [(8, 24), (8, 25)])
                 )
               )
               close: ")" [(8, 25), (8, 26)]
@@ -463,9 +463,9 @@
               open: "(" [(11, 23), (11, 24)]
               argument: (argument [(11, 24), (11, 29)]
                 value: (string [(11, 24), (11, 29)]
-                  open: "\"" [(11, 24), (11, 25)]
+                  open: (string_open [(11, 24), (11, 25)])
                   content: (string_content [(11, 25), (11, 28)])
-                  close: "\"" [(11, 28), (11, 29)]
+                  close: (string_close [(11, 28), (11, 29)])
                 )
               )
               close: ")" [(11, 29), (11, 30)]

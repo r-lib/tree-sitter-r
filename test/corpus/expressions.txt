@@ -194,7 +194,9 @@ function(x, ...) ..1 + ..2
         arguments: (arguments
           argument: (argument
             value: (string
-              content: (string_content)))))))
+              open: (string_open)
+              content: (string_content)
+              close: (string_close)))))))
   (comment)
   (function_definition
     parameters: (parameters
@@ -206,7 +208,9 @@ function(x, ...) ..1 + ..2
         arguments: (arguments
           argument: (argument
             value: (string
-              content: (string_content)))))))
+              open: (string_open)
+              content: (string_content)
+              close: (string_close)))))))
   (comment)
   (function_definition
     parameters: (parameters
@@ -219,7 +223,9 @@ function(x, ...) ..1 + ..2
         arguments: (arguments
           argument: (argument
             value: (string
-              content: (string_content)))))))
+              open: (string_open)
+              content: (string_content)
+              close: (string_close)))))))
   (comment)
   (function_definition
     parameters: (parameters
@@ -1298,7 +1304,9 @@ for (..1 in 1:2) print(get("..1"))
             arguments: (arguments
               argument: (argument
                 value: (string
-                  content: (string_content)))))))))
+                  open: (string_open)
+                  content: (string_content)
+                  close: (string_close)))))))))
   (comment)
   (for_statement
     variable: (dot_dot_i)
@@ -1314,7 +1322,9 @@ for (..1 in 1:2) print(get("..1"))
             arguments: (arguments
               argument: (argument
                 value: (string
-                  content: (string_content))))))))))
+                  open: (string_open)
+                  content: (string_content)
+                  close: (string_close))))))))))
 
 ================================================================================
 For No Body
@@ -1434,7 +1444,9 @@ switch(foo,
       (comma)
       argument: (argument
         name: (string
-          content: (string_content))
+          open: (string_open)
+          content: (string_content)
+          close: (string_close))
         value: (float))
       (comma)
       argument: (argument
@@ -1480,7 +1492,9 @@ foo$..1
   (extract_operator
     lhs: (identifier)
     rhs: (string
-      content: (string_content)))
+      open: (string_open)
+      content: (string_content)
+      close: (string_close)))
   (extract_operator
     lhs: (subset2
       function: (extract_operator
@@ -1542,7 +1556,9 @@ foo@..1
   (extract_operator
     (identifier)
     (string
-      (string_content)))
+      (string_open)
+      (string_content)
+      (string_close)))
   (extract_operator
     (identifier)
     (dots))
@@ -1889,7 +1905,9 @@ f(..1 = ..1)
     arguments: (arguments
       argument: (argument
         name: (string
-          content: (string_content)))
+          open: (string_open)
+          content: (string_content)
+          close: (string_close)))
       (comma)))
   (call
     function: (identifier)
@@ -2406,7 +2424,9 @@ a$b?c
     lhs: (extract_operator
       lhs: (identifier)
       rhs: (string
-        content: (string_content)))
+        open: (string_open)
+        content: (string_content)
+        close: (string_close)))
     rhs: (na))
   (extract_operator
     lhs: (namespace_operator
