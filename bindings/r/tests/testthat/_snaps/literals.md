@@ -239,9 +239,9 @@
       
       S-Expression
       (string [(3, 0), (3, 17)]
-        open: "'" [(3, 0), (3, 1)]
+        open: (string_open [(3, 0), (3, 1)])
         content: (string_content [(3, 1), (3, 16)])
-        close: "'" [(3, 16), (3, 17)]
+        close: (string_close [(3, 16), (3, 17)])
       )
       
       Text
@@ -249,9 +249,9 @@
       
       S-Expression
       (string [(6, 0), (7, 22)]
-        open: "'" [(6, 0), (6, 1)]
+        open: (string_open [(6, 0), (6, 1)])
         content: (string_content [(6, 1), (7, 21)])
-        close: "'" [(7, 21), (7, 22)]
+        close: (string_close [(7, 21), (7, 22)])
       )
       
       Text

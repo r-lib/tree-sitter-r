@@ -7,9 +7,10 @@ Unclosed Double Quote
 
 (program
   (string
+    (string_open)
     (string_content
       (escape_sequence))
-    (MISSING """)))
+    (MISSING string_close)))
 
 ================================================================================
 Unclosed Single Quote
@@ -20,9 +21,10 @@ Unclosed Single Quote
 
 (program
   (string
+    (string_open)
     (string_content
       (escape_sequence))
-    (MISSING "'")))
+    (MISSING string_close)))
 
 ================================================================================
 Unclosed Backtick
@@ -44,4 +46,6 @@ r"(
 --------------------------------------------------------------------------------
 
 (program
-  (ERROR))
+  (ERROR
+    (string_open)
+    (string_open)))

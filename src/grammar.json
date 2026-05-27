@@ -2399,8 +2399,13 @@
           "type": "FIELD",
           "name": "open",
           "content": {
-            "type": "SYMBOL",
-            "name": "_raw_string_open"
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_raw_string_open"
+            },
+            "named": true,
+            "value": "string_open"
           }
         },
         {
@@ -2428,8 +2433,13 @@
           "type": "FIELD",
           "name": "close",
           "content": {
-            "type": "SYMBOL",
-            "name": "_raw_string_close"
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_raw_string_close"
+            },
+            "named": true,
+            "value": "string_close"
           }
         }
       ]
@@ -2441,8 +2451,13 @@
           "type": "FIELD",
           "name": "open",
           "content": {
-            "type": "STRING",
-            "value": "'"
+            "type": "ALIAS",
+            "content": {
+              "type": "STRING",
+              "value": "'"
+            },
+            "named": true,
+            "value": "string_open"
           }
         },
         {
@@ -2470,8 +2485,13 @@
           "type": "FIELD",
           "name": "close",
           "content": {
-            "type": "STRING",
-            "value": "'"
+            "type": "ALIAS",
+            "content": {
+              "type": "STRING",
+              "value": "'"
+            },
+            "named": true,
+            "value": "string_close"
           }
         }
       ]
@@ -2483,8 +2503,13 @@
           "type": "FIELD",
           "name": "open",
           "content": {
-            "type": "STRING",
-            "value": "\""
+            "type": "ALIAS",
+            "content": {
+              "type": "STRING",
+              "value": "\""
+            },
+            "named": true,
+            "value": "string_open"
           }
         },
         {
@@ -2512,8 +2537,13 @@
           "type": "FIELD",
           "name": "close",
           "content": {
-            "type": "STRING",
-            "value": "\""
+            "type": "ALIAS",
+            "content": {
+              "type": "STRING",
+              "value": "\""
+            },
+            "named": true,
+            "value": "string_close"
           }
         }
       ]

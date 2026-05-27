@@ -2,7 +2,13 @@
 
 ## devel
 
-- Raw strings now have `open` and `close` fields for accessing the raw string delimiter sequences and an optional `content` field for accessing the content within the raw string. This design mimics single quoted and double quoted strings, which means that the `string` node now has a consistent field structure (`open`, optional `content`, `close`) across all types of R strings. This also fixes an issue where an unclosed raw string wasn't considered a parse error (#195).
+- Strings of all types (single quoted, double quoted, and raw) now share the exact same field and child node structure:
+
+  - An `'open'` field containing a `string_open` node (`'`, `"`, or a raw string opening sequence).
+  - An optional `'content'` field containing a `string_content` node.
+  - A `'close'` field containing a `string_close` node (`'`, `"`, or a raw string closing sequence).
+
+  This also fixes an issue where an unclosed raw string wasn't considered a parse error (#195).
 
 - `else` is no longer consumed as eagerly in some special cases (#200).
 
