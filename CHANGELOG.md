@@ -2,6 +2,8 @@
 
 ## devel
 
+- `else` is no longer consumed as eagerly in some special cases (#200).
+
 - Integers and complex numbers with a leading decimal, such as `.1L` and `.1i`, now parse correctly (#190).
 
 - Hexadecimal constants with decimals are now supported (#191).

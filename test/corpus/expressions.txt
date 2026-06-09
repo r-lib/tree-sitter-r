@@ -1226,6 +1226,127 @@ if (TRUE) 1 else
     (float)))
 
 ================================================================================
+Identifiers starting with `else` that are not the `else` keyword (#200)
+================================================================================
+
+# ASCII letter
+{
+  if (TRUE) 1
+  elseidx <- 1
+}
+
+# ASCII number
+{
+  if (TRUE) 1
+  else1idx <- 1
+}
+
+# ASCII `_`
+{
+  if (TRUE) 1
+  else_idx <- 1
+}
+
+# ASCII `.`
+{
+  if (TRUE) 1
+  else.idx <- 1
+}
+
+# Non-ASCII, but considered `iswalnum()` in R with UTF-8 locale.
+# Not considered `iswalnum()` in our scanner with C locale, but
+# our overapproximation with `>= 128` allows this and aligns with R.
+{
+  if (TRUE) 1
+  elseμ <- 1
+}
+
+# Non-ASCII (U+00B7), rejected by R as syntax error since `iswalnum()` returns false.
+# Our overapproximation with `>= 128` allows this, but that's ok since the R
+# side behavior is a syntax error.
+{
+  if (TRUE) 1
+  else· <- 1
+}
+
+--------------------------------------------------------------------------------
+
+(program
+  (comment)
+  (braced_expression
+    body: (if_statement
+      condition: (true)
+      consequence: (float))
+    body: (binary_operator
+      lhs: (identifier)
+      rhs: (float)))
+  (comment)
+  (braced_expression
+    body: (if_statement
+      condition: (true)
+      consequence: (float))
+    body: (binary_operator
+      lhs: (identifier)
+      rhs: (float)))
+  (comment)
+  (braced_expression
+    body: (if_statement
+      condition: (true)
+      consequence: (float))
+    body: (binary_operator
+      lhs: (identifier)
+      rhs: (float)))
+  (comment)
+  (braced_expression
+    body: (if_statement
+      condition: (true)
+      consequence: (float))
+    body: (binary_operator
+      lhs: (identifier)
+      rhs: (float)))
+  (comment)
+  (comment)
+  (comment)
+  (braced_expression
+    body: (if_statement
+      condition: (true)
+      consequence: (float))
+    body: (binary_operator
+      lhs: (identifier)
+      rhs: (float)))
+  (comment)
+  (comment)
+  (comment)
+  (braced_expression
+    body: (if_statement
+      condition: (true)
+      consequence: (float))
+    body: (binary_operator
+      lhs: (identifier)
+      rhs: (float))))
+
+================================================================================
+Identifiers starting with `else` that are not the `else` keyword - 2 (#200)
+================================================================================
+
+# Correctly treats `else.x` as a single identifier, not as `else` followed by `.x`,
+# but should really be a syntax error. See https://github.com/r-lib/tree-sitter-r/issues/194.
+if (TRUE) {
+  1
+} else.x
+
+--------------------------------------------------------------------------------
+
+(program
+  (comment)
+  (comment)
+  (if_statement
+    (true)
+    (braced_expression
+      (float)))
+  (identifier))
+
+================================================================================
 For
 ================================================================================
 
@@ -2090,7 +2211,7 @@ fn(return = )
 
 # One specific example from #189
 switch(
-  x, 
+  x,
   return = ,
 )
 
