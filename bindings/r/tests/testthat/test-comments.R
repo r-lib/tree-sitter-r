@@ -4,6 +4,10 @@ test_that("comments don't include a trailing `\\r` on CRLF line endings", {
   # We don't have tree-sitter corpus tests for this, as the trailing `\r` only
   # affects the comment's end position, not the tree structure, and the
   # tree-sitter test infrastructure doesn't report node positions.
+  #
+  # Our `grammar.js` `comment` regex of `[^\r\n]*` matches other grammars
+  # https://github.com/tree-sitter/tree-sitter-c-sharp/pull/181
+  # https://github.com/tree-sitter/tree-sitter-javascript/blob/58404d8cf191d69f2674a8fd507bd5776f46cb11/grammar.js#L1048
   skip_if_not_installed("treesitter")
 
   language <- language()
@@ -16,7 +20,10 @@ test_that("comments don't include a trailing `\\r` on CRLF line endings", {
     expect_identical(treesitter::node_type(node), "comment")
     expect_identical(treesitter::node_text(node), "# comment")
 
-    expect_identical(treesitter::node_start_point(node), treesitter::point(0, 0))
+    expect_identical(
+      treesitter::node_start_point(node),
+      treesitter::point(0, 0)
+    )
     expect_identical(treesitter::node_end_point(node), end_point)
 
     expect_identical(treesitter::node_start_byte(node), 0)
