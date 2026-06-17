@@ -2,6 +2,8 @@
 
 ## devel
 
+- In CRLF files, comment nodes no longer accidentally capture the `\r` of `\r\n` (#184, @felix-andreas).
+
 - Strings of all types (single quoted, double quoted, and raw) now share the exact same field and child node structure:
 
   - An `'open'` field containing a `string_open` node (`'`, `"`, or a raw string opening sequence).
