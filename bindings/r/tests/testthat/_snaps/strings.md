@@ -5,9 +5,9 @@
     Output
       S-Expression
       (string [(1, 0), (1, 5)]
-        open: "\"" [(1, 0), (1, 1)]
+        open: (string_open [(1, 0), (1, 1)])
         content: (string_content [(1, 1), (1, 4)])
-        close: "\"" [(1, 4), (1, 5)]
+        close: (string_close [(1, 4), (1, 5)])
       )
       
       Text
@@ -15,9 +15,9 @@
       
       S-Expression
       (string [(2, 0), (3, 4)]
-        open: "\"" [(2, 0), (2, 1)]
+        open: (string_open [(2, 0), (2, 1)])
         content: (string_content [(2, 1), (3, 3)])
-        close: "\"" [(3, 3), (3, 4)]
+        close: (string_close [(3, 3), (3, 4)])
       )
       
       Text
@@ -26,9 +26,9 @@
       
       S-Expression
       (string [(4, 0), (7, 4)]
-        open: "\"" [(4, 0), (4, 1)]
+        open: (string_open [(4, 0), (4, 1)])
         content: (string_content [(4, 1), (7, 3)])
-        close: "\"" [(7, 3), (7, 4)]
+        close: (string_close [(7, 3), (7, 4)])
       )
       
       Text
@@ -39,9 +39,9 @@
       
       S-Expression
       (string [(8, 0), (8, 3)]
-        open: "\"" [(8, 0), (8, 1)]
+        open: (string_open [(8, 0), (8, 1)])
         content: (string_content [(8, 1), (8, 2)])
-        close: "\"" [(8, 2), (8, 3)]
+        close: (string_close [(8, 2), (8, 3)])
       )
       
       Text
@@ -49,9 +49,9 @@
       
       S-Expression
       (string [(10, 0), (10, 5)]
-        open: "'" [(10, 0), (10, 1)]
+        open: (string_open [(10, 0), (10, 1)])
         content: (string_content [(10, 1), (10, 4)])
-        close: "'" [(10, 4), (10, 5)]
+        close: (string_close [(10, 4), (10, 5)])
       )
       
       Text
@@ -59,9 +59,9 @@
       
       S-Expression
       (string [(11, 0), (11, 3)]
-        open: "'" [(11, 0), (11, 1)]
+        open: (string_open [(11, 0), (11, 1)])
         content: (string_content [(11, 1), (11, 2)])
-        close: "'" [(11, 2), (11, 3)]
+        close: (string_close [(11, 2), (11, 3)])
       )
       
       Text
@@ -75,8 +75,8 @@
     Output
       S-Expression
       (string [(1, 0), (1, 2)]
-        open: "\"" [(1, 0), (1, 1)]
-        close: "\"" [(1, 1), (1, 2)]
+        open: (string_open [(1, 0), (1, 1)])
+        close: (string_close [(1, 1), (1, 2)])
       )
       
       Text
@@ -84,8 +84,8 @@
       
       S-Expression
       (string [(2, 0), (2, 2)]
-        open: "'" [(2, 0), (2, 1)]
-        close: "'" [(2, 1), (2, 2)]
+        open: (string_open [(2, 0), (2, 1)])
+        close: (string_close [(2, 1), (2, 2)])
       )
       
       Text
@@ -99,11 +99,11 @@
     Output
       S-Expression
       (string [(1, 0), (1, 4)]
-        open: "\"" [(1, 0), (1, 1)]
+        open: (string_open [(1, 0), (1, 1)])
         content: (string_content [(1, 1), (1, 3)]
           (escape_sequence [(1, 1), (1, 3)])
         )
-        close: "\"" [(1, 3), (1, 4)]
+        close: (string_close [(1, 3), (1, 4)])
       )
       
       Text
@@ -111,11 +111,11 @@
       
       S-Expression
       (string [(2, 0), (2, 4)]
-        open: "\"" [(2, 0), (2, 1)]
+        open: (string_open [(2, 0), (2, 1)])
         content: (string_content [(2, 1), (2, 3)]
           (escape_sequence [(2, 1), (2, 3)])
         )
-        close: "\"" [(2, 3), (2, 4)]
+        close: (string_close [(2, 3), (2, 4)])
       )
       
       Text
@@ -123,11 +123,11 @@
       
       S-Expression
       (string [(3, 0), (3, 4)]
-        open: "\"" [(3, 0), (3, 1)]
+        open: (string_open [(3, 0), (3, 1)])
         content: (string_content [(3, 1), (3, 3)]
           (escape_sequence [(3, 1), (3, 3)])
         )
-        close: "\"" [(3, 3), (3, 4)]
+        close: (string_close [(3, 3), (3, 4)])
       )
       
       Text
@@ -135,11 +135,11 @@
       
       S-Expression
       (string [(4, 0), (4, 4)]
-        open: "\"" [(4, 0), (4, 1)]
+        open: (string_open [(4, 0), (4, 1)])
         content: (string_content [(4, 1), (4, 3)]
           (escape_sequence [(4, 1), (4, 3)])
         )
-        close: "\"" [(4, 3), (4, 4)]
+        close: (string_close [(4, 3), (4, 4)])
       )
       
       Text
@@ -147,11 +147,11 @@
       
       S-Expression
       (string [(5, 0), (5, 4)]
-        open: "\"" [(5, 0), (5, 1)]
+        open: (string_open [(5, 0), (5, 1)])
         content: (string_content [(5, 1), (5, 3)]
           (escape_sequence [(5, 1), (5, 3)])
         )
-        close: "\"" [(5, 3), (5, 4)]
+        close: (string_close [(5, 3), (5, 4)])
       )
       
       Text
@@ -159,11 +159,11 @@
       
       S-Expression
       (string [(6, 0), (6, 4)]
-        open: "\"" [(6, 0), (6, 1)]
+        open: (string_open [(6, 0), (6, 1)])
         content: (string_content [(6, 1), (6, 3)]
           (escape_sequence [(6, 1), (6, 3)])
         )
-        close: "\"" [(6, 3), (6, 4)]
+        close: (string_close [(6, 3), (6, 4)])
       )
       
       Text
@@ -171,11 +171,11 @@
       
       S-Expression
       (string [(7, 0), (7, 4)]
-        open: "'" [(7, 0), (7, 1)]
+        open: (string_open [(7, 0), (7, 1)])
         content: (string_content [(7, 1), (7, 3)]
           (escape_sequence [(7, 1), (7, 3)])
         )
-        close: "'" [(7, 3), (7, 4)]
+        close: (string_close [(7, 3), (7, 4)])
       )
       
       Text
@@ -183,11 +183,11 @@
       
       S-Expression
       (string [(9, 0), (9, 4)]
-        open: "\"" [(9, 0), (9, 1)]
+        open: (string_open [(9, 0), (9, 1)])
         content: (string_content [(9, 1), (9, 3)]
           (escape_sequence [(9, 1), (9, 3)])
         )
-        close: "\"" [(9, 3), (9, 4)]
+        close: (string_close [(9, 3), (9, 4)])
       )
       
       Text
@@ -195,11 +195,11 @@
       
       S-Expression
       (string [(10, 0), (10, 4)]
-        open: "\"" [(10, 0), (10, 1)]
+        open: (string_open [(10, 0), (10, 1)])
         content: (string_content [(10, 1), (10, 3)]
           (escape_sequence [(10, 1), (10, 3)])
         )
-        close: "\"" [(10, 3), (10, 4)]
+        close: (string_close [(10, 3), (10, 4)])
       )
       
       Text
@@ -207,11 +207,11 @@
       
       S-Expression
       (string [(11, 0), (11, 4)]
-        open: "\"" [(11, 0), (11, 1)]
+        open: (string_open [(11, 0), (11, 1)])
         content: (string_content [(11, 1), (11, 3)]
           (escape_sequence [(11, 1), (11, 3)])
         )
-        close: "\"" [(11, 3), (11, 4)]
+        close: (string_close [(11, 3), (11, 4)])
       )
       
       Text
@@ -219,11 +219,11 @@
       
       S-Expression
       (string [(12, 0), (12, 5)]
-        open: "\"" [(12, 0), (12, 1)]
+        open: (string_open [(12, 0), (12, 1)])
         content: (string_content [(12, 1), (12, 4)]
           (escape_sequence [(12, 1), (12, 4)])
         )
-        close: "\"" [(12, 4), (12, 5)]
+        close: (string_close [(12, 4), (12, 5)])
       )
       
       Text
@@ -231,11 +231,11 @@
       
       S-Expression
       (string [(13, 0), (13, 6)]
-        open: "\"" [(13, 0), (13, 1)]
+        open: (string_open [(13, 0), (13, 1)])
         content: (string_content [(13, 1), (13, 5)]
           (escape_sequence [(13, 1), (13, 5)])
         )
-        close: "\"" [(13, 5), (13, 6)]
+        close: (string_close [(13, 5), (13, 6)])
       )
       
       Text
@@ -243,11 +243,11 @@
       
       S-Expression
       (string [(14, 0), (14, 7)]
-        open: "\"" [(14, 0), (14, 1)]
+        open: (string_open [(14, 0), (14, 1)])
         content: (string_content [(14, 1), (14, 6)]
           (escape_sequence [(14, 1), (14, 5)])
         )
-        close: "\"" [(14, 6), (14, 7)]
+        close: (string_close [(14, 6), (14, 7)])
       )
       
       Text
@@ -255,11 +255,11 @@
       
       S-Expression
       (string [(16, 0), (16, 5)]
-        open: "\"" [(16, 0), (16, 1)]
+        open: (string_open [(16, 0), (16, 1)])
         content: (string_content [(16, 1), (16, 4)]
           (escape_sequence [(16, 1), (16, 4)])
         )
-        close: "\"" [(16, 4), (16, 5)]
+        close: (string_close [(16, 4), (16, 5)])
       )
       
       Text
@@ -267,11 +267,11 @@
       
       S-Expression
       (string [(17, 0), (17, 6)]
-        open: "\"" [(17, 0), (17, 1)]
+        open: (string_open [(17, 0), (17, 1)])
         content: (string_content [(17, 1), (17, 5)]
           (escape_sequence [(17, 1), (17, 5)])
         )
-        close: "\"" [(17, 5), (17, 6)]
+        close: (string_close [(17, 5), (17, 6)])
       )
       
       Text
@@ -279,11 +279,11 @@
       
       S-Expression
       (string [(18, 0), (18, 7)]
-        open: "\"" [(18, 0), (18, 1)]
+        open: (string_open [(18, 0), (18, 1)])
         content: (string_content [(18, 1), (18, 6)]
           (escape_sequence [(18, 1), (18, 5)])
         )
-        close: "\"" [(18, 6), (18, 7)]
+        close: (string_close [(18, 6), (18, 7)])
       )
       
       Text
@@ -291,11 +291,11 @@
       
       S-Expression
       (string [(20, 0), (20, 5)]
-        open: "\"" [(20, 0), (20, 1)]
+        open: (string_open [(20, 0), (20, 1)])
         content: (string_content [(20, 1), (20, 4)]
           (escape_sequence [(20, 1), (20, 4)])
         )
-        close: "\"" [(20, 4), (20, 5)]
+        close: (string_close [(20, 4), (20, 5)])
       )
       
       Text
@@ -303,11 +303,11 @@
       
       S-Expression
       (string [(21, 0), (21, 6)]
-        open: "\"" [(21, 0), (21, 1)]
+        open: (string_open [(21, 0), (21, 1)])
         content: (string_content [(21, 1), (21, 5)]
           (escape_sequence [(21, 1), (21, 5)])
         )
-        close: "\"" [(21, 5), (21, 6)]
+        close: (string_close [(21, 5), (21, 6)])
       )
       
       Text
@@ -315,11 +315,11 @@
       
       S-Expression
       (string [(22, 0), (22, 7)]
-        open: "\"" [(22, 0), (22, 1)]
+        open: (string_open [(22, 0), (22, 1)])
         content: (string_content [(22, 1), (22, 6)]
           (escape_sequence [(22, 1), (22, 6)])
         )
-        close: "\"" [(22, 6), (22, 7)]
+        close: (string_close [(22, 6), (22, 7)])
       )
       
       Text
@@ -327,11 +327,11 @@
       
       S-Expression
       (string [(23, 0), (23, 8)]
-        open: "\"" [(23, 0), (23, 1)]
+        open: (string_open [(23, 0), (23, 1)])
         content: (string_content [(23, 1), (23, 7)]
           (escape_sequence [(23, 1), (23, 7)])
         )
-        close: "\"" [(23, 7), (23, 8)]
+        close: (string_close [(23, 7), (23, 8)])
       )
       
       Text
@@ -339,11 +339,11 @@
       
       S-Expression
       (string [(24, 0), (24, 9)]
-        open: "\"" [(24, 0), (24, 1)]
+        open: (string_open [(24, 0), (24, 1)])
         content: (string_content [(24, 1), (24, 8)]
           (escape_sequence [(24, 1), (24, 7)])
         )
-        close: "\"" [(24, 8), (24, 9)]
+        close: (string_close [(24, 8), (24, 9)])
       )
       
       Text
@@ -351,11 +351,11 @@
       
       S-Expression
       (string [(26, 0), (26, 7)]
-        open: "\"" [(26, 0), (26, 1)]
+        open: (string_open [(26, 0), (26, 1)])
         content: (string_content [(26, 1), (26, 6)]
           (escape_sequence [(26, 1), (26, 6)])
         )
-        close: "\"" [(26, 6), (26, 7)]
+        close: (string_close [(26, 6), (26, 7)])
       )
       
       Text
@@ -363,11 +363,11 @@
       
       S-Expression
       (string [(27, 0), (27, 8)]
-        open: "\"" [(27, 0), (27, 1)]
+        open: (string_open [(27, 0), (27, 1)])
         content: (string_content [(27, 1), (27, 7)]
           (escape_sequence [(27, 1), (27, 7)])
         )
-        close: "\"" [(27, 7), (27, 8)]
+        close: (string_close [(27, 7), (27, 8)])
       )
       
       Text
@@ -375,11 +375,11 @@
       
       S-Expression
       (string [(28, 0), (28, 9)]
-        open: "\"" [(28, 0), (28, 1)]
+        open: (string_open [(28, 0), (28, 1)])
         content: (string_content [(28, 1), (28, 8)]
           (escape_sequence [(28, 1), (28, 8)])
         )
-        close: "\"" [(28, 8), (28, 9)]
+        close: (string_close [(28, 8), (28, 9)])
       )
       
       Text
@@ -387,11 +387,11 @@
       
       S-Expression
       (string [(29, 0), (29, 10)]
-        open: "\"" [(29, 0), (29, 1)]
+        open: (string_open [(29, 0), (29, 1)])
         content: (string_content [(29, 1), (29, 9)]
           (escape_sequence [(29, 1), (29, 9)])
         )
-        close: "\"" [(29, 9), (29, 10)]
+        close: (string_close [(29, 9), (29, 10)])
       )
       
       Text
@@ -399,11 +399,11 @@
       
       S-Expression
       (string [(31, 0), (31, 7)]
-        open: "\"" [(31, 0), (31, 1)]
+        open: (string_open [(31, 0), (31, 1)])
         content: (string_content [(31, 1), (31, 6)]
           (escape_sequence [(31, 1), (31, 6)])
         )
-        close: "\"" [(31, 6), (31, 7)]
+        close: (string_close [(31, 6), (31, 7)])
       )
       
       Text
@@ -411,11 +411,11 @@
       
       S-Expression
       (string [(32, 0), (32, 8)]
-        open: "\"" [(32, 0), (32, 1)]
+        open: (string_open [(32, 0), (32, 1)])
         content: (string_content [(32, 1), (32, 7)]
           (escape_sequence [(32, 1), (32, 7)])
         )
-        close: "\"" [(32, 7), (32, 8)]
+        close: (string_close [(32, 7), (32, 8)])
       )
       
       Text
@@ -423,11 +423,11 @@
       
       S-Expression
       (string [(33, 0), (33, 9)]
-        open: "\"" [(33, 0), (33, 1)]
+        open: (string_open [(33, 0), (33, 1)])
         content: (string_content [(33, 1), (33, 8)]
           (escape_sequence [(33, 1), (33, 8)])
         )
-        close: "\"" [(33, 8), (33, 9)]
+        close: (string_close [(33, 8), (33, 9)])
       )
       
       Text
@@ -435,11 +435,11 @@
       
       S-Expression
       (string [(34, 0), (34, 10)]
-        open: "\"" [(34, 0), (34, 1)]
+        open: (string_open [(34, 0), (34, 1)])
         content: (string_content [(34, 1), (34, 9)]
           (escape_sequence [(34, 1), (34, 9)])
         )
-        close: "\"" [(34, 9), (34, 10)]
+        close: (string_close [(34, 9), (34, 10)])
       )
       
       Text
@@ -447,11 +447,11 @@
       
       S-Expression
       (string [(35, 0), (35, 11)]
-        open: "\"" [(35, 0), (35, 1)]
+        open: (string_open [(35, 0), (35, 1)])
         content: (string_content [(35, 1), (35, 10)]
           (escape_sequence [(35, 1), (35, 10)])
         )
-        close: "\"" [(35, 10), (35, 11)]
+        close: (string_close [(35, 10), (35, 11)])
       )
       
       Text
@@ -459,11 +459,11 @@
       
       S-Expression
       (string [(36, 0), (36, 12)]
-        open: "\"" [(36, 0), (36, 1)]
+        open: (string_open [(36, 0), (36, 1)])
         content: (string_content [(36, 1), (36, 11)]
           (escape_sequence [(36, 1), (36, 11)])
         )
-        close: "\"" [(36, 11), (36, 12)]
+        close: (string_close [(36, 11), (36, 12)])
       )
       
       Text
@@ -471,11 +471,11 @@
       
       S-Expression
       (string [(37, 0), (37, 13)]
-        open: "\"" [(37, 0), (37, 1)]
+        open: (string_open [(37, 0), (37, 1)])
         content: (string_content [(37, 1), (37, 12)]
           (escape_sequence [(37, 1), (37, 12)])
         )
-        close: "\"" [(37, 12), (37, 13)]
+        close: (string_close [(37, 12), (37, 13)])
       )
       
       Text
@@ -483,11 +483,11 @@
       
       S-Expression
       (string [(38, 0), (38, 14)]
-        open: "\"" [(38, 0), (38, 1)]
+        open: (string_open [(38, 0), (38, 1)])
         content: (string_content [(38, 1), (38, 13)]
           (escape_sequence [(38, 1), (38, 13)])
         )
-        close: "\"" [(38, 13), (38, 14)]
+        close: (string_close [(38, 13), (38, 14)])
       )
       
       Text
@@ -495,11 +495,11 @@
       
       S-Expression
       (string [(40, 0), (40, 5)]
-        open: "\"" [(40, 0), (40, 1)]
+        open: (string_open [(40, 0), (40, 1)])
         content: (string_content [(40, 1), (40, 4)]
           (escape_sequence [(40, 1), (40, 4)])
         )
-        close: "\"" [(40, 4), (40, 5)]
+        close: (string_close [(40, 4), (40, 5)])
       )
       
       Text
@@ -507,11 +507,11 @@
       
       S-Expression
       (string [(41, 0), (41, 6)]
-        open: "\"" [(41, 0), (41, 1)]
+        open: (string_open [(41, 0), (41, 1)])
         content: (string_content [(41, 1), (41, 5)]
           (escape_sequence [(41, 1), (41, 5)])
         )
-        close: "\"" [(41, 5), (41, 6)]
+        close: (string_close [(41, 5), (41, 6)])
       )
       
       Text
@@ -519,11 +519,11 @@
       
       S-Expression
       (string [(42, 0), (42, 7)]
-        open: "\"" [(42, 0), (42, 1)]
+        open: (string_open [(42, 0), (42, 1)])
         content: (string_content [(42, 1), (42, 6)]
           (escape_sequence [(42, 1), (42, 6)])
         )
-        close: "\"" [(42, 6), (42, 7)]
+        close: (string_close [(42, 6), (42, 7)])
       )
       
       Text
@@ -531,11 +531,11 @@
       
       S-Expression
       (string [(43, 0), (43, 8)]
-        open: "\"" [(43, 0), (43, 1)]
+        open: (string_open [(43, 0), (43, 1)])
         content: (string_content [(43, 1), (43, 7)]
           (escape_sequence [(43, 1), (43, 7)])
         )
-        close: "\"" [(43, 7), (43, 8)]
+        close: (string_close [(43, 7), (43, 8)])
       )
       
       Text
@@ -543,11 +543,11 @@
       
       S-Expression
       (string [(44, 0), (44, 9)]
-        open: "\"" [(44, 0), (44, 1)]
+        open: (string_open [(44, 0), (44, 1)])
         content: (string_content [(44, 1), (44, 8)]
           (escape_sequence [(44, 1), (44, 8)])
         )
-        close: "\"" [(44, 8), (44, 9)]
+        close: (string_close [(44, 8), (44, 9)])
       )
       
       Text
@@ -555,11 +555,11 @@
       
       S-Expression
       (string [(45, 0), (45, 10)]
-        open: "\"" [(45, 0), (45, 1)]
+        open: (string_open [(45, 0), (45, 1)])
         content: (string_content [(45, 1), (45, 9)]
           (escape_sequence [(45, 1), (45, 9)])
         )
-        close: "\"" [(45, 9), (45, 10)]
+        close: (string_close [(45, 9), (45, 10)])
       )
       
       Text
@@ -567,11 +567,11 @@
       
       S-Expression
       (string [(46, 0), (46, 11)]
-        open: "\"" [(46, 0), (46, 1)]
+        open: (string_open [(46, 0), (46, 1)])
         content: (string_content [(46, 1), (46, 10)]
           (escape_sequence [(46, 1), (46, 10)])
         )
-        close: "\"" [(46, 10), (46, 11)]
+        close: (string_close [(46, 10), (46, 11)])
       )
       
       Text
@@ -579,11 +579,11 @@
       
       S-Expression
       (string [(47, 0), (47, 12)]
-        open: "\"" [(47, 0), (47, 1)]
+        open: (string_open [(47, 0), (47, 1)])
         content: (string_content [(47, 1), (47, 11)]
           (escape_sequence [(47, 1), (47, 11)])
         )
-        close: "\"" [(47, 11), (47, 12)]
+        close: (string_close [(47, 11), (47, 12)])
       )
       
       Text
@@ -591,11 +591,11 @@
       
       S-Expression
       (string [(48, 0), (48, 13)]
-        open: "\"" [(48, 0), (48, 1)]
+        open: (string_open [(48, 0), (48, 1)])
         content: (string_content [(48, 1), (48, 12)]
           (escape_sequence [(48, 1), (48, 11)])
         )
-        close: "\"" [(48, 12), (48, 13)]
+        close: (string_close [(48, 12), (48, 13)])
       )
       
       Text
@@ -603,11 +603,11 @@
       
       S-Expression
       (string [(50, 0), (50, 10)]
-        open: "\"" [(50, 0), (50, 1)]
+        open: (string_open [(50, 0), (50, 1)])
         content: (string_content [(50, 1), (50, 9)]
           (escape_sequence [(50, 4), (50, 6)])
         )
-        close: "\"" [(50, 9), (50, 10)]
+        close: (string_close [(50, 9), (50, 10)])
       )
       
       Text
@@ -615,12 +615,12 @@
       
       S-Expression
       (string [(51, 0), (51, 12)]
-        open: "\"" [(51, 0), (51, 1)]
+        open: (string_open [(51, 0), (51, 1)])
         content: (string_content [(51, 1), (51, 11)]
           (escape_sequence [(51, 4), (51, 6)])
           (escape_sequence [(51, 9), (51, 11)])
         )
-        close: "\"" [(51, 11), (51, 12)]
+        close: (string_close [(51, 11), (51, 12)])
       )
       
       Text
@@ -628,11 +628,11 @@
       
       S-Expression
       (string [(52, 0), (52, 7)]
-        open: "\"" [(52, 0), (52, 1)]
+        open: (string_open [(52, 0), (52, 1)])
         content: (string_content [(52, 1), (52, 6)]
           (escape_sequence [(52, 4), (52, 6)])
         )
-        close: "\"" [(52, 6), (52, 7)]
+        close: (string_close [(52, 6), (52, 7)])
       )
       
       Text
@@ -640,11 +640,11 @@
       
       S-Expression
       (string [(53, 0), (54, 1)]
-        open: "\"" [(53, 0), (53, 1)]
+        open: (string_open [(53, 0), (53, 1)])
         content: (string_content [(53, 1), (54, 0)]
           (escape_sequence [(53, 4), (54, 0)])
         )
-        close: "\"" [(54, 0), (54, 1)]
+        close: (string_close [(54, 0), (54, 1)])
       )
       
       Text
@@ -659,7 +659,7 @@
     Output
       S-Expression
       (ERROR [(1, 0), (1, 2)]
-        "\"" [(1, 0), (1, 1)]
+        (string_open [(1, 0), (1, 1)])
         "\\" [(1, 1), (1, 2)]
       )
       
@@ -684,9 +684,9 @@
       
       S-Expression
       (string [(1, 10), (2, 0)]
-        open: "\"" [(1, 10), (1, 11)]
+        open: (string_open [(1, 10), (1, 11)])
         content: (string_content [(1, 11), (2, 0)])
-        close: "\"" MISSING [(2, 0), (2, 0)]
+        close: (string_close MISSING [(2, 0), (2, 0)])
       )
       
       Text
@@ -701,7 +701,7 @@
     Output
       S-Expression
       (ERROR [(1, 0), (1, 2)]
-        "\"" [(1, 0), (1, 1)]
+        (string_open [(1, 0), (1, 1)])
         "\\" [(1, 1), (1, 2)]
       )
       
@@ -726,9 +726,9 @@
       
       S-Expression
       (string [(1, 14), (2, 0)]
-        open: "\"" [(1, 14), (1, 15)]
+        open: (string_open [(1, 14), (1, 15)])
         content: (string_content [(1, 15), (2, 0)])
-        close: "\"" MISSING [(2, 0), (2, 0)]
+        close: (string_close MISSING [(2, 0), (2, 0)])
       )
       
       Text
@@ -743,11 +743,11 @@
     Output
       S-Expression
       (string [(1, 0), (1, 4)]
-        open: "\"" [(1, 0), (1, 1)]
+        open: (string_open [(1, 0), (1, 1)])
         (ERROR [(1, 1), (1, 3)]
           "\\" [(1, 1), (1, 2)]
         )
-        close: "\"" [(1, 3), (1, 4)]
+        close: (string_close [(1, 3), (1, 4)])
       )
       
       Text
@@ -761,12 +761,12 @@
     Output
       S-Expression
       (string [(1, 0), (1, 4)]
-        open: "\"" [(1, 0), (1, 1)]
+        open: (string_open [(1, 0), (1, 1)])
         (ERROR [(1, 1), (1, 3)]
           "\\" [(1, 1), (1, 2)]
           (identifier [(1, 2), (1, 3)])
         )
-        close: "\"" [(1, 3), (1, 4)]
+        close: (string_close [(1, 3), (1, 4)])
       )
       
       Text
@@ -779,103 +779,171 @@
       node_children_print(node)
     Output
       S-Expression
-      (string [(1, 0), (1, 15)])
+      (string [(1, 0), (1, 15)]
+        open: (string_open [(1, 0), (1, 3)])
+        content: (string_content [(1, 3), (1, 13)])
+        close: (string_close [(1, 13), (1, 15)])
+      )
       
       Text
       r"(raw string)"
       
       S-Expression
-      (string [(2, 0), (2, 23)])
+      (string [(2, 0), (2, 23)]
+        open: (string_open [(2, 0), (2, 3)])
+        content: (string_content [(2, 3), (2, 21)])
+        close: (string_close [(2, 21), (2, 23)])
+      )
       
       Text
       R"{another raw string}"
       
       S-Expression
-      (string [(3, 0), (3, 34)])
+      (string [(3, 0), (3, 34)]
+        open: (string_open [(3, 0), (3, 5)])
+        content: (string_content [(3, 5), (3, 30)])
+        close: (string_close [(3, 30), (3, 34)])
+      )
       
       Text
       R"--[yet another ]- raw string]--"
       
       S-Expression
-      (string [(5, 0), (5, 6)])
+      (string [(5, 0), (5, 6)]
+        open: (string_open [(5, 0), (5, 3)])
+        content: (string_content [(5, 3), (5, 4)])
+        close: (string_close [(5, 4), (5, 6)])
+      )
       
       Text
       r"(")"
       
       S-Expression
-      (string [(6, 0), (6, 7)])
+      (string [(6, 0), (6, 7)]
+        open: (string_open [(6, 0), (6, 3)])
+        content: (string_content [(6, 3), (6, 5)])
+        close: (string_close [(6, 5), (6, 7)])
+      )
       
       Text
       r"("")"
       
       S-Expression
-      (string [(7, 0), (7, 6)])
+      (string [(7, 0), (7, 6)]
+        open: (string_open [(7, 0), (7, 3)])
+        content: (string_content [(7, 3), (7, 4)])
+        close: (string_close [(7, 4), (7, 6)])
+      )
       
       Text
       r"(')"
       
       S-Expression
-      (string [(8, 0), (8, 7)])
+      (string [(8, 0), (8, 7)]
+        open: (string_open [(8, 0), (8, 3)])
+        content: (string_content [(8, 3), (8, 5)])
+        close: (string_close [(8, 5), (8, 7)])
+      )
       
       Text
       r"('')"
       
       S-Expression
-      (string [(10, 0), (10, 8)])
+      (string [(10, 0), (10, 8)]
+        open: (string_open [(10, 0), (10, 4)])
+        content: (string_content [(10, 4), (10, 5)])
+        close: (string_close [(10, 5), (10, 8)])
+      )
       
       Text
       r"-(-)-"
       
       S-Expression
-      (string [(11, 0), (11, 9)])
+      (string [(11, 0), (11, 9)]
+        open: (string_open [(11, 0), (11, 4)])
+        content: (string_content [(11, 4), (11, 6)])
+        close: (string_close [(11, 6), (11, 9)])
+      )
       
       Text
       r"-()-)-"
       
       S-Expression
-      (string [(12, 0), (12, 12)])
+      (string [(12, 0), (12, 12)]
+        open: (string_open [(12, 0), (12, 5)])
+        content: (string_content [(12, 5), (12, 8)])
+        close: (string_close [(12, 8), (12, 12)])
+      )
       
       Text
       r"--()-")--"
       
       S-Expression
-      (string [(14, 0), (14, 9)])
+      (string [(14, 0), (14, 9)]
+        open: (string_open [(14, 0), (14, 3)])
+        content: (string_content [(14, 3), (14, 7)])
+        close: (string_close [(14, 7), (14, 9)])
+      )
       
       Text
       r"( () )"
       
       S-Expression
-      (string [(15, 0), (15, 7)])
+      (string [(15, 0), (15, 7)]
+        open: (string_open [(15, 0), (15, 3)])
+        content: (string_content [(15, 3), (15, 5)])
+        close: (string_close [(15, 5), (15, 7)])
+      )
       
       Text
       r"(())"
       
       S-Expression
-      (string [(16, 0), (16, 8)])
+      (string [(16, 0), (16, 8)]
+        open: (string_open [(16, 0), (16, 3)])
+        content: (string_content [(16, 3), (16, 6)])
+        close: (string_close [(16, 6), (16, 8)])
+      )
       
       Text
       r"( ())"
       
       S-Expression
-      (string [(17, 0), (17, 8)])
+      (string [(17, 0), (17, 8)]
+        open: (string_open [(17, 0), (17, 3)])
+        content: (string_content [(17, 3), (17, 6)])
+        close: (string_close [(17, 6), (17, 8)])
+      )
       
       Text
       r"(() )"
       
       S-Expression
-      (string [(18, 0), (18, 8)])
+      (string [(18, 0), (18, 8)]
+        open: (string_open [(18, 0), (18, 4)])
+        content: (string_content [(18, 4), (18, 5)])
+        close: (string_close [(18, 5), (18, 8)])
+      )
       
       Text
       r"-())-"
       
       S-Expression
-      (string [(19, 0), (19, 11)])
+      (string [(19, 0), (19, 11)]
+        open: (string_open [(19, 0), (19, 4)])
+        content: (string_content [(19, 4), (19, 8)])
+        close: (string_close [(19, 8), (19, 11)])
+      )
       
       Text
       r"-(())-)-"
       
       S-Expression
-      (string [(21, 0), (23, 2)])
+      (string [(21, 0), (23, 2)]
+        open: (string_open [(21, 0), (21, 3)])
+        content: (string_content [(21, 3), (23, 0)])
+        close: (string_close [(23, 0), (23, 2)])
+      )
       
       Text
       r"(raw
@@ -883,11 +951,161 @@
       )"
       
       S-Expression
-      (call [(25, 0), (25, 3)]
-        function: (identifier [(25, 0), (25, 1)])
-        arguments: (arguments [(25, 1), (25, 3)]
-          open: "(" [(25, 1), (25, 2)]
-          close: ")" [(25, 2), (25, 3)]
+      (string [(25, 0), (25, 5)]
+        open: (string_open [(25, 0), (25, 3)])
+        close: (string_close [(25, 3), (25, 5)])
+      )
+      
+      Text
+      r"()"
+      
+      S-Expression
+      (string [(26, 0), (26, 5)]
+        open: (string_open [(26, 0), (26, 3)])
+        close: (string_close [(26, 3), (26, 5)])
+      )
+      
+      Text
+      R"{}"
+      
+      S-Expression
+      (string [(27, 0), (27, 9)]
+        open: (string_open [(27, 0), (27, 5)])
+        close: (string_close [(27, 5), (27, 9)])
+      )
+      
+      Text
+      r"--[]--"
+      
+      S-Expression
+      (comment [(29, 0), (29, 44)])
+      
+      Text
+      # Leading whitespace and newlines after open
+      
+      S-Expression
+      (string [(30, 0), (30, 12)]
+        open: (string_open [(30, 0), (30, 3)])
+        content: (string_content [(30, 3), (30, 10)])
+        close: (string_close [(30, 10), (30, 12)])
+      )
+      
+      Text
+      r"(  hello)"
+      
+      S-Expression
+      (string [(31, 0), (31, 12)]
+        open: (string_open [(31, 0), (31, 3)])
+        content: (string_content [(31, 3), (31, 10)])
+        close: (string_close [(31, 10), (31, 12)])
+      )
+      
+      Text
+      r"(\nhello)"
+      
+      S-Expression
+      (string [(32, 0), (34, 2)]
+        open: (string_open [(32, 0), (32, 3)])
+        content: (string_content [(32, 3), (34, 0)])
+        close: (string_close [(34, 0), (34, 2)])
+      )
+      
+      Text
+      r"(
+      hello
+      )"
+      
+      S-Expression
+      (call [(35, 0), (35, 17)]
+        function: (identifier [(35, 0), (35, 1)])
+        arguments: (arguments [(35, 1), (35, 17)]
+          open: "(" [(35, 1), (35, 2)]
+          argument: (argument [(35, 2), (35, 16)]
+            value: (string [(35, 2), (35, 16)]
+              open: (string_open [(35, 2), (35, 5)])
+              content: (string_content [(35, 5), (35, 14)])
+              close: (string_close [(35, 14), (35, 16)])
+            )
+          )
+          close: ")" [(35, 16), (35, 17)]
+        )
+      )
+      
+      Text
+      f(r"(\nhello\n)")
+      
+      S-Expression
+      (call [(36, 0), (38, 3)]
+        function: (identifier [(36, 0), (36, 1)])
+        arguments: (arguments [(36, 1), (38, 3)]
+          open: "(" [(36, 1), (36, 2)]
+          argument: (argument [(36, 2), (38, 2)]
+            value: (string [(36, 2), (38, 2)]
+              open: (string_open [(36, 2), (36, 5)])
+              content: (string_content [(36, 5), (38, 0)])
+              close: (string_close [(38, 0), (38, 2)])
+            )
+          )
+          close: ")" [(38, 2), (38, 3)]
+        )
+      )
+      
+      Text
+      f(r"(
+      hello
+      )")
+      
+      S-Expression
+      (comment [(40, 0), (40, 27)])
+      
+      Text
+      # Single quoted raw strings
+      
+      S-Expression
+      (string [(41, 0), (41, 5)]
+        open: (string_open [(41, 0), (41, 3)])
+        close: (string_close [(41, 3), (41, 5)])
+      )
+      
+      Text
+      r'()'
+      
+      S-Expression
+      (string [(42, 0), (42, 6)]
+        open: (string_open [(42, 0), (42, 3)])
+        content: (string_content [(42, 3), (42, 4)])
+        close: (string_close [(42, 4), (42, 6)])
+      )
+      
+      Text
+      r'(a)'
+      
+      S-Expression
+      (string [(43, 0), (43, 6)]
+        open: (string_open [(43, 0), (43, 3)])
+        content: (string_content [(43, 3), (43, 4)])
+        close: (string_close [(43, 4), (43, 6)])
+      )
+      
+      Text
+      r'(')'
+      
+      S-Expression
+      (string [(44, 0), (44, 6)]
+        open: (string_open [(44, 0), (44, 3)])
+        content: (string_content [(44, 3), (44, 4)])
+        close: (string_close [(44, 4), (44, 6)])
+      )
+      
+      Text
+      r'(")'
+      
+      S-Expression
+      (call [(46, 0), (46, 3)]
+        function: (identifier [(46, 0), (46, 1)])
+        arguments: (arguments [(46, 1), (46, 3)]
+          open: "(" [(46, 1), (46, 2)]
+          close: ")" [(46, 2), (46, 3)]
         )
       )
       

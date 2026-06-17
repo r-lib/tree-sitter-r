@@ -214,7 +214,9 @@ module.exports = grammar({
     $._start,
     $._newline,
     $._semicolon,
-    $._raw_string_literal,
+    $._raw_string_open,
+    $._raw_string_content,
+    $._raw_string_close,
     // Don't use `_external` variants directly. Instead use their aliased versions.
     $._external_else,
     $._external_open_parenthesis,
@@ -541,36 +543,36 @@ module.exports = grammar({
     _float_literal: $ => choice($._hex_literal, $._number_literal),
 
     // Strings.
+    //
+    // NOTE: Keep the field and child node structure the same across all 3 variants!
     string: $ => choice(
-      $._raw_string_literal,
+      $._raw_string,
       $._single_quoted_string,
       $._double_quoted_string
     ),
 
-    // TODO: Raw string contents, something like this, where `_raw_string_open`,
-    // `_raw_string_close`, and `_raw_string_content` are externals.
-    // _raw_string_literal: $ => seq(
-    //   field("open", $._raw_string_open),
-    //   optional(field("content", alias($._raw_string_content, $.string_content))),
-    //   field("close", $._raw_string_close)
-    // ),
+    _raw_string: $ => seq(
+      field("open", alias($._raw_string_open, $.string_open)),
+      optional(field("content", alias($._raw_string_content, $.string_content))),
+      field("close", alias($._raw_string_close, $.string_close))
+    ),
+
+    _single_quoted_string: $ => seq(
+      field("open", alias('\'', $.string_open)),
+      optional(field("content", alias($._single_quoted_string_content, $.string_content))),
+      field("close", alias('\'', $.string_close))
+    ),
+
+    _double_quoted_string: $ => seq(
+      field("open", alias('"', $.string_open)),
+      optional(field("content", alias($._double_quoted_string_content, $.string_content))),
+      field("close", alias('"', $.string_close))
+    ),
 
     // Explanation is:
     // - Between two quote characters, allow either:
     //   - Anything except `'` (or `"`) or `\`
     //   - An escape sequence
-    _single_quoted_string: $ => seq(
-      field("open", '\''),
-      optional(field("content", alias($._single_quoted_string_content, $.string_content))),
-      field("close", '\'')
-    ),
-
-    _double_quoted_string: $ => seq(
-      field("open", '"'),
-      optional(field("content", alias($._double_quoted_string_content, $.string_content))),
-      field("close", '"')
-    ),
-
     _single_quoted_string_content: $ => repeat1(choice(
       /[^'\\]+/,
       $.escape_sequence

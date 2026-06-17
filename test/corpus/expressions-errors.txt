@@ -436,5 +436,7 @@ x[["a"]
   (identifier)
   (ERROR
     (string
-      (string_content))
+      (string_open)
+      (string_content)
+      (string_close))
     (UNEXPECTED ']')))
