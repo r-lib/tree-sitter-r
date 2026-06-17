@@ -207,28 +207,79 @@ static inline void consume_whitespace_and_ignored_newlines(TSLexer* lexer, Stack
   }
 }
 
+// Check for an identifier continuation character
+//
+// Identifier continuation characters are defined in `identifier` in `grammar.js` as:
+// - `XID_Continue` (0-9, a-z, A-Z, `_`, unicode support)
+// - `.`
+//
+// We can't easily test `XID_Continue` from the scanner, but we can get close!
+//
+// For ASCII values (< 128):
+// - `iswalnum()` handles 0-9, a-z, A-Z
+// - `_` specially supported
+// - `.` specially supported
+// For non-ASCII values (>= 128):
+// - Assume continuation
+//
+// The unhandled values in the ASCII range all correspond to non-continuation characters
+// (like `>` or `#` or `"`).
+//
+// Assuming non-ASCII values are continuation characters is a bit of an
+// overapproximation. The point is to allow this example to correctly parse as
+// `elseμ <- 1`, aligning with R.
+//
+// ```r
+// {
+//   if (TRUE) 1
+//   elseμ <- 1
+// }
+// ```
+//
+// However, we'd also parse the following example as `else· <- 1`, but really
+// R's `iswalnum()` in UTF-8 locale would reject this and cause a syntax error
+// on the U+00B7 middle dot. Being a bit more lax where R would generate a
+// syntax error is okay, especially since it is fairly pathological.
+//
+// ```r
+// {
+//   if (TRUE) 1
+//   else· <- 1
+// }
+// ```
+//
+// https://github.com/wch/r-source/blob/0a30adbff0fcff79ef608276024949881134bd08/src/main/gram.y#L3397-L3433
+static inline bool is_identifier_continuation(int x) {
+  return iswalnum(x) || x == '_' || x == '.' || x >= 128;
+}
+
 static inline bool scan_else(TSLexer* lexer) {
   if (lexer->lookahead != 'e') {
     return false;
   }
-
   lexer->advance(lexer, false);
+
   if (lexer->lookahead != 'l') {
     return false;
   }
-
   lexer->advance(lexer, false);
+
   if (lexer->lookahead != 's') {
     return false;
   }
-
   lexer->advance(lexer, false);
+
   if (lexer->lookahead != 'e') {
+    return false;
+  }
+  lexer->advance(lexer, false);
+
+  // Check that this `else` isn't part of a larger identifier, like `else_idx` (#200)
+  if (is_identifier_continuation(lexer->lookahead)) {
     return false;
   }
 
   // We found `else`, return special `external` for it
-  lexer->advance(lexer, false);
   lexer->mark_end(lexer);
   lexer->result_symbol = ELSE;
 
