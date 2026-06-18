@@ -17,12 +17,12 @@ autoexamples = false
 
 build = "bindings/rust/build.rs"
 include = [
-    "LICENSE",
+    "/LICENSE",
     "bindings/rust/*",
-    "grammar.js",
+    "/grammar.js",
     "queries/*",
     "src/*",
-    "tree-sitter.json",
+    "/tree-sitter.json",
 ]
 
 [lib]
