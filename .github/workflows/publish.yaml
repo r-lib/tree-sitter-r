@@ -15,8 +15,7 @@ jobs:
     # uses: tree-sitter/workflows/.github/workflows/release.yml@main
     with:
       generate: false
-      attestations: true
-      abi-version: "14"
+      abi-version: 14
   npm:
     uses: ./.github/workflows/package-npm.yaml
     # uses: tree-sitter/workflows/.github/workflows/package-npm.yml@main
@@ -24,7 +23,7 @@ jobs:
       NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
     with:
       generate: false
-      abi-version: "14"
+      abi-version: 14
   crates:
     uses: ./.github/workflows/package-crates.yaml
     # uses: tree-sitter/workflows/.github/workflows/package-crates.yml@main
@@ -32,4 +31,4 @@ jobs:
       CARGO_REGISTRY_TOKEN: ${{secrets.CARGO_REGISTRY_TOKEN}}
     with:
       generate: false
-      abi-version: "14"
+      abi-version: 14
