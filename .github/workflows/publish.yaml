@@ -24,11 +24,11 @@ jobs:
     with:
       generate: false
       abi-version: 14
-  crates:
-    uses: ./.github/workflows/package-crates.yaml
-    # uses: tree-sitter/workflows/.github/workflows/package-crates.yml@main
-    secrets:
-      CARGO_REGISTRY_TOKEN: ${{secrets.CARGO_REGISTRY_TOKEN}}
-    with:
-      generate: false
-      abi-version: 14
+  # crates:
+  #   uses: ./.github/workflows/package-crates.yaml
+  #   # uses: tree-sitter/workflows/.github/workflows/package-crates.yml@main
+  #   secrets:
+  #     CARGO_REGISTRY_TOKEN: ${{secrets.CARGO_REGISTRY_TOKEN}}
+  #   with:
+  #     generate: false
+  #     abi-version: 14
