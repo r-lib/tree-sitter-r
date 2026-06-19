@@ -1,4 +1,6 @@
-# treesitter.r (development version)
+# treesitter.r 1.3.0
+
+* Updated to [tree-sitter-r v1.3.0](https://github.com/r-lib/tree-sitter-r/blob/main/CHANGELOG.md) (#202).
 
 # treesitter.r 1.2.0
 

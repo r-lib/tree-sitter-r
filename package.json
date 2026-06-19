@@ -1,6 +1,6 @@
 {
   "name": "@davisvaughan/tree-sitter-r",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "R grammar for tree-sitter",
   "repository": {
     "type": "git",

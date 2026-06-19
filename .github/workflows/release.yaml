@@ -5,22 +5,17 @@ name: Publish GitHub release
 on:
   workflow_call:
     inputs:
-      emscripten-version:
-        description: The Emscripten version
-        default: ${{vars.EMSCRIPTEN_VERSION || '3.1.64'}}
-        type: string
       generate:
         description: Generate the parser artifacts
         default: false
         type: boolean
-      attestations:
-        description: Generate attestations for artifacts
-        default: false
-        type: boolean
+      release-body:
+        description: The body of the release notes
+        type: string
       abi-version:
         description: The tree-sitter ABI version
-        default: "15"
-        type: string
+        default: 15
+        type: number
 
 permissions:
   contents: write
@@ -35,57 +30,65 @@ jobs:
       REPO_NAME: ${{github.event.repository.name}}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Set up Emscripten
-        uses: mymindstorm/setup-emsdk@v14
-        with:
-          version: ${{inputs.emscripten-version}}
+        uses: actions/checkout@v6
       - name: Set up tree-sitter CLI
         uses: tree-sitter/setup-action/cli@v2
-      - name: Install parser dependencies
+      - name: Install dependencies
         run: |-
-          JQ_SCRIPT='.dependencies | del(."node-addon-api", ."node-gyp-build") | length > 0'
           if jq -e "$JQ_SCRIPT" package.json >/dev/null; then
-            npm i --ignore-scripts --omit dev --omit peer --omit optional
+            npm i --ignore-scripts --omit peer --omit optional
           fi
+        env:
+          JQ_SCRIPT: >-
+            .dependencies + .devDependencies |
+            with_entries(select(
+            (.key | startswith("tree-sitter-"))
+            and (.key != "tree-sitter-cli")
+            )) | length > 0
       - name: Generate parser
         if: inputs.generate
         shell: bash
         run: |
-          while read -r grammar; do
-            grammar_dir=$(dirname "$grammar")
+          while read -r grammar_dir; do
             pushd "$grammar_dir"
             tree-sitter generate
             popd > /dev/null
-          done < <(find . -name grammar.js -not -path './node_modules/*')
+          done < <(jq -r '.grammars[].path // "."' tree-sitter.json)
         env:
           TREE_SITTER_ABI_VERSION: ${{inputs.abi-version}}
       - name: Build Wasm binaries
         shell: bash
         run: |-
-          while read -r grammar; do
-            tree-sitter build --wasm "${grammar%/grammar.js}"
-          done < <(find . -name grammar.js -not -path './node_modules/*')
+          while read -r grammar_dir; do
+            tree-sitter build --wasm "$grammar_dir"
+          done < <(jq -r '.grammars[].path // "."' tree-sitter.json)
       - name: Create source code tarball
         run: |
           git ls-files > "$RUNNER_TEMP/files"
-          while read -r grammar; do
-            : "$(dirname "$grammar")"; src_dir="${_/.\//}/src"
+          while read -r src_dir; do
             printf '%s\n' >> "$RUNNER_TEMP/files" \
               "$src_dir"/parser.c "$src_dir"/grammar.json \
               "$src_dir"/node-types.json "$src_dir"/tree_sitter/*
-          done < <(find . -name grammar.js -not -path './node_modules/*')
+          done < <(jq -r "$JQ_SCRIPT" tree-sitter.json)
           tar cvzf "$REPO_NAME.tar.gz" -T <(sort -u "$RUNNER_TEMP/files")
+        env:
+          JQ_SCRIPT: >-
+            .grammars[] |
+            if (.path? // ".") == "."
+            then "src"
+            else "\(.path)/src"
+            end
       - name: Generate attestations
-        uses: actions/attest-build-provenance@v2
-        if: inputs.attestations
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: |
             *.wasm
             ${{env.REPO_NAME}}.tar.gz
       - name: Create GitHub release
         run: |-
-          gh release create "$GITHUB_REF_NAME" *.wasm "$REPO_NAME.tar.gz" \
-            -n "**NOTE:** Download \`$REPO_NAME.tar.gz\` for the *complete* source code."
+          RELEASE_NOTE="**NOTE:** Download \`$REPO_NAME.tar.gz\` for the *complete* source code."
+          RELEASE_NOTE="${RELEASE_BODY}${RELEASE_BODY:+$'\n\n---\n\n'}${RELEASE_NOTE}"
+          gh release create "$GITHUB_REF_NAME" *.wasm "$REPO_NAME.tar.gz" -n "$RELEASE_NOTE"
         env:
           GH_TOKEN: ${{github.token}}
+          RELEASE_BODY: ${{inputs.release-body}}
