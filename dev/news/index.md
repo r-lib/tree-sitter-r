@@ -2,13 +2,21 @@
 
 ## treesitter.r (development version)
 
+## treesitter.r 1.3.0
+
+CRAN release: 2026-06-19
+
+- Updated to [tree-sitter-r
+  v1.3.0](https://github.com/r-lib/tree-sitter-r/blob/main/CHANGELOG.md)
+  ([\#202](https://github.com/r-lib/tree-sitter-r/issues/202)).
+
 ## treesitter.r 1.2.0
 
 CRAN release: 2025-06-05
 
 - Updated to [tree-sitter-r
   v1.2.0](https://github.com/r-lib/tree-sitter-r/blob/main/CHANGELOG.md)
-  ([\#136](https://github.com/r-lib/tree-sitter-r/issues/136)).
+  ([\#180](https://github.com/r-lib/tree-sitter-r/issues/180)).
 
 ## treesitter.r 1.1.0
 
