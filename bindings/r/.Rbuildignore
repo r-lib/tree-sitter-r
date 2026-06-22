@@ -14,3 +14,4 @@
 ^cran-comments\.md$
 ^[\.]?air\.toml$
 ^\.vscode$
+^playground$
