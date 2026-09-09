@@ -2,6 +2,8 @@
 
 ## devel
 
+- The npm package can now be loaded under Bun. The Bun specific branch of the Node binding asked for `tree-sitter-r.node`, but prebuildify names the artifact after the scoped package, so what ships is `@davisvaughan+tree-sitter-r.node` and `require()` threw at load time. Node was never affected, because `node-gyp-build` looks the file up instead of naming it (#205, @Ercaner1988).
+
 ## 1.3.0
 
 - Strings of all types (single quoted, double quoted, and raw) now share the exact same field and child node structure:
